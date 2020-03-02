@@ -25,4 +25,4 @@ Learn the DNNDK v3.0 TensorFlow design process for creating a compiled ELF file 
  Freeze a Keras model by generating a binary protobuf (.pb) file.</tr>
  </table>
 
-<p align="center"><sup>Copyright&copy; 2019 Xilinx</sup></p>
+<p align="center"><sup>Copyright&copy; 2019-2020 Xilinx</sup></p>
