@@ -29,6 +29,9 @@ Quantize in fixed point some custom CNNs and deploy them on the Xilinx ZCU102 bo
 <tr>
  <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/VAI-KERAS-FCN8-SEMSEG">FCN8 and UNET Semantic Segmentation with Keras and Xilinx Vitis AI (UG1445)</td>
  <td>Train the FCN8 and UNET Convolutional Neural Networks (CNNs) for Semantic Segmentation in Keras adopting a small custom dataset, quantize the floating point weights files to an 8-bit fixed point representation, and then deploy them on the Xilinx® ZCU102 board using Vitis AI.</td></tr>
+ <tr>
+ <tr> <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/ML-Caffe-Segmentation-Tutorial">ML Caffe Segmentation Tutorial (UG1394)</a></td>
+ <td>Use Vitis AI to train, quantize, compile, and deploy various segmentation networks including: ENet, ESPNet, FPN, UNet, and a reduced compute version of UNet.
  </table>
 
 <p align="center"><sup>Copyright&copy; 2019-2020 Xilinx</sup></p>
