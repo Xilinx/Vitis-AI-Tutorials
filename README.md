@@ -1,36 +1,26 @@
-<table width="100%">
-  <tr width="100%">
-    <td align="center"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>Vitis AI Tutorials</h1>
-    </td>
- </tr>
- </table>
+# Vitis AI (on Ultra96V2) Custom Platform Tutorial
+This repository contains sources for topics related to porting Vitis&trade; AI 1.0 to a custom platform. For the purposes of these tutorials, we'll follow the workflow with the Ultra96-V2 board from Avnet, and will add input capability from the MIPI CSI2 RX input source @ 640x480p60 with inline CSC to BGR for a low-latency ML platform. The tutorial has three parts:
+* [Building a custom Vitis Ultra96V2 + MIPI Platform](/files/tutorials/1-Building-a-Vitis-Ultra96V2-and-MIPI-platform.md): Generating a custom hardware and software platform with the Xilinx&reg; Vivado&reg; design suite and the Vitis unified software platform, using a MIPI input stream.
+* [Working with the Model Zoo](/files/tutorials/2-Working-with-the-Model-Zoo.md): Compiling pre-trained and pruned models for a new DPU configuration, using the output of our custom Ultra96-V2 Platform.
+* [Designing with Vitis AI for a custom Edge Platform](/files/tutorials/3-Designing-with-Vitis-AI-for-a-custom-Edge-Platform.md): Building a custom application and deploy Vitis AI and high level libraries to a custom edge platform, and building a compound image processing pipeline with both FaceDetection and FaceLandmark high-level libraries (and models) provided by the Vitis AI Library.
 
- <table style="width:100%">
- <tr>
- <td width="50%" align="center"><b>Tutorial</b></td>
- <td width="50%" align="center"><b>Description</b></td>
- </tr>
- <tr>
- <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/MNIST-Classification-TensorFlow">MNIST Classification using Vitis AI and TensorFlow (UG1337)</a></td>
- <td>
-Learn the Vitis AI TensorFlow design process for creating a compiled ELF file that is ready for deployment on the Xilinx&reg; DPU accelerator from a simple network model built using Python. This tutorial uses the MNIST test dataset.</td>
- </tr><tr>
- <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/CIFAR10-Classification-with-TensorFlow">CIFAR10 Classification using Vitis AI and TensorFlow (UG1338)</a></td>
- <td>
-Learn the Vitis AI TensorFlow design process for creating a compiled ELF file that is ready for deployment on the Xilinx&reg; DPU accelerator from a simple network model built using Python. This tutorial uses the CIFAR-10 test dataset.</td>
- </tr>
- <tr>
- <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/Keras-Freeze-with-Vitis-AI">Freezing a Keras Model for use with Vitis AI (UG1380)</a></td>
- <td>
- Freeze a Keras model by generating a binary protobuf (.pb) file.</tr>
- <tr> <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/Keras-GoogleNet-ResNet">Deep Learning with Custom GoogleNet and ResNet in Keras and Xilinx Vitis AI (UG1381)</a></td>
- <td>
-Quantize in fixed point some custom CNNs and deploy them on the Xilinx ZCU102 board, using Keras and the Xilinx Vitis AI tool chain based on TensorFlow (TF).</tr>
-<tr>
- <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/VAI-KERAS-FCN8-SEMSEG">FCN8 and UNET Semantic Segmentation with Keras and Xilinx Vitis AI (UG1445)</td>
- <td>Train the FCN8 and UNET Convolutional Neural Networks (CNNs) for Semantic Segmentation in Keras adopting a small custom dataset, quantize the floating point weights files to an 8-bit fixed point representation, and then deploy them on the Xilinx® ZCU102 board using Vitis AI.</td></tr>
- <tr> <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/ML-Caffe-Segmentation-Tutorial">ML Caffe Segmentation Tutorial (UG1394)</a></td>
- <td>Use Vitis AI to train, quantize, compile, and deploy various segmentation networks including: ENet, ESPNet, FPN, UNet, and a reduced compute version of UNet.
- </table>
+## Requirements for the Design
+In order to complete the tutorials in this repository, you need the following software and hardware tools:
 
-<p align="center"><sup>Copyright&copy; 2019-2020 Xilinx</sup></p>
+ - Xilinx Design Tools (Vivado design suite and Vitis unified software platform), version 2019.2
+ - Board files for Ultra96-V2 installed
+ - The Ultra96-V2 board
+ - Power supply for Ultra96-V2 board
+ - MicroUSB to USB-A cable (x2)
+ - AES-ACC-USB-JTAG board
+ - A blank, FAT32 formatted microSD card
+ - Xilinx CSI2 RX MIPI IP License
+ - D3 Engineering Designcore Camera Mezzanine Board OV5640 (MIPI Input Source)
+
+Optional additional tools:
+-   DisplayPort monitor
+-   Mini-display port cable suitable for the chosen monitor
+-   USB Webcam
+
+## Preparing your workspace
+Clone this repository to your local machine.
