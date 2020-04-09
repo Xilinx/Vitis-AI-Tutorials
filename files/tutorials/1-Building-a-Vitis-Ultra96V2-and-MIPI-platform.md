@@ -8,7 +8,7 @@ Before you can deploy a high-performance Edge system, you must create a Vitis™
 
 First, you will create the original **non-accelerated** MIPI project in the Vivado and PetaLinux tools. Next, you will have bootable hardware and software images to launch a pipeline to view the input MIPI video from the Ultra96.
 
-1. Copy the `sources` folder from the [`reference-files/vivado/sources`](files/reference-files/vivado/sources) directory to the [`build/vivado`](files/build/vivado) directory.
+1. Copy the `sources` folder from the [`reference-files/vivado/sources`](../reference-files/vivado/sources) directory to the [`build/vivado`](../build/vivado) directory.
 1. Open Vivado 2019.2.
 1. Create a new project in the [build/ vivado] directory.
    1. Name it `ultra96v2_mipi`.
@@ -114,7 +114,7 @@ The first step in creating your acceleration platform is to open a stock Petalin
 1. Within the rootfs configuration, under the PetaLinux Package Groups, enable the following options:
     * gstreamer
     * matchbox
-    * opencv 
+    * opencv
     * v4lutils
     * x11
 1. Exit the rootfs config menu.
@@ -177,7 +177,7 @@ Start by creating the new application project. In the Vitis IDE, the Application
 
 1. Open the Vitis IDE.
 1. For your workspace, select **build/ workspace**.
-1. Select **File**> **New**> ***Application Project**
+1. Select **File**> **New**> **Application Project**
 1. Name the project, `hello_world`, and use the auto-generated system project name.
 1. Select the **ultra96v2_mipi** platform that you just created.
 1. Verify that the Linux domain is selected.
