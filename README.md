@@ -133,7 +133,7 @@ cd /workspace/tutorials/VAI-Caffe-ML-CATSvsDOGS
 
 ### Copy Caffe_Xilinx.zip
 
-Now, enter into the [AI Model Zoo README.md](https://github.com/Xilinx/Vitis-AI/blob/master/AI-Model-Zoo/README.md) file and download the [Caffe_Xilinx.zip](https://www.xilinx.com/bin/public/openDownload?filename=Caffe_Xilinx_1.1.zip) archive.
+Now, enter into the [AI Model Zoo README.md](https://github.com/Xilinx/AI-Model-Zoo) file and download the [Caffe_Xilinx.zip](https://www.xilinx.com/bin/public/openDownload?filename=Caffe_Xilinx_1.1.zip) archive.
 Unzip it at the same level of this project directory so that both ``VAI-Caffe-ML-CIFAR10`` and ``Caffe_Xilinx`` repositories are placed in ``<WRK_DIR>/tutorials/``. Leave it as it is, you do not need to compile and build anything.
 
 You should see something as illustrated in the screenshot of Figure 0:
