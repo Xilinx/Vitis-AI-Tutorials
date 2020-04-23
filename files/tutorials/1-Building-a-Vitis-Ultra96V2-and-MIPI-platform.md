@@ -74,6 +74,7 @@ The default scheduling mode for the acceleration kernels is polled. To enable in
 1. In the block properties, set the name of the constant to `xlconstant_gnd`.
 1. Click the **Run Connection Automation** link in the Designer Assistance bar to auto-connect the AXI Interrupt controller's Slave AXI interface.
     1. Choose the **HPM0_LPD** because the HPM1_FPD is being used for the video subsystem.
+    1. **NOTE:** Make sure to select a "new" interconnect
     1. Select the **clk_out1 (200 MHz)** clock port for all clock sources.
 1. Connect the input of the interrupt controller to the concat block output.
 1. Connect the constant output to the first input of the concat block and then each subsequent concat input to this net.
