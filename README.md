@@ -42,6 +42,8 @@ Quantize in fixed point some custom CNNs and deploy them on the Xilinx ZCU102 bo
    <td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/ML-at-Edge-yolov3">ML at the Edge - Introduction Lab (UG1447)</td>
    <td>Use the Vitis AI 1.0 tool kit to quantize and compile a Yolov3 TensorFlow model that utilizes the Xilinx Deep Learning Processor (DPU) on the ZCU104 board. The Yolov3 model was trained on the Pascal VOC data set.</td></tr> <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/Vitis-AI-Custom-Platform">Vitis AI (on Ultra96V2) Custom Platform Tutorials (UG1454)</a></td><td>A set of tutorials related to porting Vitis AI 1.0 to a custom platform.</td></tr>
 
-  <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/VAI-Caffe-SSD-Tutorial">ML SSD PASCAL Caffe Tutorial (UG1457)</a></td><td>Train, quantize, and compile SSD using PASCAL VOC 2007/2012 datasets, the Caffe framework, and Vitis AI tools. Then deploy the model on a Xilinx ZCU102 target board.</td></tr></table>
+  <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/VAI-Caffe-SSD-Tutorial">ML SSD PASCAL Caffe Tutorial (UG1457)</a></td><td>Train, quantize, and compile SSD using PASCAL VOC 2007/2012 datasets, the Caffe framework, and Vitis AI tools. Then deploy the model on a Xilinx ZCU102 target board.</td></tr>
+  <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/Medical-AI-Acceleration">Medical AI Application Acceleration with Xilinx AI Stack (UG1467)</a></td><td>Take a medical dataset, develop and evaluate an end-to-end AI accelerated application using Xilinx Vitis AI, without writing any lower level RTL code.</td></tr>
+  </table>
 
 <p align="center"><sup>Copyright&copy; 2019-2020 Xilinx</sup></p>
