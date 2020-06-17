@@ -44,6 +44,7 @@ Quantize in fixed point some custom CNNs and deploy them on the Xilinx ZCU102 bo
 
   <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/VAI-Caffe-SSD-Tutorial">ML SSD PASCAL Caffe Tutorial (UG1457)</a></td><td>Train, quantize, and compile SSD using PASCAL VOC 2007/2012 datasets, the Caffe framework, and Vitis AI tools. Then deploy the model on a Xilinx ZCU102 target board.</td></tr>
   <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/Medical-AI-Acceleration">Medical AI Application Acceleration with Xilinx AI Stack (UG1467)</a></td><td>Take a medical dataset, develop and evaluate an end-to-end AI accelerated application using Xilinx Vitis AI, without writing any lower level RTL code.</td></tr>
-  </table>
+
+  <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/DenseNetX_DPUv3">Using DenseNetX on the Xilinx Alveo U50 Accelerator Card (UG1472)</a></td><td>Implement a convolutional neural network (CNN) and run it on the DPUv3E accelerator IP.</td></tr>  </table>
 
 <p align="center"><sup>Copyright&copy; 2019-2020 Xilinx</sup></p>
