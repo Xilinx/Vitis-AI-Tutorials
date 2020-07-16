@@ -20,7 +20,7 @@ MOD_NUM=$ALX_MOD_NUM   # model number
 NUMIT=$ALX_NUMIT       # number of iterations
 NET=$ALX_NET
 
-CAFFE_TOOLS_DIR=$CAFFE_ROOT/distribute
+#CAFFE_TOOLS_DIR=$CAFFE_ROOT/distribute
 #working dir
 WORK_DIR=$ML_DIR/caffe
 
@@ -77,4 +77,3 @@ $CAFFE_TOOLS_DIR/bin/caffe.bin train --solver $WORK_DIR/models/$NET/m$MOD_NUM/so
 cp -f $WORK_DIR/models/$NET/m$MOD_NUM/logfile_$MOD_NUM\_$NET.log $WORK_DIR/models/$NET/m$MOD_NUM/orig_logfile_$MOD_NUM\_$NET.log
 cp -f $WORK_DIR/models/$NET/m$MOD_NUM/retrain_logfile_$MOD_NUM\_$NET.log $WORK_DIR/models/$NET/m$MOD_NUM/logfile_$MOD_NUM\_$NET.log
 '
-

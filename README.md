@@ -4,7 +4,7 @@
    </td>
  </tr>
  <tr>
- <td align="center"><h3> Quantization and Pruning of AlexNet CNN Trained in Caffe with Cats-vs-Dogs Dataset</h3>
+ <td align="center"><h3> Quantization and Pruning of AlexNet CNN trained in Caffe with Cats-vs-Dogs dataset</h3>
  </td>
  </tr>
 </table>
@@ -12,15 +12,16 @@
 
 ### Current status
 
-1. Tested with Vitis AI 1.0
+1. Tested with Vitis AI 1.0 and 1.1
 
-2. Tested in hardware on ZCU102
+2. Tested in hardware on ZCU102 (both 1.0 and 1.1)
+
 
 # 1 Introduction
 
 This Deep Learning (DL) tutorial shows you how to train, prune, and quantize a modified version of the AlexNet convolutional neural network (CNN) with the Kaggle [Dogs vs. Cats](https://www.kaggle.com/c/dogs-vs-cats) dataset in order to deploy it on the Xilinx&reg; [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html) board. You will use the [Caffe](http://caffe.berkeleyvision.org) environment available from [Vitis AI](https://developer.xilinx.com/en/get-started/ai.html), which is a set of optimized IP, tools libraries, models and example designs valid for AI inference on both Xilinx edge devices and Alveo cards.
 
-Once the selected CNN has been correctly trained in Caffe, the ``caffemodel`` file of floating point weights is then quantized by the Vitis&trade; AI Quantizer that creates an 8-bit integer representation (named "INT8") from which the Vitis AI Compiler generates the ``elf`` file of micro instructions for the Deep Processor Unit (DPU). The final application is executed at run time - via C++ APIs - on the target board to make predictions that can be compared against the simulation reference results.
+Once the selected CNN has been correctly trained in Caffe, the ``caffemodel`` file of floating point weights is then quantized by the Vitis AI Quantizer that creates an 8-bit integer representation (named "INT8") from which the Vitis AI Compiler generates the ``elf`` file of micro instructions for the Deep Processor Unit (DPU). The final application is executed at run time - via C++ APIs - on the target board to make predictions that can be compared against the simulation reference results.
 
 The Dogs vs. Cats dataset is composed of only two classes of objects to be classified: cats and dogs. It contains 25000 RGB images that have been organized into the following three databases (all the images are randomly shuffled before forming the database):
 - ``train_lmdb``: 20000 images (resized to 256x256) in the LMDB database for the forward/backward training process.
@@ -33,28 +34,34 @@ AlexNet is a well-known CNN that works with images 227x227x3 in size. It is desc
 - the "ReLU" activation layer was placed after the BN layer, and not before;
 - the number of BN and "DROPOUT" layers were also reduced.
 
-:pushpin: **Note:** The Xilinx [Vitis AI Optimizer](https://www.xilinx.com/html_docs/vitis_ai/1_0/zfz1565215654494.html), popularly known as "pruning", requires a license fee and can be accessed only at its [lounge](https://www.xilinx.com/member/ai_optimizer.html) page. Therefore the pruning tool is not included in this tutorial, although all the shell scripts to prune the CNN and related log files are available in the [rpt](files/pruning/alexnetBNnoLRN/rpt) folder.
+:pushpin: **Note:** The Xilinx [Vitis AI Optimizer](https://www.xilinx.com/html_docs/vitis_ai/1_0/zfz1565215654494.html), as known as "pruning", requires a license fee and can be accessed only at its [lounge](https://www.xilinx.com/member/ai_optimizer.html) page. Therefore the pruning tool is not included in this tutorial, although all the shell scripts to prune the CNN and related log files are available in the [pruning](files/pruning/alexnetBNnoLRN/) folder.
 
 
 # 2 Prerequisites
 
 - An Ubuntu 16.04 host PC with Python 3.6  and its package ``python3.6-tk`` installed (this last one installed with ``sudo apt-get install python3.6-tk``);
 
-- [Vitis AI stack release 1.0](https://github.com/Xilinx/Vitis-AI) from [www.github.com/Xilinx](https://www.github.com/Xilinx). In particular, refer to the [Vitis AI User Guide UG1414 v1.0](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_0/ug1414-vitis-ai.pdf) for the installation guidelines and note that you need to download the two containers available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags):
+- [Vitis AI stack release 1.0](https://github.com/Xilinx/Vitis-AI/tree/v1.0) from [www.github.com/Xilinx](https://www.github.com/Xilinx). In particular, refer to the [Vitis AI User Guide UG1414 v1.0](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_0/ug1414-vitis-ai.pdf) for the installation guidelines and note that you need to download the two containers available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags):
   - **tools container** with tag ``tools-1.0.0-cpu``, here ``cpu`` means that this environment runs on the host PC only with CPU support (in other words without any GPU need). Note also that UG1414 explains how to build your own container with GPU support;
   - **runtime container** with tag ``runtime-1.0.1-cpu``, note that you need this container only once to prepare SD card content of the target board, then you will compile all the applications directly on the target board itself, which means you do not cross-compile them from the host PC.
 
-- Vitis AI Evaluation board [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html) with its [image file](https://www.xilinx.com/bin/public/openDownload?filename=xilinx-zcu102-dpu-v2019.2.img.gz), which contains a pre-built working design for the ZCU102 with the [DPU-v2](https://github.com/Xilinx/Vitis-AI/tree/master/DPU-TRD) core.
+- Vitis AI Evaluation board [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html) with its [image file](https://www.xilinx.com/bin/public/openDownload?filename=xilinx-zcu102-dpu-v2019.2.img.gz), which contains a pre-built working design for the ZCU102 with the [DPU-v2](https://github.com/Xilinx/Vitis-AI/tree/master/DPU-TRD).
+
+- With few changes, explained in the last part of the following section, this tutorial can work also with [Vitis AI stack release 1.1](https://github.com/Xilinx/Vitis-AI).
 
 - Familiarity with Deep Learning principles.
 
 - Familiarity with Caffe (here is the official [online Caffe tutorial](http://caffe.berkeleyvision.org/tutorial/)).
 
 
+## 2.1  Dos-to-Unix Conversion
+
+In case you might get some strange errors during the execution of the scripts, you have to pre-process -just once- all the``*.sh`` shell and the python ``*.py`` scripts with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility.
+
 
 # 3 Before starting
 
-You have to know few things  about Docker in order to run the Vitis AI smoothly.
+You have to know few things about [Docker](https://docs.docker.com/) in order to run the Vitis AI smoothly.
 
 In the following of this document, it is assumed that you have cloned the [Vitis AI stack release 1.0](https://github.com/Xilinx/Vitis-AI) in your working directory ``<WRK_DIR>``, for example a folder named ``~/ML/Vitis-AI``.
 
@@ -87,18 +94,28 @@ cd <WRK_DIR> # you are now in Vitis_AI subfolder
 
 Note that both the two containers map the shared folder ``/workspace`` with the file system of the Host PC from where you launch the above command, which is ``<WRK_DIR>`` in your case. This shared folder enables you to transfer files from the Host PC to the docker container and vice versa.
 
+The docker container do not have any graphic editor, so it is recommended that you work with two terminals and you point to the same folder, in one terminal you use the docker container commands and in the other terminal you open any graphic editor you like.
+
+
+
+Note that docker does not have an automatic garbage collection system as of now. You can use this command to do a manual garbage collection:
+```
+docker rmi -f $(docker images -f "dangling=true" -q)
+```
+
 
 ## 3.1 Install Missing Packages on the Vitis AI Tools Container
 
 You have to modify the Vitis AI tools container. Here are the commands:
 ```bash
-./docker_run.sh xilinx/vitis-ai:tools-1.0.0-cpu # enter into the docker VAI tools image
+./docker_run.sh xilinx/vitis-ai:tools-1.0.0-cpu # enter into the docker Vitis AI 1.0 tools image
+#./docker_run.sh xilinx/vitis-ai:1.1.56 # enter into the docker Vitis AI 1.1 tools image    
 sudo su # you must be root
-conda activate vitis-ai-caffe # as root, enter into Caffe (anaconda-based) virtual environment
-conda install libprotobuf==3.10.1
-conda install protobuf==3.10.1
-conda install pycairo==1.18.2
-pip install lmdb==0.98
+conda activate vitis-ai-caffe     # as root, enter into Caffe (anaconda-based) virtual environment
+conda install libprotobuf==3.10.1 # only for Vitis AI == 1.0
+conda install protobuf==3.10.1    # only for Vitis AI == 1.0
+conda install pycairo==1.18.2     # for Vitis AI >= 1.0
+pip install lmdb==0.98            # for Vitis AI >= 1.0
 conda deactivate
 exit # to exit from root
 conda activate vitis-ai-caffe # as normal user, enter into Caffe (anaconda-based) virtual environment
@@ -131,22 +148,22 @@ cd <WRK_DIR>
 cd /workspace/tutorials/VAI-Caffe-ML-CATSvsDOGS
 ```
 
-### Copy Caffe_Xilinx.zip
+### Copy caffe-xilinx.zip
 
-Now, enter into the [AI Model Zoo README.md](https://github.com/Xilinx/AI-Model-Zoo) file and download the [Caffe_Xilinx.zip](https://www.xilinx.com/bin/public/openDownload?filename=Caffe_Xilinx_1.1.zip) archive.
-Unzip it at the same level of this project directory so that both ``VAI-Caffe-ML-CIFAR10`` and ``Caffe_Xilinx`` repositories are placed in ``<WRK_DIR>/tutorials/``. Leave it as it is, you do not need to compile and build anything.
+Now, enter into the [AI Model Zoo README.md](https://github.com/Xilinx/AI-Model-Zoo/blob/master/README.md) file and download the [caffe-xilinx.zip](https://www.xilinx.com/bin/public/openDownload?filename=caffe-xilinx-1.1.zip) archive.
+Unzip it at the same level of this project directory so that both ``VAI-Caffe-ML-CATSvsDOGS`` and ``caffe-xilinx`` repositories are placed in ``<WRK_DIR>/tutorials/``. Leave it as it is, you do not need to compile and build anything.
 
 You should see something as illustrated in the screenshot of Figure 0:
 
 ![figure0](files/doc/images/vai_page.png)
 
-*Figure 0: Entering into the Vitis AI tools container.*
+*Figure 0: Entering into the Vitis AI tools container (screenshot taken from Vitis AI 1.2 release).*
 
-You will use only the following python2.7 scripts placed in the folder ``Caffe_Xilinx/tools/extra``:
-- ``Caffe_Xilinx/tools/extra/parse_log.py``
-- ``Caffe_Xilinx/tools/extra/extract_seconds.py``
+You will use only the following python2.7 scripts placed in the folder ``caffe-xilinx/tools/extra``:
+- ``caffe-xilinx/tools/extra/parse_log.py``
+- ``caffe-xilinx/tools/extra/extract_seconds.py``
 
-Note that you need to modify line number 166 of code ``parse_log.py`` to make it compatible with python3.6:
+Note that you need to modify line number 166 of code ``parse_log.py`` to make it compatible with python >= 3.6:
 ```python
 print 'Wrote %s' % output_filename
 ```
@@ -156,7 +173,7 @@ print ("Wrote %s" % output_filename)
 ```
 
 
-## 3.2 The Vitis AI Runtime Container
+## 3.2 The Vitis AI 1.0 Runtime Container
 
 This docker image can support both **Vitis AI Library** (named **AI SDK** prior to Vitis) and **DNNDK** cross compiler. In particular:
 
@@ -166,11 +183,12 @@ This docker image can support both **Vitis AI Library** (named **AI SDK** prior 
 
 3. **Vitis AI samples** included in the runtime docker do not belong to **Vitis AI Library** although their names seem related. In fact **Vitis AI Library** is designed to be higher level for quick AI application development, this library also provides APIs and optimized routines for pre- and post-processing.
 
-Assuming your project is placed in the directory named ``<WRK_DIR>/tutorials/VAI-Caffe-ML-CIFAR10``, which is two levels below the ``Vitis_AI`` repository, you can launch the runtime container by running the following commands:
+Assuming your project is placed in the directory named ``<WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS``, which is two levels below the ``Vitis_AI`` repository, you can launch the runtime container by running the following commands:
 ```bash
 cd <WRK_DIR>
 ./docker_run.sh xilinx/vitis-ai:runtime-1.0.0-cpu
 ```
+
 
 ## 3.3 Prepare the SD Card for the Target Board
 
@@ -185,10 +203,32 @@ At the end of this procedure you should see something as illustrated in the scre
 Note  that the folder [zcu102/common](files/deploy/alexnetBNnoLRN/zcu102/common) of this repository is a copy of the folder [mpsoc/dnndk_samples_zcu102/common](https://github.com/Xilinx/Vitis-AI/tree/master/mpsoc/dnndk_samples_zcu102/common), just for your comfort.
 
 
-## 3.4 Dos-to-Unix Conversion
 
-In case you might get some strange errors during the execution of the scripts, you have to pre-process -just once- all the``*.sh`` shell and the python ``*.py`` scripts with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility.
+## 3.4 Changes for Vitis AI 1.1
 
+There are few differences between Vitis AI 1.0 and 1.1 releases for what concerns the edge devices:
+
+1. you have to use the proper Docker Image for Vitis AI 1.1
+
+  ```
+  xilinx/vitis-ai           1.1.56                            798f6eaea389        3 months ago        9.5GB
+  ```
+
+  which is different from the images associated with 1.0:
+
+  ```
+  xilinx/vitis-ai           tools-1.0.0-cpu                   37ff1cd99ecb        3 months ago        8.59GB
+  xilinx/vitis-ai           tools-1.0.0-gpu                   1b45847f369d        3 months ago        12GB
+  ```
+
+2. You have to follow the Vitis AI 1.1 instructions for [Setting Up the Evaluation Boards](https://www.xilinx.com/html_docs/vitis_ai/1_1/yjf1570690235238.html).
+
+3. Starting from Vitis AI 1.1 release there is no more Docker Runtime Container, and you can cross compile the ``elf`` files directly from the host PC to the target board. You have to execute all the instructions of [Legacy DNNDK examples](https://www.xilinx.com/html_docs/vitis_ai/1_1/ump1570690283280.html) to setup ``petalinux/2019.2`` and all the DNNDK application files and libraries, so that you can finally run everything on your target board.
+In the following of this tutorial it is assumed that ``petalinux`` is installed into ``/opt/petalinux/2019.2`` of your host PC.
+
+Then, the Vitis AI 1.1 Caffe flow is basically the same of Vitis AI 1.0.
+
+A part for the above changes, all the rest of the flow -with python and shell script files- used in this tutorial with Vitis AI 1.0 works also with  Vitis AI 1.1.
 
 
 # 4 Project Directory Structure
@@ -264,29 +304,31 @@ The solver file is named [solver_2_alexnetBNnoLRN.prototxt](files/caffe/models/a
 
 ## 7.3 Prediction Accuracy Performance
 
-The output of each process is captured and stored into a single unified log file, named [logfile_run_all_alexnet.txt](files/log/logfile_run_all_alexnet.txt); in the following of this section some fragments of such file are reported.
+The output of each process running on the host side is captured and stored into a single unified log file, named [logfile_run_alexnet_host.txt](files/log/logfile_run_alexnet_host.txt); in the following of this section some fragments of such file are reported.
 
 After training is executed, the CNN has a top-1 average accuracy of 92.2% (with 2000 iterations) computed on the validation dataset:
 
 ```
-...] Iteration 20000, Testing net (#0)
-...] Test net output #0: accuracy = 0.92275
-...] Test net output #1: loss = 0.192538 (* 1 = 0.192538 loss)
-...] Test net output #2: top-1 = 0.92275
+... 2541 solver.cpp:384] Iteration 20000, loss = 0.0335872
+... 2541 solver.cpp:424] Iteration 20000, Testing net (#0)
+... 2541 solver.cpp:523] Test net output #0: accuracy = 0.94725
+... 2541 solver.cpp:523] Test net output #1: loss = 0.199691 (* 1 = 0.199691 loss)
+... 2541 solver.cpp:523] Test net output #2: top-1 = 0.94725
 ```
 
 When making predictions with the 1000 test images, the average top-1 prediction accuracy is 93%:
 ```
-              precision    recall  f1-score   support
+                precision recall  f1-score   support
 
-         cat       0.95      0.90      0.92       500
-         dog       0.91      0.95      0.93       500
+cat             0.95      0.92      0.94       500
+dog             0.92      0.96      0.94       500
 
-accuracy                               0.93      1000
-macro avg          0.93      0.93      0.92      1000
-weighted avg       0.93      0.93      0.92      1000
+accuracy                            0.94      1000
+macro avg       0.94      0.94      0.94      1000
+weighted avg    0.94      0.94      0.94      1000
 
-SKLEARN Accuracy = 0.93
+SKLEARN Accuracy = 0.94
+
 ```
 Since  GPUs have varying random states, and you might not achieve exactly the same numerical results.
 
@@ -321,7 +363,7 @@ For your reference, the above changes were already made in  [q_train_val_2_alexn
 
 ## 8.2 Quantization Flow
 
-The effective quatization flow is composed mainly of five steps.
+The effective quantization flow is composed mainly of five steps.
 
 1. Quantize the CNN floating point model to INT8 by using the Vitis AI Quantizer (see script [vaiq_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/quantiz/vaiq_alexnetBNnoLRN.sh)).
 
@@ -329,30 +371,51 @@ The effective quatization flow is composed mainly of five steps.
 
 3. Edit the [main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/top2_main.cc) program application.
 
-4. Compile the hybrid application (from the _target_ board side) with the ``make`` utility.
+4. Compile the hybrid (CPU + DPU) application with [crosscompile_alexnet.sh](files/deploy/alexnetBNnoLRN/zcu102/ crosscompile_alexnet.sh) shell script.
+  - In case of Vitis AI 1.1 run the following:
+  ```bash
+  unset LD_LIBRARY_PATH    #required by petalinux for Vitis >= 1.1
+  sh /opt/petalinux/2019.2/environment-setup-aarch64-xilinx-linux # set petalinux environment of Vitis AI 1.1
+  cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files
+  cd deploy/zcu102
+  source crosscompile_alexnet.sh
+  cd ..
+  tar -cvf zcu102.tar ./zcu102 # to be copied on the SD card
+  ```
+  - In case of Vitis AI 1.0 run the following:
+  ```bash
+  cd <WRK_DIR> # you are now in Vitis_AI subfolder
+  ./runtime/docker_run.sh xilinx/vitis-ai:runtime-1.0.0-cpu
+  cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files
+  cd deploy/zcu102
+  source crosscompile_alexnet.sh
+  cd ..
+  tar -cvf zcu102.tar ./zcu102 # to be copied on the SD card
+  ```
 
-5. Run the hybrid application (from the _target_ board side). See below the command line example for the AlexNet case:
+5. Assuming you have transferred the ``zcu102.tar`` archive from the host to the target board with ``scp`` utility, now you can run the hybrid application (from the _target_ board side). See below the command line example for the AlexNet case:
    ```
+   tar -xvf zcu102.tar
    cd zcu102/baseline
    source run_all.sh
    ```
 
 This command  also runs the script [check_dpu_runtime_accuracy.py](files/deploy/alexnetBNnoLRN/zcu102/baseline/check_dpu_runtime_accuracy.py) to check the top-1 prediction accuracy that AI Inference DPU achieves at run time on the test images. This is the most important step, because you can now see the real average accuracy of your CNN system working at run time.
 
-The estimated top-1 average accuracy after quantization (computed on the validation dataset) can be seen in one of the last lines of the captured [log file](files/log/logfile_run_all_alexnet.txt), 91.8% is achieved (with only a 0.4% drop in comparison with the floating point model):
+The estimated top-1 average accuracy after quantization (computed on the validation dataset) can be seen in one of the last lines of the captured [log file](files/log/logfile_run_alexnet_host.txt), 91.8% is achieved (with only a 0.4% drop in comparison with the floating point model):
 
 ```
-...net_test.cpp:373] Test iter: 50/50, loss = 0.181712
-...net_test.cpp:373] Test iter: 50/50, top-1 = 0.92
-...net_test.cpp:381] Test Results:
-...net_test.cpp:382] Loss: 0.205423
-...net_test.cpp:396] accuracy = 0.9184
-...net_test.cpp:396] loss = 0.205423 (* 1 = 0.205423 loss)
-...net_test.cpp:396] top-1 = 0.9184
-...net_test.cpp:419] Test Done!
+... ] Test iter: 50/50, loss = 0.46556
+... ] Test iter: 50/50, top-1 = 0.92
+... ] Test Results:
+... ] Loss: 0.201669
+... ] accuracy = 0.9464
+... ] loss = 0.201669 (* 1 = 0.201669 loss)
+... ] top-1 = 0.9464
+... ] Test Done!
 ```
 
-In step 2, Vitis AI Compiler says that there is one kernel task running on the DPU (named ``alexnetBNnoLRN_0`` and implementing the CONV, ReLU, BN, and FC layers) and another kernel (named ``alexnetBNnoLRN_1``) running the top-2 and SoftMax layers in software on the ARM CPU of ZCU102, as illustrated by below fragment of [log file](files/log/logfile_run_all_alexnet.txt):
+In step 2, Vitis AI Compiler says that there is one kernel task running on the DPU (named ``alexnetBNnoLRN_0`` and implementing the CONV, ReLU, BN, and FC layers) and another kernel (named ``alexnetBNnoLRN_1``) running the top-2 and SoftMax layers in software on the ARM CPU of ZCU102, as illustrated by below fragment of [log file](files/log/logfile_run_alexnet_host.txt):
 ```
    Kernel Name : alexnetBNnoLRN_0
 ---------------------------------------------------------
@@ -397,7 +460,7 @@ The variants only differ in a few ``printf`` lines, which are used in the first 
 
 If you change the way this information is printed in the ``stdout``, you must also change the Python script [check_dpu_runtime_accuracy.py](files/deploy/alexnetBNnoLRN/zcu102/baseline/check_dpu_runtime_accuracy.py) accordingly, because it acts essentially as a text parser of the ``logfile_top2_alexnetBNnoLRN.txt`` captured at run time.
 
-Also in the first lines of the [top2_main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/top2_main.cc) file, you need to report the kernel name, input node, and output node that were generated by the Vitis AI Compiler in the [log file](files/log/logfile_run_all_alexnet.txt):
+Also in the first lines of the [top2_main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/top2_main.cc) file, you need to report the kernel name, input node, and output node that were generated by the Vitis AI Compiler in the [log file](files/log/logfile_run_baseline_target.txt):
 ```c++
 #define KERNEL_CONV "alexnetBNnoLRN_0"
 #define CONV_INPUT_NODE "conv1"
@@ -430,48 +493,27 @@ void run_alexnetBNnoLRN(DPUTask *taskConv, Mat img) {
 }
 ```
 
-## 8.6 Before Executing on ZCU102
+## 8.6 Performance of the Quantized Baseline AlexNet on ZCU102
 
-To compile and run the application on ZCU102, you need to archive the entire contents of the ``deploy/alexnetBNnoLRN/zcu102/baseline`` folder into a ``.tar`` file and copy it (``ssh/scp``) from the _host_ PC to the _target_ board. Make sure to physically copy the 1000 test images from the testing folder ``input/jpg/test/`` to the ``deploy/alexnetBNnoLRN/zcu102/test_images`` local subdirectory.
-
-The following is a list of the commands you could launch from the _target_ (static IP address 192.168.1.101) to the _host_ (static IP address 192.168.1.100). These examples assume that your current folder is ``deploy/alexnetBNnoLRN/zcu102/`` in the _host_ PC and you work in the home directory of the SD card file system on the _target_ ZCU102 board:
-```bash
-#(from host)
-cd deploy/alexnetBNnoLRN/zcu102/
-cp -r ../../../input/jpg/test .
-mv ./test ./test_images/
-tar -cvf baseline.tar ./baseline ./test_images ./common
-scp baseline.tar root@192.168.1.100:~/
-
-#(from target)
-cd ~
-tar -xvf baseline.tar
-cd ./baseline
-make clean
-source ./run_all.sh 2>&1 | tee ./rpt/logfile_run_alexnetBNnoLRN_dpu.txt
-```
-
-## 8.7  Performance of the Quantized Baseline AlexNet on ZCU102
-
-At the end of this quantization procedure, when the AI Inference DPU runs the ``alexnetBNnoLRN`` on the ZCU102 to make predictions on the 1000 test images, the following performance is reported as illustrated by the following fragments of the usual [log file](files/log/logfile_run_all_alexnet.txt):
+At the end of this quantization procedure, when the AI Inference DPU runs the ``alexnetBNnoLRN`` on the ZCU102 to make predictions on the 1000 test images, the following performance is reported as illustrated by the following fragments of [baseline logfile](files/log/logfile_run_baseline_target.txt):
 
 - 154 fps with six threads
 
  ```
  ./fps_alexnetBNnoLRN 6
  now running ./fps_alexnetBNnoLRN 6
- total images : 1000
- [Time]6459988us
- [FPS]154.799
+ total image : 1000
+ [Time]6382428us
+ [FPS]156.68
 ```
 
 - 92% top-1 average accuracy
 
  ```
  number of total images predicted  999
- number of top1 false predictions  76
- number of top1 right predictions  923
- top1 accuracy = 0.92
+ number of top1 false predictions  61
+ number of top1 right predictions  938
+ top1 accuracy = 0.94
  ```
 
 # 9. Pruning the AlexNet
@@ -490,13 +532,6 @@ The Xilinx Vitis AI Optimizer applies coarse pruning, which involves removing a 
 However, this invasive kind of pruning can affect the average accuracy. It is therefore important to apply the pruning in an iterative manner: for example, by compressing the CNN by only 10% and then performing fine-tuning (which can be a complete training process) to recover the probable accuracy drop. If you work carefully and apply this process for 7-8 steps (or even more), you can arrive at 70-80% of compression with a negligible top-1 average accuracy decrease. This iterative process can take a lot of time, especially if you are using a large database.
 
 At the end of the pruning process, you get a new  floating point ``.caffemodel`` file of a size probably reduced by 40-60% (depending on the CNN) in comparison with the original ``.caffemodel`` file of the baseline (non-pruned) CNN. To run it on the ZCU102 board, you need to apply quantization using the output files generated by pruning (with some minor but important manual editing) as the input file to quantization.
-
-From a practical point of view, the pruning tool does not require any Vitis AI tools docker image, once installed it runs with its own environment, out of docker. Assuming you have put it into the folder [tools](files/pruning/tools) of this repository, to use the provided shell scripts you have to create a soft link like this directly from that ``tool`` directory:
-```
-ln -nsf pruning_tool_filename vai_p_caffe
-```
-where ``pruning_tool_filename`` is the effective filename of the pruning tool you will get (with the correct path).
-
 
 ## 9.2 Prepare the Input Files for Pruning
 
@@ -528,7 +563,7 @@ In the ``transform`` step, you need to complete the following steps:
 
 The command to prune the whole CNN is as follows:
  ```
- cd ~/ML/VAI-Caffe-ML-CATSvsDOGS/files/
+ cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files/
  source pruning/pruning_flow.sh
  ```
 
@@ -538,18 +573,16 @@ The command to prune the whole CNN is as follows:
 
 After seven rounds of ``compress`` and ``finetune`` two output files are generated from the three input files (``float.caffemodel``,  [solver.prototxt](files/pruning/alexnetBNnoLRN/solver.prototxt) and [train_val.prototxt](files/pruning/alexnetBNnoLRN/train_val.prototxt)). The output files are ``transformed.caffemodel`` and  [final.prototxt](files/pruning/alexnetBNnoLRN/regular_rate_0.7/final.prototxt). These become the input files to the next quantization process.
 
-The compressed AlexNet now has ~87% less operations and ~70% less weights than the original baseline CNN, as reported in the [logfile_compress7_alexnetBNnoLRN.txt](files/pruning/alexnetBNnoLRN/rpt/logfile_compress7_alexnetBNnoLRN.txt).
+The compressed AlexNet now has ~87% less operations and ~70% less weights than the original baseline CNN, as reported in the ``logfile_compress7_alexnetBNnoLRN.txt``.
 
-After the last ``finetune`` step, the estimated top-1 average prediction accuracy is  ~95%, as reported in the  [logfile_finetune7_alexnetBNnoLRN.txt](files/pruning/alexnetBNnoLRN/rpt/logfile_finetune7_alexnetBNnoLRN.txt) log file. In this case, the top-1 accuracy is measured on the validation dataset. To measure the effective top-1 average accuracy on the DPU at run time, you need to quantize the CNN you just pruned.
+After the last ``finetune`` step, the estimated top-1 average prediction accuracy is  ~95%, as reported in the  ``logfile_finetune7_alexnetBNnoLRN.txt`` log file. In this case, the top-1 accuracy is measured on the validation dataset. To measure the effective top-1 average accuracy on the DPU at run time, you need to quantize the CNN you just pruned.
 
-The log files of each pruning step are stored in the [rpt](files/pruning/alexnetBNnoLRN/rpt/) folder for your reference.
-
-In conclusion, as reported in [logfile_stat_alexnetBNnoLRN_original.txt](files/pruning/alexnetBNnoLRN/rpt/logfile_alexnetBNnoLRN_original.txt), the original baseline floating point CNN model has the following complexity:
+In conclusion, as reported in ``logfile_stat_alexnetBNnoLRN_original.txt``, the original baseline floating point CNN model has the following complexity:
  ```
  ... net_counter.cpp:114] Total operations: 2153918368
  ... net_counter.cpp:115] Total params:        3764995
  ```
-whereas, as reported in [logfile_stat_alexnetBNnoLRN_pruned.txt](files/pruning/alexnetBNnoLRN/rpt/logfile_alexnetBNnoLRN_pruned.txt), the pruned CNN has:
+whereas, as reported in ``logfile_stat_alexnetBNnoLRN_pruned.txt``, the pruned CNN has:
  ```
  ... net_counter.cpp:114] Total operations: 641045830
  ... net_counter.cpp:115] Total params:        482197
@@ -562,7 +595,7 @@ whereas, as reported in [logfile_stat_alexnetBNnoLRN_pruned.txt](files/pruning/a
 
 The process is exactly the same at that explained in the [Quantization of the AlexNet](README.md#8-quantization-of-the-alexnet) section. The only difference is that the input files are now named as follows:
 
-- ``transformed.caffemodel``: The output of the ``transform`` sep from the pruning process.
+- ``transformed.caffemodel``: The output of the ``transform`` step from the pruning process.
 
 - ``q_final.prototxt``: Generated by manually editing the same [final.prototxt](files/pruning/alexnetBNnoLRN/regular_rate_0.7/final.prototxt) that was produced at the end of the pruning process.
 
@@ -570,38 +603,60 @@ You also need to replace the training LMDB database with the calibration images,
 
 To compile with the Vitis AI quantizer and compiler tools, call the two shell scripts, [vaiq_pruned_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/pruned/vaiq_pruned_alexnetBNnoLRN.sh) and [vaic_pruned_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/pruned/vaic_pruned_alexnetBNnoLRN.sh), with the following commands:
  ```
- cd ~/ML/VAI-Caffe-ML-CATSvsDOGS/files/
+ cd <WRK_DIR/tutoriala/VAI-Caffe-ML-CATSvsDOGS/files/
  source deploy/alexnetBNnoLRN/vaiq_pruned_alexnetBNnoLRN.sh 2>&1 | tee deploy/alexnetBNnoLRN/pruned/rpt/logfile_vaiq_pruned_alexnetBNnoLRN.txt
  source deploy/alexnetBNnoLRN/vaic_pruned_alexnetBNnoLRN.sh 2>&1 | tee deploy/alexnetBNnoLRN/pruned/rpt/logfile_vaic_pruned_alexnetBNnoLRN.txt
  ```
 
-## 10.2 Before Executing on ZCU102
+At the end of the Quantization process on the pruned AlexNet the top-1 accuracy is 0.9564 as illustrated in the following fragment of [logfile](files/log/logfile_run_alexnet_host.txt):
+```
+... ] Test iter: 50/50, loss = 0.129312
+... ] Test iter: 50/50, top-1 = 0.98
+... ] Test Results:
+... ] Loss: 0.253436
+... ] accuracy = 0.9564
+... ] loss = 0.253436 (* 1 = 0.253436 loss)
+... ] top-1 = 0.9564
+... ] Test Done!
+```
 
-To compile and run the application on ZCU102, you need to archive the entire contents of the ``deploy/alexnetBNnoLRN/zcu102/pruned`` folder into a ``.tar`` file, and copy it (``ssh/scp``) from the _host_ PC to the _target_ board. Make sure to physically copy the 1000 images from the testing folder, ``input/jpg/test/``, to the ``deploy/alexnetBNnoLRN/zcu102/test_images`` local subdirectory.
 
-See below for a list of example commands you can launch from the _target_ (static IP address 192.168.1.101) to the _host_ (static IP address 192.168.1.100), assuming your current folder is ``deploy/alexnetBNnoLRN/zcu102/`` in the _host_ PC and you have a folder named ``/root/alexnetBNnoLRN/zcu102`` in the file system of the SD card of the _target_ ZCU102 board:
+Now cross-compile the hybrid (CPU + DPU) application with [crosscompile_alexnet.sh](files/deploy/alexnetBNnoLRN/zcu102/crosscompile_alexnet.sh) shell script.
+   - In case of Vitis AI 1.1 run the following:
+   ```bash
+   unset LD_LIBRARY_PATH    #required by petalinux for Vitis >= 1.1
+   sh /opt/petalinux/2019.2/environment-setup-aarch64-xilinx-linux # set petalinux environment of Vitis AI 1.1
+   cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files
+   cd deploy/zcu102
+   source crosscompile_alexnet.sh
+   cd ..
+   tar -cvf zcu102.tar ./zcu102 # to be copied on the SD card
+   ```
+   - In case of Vitis AI 1.0 run the following:
+   ```bash
+   cd <WRK_DIR> # you are now in Vitis_AI subfolder
+   ./runtime/docker_run.sh xilinx/vitis-ai:runtime-1.0.0-cpu
+   cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files
+   cd deploy/zcu102
+   source crosscompile_alexnet.sh
+   cd ..
+   tar -cvf zcu102.tar ./zcu102 # to be copied on the SD card
+   ```
 
- ```(from host)
- cd ~/ML/VAI-Caffe-ML-CATSvsDOGS/files/deploy/alexnetBNnoLRN/zcu102/
- cp -r ../../../input/jpg/test ./test_images
- tar -cvf pruned.tar ./pruned ./common ./test_images
- scp pruned.tar root@192.168.1.100:/root/alexnetBNnoLRN/zcu102/
-
- (from target)
- cd /root/alexnetBNnoLRN/zcu102
- tar -xvf pruned.tar
- cd ./pruned
- make clean
- source run_all_pruned.sh 2>&1 | tee logfile_run_all_pruned.txt
- ```
+Assuming you have transferred the ``zcu102.tar`` archive from the host to the target board with ``scp`` utility, now you can run the hybrid application (from the _target_ board side). See below the command line example for the AlexNet case:
+    ```
+    tar -xvf zcu102.tar
+    cd zcu102/pruned
+    source run_all_pruned.sh
+    ```
 
 ## 10.3 Performance of the Quantized Pruned AlexNet on ZCU102
 
 At the end of the pruning and quantization procedures, when the AI Inference DPU runs the AlexNet CNN on the ZCU102, the following performance was reported:
-- 389 fps with six threads,
+- 435 fps with six threads,
 - 95% average top-1 accuracy,
 
-as shown in the [logfile_run_all_pruned.txt](files/deploy/alexnetBNnoLRN/zcu102/pruned/logfile_run_all_pruned.txt) log file.
+as shown in the [logfile_run_pruned_target.txt](files/log/logfile_run_pruned_target.txt) log file.
 
 ## 11. AlexNet Summary  ##
 
@@ -626,7 +681,7 @@ See below for a summary of the most important steps you have completed to arrive
 
 5. You have copied to the target ZCU102 board the [fps_main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/fps_main.cc) application file and the ``.elf`` DPU kernel generated by Vitis AI compiler in the previous step. Then, you have compiled the hybrid application, with the ARM CPU executing the SoftMax and top-2 software routines while the DPU hardware accelerator executes the FC, CONV, ReLU, and BN layers of the CNN.
 
-6. You have measured an effective frame rate of 154fps and an average top-1 accuracy of 92% (this last one using the [check_dpu_runtime_accuracy.py](files/deploy/alexnetBNnoLRN/zcu102/baseline/check_dpu_runtime_accuracy.py) Python script). This ends the implementation flow of the baseline ``alexnetBNnoLRN`` from the concept to the run-time execution on the ZCU102 target board.
+6. You have measured an effective frame rate of 156fps and an average top-1 accuracy of 94% (this last one using the [check_dpu_runtime_accuracy.py](files/deploy/alexnetBNnoLRN/zcu102/baseline/check_dpu_runtime_accuracy.py) Python script). This ends the implementation flow of the baseline ``alexnetBNnoLRN`` from the concept to the run-time execution on the ZCU102 target board.
 
 7. You have seen how the CNN can be optimized by applying pruning to reduce the number of output channels, and consequently the overall number of operations the DPU has to complete. You have applied the iterative flow described in the [pruning_flow.sh](files/pruning/alexnetBNnoLRN/pruning_flow.sh) shell script together with seven variances of the same [config.prototxt](files/pruning/alexnetBNnoLRN/config.prototxt) configuration file to the following input files:
   - [solver.prototxt](files/pruning/alexnetBNnoLRN/solver.prototxt): The same solver [solver_2_alexnetBNnoLRN.prototxt](files/caffe/models/alexnetBNnoLRN/m2/solver_2_alexnetBNnoLRN.prototxt) adopted during the training process, with edited pathnames and 12000 iterations instead of 20000.
@@ -639,7 +694,10 @@ See below for a summary of the most important steps you have completed to arrive
 
 9. You have edited the [final.prototxt](files/pruning/alexnetBNnoLRN/regular_rate_0.7/final.prototxt) file to replace the LMDB training database with the calibration images, adding the top-1 accuracy layers in the bottom to get the new [q_final.prototxt](files/deploy/alexnetBNnoLRN/pruned/q_final.prototxt) file. You have applied the Vitis AI quantizer and compiler tools on the _host_ PC, by applying the [vaiq_pruned_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/pruned/vaiq_pruned_alexnetBNnoLRN.sh) and [vaic_pruned_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/pruned/vaic_pruned_alexnetBNnoLRN.sh) shell scripts to the  [q_final.prototxt](files/deploy/alexnetBNnoLRN/pruned/q_final.prototxt) and ``transformed.caffemodel`` files.
 
-10. As in step 5, you have moved to the _target_ ZCU102 board and compiled the hybrid application there. You have measured a frame rate of 389 fps with an average top-1 accuracy of 95%.
+10. As in step 5, you have moved to the _target_ ZCU102 board and compiled the hybrid application there. You have measured a frame rate of 435 fps with an average top-1 accuracy of 95%.
+
+
+
 
 # References
 

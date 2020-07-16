@@ -123,6 +123,7 @@ for in_idx, img_path in enumerate(images_path):
         label = 2
         filename = "others.jpg"
         print("ERROR: your path name does not contain '/jpg/' ")
+        print(img_path)
         sys.exit(0)
 
 
@@ -199,7 +200,7 @@ for in_idx, img_path in enumerate(images_path):
         continue
 
     test_count = test_count +1
-    string = " %04d" % test_count 
+    string = " %04d" % test_count
 
     class_name = labelNames[label]
 
@@ -248,6 +249,7 @@ for in_idx, img_path in enumerate(images_path):
         label = 1
         filename = img_path.split("/dogs/")[1]
     else: # other
+        print(img_path)
         label = 2
         filename = "others.jpg"
         print("ERROR: your path name does not contain '/jpg/' ")

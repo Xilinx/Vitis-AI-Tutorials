@@ -22,7 +22,7 @@ export ML_DIR
 echo "project ML_DIR is" $ML_DIR
 
 # here is the Caffe tool directory
-CAFFE_TOOLS_DIR=/workspace/tutorials/Caffe_Xilinx
+CAFFE_TOOLS_DIR=/workspace/tutorials/caffe-xilinx
 export CAFFE_TOOLS_DIR
 echo "CAFFE_TOOLS_DIR is" $CAFFE_TOOLS_DIR
 

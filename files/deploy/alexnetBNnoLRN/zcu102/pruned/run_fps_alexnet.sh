@@ -18,13 +18,6 @@
 
 # *******************************************************************************
 
-cp ./src/fps_main.cc ./main.cc
-
-make clean
-make all
-
-cp alexnetBNnoLRN fps_alexnetBNnoLRN
-
 echo " "
 echo "./fps_alexnetBNnoLRN 1"
 ./fps_alexnetBNnoLRN 1

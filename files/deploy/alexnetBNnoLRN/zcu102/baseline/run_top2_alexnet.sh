@@ -18,14 +18,7 @@
 
 # *******************************************************************************
 
-
-cp ./src/top2_main.cc ./main.cc
-
-make clean
-make all
-
-cp alexnetBNnoLRN top2_alexnetBNnoLRN
-
 echo " "
 echo "./top2_alexnetBNnoLRN 1"
 ./top2_alexnetBNnoLRN 1
+

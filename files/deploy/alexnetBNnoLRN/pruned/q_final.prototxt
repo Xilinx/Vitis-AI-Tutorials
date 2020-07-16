@@ -58,7 +58,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 68
+    num_output: 78
     pad: 1
     kernel_size: 11
     stride: 4
@@ -217,7 +217,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 116
+    num_output: 40
     pad: 1
     kernel_size: 3
     group: 1

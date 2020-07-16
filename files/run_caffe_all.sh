@@ -24,7 +24,7 @@ source caffe/set_prj_env_variables.sh
 
 #python set_the_CATSvsDOGS_prj.py -i $ML_DIR
 
-#source caffe/caffe_flow_AlexNet.sh             2>&1 | tee logfile_caffe_AlexNet.txt
+source caffe/caffe_flow_AlexNet.sh             2>&1 | tee logfile_caffe_AlexNet.txt
 
 source deploy/${CNN}/quantiz/vaiq_${CNN}.sh    2>&1 | tee logfile_vaiq_${CNN}.txt
 source deploy/${CNN}/quantiz/vaic_${CNN}.sh    2>&1 | tee logfile_vaic_${CNN}.txt
