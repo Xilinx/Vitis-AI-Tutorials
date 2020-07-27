@@ -117,7 +117,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 180
+    num_output: 154
     pad: 2
     kernel_size: 5
     group: 1

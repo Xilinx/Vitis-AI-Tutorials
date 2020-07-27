@@ -49,28 +49,28 @@ path_root = args["work_dir"] # root path name of dataset
 
 ##########################################################################################
 
-if (not os.path.exists(path_root)): 
+if (not os.path.exists(path_root)):
     print("ERROR: the ", path_root, "  directory does not exist!")
     sys.exit(0)
 
-# check the train.zip file is there
-if (not os.path.exists(path_root + "/train.zip")):
-    print("ERROR: missing train.zip archive !")
-    sys.exit(0)
+## check the train.zip file is there
+#if (not os.path.exists(path_root + "/train.zip")):
+#    print("ERROR: missing train.zip archive !")
+#    sys.exit(0)
 
-# create directory for input images 
+# create directory for input images
 if (not os.path.exists(path_root + "/input")):
-    os.mkdir(path_root + "/input") 
+    os.mkdir(path_root + "/input")
 
-# unzip the train.zip file    
-os.system("unzip train.zip -d" + path_root + "/input")
+## unzip the train.zip file
+#os.system("unzip train.zip -d" + path_root + "/input")
 
 # rename "/input/train" as "input/jpg"
 os.system("mv " + path_root + "/input/train " + path_root + "/input/jpg")
 
 # create subdirectories "input/jpg/cats" and "input/jpg/dogs"
 os.mkdir(path_root + "/input/jpg/cats")
-os.mkdir(path_root + "/input/jpg/dogs") 
+os.mkdir(path_root + "/input/jpg/dogs")
 
 # move all "cat.*.jpg" files into "input/jpg/cats" a
 os.system("mv " + path_root + "/input/jpg/cat.*.jpg " + path_root + "/input/jpg/cats")
