@@ -46,8 +46,7 @@ Quantize in fixed point some custom CNNs and deploy them on the Xilinx ZCU102 bo
   <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/Medical-AI-Acceleration">Medical AI Application Acceleration with Xilinx AI Stack (UG1467)</a></td><td>Take a medical dataset, develop and evaluate an end-to-end AI accelerated application using Xilinx Vitis AI, without writing any lower level RTL code.</td></tr>
   <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/Profiling-DNNDK-Examples">Profiling a CNN Using DNNDK or VART with Vitis AI (UG1487)</a>
   </td>
-  <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/DenseNetX_DPUv3">Using DenseNetX on the Xilinx Alveo U50 Accelerator Card (UG1472)</a></td><td>Implement a convolutional neural network (CNN) and run it on the DPUv3E accelerator IP.</td></tr>
-  <tr><td>Profile a CNN application running on the ZCU102 target board with Vitis AI.</td></tr>
+  <td>Profile a CNN application running on the ZCU102 target board with Vitis AI.</td></tr>
   <tr><td align="center"><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/Moving-Edge-Cloud">Moving Seamlessly between Edge and Cloud with Vitis AI (UG1488)</a>
   </td>
   <td>Compile and run the same identical design and application code on either the Alveo U50 data center accelerator card or the Zynq UltraScale+&trade; MPSoC ZCU102 evaluation board. </td></tr></table>
