@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Author: Mark Harvey, Xilinx Inc
 
-# example of how to start Vitis-AI docker (GPU version)
-./docker_run.sh xilinx/vitis-ai-gpu:latest
+
+# example of how to start Vitis-AI 1.1 docker (GPU version)
+/home/mharvey/Vitis-AI/docker_run.sh xilinx/vitis-ai-gpu:latest
+

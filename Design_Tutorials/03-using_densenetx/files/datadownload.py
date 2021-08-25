@@ -14,17 +14,11 @@
  limitations under the License.
 '''
 
-'''
-Author: Mark Harvey, Xilinx Inc
-'''
-
-
-
 import numpy as np
 import os
 
 # Silence TensorFlow messages
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import tensorflow as tf
 

@@ -14,16 +14,6 @@
  limitations under the License.
 '''
 
-'''
-Image pre-processing for quantization
-'''
-
-'''
-Author: Mark Harvey, Xilinx Inc
-'''
-
-
-
 import os
 import cv2
 

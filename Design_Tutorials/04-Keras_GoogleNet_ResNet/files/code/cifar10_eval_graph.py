@@ -21,8 +21,15 @@
 # Evaluation of frozen/quantized graph
 #################################################################
 
-# modified by daniele.bagni@xilinx.com
-# date 24 / 11 / 2020
+'''
+TESTED WITH PYTHON 3.6
+
+Author: Mark Harvey (mark.harvey@xilinx.com)
+Date:   28 May 2019
+
+Modified by Daniele Bagni (daniele.bagni@xilinx.com)
+Date:   27 Aug 2019
+'''
 
 import os
 import sys
@@ -37,7 +44,7 @@ import gc # memory garbage collector #DB
 import tensorflow.contrib.decent_q
 
 from tensorflow.python.platform import gfile
-from tensorflow.keras.preprocessing.image import img_to_array
+from keras.preprocessing.image import img_to_array
 
 from config import cifar10_config as cfg #DB
 
@@ -90,14 +97,14 @@ def graph_eval(input_graph_def, input_node, output_node):
     x_test = np.reshape(x_test, [-1, cfg.IMAGE_HEIGHT,cfg.IMAGE_WIDTH, 3])
     y_test = tf.keras.utils.to_categorical(y_test, num_classes=cfg.NUM_CLASSES)
 
-    tf.compat.v1.import_graph_def(input_graph_def,name = '')
+    tf.import_graph_def(input_graph_def,name = '')
 
     # Get input placeholders & tensors
-    images_in = tf.compat.v1.get_default_graph().get_tensor_by_name(input_node+':0')
-    labels = tf.compat.v1.placeholder(tf.int32,shape = [None,cfg.NUM_CLASSES])
+    images_in = tf.get_default_graph().get_tensor_by_name(input_node+':0')
+    labels = tf.placeholder(tf.int32,shape = [None,cfg.NUM_CLASSES])
 
     # get output tensors
-    logits = tf.compat.v1.get_default_graph().get_tensor_by_name(output_node+':0')
+    logits = tf.get_default_graph().get_tensor_by_name(output_node+':0')
 
     # top 5 and top 1 accuracy
     in_top5 = tf.nn.in_top_k(predictions=logits, targets=tf.argmax(labels, 1), k=5)
@@ -106,9 +113,9 @@ def graph_eval(input_graph_def, input_node, output_node):
     top1_acc = tf.reduce_mean(tf.cast(in_top1, tf.float32))
 
     # Create the Computational graph
-    with tf.compat.v1.Session() as sess:
+    with tf.Session() as sess:
 
-        sess.run(tf.compat.v1.initializers.global_variables())
+        sess.run(tf.initializers.global_variables())
 
         feed_dict={images_in: x_test, labels: y_test}
         t5_acc,t1_acc = sess.run([top5_acc,top1_acc], feed_dict)
@@ -125,7 +132,7 @@ def graph_eval(input_graph_def, input_node, output_node):
 def main(unused_argv):
     os.environ["CUDA_VISIBLE_DEVICES"] = FLAGS.gpu
     input_graph_def = tf.Graph().as_graph_def()
-    input_graph_def.ParseFromString(tf.io.gfile.GFile(FLAGS.graph, "rb").read())
+    input_graph_def.ParseFromString(tf.gfile.GFile(FLAGS.graph, "rb").read())
     graph_eval(input_graph_def, FLAGS.input_node, FLAGS.output_node)
 
 
@@ -147,4 +154,4 @@ if __name__ ==  "__main__":
                         default='0',
                         help='gpu device id.')
     FLAGS, unparsed = parser.parse_known_args()
-    tf.compat.v1.app.run(main=main, argv=[sys.argv[0]] + unparsed)
+    tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
