@@ -7,24 +7,7 @@
  </tr>
 </table>
 
-### Introduction to Machine Learning with Vitis AI
-
-Start here! This tutorial series will help to get you the lay of the land working with the
-Vitis AI toolchain and machine learning on Xilinx devices.
-
- <table style="width:100%">
- <tr>
- <td width="35%" align="center"><b>Tutorial</b>
- <td width="65%" align="center"><b>Description</b>
- </tr>
- <tr>
- <td align="center"><a href="./Introduction/README.md">Introduction to Vitis AI</a></td>
- <td>This tutorial puts in practice the concepts of FPGA acceleration of Machine Learning and illustrates how to
- quickly get started deploying both pre-optimized and customized ML models on Xilinx devices.</td>
- </tr>
- </table>
-
- ### Design Tutorials
+### Design Tutorials
 
 These tutorials illustrate end-to-end design concepts or workflows using Vitis AI.
 
@@ -77,8 +60,7 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  </tr>
  </table>
 
-
- ### Feature Tutorials
+### Feature Tutorials
 
  Feature tutorials illustrate specific workflows or stages within Vitis AI.
 
