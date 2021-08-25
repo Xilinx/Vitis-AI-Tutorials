@@ -1,0 +1,34 @@
+/**
+
+* © Copyright (C) 2016-2020 Xilinx, Inc
+*
+* Licensed under the Apache License, Version 2.0 (the "License"). You may
+* not use this file except in compliance with the License. A copy of the
+* License is located at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations
+* under the License.
+*/
+
+
+
+2020-02-13 05:53:44.795063: W tensorflow/contrib/decent_q/utils/quantize_utils.cc:660] Scale output of avg_pool node average_pooling2d_1/AvgPool to simulate DPU.
+Using TensorFlow backend.
+                                                                               N/A% (0 of 20) |                         | Elapsed Time: 0:00:00 ETA:  --:--:--                                                                                 5% (1 of 20) |#                        | Elapsed Time: 0:00:00 ETA:   0:00:07                                                                                10% (2 of 20) |##                       | Elapsed Time: 0:00:00 ETA:   0:00:07                                                                                15% (3 of 20) |###                      | Elapsed Time: 0:00:01 ETA:   0:00:06                                                                                20% (4 of 20) |#####                    | Elapsed Time: 0:00:01 ETA:   0:00:06                                                                                25% (5 of 20) |######                   | Elapsed Time: 0:00:02 ETA:   0:00:06                                                                                30% (6 of 20) |#######                  | Elapsed Time: 0:00:02 ETA:   0:00:05                                                                                35% (7 of 20) |########                 | Elapsed Time: 0:00:02 ETA:   0:00:05                                                                                40% (8 of 20) |##########               | Elapsed Time: 0:00:03 ETA:   0:00:04                                                                                45% (9 of 20) |###########              | Elapsed Time: 0:00:03 ETA:   0:00:04                                                                                50% (10 of 20) |############            | Elapsed Time: 0:00:04 ETA:   0:00:04                                                                                55% (11 of 20) |#############           | Elapsed Time: 0:00:04 ETA:   0:00:03                                                                                60% (12 of 20) |##############          | Elapsed Time: 0:00:04 ETA:   0:00:03                                                                                65% (13 of 20) |###############         | Elapsed Time: 0:00:05 ETA:   0:00:02                                                                                70% (14 of 20) |################        | Elapsed Time: 0:00:05 ETA:   0:00:02                                                                                75% (15 of 20) |##################      | Elapsed Time: 0:00:06 ETA:   0:00:02                                                                                80% (16 of 20) |###################     | Elapsed Time: 0:00:06 ETA:   0:00:01                                                                                85% (17 of 20) |####################    | Elapsed Time: 0:00:06 ETA:   0:00:01                                                                                90% (18 of 20) |#####################   | Elapsed Time: 0:00:07 ETA:   0:00:00                                                                                95% (19 of 20) |######################  | Elapsed Time: 0:00:07 ETA:   0:00:00                                                                               100% (20 of 20) |########################| Elapsed Time: 0:00:08 Time:  0:00:08
+script running on folder  /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/code
+CALIB DIR  /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/code/../dataset/cifar10/calib/
+INFO: Checking Float Graph...
+INFO: Float Graph Check Done.
+INFO: Calibrating for 20 iterations...
+INFO: Calibration Done.
+INFO: Generating Deploy Model...
+INFO: Deploy Model Generated.
+********************* Quantization Summary *********************      
+INFO: Output:       
+  quantize_eval_model: ../quantized_results/cifar10/miniGoogleNet/quantize_eval_model.pb       
+  deploy_model: ../quantized_results/cifar10/miniGoogleNet/deploy_model.pb

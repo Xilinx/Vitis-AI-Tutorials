@@ -1,0 +1,8 @@
+{
+  "target": "DPUv2",
+  "lib": "libvart_dpu.so",
+  "filename": "dpu_yolov3_voc.elf",
+  "kernel": [ "yolov3_voc" ],
+  "config_file": "yolov3_voc.prototxt"
+}
+

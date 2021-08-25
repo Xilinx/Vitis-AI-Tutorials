@@ -1,0 +1,37 @@
+[0;33m[VAI_C][Warning] Only 'channel' axis supported on DPU for Concat, current layer is [mbox_priorbox].
+[m
+Kernel topology "vgg16_ssd_kernel_graph.jpg" for network "vgg16_ssd"
+kernel list info for network "vgg16_ssd"
+                               Kernel ID : Name
+                                       0 : vgg16_ssd
+
+                             Kernel Name : vgg16_ssd
+--------------------------------------------------------------------------------
+                             Kernel Type : DPUKernel
+                               Code Size : 0.41MB
+                              Param Size : 23.23MB
+                           Workload MACs : 61356.40MOPS
+                         IO Memory Space : 7.18MB
+                              Mean Value : 104, 117, 123, 
+                      Total Tensor Count : 39
+                Boundary Input Tensor(s)   (H*W*C)
+                               data:0(0) : 300*300*3
+
+               Boundary Output Tensor(s)   (H*W*C)
+                           mbox_loc:0(0) : 1*1*34928
+                          mbox_conf:0(1) : 1*1*183372
+
+                        Total Node Count : 37
+                           Input Node(s)   (H*W*C)
+                              conv1_1(0) : 300*300*3
+
+                          Output Node(s)   (H*W*C)
+                             mbox_loc(0) : 1*1*34928
+                            mbox_conf(0) : 1*1*183372
+
+
+
+
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************

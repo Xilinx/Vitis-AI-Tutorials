@@ -1,0 +1,50 @@
+From cd88af06be5bad2bf19f4ca7ff5f19f4295ebbca Mon Sep 17 00:00:00 2001
+From: Fred Kellerman <fredkellerman@users.noreply.github.com>
+Date: Tue, 24 Sep 2019 19:49:30 -0400
+Subject: [PATCH] Patch the kernel to manipulate the wifi part's pins
+
+---
+ drivers/mmc/core/pwrseq_simple.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/drivers/mmc/core/pwrseq_simple.c b/drivers/mmc/core/pwrseq_simple.c
+index a8b9fee..3cfdc66 100644
+--- a/drivers/mmc/core/pwrseq_simple.c
++++ b/drivers/mmc/core/pwrseq_simple.c
+@@ -109,6 +109,33 @@ static int mmc_pwrseq_simple_probe(struct platform_device *pdev)
+ {
+ 	struct mmc_pwrseq_simple *pwrseq;
+ 	struct device *dev = &pdev->dev;
++        struct gpio_desc *gpio_chip_en;
++        struct gpio_desc *gpio_resetn;
++
++        // Leave resetn low and let pwrseq take care of it
++        gpio_resetn = gpiod_get(dev, "reset", GPIOD_ASIS);
++        if (IS_ERR(gpio_resetn)) {
++                dev_warn(dev,
++                   "mmc failed to get default resetn GPIO\n");
++        } else {
++                dev_info(dev, "mmc succesfully got gpio_resetn\n");
++                gpiod_direction_output(gpio_resetn, 1);  // low
++                gpiod_put(gpio_resetn);
++        }
++
++        // Turn power off then back on
++        gpio_chip_en = gpiod_get(dev, "chip_en", GPIOD_ASIS);
++        if (IS_ERR(gpio_chip_en)) {
++                dev_warn(dev,
++                   "mmc failed to get default chip_en GPIO\n");
++        } else {
++                dev_info(dev, "mmc succesfully got gpio_chip_en\n");
++                gpiod_direction_output(gpio_chip_en, 1);  // low (chip off)
++                mdelay(5);
++                gpiod_set_value(gpio_chip_en, 0); // high (chip on)
++                gpiod_put(gpio_chip_en);
++                mdelay(5);
++        }
+ 
+ 	pwrseq = devm_kzalloc(dev, sizeof(*pwrseq), GFP_KERNEL);
+ 	if (!pwrseq)
+-- 
+2.7.4
+

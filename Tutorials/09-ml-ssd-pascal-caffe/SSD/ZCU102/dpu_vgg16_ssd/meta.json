@@ -1,0 +1,8 @@
+{
+  "target": "DPUv2",
+  "lib": "libvart-dpu-runner.so",
+  "filename": "dpu_vgg16_ssd.elf",
+  "kernel": [ "vgg16_ssd" ],
+  "config_file": "vgg16_ssd.prototxt"
+}
+

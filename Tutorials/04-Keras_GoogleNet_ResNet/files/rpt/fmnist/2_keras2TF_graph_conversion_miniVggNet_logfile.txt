@@ -1,0 +1,94 @@
+/**
+
+* © Copyright (C) 2016-2020 Xilinx, Inc
+*
+* Licensed under the Apache License, Version 2.0 (the "License"). You may
+* not use this file except in compliance with the License. A copy of the
+* License is located at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations
+* under the License.
+*/
+
+
+
+2020-02-13 09:31:56.739435: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX512F
+2020-02-13 09:31:56.833969: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 0 with properties: 
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+totalMemory: 23.86GiB freeMemory: 22.97GiB
+2020-02-13 09:31:56.833987: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2020-02-13 09:31:57.348791: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-02-13 09:31:57.348812: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2020-02-13 09:31:57.348815: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2020-02-13 09:31:57.349478: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22283 MB memory) -> physical GPU (device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1)
+Using TensorFlow backend.
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv2d_1_input (InputLayer)  (None, 32, 32, 3)         0         
+_________________________________________________________________
+conv2d_1 (Conv2D)            (None, 32, 32, 32)        864       
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 32, 32, 32)        128       
+_________________________________________________________________
+activation_1 (Activation)    (None, 32, 32, 32)        0         
+_________________________________________________________________
+conv2d_2 (Conv2D)            (None, 32, 32, 32)        9216      
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 32, 32, 32)        128       
+_________________________________________________________________
+activation_2 (Activation)    (None, 32, 32, 32)        0         
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 16, 16, 32)        0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 16, 16, 32)        0         
+_________________________________________________________________
+conv2d_3 (Conv2D)            (None, 16, 16, 64)        18432     
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 16, 16, 64)        256       
+_________________________________________________________________
+activation_3 (Activation)    (None, 16, 16, 64)        0         
+_________________________________________________________________
+conv2d_4 (Conv2D)            (None, 16, 16, 64)        36864     
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 16, 16, 64)        256       
+_________________________________________________________________
+activation_4 (Activation)    (None, 16, 16, 64)        0         
+_________________________________________________________________
+max_pooling2d_2 (MaxPooling2 (None, 8, 8, 64)          0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 8, 8, 64)          0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 4096)              0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 512)               2097664   
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 512)               2048      
+_________________________________________________________________
+activation_5 (Activation)    (None, 512)               0         
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 512)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 10)                5130      
+_________________________________________________________________
+activation_6 (Activation)    (None, 10)                0         
+=================================================================
+Total params: 2,170,986
+Trainable params: 2,169,578
+Non-trainable params: 1,408
+_________________________________________________________________
+
+ TF input node name:
+[<tf.Tensor 'conv2d_1_input:0' shape=(?, 32, 32, 3) dtype=float32>]
+
+ TF output node name:
+[<tf.Tensor 'activation_6/Softmax:0' shape=(?, 10) dtype=float32>]
+
+FINISHED CREATING TF FILES
+
