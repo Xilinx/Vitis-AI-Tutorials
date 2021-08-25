@@ -14,6 +14,11 @@
  limitations under the License.
 '''
 
+'''
+Evaluation of frozen and/or quantized graph
+
+Author: Mark Harvey
+'''
 
 import sys
 import os
@@ -33,7 +38,6 @@ os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 from tensorflow.python.platform import gfile
 import tensorflow.contrib.decent_q
 
-
 from datadownload import datadownload
 
 
@@ -41,7 +45,8 @@ def graph_eval(input_graph_def, graph, input_node, output_node, batchsize):
 
     input_graph_def.ParseFromString(tf.io.gfile.GFile(graph, "rb").read())
 
-    # CIFAR-10 dataset    
+    # CIFAR-10 dataset download and preprocessing
+    # y_test labels will be one-hot encoded
     (_,_), (x_test,y_test) = datadownload()
 
     total_batches = int(len(x_test)/batchsize)
@@ -50,36 +55,48 @@ def graph_eval(input_graph_def, graph, input_node, output_node, batchsize):
 
     # Get input placeholders & tensors
     images_in = tf.compat.v1.get_default_graph().get_tensor_by_name(input_node+':0')
-    labels = tf.compat.v1.placeholder(tf.int32,shape = [None,10])
 
     # get output tensors
     logits = tf.compat.v1.get_default_graph().get_tensor_by_name(output_node+':0')
     predicted_logit = tf.argmax(input=logits, axis=1, output_type=tf.int32)
-    ground_truth_label = tf.argmax(labels, 1, output_type=tf.int32)
 
-    # Define the metric and update operations
-    tf_metric, tf_metric_update = tf.compat.v1.metrics.accuracy(labels=ground_truth_label,
-                                                                predictions=predicted_logit,
-                                                                name='acc')
 
     with tf.compat.v1.Session() as sess:
+
+        predictions = []
         progress = ProgressBar()
         
         sess.run(tf.compat.v1.initializers.global_variables())
-        sess.run(tf.compat.v1.initializers.local_variables())
 
         # process all batches
         for i in progress(range(0,total_batches)):
 
-            # fetch a batch from validation dataset
-            x_batch, y_batch = x_test[i*batchsize:i*batchsize+batchsize], \
-                               y_test[i*batchsize:i*batchsize+batchsize]
+            # make batches of images
+            img_batch = x_test[i*batchsize:(i+1)*batchsize]
 
-            # Run graph for accuracy node
-            feed_dict={images_in: x_batch, labels: y_batch}
-            acc = sess.run(tf_metric_update, feed_dict)
+            # run session to get a batch of predictions
+            feed_dict={images_in: img_batch}            
+            pred = sess.run([predicted_logit], feed_dict)
+            predictions.append(pred)
 
-        print ('Graph accuracy with validation dataset: {:1.4f}'.format(acc))
+
+    correct = 0
+    wrong = 0
+
+
+    # predictions is a list of length total_batches
+    # each entry is a array which contains a list of length batchsize
+    for i in range(total_batches):
+        for j in range(batchsize):
+            if predictions[i][0][j] == np.argmax(y_test[(i*batchsize)+j]):
+                correct += 1
+            else:
+                wrong += 1
+    
+    # calculate accuracy
+    acc = (correct/(total_batches*batchsize))
+    
+    print('Correct:',correct,'Wrong:',wrong,'Accuracy:','{:.4f}'.format(acc))
 
     return
 
@@ -106,10 +123,6 @@ def main():
                     type=int,
                     default=1,
                     help='Evaluation batchsize, must be integer value. Default is 1')  
-    ap.add_argument('--gpu',
-                    type=str,
-                    default='0',
-                    help='gpu device id.')
 
     args = ap.parse_args()  
 
@@ -122,11 +135,8 @@ def main():
     print (' --input_node : ', args.input_node)
     print (' --output_node: ', args.output_node)
     print (' --batchsize  : ', args.batchsize)
-    print (' --gpu        : ', args.gpu)
     print('------------------------------------\n')
 
-
-    os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
     input_graph_def = tf.Graph().as_graph_def()
     graph_eval(input_graph_def, args.graph, args.input_node, args.output_node, args.batchsize)
 

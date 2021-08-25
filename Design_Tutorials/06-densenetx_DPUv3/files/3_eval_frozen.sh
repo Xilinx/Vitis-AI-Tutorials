@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+TF_CPP_MIN_LOG_LEVEL=3
 
 # evaluate graph with test dataset
 eval_graph() {
@@ -23,7 +24,7 @@ eval_graph() {
     --graph        $dir_name/$graph \
     --input_node   ${INPUT_NODE} \
     --output_node  ${OUTPUT_NODE} \
-    --batchsize    100
+    --batchsize    150
 }
 
 echo "-----------------------------------------"

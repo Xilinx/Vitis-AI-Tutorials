@@ -69,7 +69,6 @@ export BATCHSIZE=150
 export LEARNRATE=0.001
 
 # target board parameters
-export TARGET_DPU=dpuv3e
-export ARCH=/opt/vitis_ai/compiler/arch/${TARGET_DPU}/arch.json
+ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U50/arch.json
 
 

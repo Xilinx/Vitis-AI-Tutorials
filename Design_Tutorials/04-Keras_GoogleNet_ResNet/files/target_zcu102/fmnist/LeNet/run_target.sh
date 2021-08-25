@@ -34,6 +34,6 @@ source ./run_fps_${CNN}.sh 2>&1 | tee ./rpt/fps_cifar10_${CNN}.txt
 make clean
 rm *~
 rm .*~
-rm test
-rm fps_*
+#rm test
+#rm fps_*
 rm tf_main.cc

@@ -14,6 +14,10 @@
  limitations under the License.
 '''
 
+'''
+Author: Mark Harvey
+'''
+
 import os
 import cv2
 

@@ -12,7 +12,7 @@
 
 ### Current Status
 
-- Tested on Xilinx&reg; Alveo&trade; U50 Data Center acceleration card with Vitis&trade; AI 1.1 and VART runtime
+- Tested on Xilinx&reg; Alveo&trade; U50 Data Center acceleration card with Vitis&trade; AI 1.2.1 and VART runtime
 
 ## Introduction
 
@@ -22,7 +22,7 @@ The application code in this example design is written in Python and uses the Un
 
 We will run the following steps:
 
-+  Training and evaluation of a customised version of the DenseNet network using TensorFlow Keras.
++  Training and evaluation of a customised version of the DenseNet network using TensorFlow Keras. (Optional step)
 +  Conversion of the HDF5 format Keras checkpoint into a TensorFlow compatible checkpoint.
 +  Removal of the training nodes and conversion of the graph variables to constants (..often referred to as 'freezing the graph').
 +  Evaluation of the frozen model using the CIFAR-10 test dataset.
@@ -150,17 +150,16 @@ This section will lead you through the steps necessary to run the design in hard
 
 The host machine has several requirements that need to be met before we begin. You will need:
 
-  + An Ubuntu 16.04 or 18.04 x86 host machine with internet access to download files.
+  + An x86 host machine with that meets the [sytem requirements](https://github.com/Xilinx/Vitis-AI/blob/master/doc/system_requirements.md) and internet access to download files.
 
-  + an Alveo U50 accelerator card.
+  + an Alveo U50 accelerator card connected to the host machine.
 
   + Optionally, a GPU card suitable for training (a trained checkpoint is provided for those who wish to skip the training step).
 
-  + There are setup instructions provided in [Setting up the host](https://www.xilinx.com/html_docs/vitis_ai/1_1/jck1570690043273.html) and in [For U50 Cloud (DPUv3E)](https://www.xilinx.com/html_docs/vitis_ai/1_1/nip1583226557995.html) - however the alveo_hbm_setup.script in this tutorial will run all of these steps for you.
+  + You should follow the host and target setup instructions provided in [Alveo card setup](https://github.com/Xilinx/Vitis-AI/tree/master/alveo-hbm#dpucahx8h----the-dpu-for-alveo-accelerator-card-with-hbm). Ignore the [DPUCAHX8H Overlays Setup](https://github.com/Xilinx/Vitis-AI/tree/master/alveo-hbm#dpucahx8h----the-dpu-for-alveo-accelerator-card-with-hbm) section as we will run that as part of this tutorial.
 
 
-
-Refer to the latest version of the [Vitis AI User Guide - UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_1/zkj1576857115470.html) for other details.
+Refer to the latest version of the [Vitis AI User Guide - UG1414](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_2/ug1414-vitis-ai.pdf) for other details.
 
 
 
@@ -168,32 +167,31 @@ Refer to the latest version of the [Vitis AI User Guide - UG1414](https://www.xi
 
 This repository should be downloaded to the host machine as a zip file and then unzipped to a folder, or cloned using the ``git clone`` command from a terminal.
 
-Open a linux terminal, cd into the repository folder then into the 'files' folder. Start the Vitis AI docker - if you have a GPU in the host system, it is recommended that you use the GPU version of the docker container. If you intend running the model training, you will definitely need the GPU docker container. If you are going to skip the training phase, then the CPU docker container will be sufficient.
-
-As part of the [Setting up the host](https://www.xilinx.com/html_docs/vitis_ai/1_1/jck1570690043273.html) procedure, you will have cloned or downloaded The Vitis AI repository to the host machine. In the Vitis AI folder of that repo there is a shell script called docker_run.sh that will launch the chosen docker container. Open a terminal on the host machine and cd into the enter the following commands (note: start *either* the GPU or the CPU docker container, but not both):
+Open a linux terminal, cd into the repository folder then into the 'files' folder. Start the Vitis-AI docker - if you have a GPU in the host system, it is recommended that you use the GPU version of the docker container. If you intend running the model training, you will definitely need the GPU docker container. If you are going to skip the training phase, then the CPU docker container will be sufficient:
 
 
 ```shell
-# navigate to densenet tutorial folder
-cd <path_to_densenet_design>/files
+# navigate to files folder
+cd <path_to_tutorial>/files
 
 # to start GPU docker
-<path_to_Vitis_AI>/docker_run.sh xilinx/vitis-ai-gpu:latest
+source ./start_gpu_docker.sh
 
 # ..or to start CPU docker
-<path_to_Vitis_AI>/docker_run.sh xilinx/vitis-ai-cpu:latest
+source ./start_cpu_docker.sh
 ```
+
 
 The docker container will start and you should see something like this in the terminal:
 
 
 ```shell
 ==========================================
-__      ___ _   _                   _____
+__      ___ _   _                   _____ 
 \ \    / (_) | (_)            /\   |_   _|
  \ \  / / _| |_ _ ___ ______ /  \    | |  
   \ \/ / | | __| / __|______/ /\ \   | |  
-   \  /  | | |_| \__ \     / ____ \ _| |_
+   \  /  | | |_| \__ \     / ____ \ _| |_ 
     \/   |_|\__|_|___/    /_/    \_\_____|
 
 ==========================================
@@ -207,8 +205,16 @@ For Caffe Workflows do:
   conda activate vitis-ai-caffe
 For Neptune Workflows do:
   conda activate vitis-ai-neptune
-mharvey@XITMHARVEY33:/workspace$
+mharvey@XITMHARVEY33:/workspace$ 
 ```
+
+
+>:bulb: If you get a "Permission Denied" error when running the start_gpu_docker.sh or start_cpu_docker.sh scripts, it is almost certainly because the docker_run.sh script is not set to be executable. You can fix this by running the following command:
+>
+>```shell
+> chmod +x ./docker_run.sh
+>```
+
 
 
 Now run the environment setup script:  `source ./0_setenv.sh`. This will set up all the environment variables (..mainly pointers to folder and files..) most of which users can edit as required. It will also create the folders for the logs and the trained keras checkpoint. The 0_setenv.sh script also activates the 'vitis-ai-tensorflow' TensorFlow conda environment, so you should now see that the terminal prompt looks like this:
@@ -287,7 +293,6 @@ This is an optional step as the frozen graph is still in floating-point format a
 
 
 
-
 ### Step 4 - Quantize the Frozen Graph
 
 To run step 4: ``source ./4_quant.sh``
@@ -338,15 +343,15 @@ The exact same Python script, eval_graph.py, that was used to evaluate the froze
 
 To run step 6: ``source ./6_compile.sh``
 
-The DPU IP is a soft-core IP whose only function is to accelerate the execution of convolutional neural networks. It is a co-processor which has its own instruction set - those instructions are passed to the DPU in ELF file format.
+The DPU IP is a soft-core IP whose only function is to accelerate the execution of convolutional neural networks. It is a co-processor which has its own instruction set - those instructions are passed to the DPU in .xmodel file format.
 
-The Vitis AI compiler will convert, and optimize where possible, the quantized deployment model to a set of micro-instructions and then output them in an ELF file.
+The Vitis AI compiler will convert, and optimize where possible, the quantized deployment model to a set of micro-instructions and then output them in an .xmodel file.
 
 The generated instructions are specific to the particular configuration of the DPU. The DPU's parameters are contained in a .dcf file which needs to be created for each target board - see the Vitis AI User Guide for details.
 
 In the specific case of the ZCU102 and the prepared SDcard image file that we used back in the 'Preparing the host machine and target board' section, the .dcf file is included in the docker container and its location is passed to the vai_c_tensorflow command via the --arch argument.
 
-Users who are familair with the DPUv2 flow should note that the input graph for the compile phase is not the usual deploy_model.pb generated by the quantization pahse, but is the quantized evaluation model, quantize_eval_model.pb
+Users who are familiar with the DPUv2 flow should note that the input graph for the compile phase is not the usual deploy_model.pb generated by the quantization phase, but is the quantized evaluation model, quantize_eval_model.pb
 
 Once compile is complete, the .xmodel and meta.json files will be stored in the ./files/build/compile folder.
 
@@ -354,48 +359,49 @@ Once compile is complete, the .xmodel and meta.json files will be stored in the 
 
 ### Step 7 - Run the Application on the Board
 
-To run step 7:  `source ./alveo_hbm_setup.sh`  then  `source ./7_make_target.sh`
+To run step 7:  `source ./7_make_target.sh` and then follow steps below. Note that these steps need to be run from inside of the Vitis-AI Docker container.
 
-The `alveo_hbm_setup.sh` environment setup script will download the required packages and install them into your docker container.
-
-`source ./7_make_target.sh` will copy all the required files for running on the board into the ./files/build/target folder. Then navigate into that folder and run the application (from command line) like this:
-
+Run the `U50_overlay.sh` script (internet connection required) to download and install the correct overlay (note that the U50 will need to have been flashed with correct deployment shell - this should have been done in the 'Preparing the host machine and target boards' section above). The complete steps to run on the Alveo U50 are as follows:
 
 
 ```shell
-$ /usr/bin/python3 app_mt.py
+source ./U50_overlay.sh
+cd ./build/target
+/usr/bin/python3 app_mt.py -m model_dir/densenetx.xmodel
+```
+
+You should see something like this:
+
+
+```shell
+mharvey@XITMHARVEY33:/workspace/build/target$ /usr/bin/python3 app_mt.py -m model_dir/densenetx.xmodel     
 -----------------------------------------
 Running on Alveo U50
 -----------------------------------------
 Command line options:
  --image_dir :  images
  --threads   :  1
- --model     :  model_dir
+ --model     :  model_dir/densenetx.xmodel
 -----------------------------------------
-Thread 0 : processed 10000 images
-FPS=298.13, total frames = 10000 , time=33.5425 seconds
-output buffer length: 10000
+FPS=480.72, total frames = 10000 , time=20.8021 seconds
 Correct: 9152 Wrong: 848 Accuracy: 0.9152
 ```
 
-For better throughput, the number of threads can be increased like this:
+
+The number of threads can be increased for higher throughput using the -t argument:
+
 
 ```shell
-$ /usr/bin/python3 app_mt.py -t 4 -m model_dir
+mharvey@XITMHARVEY33:/workspace/build/target$ /usr/bin/python3 app_mt.py -m model_dir/densenetx.xmodel -t 4
 -----------------------------------------
 Running on Alveo U50
 -----------------------------------------
 Command line options:
  --image_dir :  images
  --threads   :  4
- --model     :  model_dir
+ --model     :  model_dir/densenetx.xmodel
 -----------------------------------------
-Thread 1 : processed 2500 images
-Thread 0 : processed 2500 images
-Thread 3 : processed 2500 images
-Thread 2 : processed 2500 images
-FPS=671.55, total frames = 10000 , time=14.8910 seconds
-output buffer length: 10000
+FPS=1189.49, total frames = 10000 , time=8.4070 seconds
 Correct: 9152 Wrong: 848 Accuracy: 0.9152
 ```
 
@@ -407,11 +413,14 @@ The approximate throughput (in frames/sec) for different number of threads is sh
 
 | Threads   | Throughput (fps) |
 | :-------: | :--------------: |
-|     1     |       304.71     |
-|     2     |       590.75     |
-|     4     |       670.7      |
-|     6     |       643.16     |
+|     1     |       480.72     |
+|     2     |       974.07     |
+|     4     |       1189.49    |
+|     6     |       1188.69    |
+|     8     |       1186.34    |
 
+
+For best results, use an even number of threads up to a maximum of 4 or 6.
 
 
 ## References

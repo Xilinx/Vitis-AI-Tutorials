@@ -16,6 +16,8 @@
 
 '''
 Trains the DenseNetX model on the CIFAR-10 dataset
+
+Author: Mark Harvey
 '''
 
 
@@ -79,8 +81,11 @@ def train(input_height,input_width,input_chan,batchsize,learnrate,epochs,keras_h
     
 
     '''
-    Callbacks
+    -----------------------------------------------
+    CALLBACKS
+    -----------------------------------------------
     '''
+
     chkpt_call = ModelCheckpoint(filepath=keras_hdf5,
                                  monitor='val_acc',
                                  verbose=1,
@@ -101,7 +106,11 @@ def train(input_height,input_width,input_chan,batchsize,learnrate,epochs,keras_h
 
     callbacks_list = [tb_call, lr_scheduler_call, lr_plateau_call, chkpt_call]
 
-
+    '''
+    -----------------------------------------------
+    TRAINING
+    -----------------------------------------------
+    '''
 
     '''
     Input image pipeline for training, validation
@@ -155,12 +164,39 @@ def train(input_height,input_width,input_chan,batchsize,learnrate,epochs,keras_h
     print(DIVIDER)
 
     '''
-    Evaluation
+    -----------------------------------------------
+    EVALUATION
+    -----------------------------------------------
     '''
 
     scores = model.evaluate(x=x_test,y=y_test,batch_size=50, verbose=0)
     print ('Evaluation Loss    : ', scores[0])
     print ('Evaluation Accuracy: ', scores[1])
+
+
+    '''
+    -----------------------------------------------
+    PREDICTIONS
+    -----------------------------------------------
+    '''
+
+    # make predictions
+    predictions = model.predict(x_test,
+                                batch_size=batchsize,
+                                verbose=1)
+
+    # check accuracy
+    correct = 0
+    wrong = 0
+    for i in range(len(predictions)):
+        pred = np.argmax(predictions[i])
+        if (pred== np.argmax(y_test[i])):
+            correct+=1
+        else:
+            wrong+=1
+
+    print ('Correct predictions:',correct,' Wrong predictions:',wrong,' Accuracy:',(correct/len(predictions)))
+
 
 
     return

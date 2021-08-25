@@ -9,8 +9,8 @@ kernel list info for network "alexnetBNnoLRN"
 --------------------------------------------------------------------------------
                              Kernel Type : DPUKernel
                                Code Size : 0.15MB
-                              Param Size : 20.12MB
-                           Workload MACs : 754.23MOPS
+                              Param Size : 20.06MB
+                           Workload MACs : 677.15MOPS
                          IO Memory Space : 0.21MB
                               Mean Value : 106, 116, 124, 
                       Total Tensor Count : 9

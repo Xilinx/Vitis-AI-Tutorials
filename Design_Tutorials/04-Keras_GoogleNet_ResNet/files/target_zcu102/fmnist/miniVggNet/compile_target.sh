@@ -20,13 +20,11 @@ CNN=miniVggNet
 ## compile the executable for target board
 ## top5
 cp ./src/top5_tf_main.cc ./tf_main.cc
-cp ./model/nor_dpu_miniVggNet_0.elf ./model/dpu_miniVggNet_0.elf 
 make clean
 make
 mv ./${CNN} ./top5_${CNN}
 ## fps
 cp ./src/fps_tf_main.cc ./tf_main.cc
-cp ./model/nor_dpu_miniVggNet_0.elf ./model/dpu_miniVggNet_0.elf 
 make clean
 make
 mv ./${CNN} ./fps_${CNN}

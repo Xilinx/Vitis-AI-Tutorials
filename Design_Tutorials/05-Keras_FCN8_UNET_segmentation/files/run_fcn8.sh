@@ -267,6 +267,7 @@ Q_OUTPUT_NODE="conv2d_transpose_3/conv2d_transpose" # output node of quantized C
 
 main() {
 
+: '
 
     #conda activate vitis-ai-tensorflow
 
@@ -290,7 +291,7 @@ main() {
 
     # create the proper folders and images from the original dataset
     1_generate_images 2>&1 | tee ${LOG_DIR}/${CNN}/${PREPARE_DATA_LOG}
-
+'
     # do the training and make predictions
     2_fcn8_train     2>&1 | tee ${LOG_DIR}/${CNN}/${TRAIN_LOG}
 

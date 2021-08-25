@@ -30,17 +30,9 @@ echo "  Copied application code to target folder"
 
 # copy xmodel to target folder
 mkdir -p ${TARGET}/model_dir
-cp ${COMPILE}/*.xmodel ${TARGET}/model_dir/.
+cp ${COMPILE}/${NET_NAME}.xmodel ${TARGET}/model_dir/.
 echo "  Copied xmodel file(s) to target folder"
 
-# copy meta.json to target folder
-cp ${COMPILE}/meta.json ${TARGET}/model_dir/.
-echo "  Copied meta.json file(s) to target folder"
-
-
-# this is a fix for Vitis-AI 1.1 to correct the library in the meta.json file
-# it will replace 'libxcompiler' with 'libvart-dpu-runner'
-sed -i 's/libxcompiler/libvart-dpu-runner/g' ${TARGET}/model_dir/meta.json
 
 mkdir -p ${TARGET}/images
 

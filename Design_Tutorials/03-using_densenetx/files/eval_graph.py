@@ -96,8 +96,7 @@ def graph_eval(input_graph_def, graph, input_node, output_node, batchsize):
     # calculate accuracy
     acc = (correct/(total_batches*batchsize))
     
-    print('Correct:',correct,'Wrong:',wrong,'Accuracy:',acc)
-
+    print('Correct:',correct,'Wrong:',wrong,'Accuracy:','{:.4f}'.format(acc))
 
     return
 

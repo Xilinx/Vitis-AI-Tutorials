@@ -35,9 +35,9 @@ conda activate vitis-ai-caffe
 # set the project environmental variables
 source caffe/set_prj_env_variables.sh
 
-: '
+
 # set the proejct directories
-#python set_the_CATSvsDOGS_prj.py -i $ML_DIR
+python set_the_CATSvsDOGS_prj.py -i $ML_DIR
 
 # train the CNN and make predictions
 source caffe/caffe_flow_AlexNet.sh             2>&1 | tee log/logfile_caffe_${CNN}.txt
@@ -54,6 +54,7 @@ cd input/jpg/
 tar -cvf test_images.tar ./test
 mv test_images.tar ../../deploy/${CNN}/zcu102/
 cd ../../
+
 
 conda deactivate
 
@@ -76,10 +77,10 @@ cd deploy/${CNN}/zcu102
 source ./crosscompile_alexnet.sh  2>&1 | tee ../../../log/logfile_crosscompile_${CNN}.txt
 cd ..
 # prepare a final tar archive to be copied on the ZCu102 board
-tar -cvf ${CNN}_zcu102.tar ./zcu102 
-'
+tar -cvf ${CNN}_zcu102.tar ./zcu102
 
 
 ##create unified log file
-cat ./logfile1_caffe_AlexNet.txt ./logfile_caffe_AlexNet.txt log/logfile_vaiq_${CNN}.txt log/logfile_vaic_${CNN}.txt ./logfile_pruning_AlexNet.txt log/logfile_vaiq_pruned_${CNN}.txt log/logfile_vaic_pruned_${CNN}.txt log/logfile_crosscompile_${CNN}.txt > logfile_run_alexnet_host.txt
+#cat ./logfile_run_all_alexNet.txt ./logfile2_run_all_alexNet.txt  > logfile_run_alexnet_host.txt
+#./logfile_caffe_AlexNet.txt log/logfile_vaiq_${CNN}.txt log/logfile_vaic_${CNN}.txt ./logfile_pruning_AlexNet.txt log/logfile_vaiq_pruned_${CNN}.txt log/logfile_vaic_pruned_${CNN}.txt log/logfile_crosscompile_${CNN}.txt > logfile_run_alexnet_host.txt
 

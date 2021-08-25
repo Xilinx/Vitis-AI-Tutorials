@@ -82,7 +82,7 @@ layer {
   }
   phase: TRAIN
   convolution_param {
-    num_output: 180
+    num_output: 154
     bias_term: true
     pad: 2
     kernel_size: 5

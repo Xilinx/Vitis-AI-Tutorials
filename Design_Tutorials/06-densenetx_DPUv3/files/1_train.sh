@@ -34,6 +34,8 @@ echo "-----------------------------------------"
 
 rm -rf ${KERAS}
 mkdir -p ${KERAS}
+rm -rf ${TB_LOG}
+mkdir -p ${TB_LOG}
 train 2>&1 | tee ${LOG}/${TRAIN_LOG}
 
 echo "-----------------------------------------"

@@ -23,10 +23,12 @@ for file in $(find $PWD -name "*.sh"); do
     echo  ${file}
 done
 
+#copy target_zcu102 files into the new target_zcu104 folder if you have also the ZCU104 board
+cp -r target_zcu102 target_zcu104
 
 ##################################################################################
 #organize data for Fashion-MNIST and CIFAR10
-#source 0_generate_images.sh
+source 0_generate_images.sh
 ##################################################################################
 
 # training from scratch with CIFAR10
@@ -62,7 +64,6 @@ mv ./cifar10_test.tar ./target_zcu104/
 ##################################################################################
 # training from scratch with Fashion-MNIST
 source ./1_fmnist_train.sh
-
 
 # convert Keras model into TF inference graph
 source ./2_fmnist_Keras2TF.sh

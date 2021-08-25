@@ -12,9 +12,10 @@
 
 ### Current status
 
-1. Tested with Vitis AI 1.0 and 1.1
+1. Tested with Vitis AI 1.2
 
-2. Tested in hardware on ZCU102 (both 1.0 and 1.1)
+2. Tested in hardware on ZCU102
+
 
 
 # 1 Introduction
@@ -41,29 +42,31 @@ AlexNet is a well-known CNN that works with images 227x227x3 in size. It is desc
 
 - An Ubuntu 16.04 host PC with Python 3.6  and its package ``python3.6-tk`` installed (this last one installed with ``sudo apt-get install python3.6-tk``);
 
-- [Vitis AI stack release 1.0](https://github.com/Xilinx/Vitis-AI/tree/v1.0) from [www.github.com/Xilinx](https://www.github.com/Xilinx). In particular, refer to the [Vitis AI User Guide UG1414 v1.0](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_0/ug1414-vitis-ai.pdf) for the installation guidelines and note that you need to download the two containers available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags):
-  - **tools container** with tag ``tools-1.0.0-cpu``, here ``cpu`` means that this environment runs on the host PC only with CPU support (in other words without any GPU need). Note also that UG1414 explains how to build your own container with GPU support;
-  - **runtime container** with tag ``runtime-1.0.1-cpu``, note that you need this container only once to prepare SD card content of the target board, then you will compile all the applications directly on the target board itself, which means you do not cross-compile them from the host PC.
+- [Vitis AI stack release 1.2](https://github.com/Xilinx/Vitis-AI) from [www.github.com/Xilinx](https://www.github.com/Xilinx). In particular, refer to the [Vitis AI User Guide UG1414 v1.2](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_2/ug1414-vitis-ai.pdf) for the installation guidelines and note that you need to download the container available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags) with tag ``vitis-ai:1.2.82``. Note also that UG1414 explains how to build your own container with GPU support;
 
-- Vitis AI Evaluation board [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html) with its [image file](https://www.xilinx.com/bin/public/openDownload?filename=xilinx-zcu102-dpu-v2019.2.img.gz), which contains a pre-built working design for the ZCU102 with the [DPU-v2](https://github.com/Xilinx/Vitis-AI/tree/master/DPU-TRD).
 
-- With few changes, explained in the last part of the following section, this tutorial can work also with [Vitis AI stack release 1.1](https://github.com/Xilinx/Vitis-AI).
+- Vitis AI Evaluation board [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html) with its [image file](https://www.xilinx.com/bin/public/openDownload?filename=xilinx-zcu102-dpu-v2020.1-v1.2.0.img.gz), which contains a pre-built working design for the ZCU102 with the [DPU-v2](https://github.com/Xilinx/Vitis-AI/tree/master/DPU-TRD).
 
 - Familiarity with Deep Learning principles.
 
 - Familiarity with Caffe (here is the official [online Caffe tutorial](http://caffe.berkeleyvision.org/tutorial/)).
 
 
-## 2.1  Dos-to-Unix Conversion
+### Dos-to-Unix Conversion
 
 In case you might get some strange errors during the execution of the scripts, you have to pre-process -just once- all the``*.sh`` shell and the python ``*.py`` scripts with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility.
 
+### Vitis AI 1.0
 
-# 3 Before starting
+If you need to use the older Vitis AI 1.0 release, just replace this ``README.md`` file with the one placed in the subfolder
+``vai_1v0`` and go on in following the instructions on that file
+
+
+# 3 Before starting with Vitis AI 1.2
 
 You have to know few things about [Docker](https://docs.docker.com/) in order to run the Vitis AI smoothly.
 
-In the following of this document, it is assumed that you have cloned the [Vitis AI stack release 1.0](https://github.com/Xilinx/Vitis-AI) in your working directory ``<WRK_DIR>``, for example a folder named ``~/ML/Vitis-AI``.
+In the following of this document, it is assumed that you have cloned the [Vitis AI stack release 1.2](https://github.com/Xilinx/Vitis-AI) in your working directory ``<WRK_DIR>``, for example a folder named ``~/ML/Vitis-AI-1v2``.
 
 To list the currently available docker images run:
 ```bash
@@ -71,28 +74,22 @@ docker images # to list the current docker images available in the host pc
 ```
 and you should see something like in the following text:
 ```text
-REPOSITORY                             TAG                 IMAGE ID            CREATED             SIZE
-xilinx/vitis-ai                        tools-1.0.0-gpu     034a766d9641        3 hours ago         12GB
-xilinx/vitis-ai                        runtime-1.0.0-cpu   af058b4c48b3        6 weeks ago         11.9GB
-xilinx/vitis-ai                        tools-1.0.0-cpu     7b7550aac2e6        6 weeks ago         8.35GB
+REPOSITORY            TAG                               IMAGE ID            CREATED             SIZE
+xilinx/vitis-ai-gpu   latest                            1bc243fc037a        41 minutes ago      19GB
+xilinx/vitis-ai       1.1.56                            798f6eaea389        3 months ago        9.5GB
+xilinx/vitis-ai       tools-1.0.0-gpu                   544c80c56313        3 months ago        20.7GB
+xilinx/vitis-ai       runtime-1.0.0-cpu                 af058b4c48b3        7 months ago        11.9GB
 ```
 
 To launch the docker container with Vitis AI tools - to do all the steps from CNN training to generation of the ELF file for the DPU - based on CPU (or GPU), execute the following commands from the ``<WRK_DIR>`` folder:
 
 ```bash
 cd <WRK_DIR> # you are now in Vitis_AI subfolder
-./docker_run.sh xilinx/vitis-ai:tools-1.0.0-cpu  # only CPU
-#./docker_run.sh xilinx/vitis-ai:tools-1.0.0-gpu # alternatively: only GPU
+./docker_run.sh xilinx/vitis-ai-gpu:latest
 ```
 
-To launch the docker container with Vitis AI runtime - to compile the whole application for the target board - from the ``<WRK_DIR>`` folder execute the following command:
-
-```bash
-cd <WRK_DIR> # you are now in Vitis_AI subfolder
-./runtime/docker_run.sh xilinx/vitis-ai:runtime-1.0.0-cpu
-```
-
-Note that both the two containers map the shared folder ``/workspace`` with the file system of the Host PC from where you launch the above command, which is ``<WRK_DIR>`` in your case. This shared folder enables you to transfer files from the Host PC to the docker container and vice versa.
+Note that the container maps the shared folder ``/workspace`` with the file system of the Host PC from where you launch the above command, which is ``<WRK_DIR>`` in your case.
+This shared folder enables you to transfer files from the Host PC to the docker container and vice versa.
 
 The docker container do not have any graphic editor, so it is recommended that you work with two terminals and you point to the same folder, in one terminal you use the docker container commands and in the other terminal you open any graphic editor you like.
 
@@ -112,8 +109,6 @@ You have to modify the Vitis AI tools container. Here are the commands:
 #./docker_run.sh xilinx/vitis-ai:1.1.56 # enter into the docker Vitis AI 1.1 tools image    
 sudo su # you must be root
 conda activate vitis-ai-caffe     # as root, enter into Caffe (anaconda-based) virtual environment
-conda install libprotobuf==3.10.1 # only for Vitis AI == 1.0
-conda install protobuf==3.10.1    # only for Vitis AI == 1.0
 conda install pycairo==1.18.2     # for Vitis AI >= 1.0
 pip install lmdb==0.98            # for Vitis AI >= 1.0
 conda deactivate
@@ -129,26 +124,26 @@ sudo docker ps -l # To get the Docker CONTAINER ID
 you will see the following text (the container ID might have a different number):
 
 ```text
-CONTAINER ID        IMAGE                             COMMAND                CREATED     STATUS       NAMES
-5310263294ba        xilinx/vitis-ai:tools-1.0.0-cpu   "/etc/login.sh bash"   something   something    something
+CONTAINER ID        IMAGE                        COMMAND                CREATED             STATUS              NAMES
+7c9927375b06        xilinx/vitis-ai-gpu:latest   "/etc/login.sh bash"   30 minutes ago      Up 30 minutes       heuristic_lamport
 ```
 
 now save the modified docker image:
 
 ```bash
-sudo docker commit -m"new image: added keras 2.2.4 and pandas, seaborn, matplotlib, imutils" \
-       5310263294ba xilinx/vitis-ai:tools-1.0.0-cpu
+sudo docker commit -m"caffe" 7c9927375b06 xilinx/vitis-ai-gpu:latest
+
 ```
 
-Assuming you have renamed this project ``VAI-Caffe-ML-CATSvsDOGS`` and placed it in the directory named ``<WRK_DIR>/tutorials/`` so that it is two levels below the ``Vitis-AI`` folder, you can launch the modified tools container by running the following commands:
+Assuming you have renamed this project ``VAI-Caffe-ML-CATSvsDOGS`` and placed it in the directory named ``<WRK_DIR>/tutorials/`` so that it is two levels below the ``Vitis-AI-1v2`` folder, you can launch the modified tools container by running the following commands:
 ```bash
 cd <WRK_DIR>
-./docker_run.sh xilinx/vitis-ai:tools-1.0.0-cpu
-#../docker_run.sh xilinx/vitis-ai:tools-1.0.0-gpu # just in case you have GPU support
+./docker_run.sh xilinx/vitis-ai-gpu:latest
 cd /workspace/tutorials/VAI-Caffe-ML-CATSvsDOGS
+conda activate vai-caffe
 ```
 
-### Copy caffe-xilinx.zip
+## 3.2 Copy caffe-xilinx.zip
 
 Now, enter into the [AI Model Zoo README.md](https://github.com/Xilinx/AI-Model-Zoo/blob/master/README.md) file and download the [caffe-xilinx.zip](https://www.xilinx.com/bin/public/openDownload?filename=caffe-xilinx-1.1.zip) archive.
 Unzip it at the same level of this project directory so that both ``VAI-Caffe-ML-CATSvsDOGS`` and ``caffe-xilinx`` repositories are placed in ``<WRK_DIR>/tutorials/``. Leave it as it is, you do not need to compile and build anything.
@@ -173,62 +168,22 @@ print ("Wrote %s" % output_filename)
 ```
 
 
-## 3.2 The Vitis AI 1.0 Runtime Container
+## 3.3 Target Board SD Card and Cross-compilation Environment
 
-This docker image can support both **Vitis AI Library** (named **AI SDK** prior to Vitis) and **DNNDK** cross compiler. In particular:
-
-1. Both **Vitis AI library** and  **Vitis AI for Zynq/ZU+** use the same cross compiler from Petalinux. In the previous DNNDK releases, there was no cross compilation at all and the compilation was done directly on the target board.
-
-2. **Vitis AI samples** uses new unified APIs for both Zynq/ZU+ and Alveo platforms in this release, while **DNNDK samples** still use legacy DNNDK Level1 APIs for back compatibility with previous DNNDK releases (for example the 3.1).
-
-3. **Vitis AI samples** included in the runtime docker do not belong to **Vitis AI Library** although their names seem related. In fact **Vitis AI Library** is designed to be higher level for quick AI application development, this library also provides APIs and optimized routines for pre- and post-processing.
-
-Assuming your project is placed in the directory named ``<WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS``, which is two levels below the ``Vitis_AI`` repository, you can launch the runtime container by running the following commands:
-```bash
-cd <WRK_DIR>
-./docker_run.sh xilinx/vitis-ai:runtime-1.0.0-cpu
-```
+The [README.md](https://github.com/Xilinx/Vitis-AI/tree/master/mpsoc/README.md) document contains all the necessary information to to prepare the SD card content of your target board and to setup the cross-compilation environment.
 
 
-## 3.3 Prepare the SD Card for the Target Board
+Once you have executed all the instructions, you should see on your target board terminal something as illustrated in the screenshot of Figure 1:
 
-Chapter 2 of [Vitis AI UG1414 v1.0](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_0/ug1414-vitis-ai.pdf) contains all the necessary information to setup the target board and to prepare the SD card content. In particular, remember to copy (with ``scp``) to the target board both the ``xilinx_vai_board_package`` folder from the runtime container (located in ``/opt/vitis_ai/``) and the ``dnndk_samples_zcu102`` folder from the ``mpsoc`` folder of Vitis AI.
-
-At the end of this procedure you should see something as illustrated in the screenshot of Figure 1:
-
-![figure1](files/doc/images/zcu102_packages.png)
+![figure1](files/doc/images/vai1v2_zcu102_packages.png)
 
 *Figure 1: Screenshot of ZCU102 terminal with folders copied from the runtime container.*
 
-Note  that the folder [zcu102/common](files/deploy/alexnetBNnoLRN/zcu102/common) of this repository is a copy of the folder [mpsoc/dnndk_samples_zcu102/common](https://github.com/Xilinx/Vitis-AI/tree/master/mpsoc/dnndk_samples_zcu102/common), just for your comfort.
+Note  that the folder [zcu102/common](files/deploy/alexnetBNnoLRN/zcu102/common) of this repository is a copy of the folder [mpsoc/vitis_ai_dnndk_samples/common](https://github.com/Xilinx/Vitis-AI/tree/master/mpsoc/vitis_ai_dnndk_samples/common), just for your comfort.
 
+Starting from Vitis AI 1.1 release there is no more Docker Runtime Container, and you can cross compile the ``elf`` files directly from the Xilinx ``petalinux`` environment on your host PC to the target board.
+In the following of this tutorial it is assumed that ``petalinux`` is installed into ``/opt/petalinux/2020.1`` of your host PC.
 
-
-## 3.4 Changes for Vitis AI 1.1
-
-There are few differences between Vitis AI 1.0 and 1.1 releases for what concerns the edge devices:
-
-1. you have to use the proper Docker Image for Vitis AI 1.1
-
-  ```
-  xilinx/vitis-ai           1.1.56                            798f6eaea389        3 months ago        9.5GB
-  ```
-
-  which is different from the images associated with 1.0:
-
-  ```
-  xilinx/vitis-ai           tools-1.0.0-cpu                   37ff1cd99ecb        3 months ago        8.59GB
-  xilinx/vitis-ai           tools-1.0.0-gpu                   1b45847f369d        3 months ago        12GB
-  ```
-
-2. You have to follow the Vitis AI 1.1 instructions for [Setting Up the Evaluation Boards](https://www.xilinx.com/html_docs/vitis_ai/1_1/yjf1570690235238.html).
-
-3. Starting from Vitis AI 1.1 release there is no more Docker Runtime Container, and you can cross compile the ``elf`` files directly from the host PC to the target board. You have to execute all the instructions of [Legacy DNNDK examples](https://www.xilinx.com/html_docs/vitis_ai/1_1/ump1570690283280.html) to setup ``petalinux/2019.2`` and all the DNNDK application files and libraries, so that you can finally run everything on your target board.
-In the following of this tutorial it is assumed that ``petalinux`` is installed into ``/opt/petalinux/2019.2`` of your host PC.
-
-Then, the Vitis AI 1.1 Caffe flow is basically the same of Vitis AI 1.0.
-
-A part for the above changes, all the rest of the flow -with python and shell script files- used in this tutorial with Vitis AI 1.0 works also with  Vitis AI 1.1.
 
 
 # 4 Project Directory Structure
@@ -249,7 +204,7 @@ In Caffe, ``.prototxt`` files cannot use Linux environmental variables, only rel
 
 #  5 How To Get The Dogs vs. Cats Dataset
 
-The dataset cannot be hosted in this repository because of its large size. To obtain the dataset, you need to register on the [Kaggle website](https://www.kaggle.com), setting up a username and password. The registration procedure involves receiving confirmation codes by email and smartphone. When you are registered, you can download the [dogs-vs-cats.zip](https://www.kaggle.com/biaiscience/dogs-vs-cats/download) archive and put it at the same level of ``input`` and ``caffe`` sub-folders.
+The dataset cannot be hosted in this repository because of its large size. To obtain the dataset, you need to register on the [Kaggle website](https://www.kaggle.com), setting up a username and password. The registration procedure involves receiving confirmation codes by email and smartphone. When you are registered, you can download the [dogs-vs-cats.zip](https://www.kaggle.com/biaiscience/dogs-vs-cats/download) archive. Unzip it where you like and then move the subfolder ``train`` inside the folder ``input``.
 
 Note that you do not need to use the original ``test`` archive, because it does not have labeled images and is therefore not useful for this tutorial.
 
@@ -306,7 +261,7 @@ The solver file is named [solver_2_alexnetBNnoLRN.prototxt](files/caffe/models/a
 
 The output of each process running on the host side is captured and stored into a single unified log file, named [logfile_run_alexnet_host.txt](files/log/logfile_run_alexnet_host.txt); in the following of this section some fragments of such file are reported.
 
-After training is executed, the CNN has a top-1 average accuracy of 92.2% (with 2000 iterations) computed on the validation dataset:
+After training is executed, the CNN has a top-1 average accuracy of 94% (with 20000 iterations) computed on the validation dataset:
 
 ```
 ... 2541 solver.cpp:384] Iteration 20000, loss = 0.0335872
@@ -316,7 +271,7 @@ After training is executed, the CNN has a top-1 average accuracy of 92.2% (with 
 ... 2541 solver.cpp:523] Test net output #2: top-1 = 0.94725
 ```
 
-When making predictions with the 1000 test images, the average top-1 prediction accuracy is 93%:
+When making predictions with the 1000 test images, the average top-1 prediction accuracy is still 94%:
 ```
                 precision recall  f1-score   support
 
@@ -372,20 +327,10 @@ The effective quantization flow is composed mainly of five steps.
 3. Edit the [main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/top2_main.cc) program application.
 
 4. Compile the hybrid (CPU + DPU) application with [crosscompile_alexnet.sh](files/deploy/alexnetBNnoLRN/zcu102/ crosscompile_alexnet.sh) shell script.
-  - In case of Vitis AI 1.1 run the following:
+
   ```bash
   unset LD_LIBRARY_PATH    #required by petalinux for Vitis >= 1.1
-  sh /opt/petalinux/2019.2/environment-setup-aarch64-xilinx-linux # set petalinux environment of Vitis AI 1.1
-  cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files
-  cd deploy/zcu102
-  source crosscompile_alexnet.sh
-  cd ..
-  tar -cvf zcu102.tar ./zcu102 # to be copied on the SD card
-  ```
-  - In case of Vitis AI 1.0 run the following:
-  ```bash
-  cd <WRK_DIR> # you are now in Vitis_AI subfolder
-  ./runtime/docker_run.sh xilinx/vitis-ai:runtime-1.0.0-cpu
+  sh /opt/petalinux/2020.1/environment-setup-aarch64-xilinx-linux # set petalinux environment of Vitis AI 1.1
   cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files
   cd deploy/zcu102
   source crosscompile_alexnet.sh
@@ -460,7 +405,7 @@ The variants only differ in a few ``printf`` lines, which are used in the first 
 
 If you change the way this information is printed in the ``stdout``, you must also change the Python script [check_dpu_runtime_accuracy.py](files/deploy/alexnetBNnoLRN/zcu102/baseline/check_dpu_runtime_accuracy.py) accordingly, because it acts essentially as a text parser of the ``logfile_top2_alexnetBNnoLRN.txt`` captured at run time.
 
-Also in the first lines of the [top2_main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/top2_main.cc) file, you need to report the kernel name, input node, and output node that were generated by the Vitis AI Compiler in the [log file](files/log/logfile_run_baseline_target.txt):
+Also in the first lines of the [top2_main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/top2_main.cc) file, you need to report the kernel name, input node, and output node that were generated by the Vitis AI Compiler in the [logfile_run_baseline_target.txt](files/log/logfile_run_baseline_target.txt):
 ```c++
 #define KERNEL_CONV "alexnetBNnoLRN_0"
 #define CONV_INPUT_NODE "conv1"
@@ -495,7 +440,7 @@ void run_alexnetBNnoLRN(DPUTask *taskConv, Mat img) {
 
 ## 8.6 Performance of the Quantized Baseline AlexNet on ZCU102
 
-At the end of this quantization procedure, when the AI Inference DPU runs the ``alexnetBNnoLRN`` on the ZCU102 to make predictions on the 1000 test images, the following performance is reported as illustrated by the following fragments of [baseline logfile](files/log/logfile_run_baseline_target.txt):
+At the end of this quantization procedure, when the AI Inference DPU runs the ``alexnetBNnoLRN`` on the ZCU102 to make predictions on the 1000 test images, the following performance is reported as illustrated by the following fragments of [logfile_run_baseline_target.txt](files/log/logfile_run_baseline_target.txt):
 
 - 154 fps with six threads
 
@@ -608,7 +553,7 @@ To compile with the Vitis AI quantizer and compiler tools, call the two shell sc
  source deploy/alexnetBNnoLRN/vaic_pruned_alexnetBNnoLRN.sh 2>&1 | tee deploy/alexnetBNnoLRN/pruned/rpt/logfile_vaic_pruned_alexnetBNnoLRN.txt
  ```
 
-At the end of the Quantization process on the pruned AlexNet the top-1 accuracy is 0.9564 as illustrated in the following fragment of [logfile](files/log/logfile_run_alexnet_host.txt):
+At the end of the Quantization process on the pruned AlexNet the top-1 accuracy is 0.9564 as illustrated in the following fragment of [logfile_run_pruned_target.txt](files/log/logfile_run_pruned_target.txt):
 ```
 ... ] Test iter: 50/50, loss = 0.129312
 ... ] Test iter: 50/50, top-1 = 0.98
@@ -622,20 +567,9 @@ At the end of the Quantization process on the pruned AlexNet the top-1 accuracy 
 
 
 Now cross-compile the hybrid (CPU + DPU) application with [crosscompile_alexnet.sh](files/deploy/alexnetBNnoLRN/zcu102/crosscompile_alexnet.sh) shell script.
-   - In case of Vitis AI 1.1 run the following:
    ```bash
    unset LD_LIBRARY_PATH    #required by petalinux for Vitis >= 1.1
-   sh /opt/petalinux/2019.2/environment-setup-aarch64-xilinx-linux # set petalinux environment of Vitis AI 1.1
-   cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files
-   cd deploy/zcu102
-   source crosscompile_alexnet.sh
-   cd ..
-   tar -cvf zcu102.tar ./zcu102 # to be copied on the SD card
-   ```
-   - In case of Vitis AI 1.0 run the following:
-   ```bash
-   cd <WRK_DIR> # you are now in Vitis_AI subfolder
-   ./runtime/docker_run.sh xilinx/vitis-ai:runtime-1.0.0-cpu
+   sh /opt/petalinux/2020.1/environment-setup-aarch64-xilinx-linux # set petalinux environment of Vitis AI 1.1
    cd <WRK_DIR>/tutorials/VAI-Caffe-ML-CATSvsDOGS/files
    cd deploy/zcu102
    source crosscompile_alexnet.sh
@@ -679,7 +613,7 @@ See below for a summary of the most important steps you have completed to arrive
 
 4. You have then quantized this baseline CNN with  vitis AI quantizer and compiler tools on the host PC by applying the [vaiq_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/quantiz/vaiq_alexnetBNnoLRN.sh) and [vaic_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/quantiz/vaic_alexnetBNnoLRN.sh) shell scripts to the files generated in step 3, ``float.caffemodel`` and [q_float.prototxt](files/caffe/models/alexnetBNnoLRN/m2/q_train_val_2_alexnetBNnoLRN.prototxt), where the latter file is the [train_val_2_alexnetBNnoLRN.prototxt](files/caffe/models/alexnetBNnoLRN/m2/train_val_2_alexnetBNnoLRN.prototxt) edited to replace the LMDB training database with the calibration images and to add in the bottom the top-1 accuracy layer.
 
-5. You have copied to the target ZCU102 board the [fps_main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/fps_main.cc) application file and the ``.elf`` DPU kernel generated by Vitis AI compiler in the previous step. Then, you have compiled the hybrid application, with the ARM CPU executing the SoftMax and top-2 software routines while the DPU hardware accelerator executes the FC, CONV, ReLU, and BN layers of the CNN.
+5. You have crosscompiled the hybrid application, composed of the [fps_main.cc](files/deploy/alexnetBNnoLRN/zcu102/baseline/src/fps_main.cc) file and the ``.elf`` DPU kernel generated by Vitis AI compiler in the previous step.  Then you have copied everything to the target board and run it. The application is called "hybrid" because the ARM CPU is executing the SoftMax and top-2 software routines while the DPU hardware accelerator is running the FC, CONV, ReLU, and BN layers of the CNN.
 
 6. You have measured an effective frame rate of 156fps and an average top-1 accuracy of 94% (this last one using the [check_dpu_runtime_accuracy.py](files/deploy/alexnetBNnoLRN/zcu102/baseline/check_dpu_runtime_accuracy.py) Python script). This ends the implementation flow of the baseline ``alexnetBNnoLRN`` from the concept to the run-time execution on the ZCU102 target board.
 
@@ -694,7 +628,7 @@ See below for a summary of the most important steps you have completed to arrive
 
 9. You have edited the [final.prototxt](files/pruning/alexnetBNnoLRN/regular_rate_0.7/final.prototxt) file to replace the LMDB training database with the calibration images, adding the top-1 accuracy layers in the bottom to get the new [q_final.prototxt](files/deploy/alexnetBNnoLRN/pruned/q_final.prototxt) file. You have applied the Vitis AI quantizer and compiler tools on the _host_ PC, by applying the [vaiq_pruned_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/pruned/vaiq_pruned_alexnetBNnoLRN.sh) and [vaic_pruned_alexnetBNnoLRN.sh](files/deploy/alexnetBNnoLRN/pruned/vaic_pruned_alexnetBNnoLRN.sh) shell scripts to the  [q_final.prototxt](files/deploy/alexnetBNnoLRN/pruned/q_final.prototxt) and ``transformed.caffemodel`` files.
 
-10. As in step 5, you have moved to the _target_ ZCU102 board and compiled the hybrid application there. You have measured a frame rate of 435 fps with an average top-1 accuracy of 95%.
+10. As in step 5, you have crosscompiled the hybrid application and then you copy it on the _target_ ZCU102 board and run it there. You have measured a frame rate of 435 fps with an average top-1 accuracy of 95%.
 
 
 

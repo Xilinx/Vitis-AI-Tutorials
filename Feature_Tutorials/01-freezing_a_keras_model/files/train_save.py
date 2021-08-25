@@ -25,10 +25,15 @@ Method 2 - as an HDF5 model (identical results to method #1)
 Method 3 - as separate weights (HDF5) and architecture (JSON) files
 '''
 
+'''
+Author: Mark Harvey
+'''
+
 import os
 import sys
 import shutil
 import numpy as np
+import keras
 from keras import datasets, utils, layers, models, optimizers
 from keras.callbacks import ModelCheckpoint
 
@@ -44,6 +49,12 @@ def get_script_directory():
         return path
     else:
         return os.path.dirname(path)
+
+
+print('\n------------------------------------')
+print('Keras version      :',keras.__version__)
+print('Python version     :',(sys.version))
+print('------------------------------------')
 
 
 SCRIPT_DIR = get_script_directory()
@@ -78,8 +89,8 @@ print("Directory " , METHOD3_DIR ,  "created ")
 #####################################################
 # Hyperparameters
 #####################################################
-BATCHSIZE = 100
-EPOCHS = 10
+BATCHSIZE = 25
+EPOCHS = 5
 LEARN_RATE = 0.0001
 DECAY_RATE = 1e-6
 
@@ -95,14 +106,6 @@ DECAY_RATE = 1e-6
 X_train = X_train / 255.0
 X_test = X_test / 255.0
 
-
-# create unseen dataset for predictions - 5k images
-X_predict = X_train[45000:]
-Y_predict = Y_train[45000:]
-
-# reduce training dataset to 45k images
-X_train = X_train[:45000]
-Y_train = Y_train[:45000]
 
 # one-hot encode the labels
 Y_train = utils.to_categorical(Y_train)
@@ -149,7 +152,7 @@ model.compile(loss='categorical_crossentropy',
 ##############################################
 # set up the checkpoint callback
 chkpt_callback = ModelCheckpoint(os.path.join(METHOD1_DIR,'keras_chkpt.h5'),
-                                 monitor='val_acc',
+                                 monitor='val_accuracy',
                                  verbose=1,
                                  save_best_only=True,
                                  mode='max')

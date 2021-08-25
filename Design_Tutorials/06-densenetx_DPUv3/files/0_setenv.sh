@@ -19,7 +19,7 @@ conda activate vitis-ai-tensorflow
 
 # folders
 export BUILD=./build
-export TARGET_TEMPLATE=./target_template
+export APP=./application
 export TARGET=${BUILD}/target
 export LOG=${BUILD}/logs
 export TB_LOG=${BUILD}/tb_logs
@@ -59,7 +59,8 @@ export INPUT_WIDTH=32
 export INPUT_CHAN=3
 export INPUT_SHAPE=?,${INPUT_HEIGHT},${INPUT_WIDTH},${INPUT_CHAN}
 export INPUT_NODE=input_1
-export OUTPUT_NODE=activation_99/Softmax
+export OUTPUT_NODE=dense/BiasAdd
+#export OUTPUT_NODE=activation_99/Softmax
 export NET_NAME=densenetx
 
 # training parameters
@@ -67,12 +68,7 @@ export EPOCHS=160
 export BATCHSIZE=150
 export LEARNRATE=0.001
 
-
-# target board
-export BOARD=ZCU102
-export ARCH=/opt/vitis_ai/compiler/arch/dpuv2/${BOARD}/${BOARD}.json
+# target board parameters
+ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U50/arch.json
 
 
-# DPU mode - best performance with DPU_MODE = normal
-export DPU_MODE=normal
-#export DPU_MODE=debug

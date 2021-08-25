@@ -55,6 +55,11 @@ Command line arguments:
             : Default is 1000
 '''
 
+'''
+Author: Mark Harvey
+'''
+
+
 import os
 import argparse
 import cv2

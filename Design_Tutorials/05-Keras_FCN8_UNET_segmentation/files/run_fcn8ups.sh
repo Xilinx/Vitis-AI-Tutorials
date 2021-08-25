@@ -280,6 +280,7 @@ main() {
   rm -rf ${QUANT_DIR4}; mkdir ${QUANT_DIR4}
   rm -rf ${COMPILE_DIR}; mkdir ${COMPILE_DIR}
 '
+: '
   mkdir ${LOG_DIR}/${CNN} ${CHKPT_DIR}/${CNN} ${FREEZE_DIR}/${CNN} ${QUANT_DIR}/${CNN} ${COMPILE_DIR}/${CNN}
 
   #copy target_zcu102 files into the new target_zcu104 folder if you have also the ZCU104 board
@@ -288,6 +289,7 @@ main() {
 
   ## create the proper folders and images from the original dataset
   #1_generate_images 2>&1 | tee ${LOG_DIR}/${CNN}/${PREPARE_DATA_LOG}
+'
 
   # do the training and make predictions
   2_fcn8_train     2>&1 | tee ${LOG_DIR}/${CNN}/${TRAIN_LOG}

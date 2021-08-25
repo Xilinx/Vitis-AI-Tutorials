@@ -15,6 +15,9 @@
 # limitations under the License.
 
 
+# Author: Mark Harvey
+
+
 # conda environment
 conda activate vitis-ai-tensorflow
 
@@ -36,44 +39,45 @@ echo "CONVERT KERAS TO TF"
 echo "#####################################"
 # method 1
 python keras_2_tf.py --keras_hdf5 ./method1/keras_chkpt.h5 \
-                     --tfckpt=./method1/tf_chkpt.ckpt  \
-                     --tf_graph=./method1/tf_infer_graph.pb
+                     --tf_ckpt=./method1/tf_chkpt.ckpt
 
 # method 2
 python keras_2_tf.py --keras_hdf5 ./method2/k_complete_model.h5 \
-                     --tfckpt=./method2/tf_chkpt.ckpt  \
-                     --tf_graph=./method2/tf_infer_graph.pb
+                     --tf_ckpt=./method2/tf_chkpt.ckpt
 
 # method 3
 python keras_2_tf.py --keras_json=./method3/k_model_architecture.json \
                      --keras_hdf5=./method3/k_model_weights.h5 \
-                     --tfckpt=./method3/tf_chkpt.ckpt  \
-                     --tf_graph=./method3/tf_infer_graph.pb
+                     --tf_ckpt=./method3/tf_chkpt.ckpt
 
 
 echo "#####################################"
 echo "FREEZE GRAPH"
 echo "#####################################"
 # method 1
-freeze_graph --input_graph=./method1/tf_infer_graph.pb \
-             --input_checkpoint=./method1/tf_chkpt.ckpt \
-             --input_binary=true \
-             --output_graph=./method1/frozen_graph.pb \
-             --output_node_names=activation_4/Softmax 
+freeze_graph \
+    --input_meta_graph  ./method1/tf_chkpt.ckpt.meta \
+    --input_checkpoint  ./method1/tf_chkpt.ckpt \
+    --output_graph      ./method1/frozen_graph.pb \
+    --output_node_names activation_4/Softmax \
+    --input_binary      true
+
 
 # method 2
-freeze_graph --input_graph=./method2/tf_infer_graph.pb \
-             --input_checkpoint=./method2/tf_chkpt.ckpt \
-             --input_binary=true \
-             --output_graph=./method2/frozen_graph.pb \
-             --output_node_names=activation_4/Softmax 
+freeze_graph \
+    --input_meta_graph  ./method2/tf_chkpt.ckpt.meta \
+    --input_checkpoint  ./method2/tf_chkpt.ckpt \
+    --output_graph      ./method2/frozen_graph.pb \
+    --output_node_names activation_4/Softmax \
+    --input_binary      true
 
 # method 3
-freeze_graph --input_graph=./method3/tf_infer_graph.pb \
-             --input_checkpoint=./method3/tf_chkpt.ckpt \
-             --input_binary=true \
-             --output_graph=./method3/frozen_graph.pb \
-             --output_node_names=activation_4/Softmax 
+freeze_graph \
+    --input_meta_graph  ./method3/tf_chkpt.ckpt.meta \
+    --input_checkpoint  ./method3/tf_chkpt.ckpt \
+    --output_graph      ./method3/frozen_graph.pb \
+    --output_node_names activation_4/Softmax \
+    --input_binary      true
 
 
 echo "#####################################"
@@ -132,8 +136,7 @@ echo "#####################################"
 
 
 # target board
-BOARD=ZCU102
-ARCH=/opt/vitis_ai/compiler/arch/dpuv2/${BOARD}/${BOARD}.json
+ARCH=/opt/vitis_ai/compiler/arch/DPUCZDX8G/ZCU102/arch.json
 
 
 # method 1

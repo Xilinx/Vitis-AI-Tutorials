@@ -391,6 +391,7 @@ main() {
     rm -rf ${QUANT_DIR}; mkdir ${QUANT_DIR}
     rm -rf ${COMPILE_DIR}; mkdir ${COMPILE_DIR}
 '
+: '
     mkdir ${LOG_DIR}/${CNN}
     mkdir ${CHKPT_DIR}/${CNN}1   ${CHKPT_DIR}/${CNN}2   ${CHKPT_DIR}/${CNN}3
     mkdir ${FREEZE_DIR}/${CNN}1  ${FREEZE_DIR}/${CNN}2  ${FREEZE_DIR}/${CNN}3
@@ -404,6 +405,8 @@ main() {
 
     ## create the proper folders and images from the original dataset
     #1_generate_images 2>&1 | tee ${LOG_DIR}/${CNN}/${PREPARE_DATA_LOG}
+
+'
 
     # do the training and make predictions
     2_unet_train     2>&1 | tee ${LOG_DIR}/${CNN}/${TRAIN_LOG}
