@@ -1,0 +1,2945 @@
+I0715 08:47:50.223279  3347 gpu_memory.cpp:53] GPUMemory::Manager initialized with Caching (CUB) GPU Allocator
+I0715 08:47:50.223994  3347 gpu_memory.cpp:55] Total memory: 11721506816, Free: 9572974592, dev_info[1]: total=11721506816 free=9572974592
+I0715 08:47:50.224009  3347 caffe.cpp:213] Using GPUs 1
+I0715 08:47:50.224340  3347 caffe.cpp:218] GPU 1: GeForce GTX 1080 Ti
+I0715 08:47:51.075213  3347 solver.cpp:51] Initializing solver from parameters: 
+base_lr: 0.0005
+display: 50
+max_iter: 24000
+lr_policy: "poly"
+gamma: 0.1
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 1000
+snapshot_prefix: "../workspace/model/unet-lite/final_models/"
+solver_mode: GPU
+device_id: 1
+net: "../workspace/model/unet-lite/train_val.prototxt"
+snapshot_after_train: true
+test_initialization: false
+average_loss: 10
+iter_size: 43
+type: "Adam"
+I0715 08:47:51.075332  3347 solver.cpp:99] Creating training net from net file: ../workspace/model/unet-lite/train_val.prototxt
+I0715 08:47:51.095576  3347 net.cpp:52] Initializing net from parameters: 
+name: "unet"
+state {
+  phase: TRAIN
+}
+layer {
+  name: "data"
+  type: "ImageSegData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.022
+    crop_size: 512
+    mean_value: 73
+    mean_value: 82
+    mean_value: 72
+  }
+  image_data_param {
+    source: "../workspace/data/cityscapes/img_seg.txt"
+    batch_size: 4
+    mirror: true
+    shuffle: true
+  }
+}
+layer {
+  name: "conv_d0a-b"
+  type: "Convolution"
+  bottom: "data"
+  top: "d0b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d0b"
+  type: "ReLU"
+  bottom: "d0b"
+  top: "relu_d0b"
+}
+layer {
+  name: "conv_d0b-c"
+  type: "Convolution"
+  bottom: "relu_d0b"
+  top: "d0c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_d0c"
+  type: "BatchNorm"
+  bottom: "d0c"
+  top: "BatchNorm_d0c"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d0c"
+  type: "ReLU"
+  bottom: "BatchNorm_d0c"
+  top: "relu_d0c"
+}
+layer {
+  name: "pool_d0c-1a"
+  type: "Pooling"
+  bottom: "relu_d0c"
+  top: "d1a"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv_d1a-b"
+  type: "Convolution"
+  bottom: "d1a"
+  top: "d1b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d1b"
+  type: "ReLU"
+  bottom: "d1b"
+  top: "relu_d1b"
+}
+layer {
+  name: "conv_d1b-c"
+  type: "Convolution"
+  bottom: "relu_d1b"
+  top: "d1c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_d1c"
+  type: "BatchNorm"
+  bottom: "d1c"
+  top: "BatchNorm_d1c"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d1c"
+  type: "ReLU"
+  bottom: "BatchNorm_d1c"
+  top: "relu_d1c"
+}
+layer {
+  name: "pool_d1c-2a"
+  type: "Pooling"
+  bottom: "relu_d1c"
+  top: "d2a"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv_d2a-b"
+  type: "Convolution"
+  bottom: "d2a"
+  top: "d2b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d2b"
+  type: "ReLU"
+  bottom: "d2b"
+  top: "relu_d2b"
+}
+layer {
+  name: "conv_d2b-c"
+  type: "Convolution"
+  bottom: "relu_d2b"
+  top: "d2c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_d2c"
+  type: "BatchNorm"
+  bottom: "d2c"
+  top: "BatchNorm_d2c"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d2c"
+  type: "ReLU"
+  bottom: "BatchNorm_d2c"
+  top: "relu_d2c"
+}
+layer {
+  name: "pool_d2c-3a"
+  type: "Pooling"
+  bottom: "relu_d2c"
+  top: "d3a"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv_d3a-b"
+  type: "Convolution"
+  bottom: "d3a"
+  top: "d3b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d3b"
+  type: "ReLU"
+  bottom: "d3b"
+  top: "relu_d3b"
+}
+layer {
+  name: "conv_d3b-c"
+  type: "Convolution"
+  bottom: "relu_d3b"
+  top: "d3c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_1"
+  type: "BatchNorm"
+  bottom: "d3c"
+  top: "BatchNorm_1"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d3c"
+  type: "ReLU"
+  bottom: "BatchNorm_1"
+  top: "relu_d3c"
+}
+layer {
+  name: "pool_d3c-4a"
+  type: "Pooling"
+  bottom: "relu_d3c"
+  top: "d4a"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv_d4a-b"
+  type: "Convolution"
+  bottom: "d4a"
+  top: "d4b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_2"
+  type: "BatchNorm"
+  bottom: "d4b"
+  top: "BatchNorm_2"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d4b"
+  type: "ReLU"
+  bottom: "BatchNorm_2"
+  top: "relu_d4b"
+}
+layer {
+  name: "conv_d4b-c"
+  type: "Convolution"
+  bottom: "relu_d4b"
+  top: "d4c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d4c"
+  type: "ReLU"
+  bottom: "d4c"
+  top: "relu_d4c"
+}
+layer {
+  name: "upconv_d4c_u3a"
+  type: "Deconvolution"
+  bottom: "relu_d4c"
+  top: "u3a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 0
+    kernel_size: 2
+    stride: 2
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u3a"
+  type: "ReLU"
+  bottom: "u3a"
+  top: "u3a"
+}
+layer {
+  name: "concat_d3cc_u3a-b"
+  type: "Concat"
+  bottom: "u3a"
+  bottom: "d3c"
+  top: "u3b"
+}
+layer {
+  name: "conv_u3b-c"
+  type: "Convolution"
+  bottom: "u3b"
+  top: "u3c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u3c"
+  type: "ReLU"
+  bottom: "u3c"
+  top: "u3c"
+}
+layer {
+  name: "conv_u3c-d"
+  type: "Convolution"
+  bottom: "u3c"
+  top: "u3d"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u3d"
+  type: "ReLU"
+  bottom: "u3d"
+  top: "u3d"
+}
+layer {
+  name: "upconv_u3d_u2a"
+  type: "Deconvolution"
+  bottom: "u3d"
+  top: "u2a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 0
+    kernel_size: 2
+    stride: 2
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u2a"
+  type: "ReLU"
+  bottom: "u2a"
+  top: "u2a"
+}
+layer {
+  name: "concat_d2cc_u2a-b"
+  type: "Concat"
+  bottom: "u2a"
+  bottom: "d2c"
+  top: "u2b"
+}
+layer {
+  name: "conv_u2b-c"
+  type: "Convolution"
+  bottom: "u2b"
+  top: "u2c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u2c"
+  type: "ReLU"
+  bottom: "u2c"
+  top: "u2c"
+}
+layer {
+  name: "conv_u2c-d"
+  type: "Convolution"
+  bottom: "u2c"
+  top: "u2d"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u2d"
+  type: "ReLU"
+  bottom: "u2d"
+  top: "u2d"
+}
+layer {
+  name: "upconv_u2d_u1a"
+  type: "Deconvolution"
+  bottom: "u2d"
+  top: "u1a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 0
+    kernel_size: 2
+    stride: 2
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u1a"
+  type: "ReLU"
+  bottom: "u1a"
+  top: "u1a"
+}
+layer {
+  name: "concat_d1cc_u1a-b"
+  type: "Concat"
+  bottom: "u1a"
+  bottom: "d1c"
+  top: "u1b"
+}
+layer {
+  name: "conv_u1b-c"
+  type: "Convolution"
+  bottom: "u1b"
+  top: "u1c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u1c"
+  type: "ReLU"
+  bottom: "u1c"
+  top: "u1c"
+}
+layer {
+  name: "conv_u1c-d"
+  type: "Convolution"
+  bottom: "u1c"
+  top: "u1d"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u1d"
+  type: "ReLU"
+  bottom: "u1d"
+  top: "u1d"
+}
+layer {
+  name: "upconv_u1d_u0a_NEW"
+  type: "Deconvolution"
+  bottom: "u1d"
+  top: "u0a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 0
+    kernel_size: 2
+    stride: 2
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u0a"
+  type: "ReLU"
+  bottom: "u0a"
+  top: "u0a"
+}
+layer {
+  name: "concat_d0cc_u0a-b"
+  type: "Concat"
+  bottom: "u0a"
+  bottom: "d0c"
+  top: "u0b"
+}
+layer {
+  name: "conv_u0b-c_New"
+  type: "Convolution"
+  bottom: "u0b"
+  top: "u0c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u0c"
+  type: "ReLU"
+  bottom: "u0c"
+  top: "u0c"
+}
+layer {
+  name: "conv_u0c-d_New"
+  type: "Convolution"
+  bottom: "u0c"
+  top: "u0d"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u0d"
+  type: "ReLU"
+  bottom: "u0d"
+  top: "u0d"
+}
+layer {
+  name: "conv_u0d-score_New"
+  type: "Convolution"
+  bottom: "u0d"
+  top: "conv_u0d-score_New"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 19
+    pad: 0
+    kernel_size: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "conv_u0d-score_New"
+  bottom: "label"
+  top: "loss"
+  include {
+    phase: TRAIN
+  }
+  loss_param {
+    ignore_label: 255
+  }
+}
+layer {
+  name: "acc"
+  type: "Accuracy"
+  bottom: "conv_u0d-score_New"
+  bottom: "label"
+  top: "acc"
+  top: "per_acc"
+  include {
+    phase: TRAIN
+  }
+  accuracy_param {
+    ignore_label: 255
+  }
+}
+I0715 08:47:51.095832  3347 layer_factory.hpp:77] Creating layer data
+I0715 08:47:51.095870  3347 net.cpp:94] Creating Layer data
+I0715 08:47:51.095878  3347 net.cpp:409] data -> data
+I0715 08:47:51.095906  3347 net.cpp:409] data -> label
+I0715 08:47:51.095970  3347 image_seg_data_layer.cpp:46] Opening file ../workspace/data/cityscapes/img_seg.txt
+I0715 08:47:51.099225  3347 image_seg_data_layer.cpp:63] Shuffling data
+I0715 08:47:51.099285  3347 image_seg_data_layer.cpp:68] A total of 2975 images.
+I0715 08:47:51.168458  3347 image_seg_data_layer.cpp:97] output data size: 4,3,512,512
+I0715 08:47:51.238447  3347 internal_thread.cpp:27] Starting internal thread(s) on GPU 1
+I0715 08:47:51.238517  3347 net.cpp:144] Setting up data
+I0715 08:47:51.238528  3347 net.cpp:151] Top shape: 4 3 512 512 (3145728)
+I0715 08:47:51.238533  3347 net.cpp:151] Top shape: 4 1 512 512 (1048576)
+I0715 08:47:51.238535  3347 net.cpp:159] Memory required for data: 16777216
+I0715 08:47:51.238544  3347 layer_factory.hpp:77] Creating layer label_data_1_split
+I0715 08:47:51.238557  3347 net.cpp:94] Creating Layer label_data_1_split
+I0715 08:47:51.238564  3347 net.cpp:435] label_data_1_split <- label
+I0715 08:47:51.238577  3347 net.cpp:409] label_data_1_split -> label_data_1_split_0
+I0715 08:47:51.238587  3347 net.cpp:409] label_data_1_split -> label_data_1_split_1
+I0715 08:47:51.238656  3347 net.cpp:144] Setting up label_data_1_split
+I0715 08:47:51.238662  3347 net.cpp:151] Top shape: 4 1 512 512 (1048576)
+I0715 08:47:51.238665  3347 net.cpp:151] Top shape: 4 1 512 512 (1048576)
+I0715 08:47:51.238668  3347 net.cpp:159] Memory required for data: 25165824
+I0715 08:47:51.238672  3347 layer_factory.hpp:77] Creating layer conv_d0a-b
+I0715 08:47:51.238689  3347 net.cpp:94] Creating Layer conv_d0a-b
+I0715 08:47:51.238692  3347 net.cpp:435] conv_d0a-b <- data
+I0715 08:47:51.238699  3347 net.cpp:409] conv_d0a-b -> d0b
+I0715 08:47:51.240859  3347 net.cpp:144] Setting up conv_d0a-b
+I0715 08:47:51.240878  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.240883  3347 net.cpp:159] Memory required for data: 159383552
+I0715 08:47:51.240906  3347 layer_factory.hpp:77] Creating layer relu_d0b
+I0715 08:47:51.240916  3347 net.cpp:94] Creating Layer relu_d0b
+I0715 08:47:51.240921  3347 net.cpp:435] relu_d0b <- d0b
+I0715 08:47:51.240928  3347 net.cpp:409] relu_d0b -> relu_d0b
+I0715 08:47:51.241048  3347 net.cpp:144] Setting up relu_d0b
+I0715 08:47:51.241062  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.241068  3347 net.cpp:159] Memory required for data: 293601280
+I0715 08:47:51.241073  3347 layer_factory.hpp:77] Creating layer conv_d0b-c
+I0715 08:47:51.241113  3347 net.cpp:94] Creating Layer conv_d0b-c
+I0715 08:47:51.241123  3347 net.cpp:435] conv_d0b-c <- relu_d0b
+I0715 08:47:51.241133  3347 net.cpp:409] conv_d0b-c -> d0c
+I0715 08:47:51.242738  3347 net.cpp:144] Setting up conv_d0b-c
+I0715 08:47:51.242753  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.242758  3347 net.cpp:159] Memory required for data: 427819008
+I0715 08:47:51.242765  3347 layer_factory.hpp:77] Creating layer d0c_conv_d0b-c_0_split
+I0715 08:47:51.242774  3347 net.cpp:94] Creating Layer d0c_conv_d0b-c_0_split
+I0715 08:47:51.242776  3347 net.cpp:435] d0c_conv_d0b-c_0_split <- d0c
+I0715 08:47:51.242782  3347 net.cpp:409] d0c_conv_d0b-c_0_split -> d0c_conv_d0b-c_0_split_0
+I0715 08:47:51.242790  3347 net.cpp:409] d0c_conv_d0b-c_0_split -> d0c_conv_d0b-c_0_split_1
+I0715 08:47:51.242825  3347 net.cpp:144] Setting up d0c_conv_d0b-c_0_split
+I0715 08:47:51.242835  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.242839  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.242841  3347 net.cpp:159] Memory required for data: 696254464
+I0715 08:47:51.242846  3347 layer_factory.hpp:77] Creating layer BatchNorm_d0c
+I0715 08:47:51.242852  3347 net.cpp:94] Creating Layer BatchNorm_d0c
+I0715 08:47:51.242856  3347 net.cpp:435] BatchNorm_d0c <- d0c_conv_d0b-c_0_split_0
+I0715 08:47:51.242862  3347 net.cpp:409] BatchNorm_d0c -> BatchNorm_d0c
+I0715 08:47:51.244194  3347 net.cpp:144] Setting up BatchNorm_d0c
+I0715 08:47:51.244207  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.244211  3347 net.cpp:159] Memory required for data: 830472192
+I0715 08:47:51.244225  3347 layer_factory.hpp:77] Creating layer relu_d0c
+I0715 08:47:51.244231  3347 net.cpp:94] Creating Layer relu_d0c
+I0715 08:47:51.244235  3347 net.cpp:435] relu_d0c <- BatchNorm_d0c
+I0715 08:47:51.244240  3347 net.cpp:409] relu_d0c -> relu_d0c
+I0715 08:47:51.244262  3347 net.cpp:144] Setting up relu_d0c
+I0715 08:47:51.244267  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.244271  3347 net.cpp:159] Memory required for data: 964689920
+I0715 08:47:51.244273  3347 layer_factory.hpp:77] Creating layer pool_d0c-1a
+I0715 08:47:51.244283  3347 net.cpp:94] Creating Layer pool_d0c-1a
+I0715 08:47:51.244287  3347 net.cpp:435] pool_d0c-1a <- relu_d0c
+I0715 08:47:51.244290  3347 net.cpp:409] pool_d0c-1a -> d1a
+I0715 08:47:51.244328  3347 net.cpp:144] Setting up pool_d0c-1a
+I0715 08:47:51.244333  3347 net.cpp:151] Top shape: 4 32 256 256 (8388608)
+I0715 08:47:51.244336  3347 net.cpp:159] Memory required for data: 998244352
+I0715 08:47:51.244339  3347 layer_factory.hpp:77] Creating layer conv_d1a-b
+I0715 08:47:51.244349  3347 net.cpp:94] Creating Layer conv_d1a-b
+I0715 08:47:51.244352  3347 net.cpp:435] conv_d1a-b <- d1a
+I0715 08:47:51.244357  3347 net.cpp:409] conv_d1a-b -> d1b
+I0715 08:47:51.245436  3347 net.cpp:144] Setting up conv_d1a-b
+I0715 08:47:51.245450  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.245452  3347 net.cpp:159] Memory required for data: 1065353216
+I0715 08:47:51.245458  3347 layer_factory.hpp:77] Creating layer relu_d1b
+I0715 08:47:51.245465  3347 net.cpp:94] Creating Layer relu_d1b
+I0715 08:47:51.245468  3347 net.cpp:435] relu_d1b <- d1b
+I0715 08:47:51.245473  3347 net.cpp:409] relu_d1b -> relu_d1b
+I0715 08:47:51.245496  3347 net.cpp:144] Setting up relu_d1b
+I0715 08:47:51.245501  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.245504  3347 net.cpp:159] Memory required for data: 1132462080
+I0715 08:47:51.245507  3347 layer_factory.hpp:77] Creating layer conv_d1b-c
+I0715 08:47:51.245515  3347 net.cpp:94] Creating Layer conv_d1b-c
+I0715 08:47:51.245518  3347 net.cpp:435] conv_d1b-c <- relu_d1b
+I0715 08:47:51.245524  3347 net.cpp:409] conv_d1b-c -> d1c
+I0715 08:47:51.246045  3347 net.cpp:144] Setting up conv_d1b-c
+I0715 08:47:51.246053  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.246057  3347 net.cpp:159] Memory required for data: 1199570944
+I0715 08:47:51.246073  3347 layer_factory.hpp:77] Creating layer d1c_conv_d1b-c_0_split
+I0715 08:47:51.246079  3347 net.cpp:94] Creating Layer d1c_conv_d1b-c_0_split
+I0715 08:47:51.246083  3347 net.cpp:435] d1c_conv_d1b-c_0_split <- d1c
+I0715 08:47:51.246088  3347 net.cpp:409] d1c_conv_d1b-c_0_split -> d1c_conv_d1b-c_0_split_0
+I0715 08:47:51.246095  3347 net.cpp:409] d1c_conv_d1b-c_0_split -> d1c_conv_d1b-c_0_split_1
+I0715 08:47:51.246129  3347 net.cpp:144] Setting up d1c_conv_d1b-c_0_split
+I0715 08:47:51.246134  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.246137  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.246141  3347 net.cpp:159] Memory required for data: 1333788672
+I0715 08:47:51.246145  3347 layer_factory.hpp:77] Creating layer BatchNorm_d1c
+I0715 08:47:51.246152  3347 net.cpp:94] Creating Layer BatchNorm_d1c
+I0715 08:47:51.246155  3347 net.cpp:435] BatchNorm_d1c <- d1c_conv_d1b-c_0_split_0
+I0715 08:47:51.246161  3347 net.cpp:409] BatchNorm_d1c -> BatchNorm_d1c
+I0715 08:47:51.246637  3347 net.cpp:144] Setting up BatchNorm_d1c
+I0715 08:47:51.246645  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.246649  3347 net.cpp:159] Memory required for data: 1400897536
+I0715 08:47:51.246660  3347 layer_factory.hpp:77] Creating layer relu_d1c
+I0715 08:47:51.246665  3347 net.cpp:94] Creating Layer relu_d1c
+I0715 08:47:51.246670  3347 net.cpp:435] relu_d1c <- BatchNorm_d1c
+I0715 08:47:51.246675  3347 net.cpp:409] relu_d1c -> relu_d1c
+I0715 08:47:51.246695  3347 net.cpp:144] Setting up relu_d1c
+I0715 08:47:51.246700  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.246701  3347 net.cpp:159] Memory required for data: 1468006400
+I0715 08:47:51.246706  3347 layer_factory.hpp:77] Creating layer pool_d1c-2a
+I0715 08:47:51.246711  3347 net.cpp:94] Creating Layer pool_d1c-2a
+I0715 08:47:51.246714  3347 net.cpp:435] pool_d1c-2a <- relu_d1c
+I0715 08:47:51.246718  3347 net.cpp:409] pool_d1c-2a -> d2a
+I0715 08:47:51.246747  3347 net.cpp:144] Setting up pool_d1c-2a
+I0715 08:47:51.246753  3347 net.cpp:151] Top shape: 4 64 128 128 (4194304)
+I0715 08:47:51.246757  3347 net.cpp:159] Memory required for data: 1484783616
+I0715 08:47:51.246759  3347 layer_factory.hpp:77] Creating layer conv_d2a-b
+I0715 08:47:51.246767  3347 net.cpp:94] Creating Layer conv_d2a-b
+I0715 08:47:51.246771  3347 net.cpp:435] conv_d2a-b <- d2a
+I0715 08:47:51.246776  3347 net.cpp:409] conv_d2a-b -> d2b
+I0715 08:47:51.247568  3347 net.cpp:144] Setting up conv_d2a-b
+I0715 08:47:51.247576  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.247581  3347 net.cpp:159] Memory required for data: 1518338048
+I0715 08:47:51.247586  3347 layer_factory.hpp:77] Creating layer relu_d2b
+I0715 08:47:51.247591  3347 net.cpp:94] Creating Layer relu_d2b
+I0715 08:47:51.247593  3347 net.cpp:435] relu_d2b <- d2b
+I0715 08:47:51.247599  3347 net.cpp:409] relu_d2b -> relu_d2b
+I0715 08:47:51.247620  3347 net.cpp:144] Setting up relu_d2b
+I0715 08:47:51.247625  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.247628  3347 net.cpp:159] Memory required for data: 1551892480
+I0715 08:47:51.247632  3347 layer_factory.hpp:77] Creating layer conv_d2b-c
+I0715 08:47:51.247638  3347 net.cpp:94] Creating Layer conv_d2b-c
+I0715 08:47:51.247642  3347 net.cpp:435] conv_d2b-c <- relu_d2b
+I0715 08:47:51.247648  3347 net.cpp:409] conv_d2b-c -> d2c
+I0715 08:47:51.249141  3347 net.cpp:144] Setting up conv_d2b-c
+I0715 08:47:51.249151  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.249155  3347 net.cpp:159] Memory required for data: 1585446912
+I0715 08:47:51.249161  3347 layer_factory.hpp:77] Creating layer d2c_conv_d2b-c_0_split
+I0715 08:47:51.249166  3347 net.cpp:94] Creating Layer d2c_conv_d2b-c_0_split
+I0715 08:47:51.249171  3347 net.cpp:435] d2c_conv_d2b-c_0_split <- d2c
+I0715 08:47:51.249176  3347 net.cpp:409] d2c_conv_d2b-c_0_split -> d2c_conv_d2b-c_0_split_0
+I0715 08:47:51.249181  3347 net.cpp:409] d2c_conv_d2b-c_0_split -> d2c_conv_d2b-c_0_split_1
+I0715 08:47:51.249212  3347 net.cpp:144] Setting up d2c_conv_d2b-c_0_split
+I0715 08:47:51.249228  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.249233  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.249234  3347 net.cpp:159] Memory required for data: 1652555776
+I0715 08:47:51.249238  3347 layer_factory.hpp:77] Creating layer BatchNorm_d2c
+I0715 08:47:51.249245  3347 net.cpp:94] Creating Layer BatchNorm_d2c
+I0715 08:47:51.249249  3347 net.cpp:435] BatchNorm_d2c <- d2c_conv_d2b-c_0_split_0
+I0715 08:47:51.249255  3347 net.cpp:409] BatchNorm_d2c -> BatchNorm_d2c
+I0715 08:47:51.249670  3347 net.cpp:144] Setting up BatchNorm_d2c
+I0715 08:47:51.249678  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.249681  3347 net.cpp:159] Memory required for data: 1686110208
+I0715 08:47:51.249691  3347 layer_factory.hpp:77] Creating layer relu_d2c
+I0715 08:47:51.249696  3347 net.cpp:94] Creating Layer relu_d2c
+I0715 08:47:51.249699  3347 net.cpp:435] relu_d2c <- BatchNorm_d2c
+I0715 08:47:51.249704  3347 net.cpp:409] relu_d2c -> relu_d2c
+I0715 08:47:51.249724  3347 net.cpp:144] Setting up relu_d2c
+I0715 08:47:51.249729  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.249732  3347 net.cpp:159] Memory required for data: 1719664640
+I0715 08:47:51.249735  3347 layer_factory.hpp:77] Creating layer pool_d2c-3a
+I0715 08:47:51.249740  3347 net.cpp:94] Creating Layer pool_d2c-3a
+I0715 08:47:51.249744  3347 net.cpp:435] pool_d2c-3a <- relu_d2c
+I0715 08:47:51.249748  3347 net.cpp:409] pool_d2c-3a -> d3a
+I0715 08:47:51.249776  3347 net.cpp:144] Setting up pool_d2c-3a
+I0715 08:47:51.249783  3347 net.cpp:151] Top shape: 4 128 64 64 (2097152)
+I0715 08:47:51.249785  3347 net.cpp:159] Memory required for data: 1728053248
+I0715 08:47:51.249788  3347 layer_factory.hpp:77] Creating layer conv_d3a-b
+I0715 08:47:51.249796  3347 net.cpp:94] Creating Layer conv_d3a-b
+I0715 08:47:51.249800  3347 net.cpp:435] conv_d3a-b <- d3a
+I0715 08:47:51.249805  3347 net.cpp:409] conv_d3a-b -> d3b
+I0715 08:47:51.253834  3347 net.cpp:144] Setting up conv_d3a-b
+I0715 08:47:51.253846  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.253849  3347 net.cpp:159] Memory required for data: 1744830464
+I0715 08:47:51.253856  3347 layer_factory.hpp:77] Creating layer relu_d3b
+I0715 08:47:51.253862  3347 net.cpp:94] Creating Layer relu_d3b
+I0715 08:47:51.253866  3347 net.cpp:435] relu_d3b <- d3b
+I0715 08:47:51.253871  3347 net.cpp:409] relu_d3b -> relu_d3b
+I0715 08:47:51.253898  3347 net.cpp:144] Setting up relu_d3b
+I0715 08:47:51.253903  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.253906  3347 net.cpp:159] Memory required for data: 1761607680
+I0715 08:47:51.253909  3347 layer_factory.hpp:77] Creating layer conv_d3b-c
+I0715 08:47:51.253918  3347 net.cpp:94] Creating Layer conv_d3b-c
+I0715 08:47:51.253921  3347 net.cpp:435] conv_d3b-c <- relu_d3b
+I0715 08:47:51.253926  3347 net.cpp:409] conv_d3b-c -> d3c
+I0715 08:47:51.259675  3347 net.cpp:144] Setting up conv_d3b-c
+I0715 08:47:51.259688  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.259691  3347 net.cpp:159] Memory required for data: 1778384896
+I0715 08:47:51.259697  3347 layer_factory.hpp:77] Creating layer d3c_conv_d3b-c_0_split
+I0715 08:47:51.259703  3347 net.cpp:94] Creating Layer d3c_conv_d3b-c_0_split
+I0715 08:47:51.259708  3347 net.cpp:435] d3c_conv_d3b-c_0_split <- d3c
+I0715 08:47:51.259713  3347 net.cpp:409] d3c_conv_d3b-c_0_split -> d3c_conv_d3b-c_0_split_0
+I0715 08:47:51.259721  3347 net.cpp:409] d3c_conv_d3b-c_0_split -> d3c_conv_d3b-c_0_split_1
+I0715 08:47:51.259765  3347 net.cpp:144] Setting up d3c_conv_d3b-c_0_split
+I0715 08:47:51.259771  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.259775  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.259778  3347 net.cpp:159] Memory required for data: 1811939328
+I0715 08:47:51.259781  3347 layer_factory.hpp:77] Creating layer BatchNorm_1
+I0715 08:47:51.259789  3347 net.cpp:94] Creating Layer BatchNorm_1
+I0715 08:47:51.259793  3347 net.cpp:435] BatchNorm_1 <- d3c_conv_d3b-c_0_split_0
+I0715 08:47:51.259811  3347 net.cpp:409] BatchNorm_1 -> BatchNorm_1
+I0715 08:47:51.260232  3347 net.cpp:144] Setting up BatchNorm_1
+I0715 08:47:51.260241  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.260244  3347 net.cpp:159] Memory required for data: 1828716544
+I0715 08:47:51.260257  3347 layer_factory.hpp:77] Creating layer relu_d3c
+I0715 08:47:51.260262  3347 net.cpp:94] Creating Layer relu_d3c
+I0715 08:47:51.260267  3347 net.cpp:435] relu_d3c <- BatchNorm_1
+I0715 08:47:51.260272  3347 net.cpp:409] relu_d3c -> relu_d3c
+I0715 08:47:51.260293  3347 net.cpp:144] Setting up relu_d3c
+I0715 08:47:51.260298  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.260303  3347 net.cpp:159] Memory required for data: 1845493760
+I0715 08:47:51.260305  3347 layer_factory.hpp:77] Creating layer pool_d3c-4a
+I0715 08:47:51.260311  3347 net.cpp:94] Creating Layer pool_d3c-4a
+I0715 08:47:51.260314  3347 net.cpp:435] pool_d3c-4a <- relu_d3c
+I0715 08:47:51.260319  3347 net.cpp:409] pool_d3c-4a -> d4a
+I0715 08:47:51.260349  3347 net.cpp:144] Setting up pool_d3c-4a
+I0715 08:47:51.260354  3347 net.cpp:151] Top shape: 4 256 32 32 (1048576)
+I0715 08:47:51.260357  3347 net.cpp:159] Memory required for data: 1849688064
+I0715 08:47:51.260361  3347 layer_factory.hpp:77] Creating layer conv_d4a-b
+I0715 08:47:51.260368  3347 net.cpp:94] Creating Layer conv_d4a-b
+I0715 08:47:51.260372  3347 net.cpp:435] conv_d4a-b <- d4a
+I0715 08:47:51.260377  3347 net.cpp:409] conv_d4a-b -> d4b
+I0715 08:47:51.271503  3347 net.cpp:144] Setting up conv_d4a-b
+I0715 08:47:51.271520  3347 net.cpp:151] Top shape: 4 512 32 32 (2097152)
+I0715 08:47:51.271523  3347 net.cpp:159] Memory required for data: 1858076672
+I0715 08:47:51.271530  3347 layer_factory.hpp:77] Creating layer BatchNorm_2
+I0715 08:47:51.271539  3347 net.cpp:94] Creating Layer BatchNorm_2
+I0715 08:47:51.271543  3347 net.cpp:435] BatchNorm_2 <- d4b
+I0715 08:47:51.271549  3347 net.cpp:409] BatchNorm_2 -> BatchNorm_2
+I0715 08:47:51.271986  3347 net.cpp:144] Setting up BatchNorm_2
+I0715 08:47:51.271996  3347 net.cpp:151] Top shape: 4 512 32 32 (2097152)
+I0715 08:47:51.271998  3347 net.cpp:159] Memory required for data: 1866465280
+I0715 08:47:51.272007  3347 layer_factory.hpp:77] Creating layer relu_d4b
+I0715 08:47:51.272014  3347 net.cpp:94] Creating Layer relu_d4b
+I0715 08:47:51.272018  3347 net.cpp:435] relu_d4b <- BatchNorm_2
+I0715 08:47:51.272023  3347 net.cpp:409] relu_d4b -> relu_d4b
+I0715 08:47:51.272044  3347 net.cpp:144] Setting up relu_d4b
+I0715 08:47:51.272048  3347 net.cpp:151] Top shape: 4 512 32 32 (2097152)
+I0715 08:47:51.272053  3347 net.cpp:159] Memory required for data: 1874853888
+I0715 08:47:51.272055  3347 layer_factory.hpp:77] Creating layer conv_d4b-c
+I0715 08:47:51.272063  3347 net.cpp:94] Creating Layer conv_d4b-c
+I0715 08:47:51.272066  3347 net.cpp:435] conv_d4b-c <- relu_d4b
+I0715 08:47:51.272073  3347 net.cpp:409] conv_d4b-c -> d4c
+I0715 08:47:51.294718  3347 net.cpp:144] Setting up conv_d4b-c
+I0715 08:47:51.294744  3347 net.cpp:151] Top shape: 4 512 32 32 (2097152)
+I0715 08:47:51.294746  3347 net.cpp:159] Memory required for data: 1883242496
+I0715 08:47:51.294757  3347 layer_factory.hpp:77] Creating layer relu_d4c
+I0715 08:47:51.294765  3347 net.cpp:94] Creating Layer relu_d4c
+I0715 08:47:51.294770  3347 net.cpp:435] relu_d4c <- d4c
+I0715 08:47:51.294778  3347 net.cpp:409] relu_d4c -> relu_d4c
+I0715 08:47:51.294806  3347 net.cpp:144] Setting up relu_d4c
+I0715 08:47:51.294811  3347 net.cpp:151] Top shape: 4 512 32 32 (2097152)
+I0715 08:47:51.294814  3347 net.cpp:159] Memory required for data: 1891631104
+I0715 08:47:51.294817  3347 layer_factory.hpp:77] Creating layer upconv_d4c_u3a
+I0715 08:47:51.294827  3347 net.cpp:94] Creating Layer upconv_d4c_u3a
+I0715 08:47:51.294831  3347 net.cpp:435] upconv_d4c_u3a <- relu_d4c
+I0715 08:47:51.294836  3347 net.cpp:409] upconv_d4c_u3a -> u3a
+I0715 08:47:51.300129  3347 net.cpp:144] Setting up upconv_d4c_u3a
+I0715 08:47:51.300141  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.300161  3347 net.cpp:159] Memory required for data: 1908408320
+I0715 08:47:51.300168  3347 layer_factory.hpp:77] Creating layer relu_u3a
+I0715 08:47:51.300174  3347 net.cpp:94] Creating Layer relu_u3a
+I0715 08:47:51.300179  3347 net.cpp:435] relu_u3a <- u3a
+I0715 08:47:51.300184  3347 net.cpp:396] relu_u3a -> u3a (in-place)
+I0715 08:47:51.300191  3347 net.cpp:144] Setting up relu_u3a
+I0715 08:47:51.300195  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.300199  3347 net.cpp:159] Memory required for data: 1925185536
+I0715 08:47:51.300202  3347 layer_factory.hpp:77] Creating layer concat_d3cc_u3a-b
+I0715 08:47:51.300209  3347 net.cpp:94] Creating Layer concat_d3cc_u3a-b
+I0715 08:47:51.300211  3347 net.cpp:435] concat_d3cc_u3a-b <- u3a
+I0715 08:47:51.300216  3347 net.cpp:435] concat_d3cc_u3a-b <- d3c_conv_d3b-c_0_split_1
+I0715 08:47:51.300220  3347 net.cpp:409] concat_d3cc_u3a-b -> u3b
+I0715 08:47:51.300246  3347 net.cpp:144] Setting up concat_d3cc_u3a-b
+I0715 08:47:51.300251  3347 net.cpp:151] Top shape: 4 512 64 64 (8388608)
+I0715 08:47:51.300253  3347 net.cpp:159] Memory required for data: 1958739968
+I0715 08:47:51.300257  3347 layer_factory.hpp:77] Creating layer conv_u3b-c
+I0715 08:47:51.300266  3347 net.cpp:94] Creating Layer conv_u3b-c
+I0715 08:47:51.300269  3347 net.cpp:435] conv_u3b-c <- u3b
+I0715 08:47:51.300276  3347 net.cpp:409] conv_u3b-c -> u3c
+I0715 08:47:51.311385  3347 net.cpp:144] Setting up conv_u3b-c
+I0715 08:47:51.311403  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.311405  3347 net.cpp:159] Memory required for data: 1975517184
+I0715 08:47:51.311414  3347 layer_factory.hpp:77] Creating layer relu_u3c
+I0715 08:47:51.311419  3347 net.cpp:94] Creating Layer relu_u3c
+I0715 08:47:51.311424  3347 net.cpp:435] relu_u3c <- u3c
+I0715 08:47:51.311429  3347 net.cpp:396] relu_u3c -> u3c (in-place)
+I0715 08:47:51.311436  3347 net.cpp:144] Setting up relu_u3c
+I0715 08:47:51.311440  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.311444  3347 net.cpp:159] Memory required for data: 1992294400
+I0715 08:47:51.311446  3347 layer_factory.hpp:77] Creating layer conv_u3c-d
+I0715 08:47:51.311455  3347 net.cpp:94] Creating Layer conv_u3c-d
+I0715 08:47:51.311458  3347 net.cpp:435] conv_u3c-d <- u3c
+I0715 08:47:51.311463  3347 net.cpp:409] conv_u3c-d -> u3d
+I0715 08:47:51.318011  3347 net.cpp:144] Setting up conv_u3c-d
+I0715 08:47:51.318027  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.318030  3347 net.cpp:159] Memory required for data: 2009071616
+I0715 08:47:51.318037  3347 layer_factory.hpp:77] Creating layer relu_u3d
+I0715 08:47:51.318042  3347 net.cpp:94] Creating Layer relu_u3d
+I0715 08:47:51.318048  3347 net.cpp:435] relu_u3d <- u3d
+I0715 08:47:51.318053  3347 net.cpp:396] relu_u3d -> u3d (in-place)
+I0715 08:47:51.318060  3347 net.cpp:144] Setting up relu_u3d
+I0715 08:47:51.318064  3347 net.cpp:151] Top shape: 4 256 64 64 (4194304)
+I0715 08:47:51.318068  3347 net.cpp:159] Memory required for data: 2025848832
+I0715 08:47:51.318070  3347 layer_factory.hpp:77] Creating layer upconv_u3d_u2a
+I0715 08:47:51.318078  3347 net.cpp:94] Creating Layer upconv_u3d_u2a
+I0715 08:47:51.318081  3347 net.cpp:435] upconv_u3d_u2a <- u3d
+I0715 08:47:51.318087  3347 net.cpp:409] upconv_u3d_u2a -> u2a
+I0715 08:47:51.319375  3347 net.cpp:144] Setting up upconv_u3d_u2a
+I0715 08:47:51.319382  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.319386  3347 net.cpp:159] Memory required for data: 2059403264
+I0715 08:47:51.319392  3347 layer_factory.hpp:77] Creating layer relu_u2a
+I0715 08:47:51.319397  3347 net.cpp:94] Creating Layer relu_u2a
+I0715 08:47:51.319401  3347 net.cpp:435] relu_u2a <- u2a
+I0715 08:47:51.319404  3347 net.cpp:396] relu_u2a -> u2a (in-place)
+I0715 08:47:51.319411  3347 net.cpp:144] Setting up relu_u2a
+I0715 08:47:51.319416  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.319417  3347 net.cpp:159] Memory required for data: 2092957696
+I0715 08:47:51.319420  3347 layer_factory.hpp:77] Creating layer concat_d2cc_u2a-b
+I0715 08:47:51.319442  3347 net.cpp:94] Creating Layer concat_d2cc_u2a-b
+I0715 08:47:51.319447  3347 net.cpp:435] concat_d2cc_u2a-b <- u2a
+I0715 08:47:51.319450  3347 net.cpp:435] concat_d2cc_u2a-b <- d2c_conv_d2b-c_0_split_1
+I0715 08:47:51.319455  3347 net.cpp:409] concat_d2cc_u2a-b -> u2b
+I0715 08:47:51.319481  3347 net.cpp:144] Setting up concat_d2cc_u2a-b
+I0715 08:47:51.319490  3347 net.cpp:151] Top shape: 4 256 128 128 (16777216)
+I0715 08:47:51.319494  3347 net.cpp:159] Memory required for data: 2160066560
+I0715 08:47:51.319496  3347 layer_factory.hpp:77] Creating layer conv_u2b-c
+I0715 08:47:51.319504  3347 net.cpp:94] Creating Layer conv_u2b-c
+I0715 08:47:51.319509  3347 net.cpp:435] conv_u2b-c <- u2b
+I0715 08:47:51.319512  3347 net.cpp:409] conv_u2b-c -> u2c
+I0715 08:47:51.324235  3347 net.cpp:144] Setting up conv_u2b-c
+I0715 08:47:51.324251  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.324254  3347 net.cpp:159] Memory required for data: 2193620992
+I0715 08:47:51.324262  3347 layer_factory.hpp:77] Creating layer relu_u2c
+I0715 08:47:51.324271  3347 net.cpp:94] Creating Layer relu_u2c
+I0715 08:47:51.324275  3347 net.cpp:435] relu_u2c <- u2c
+I0715 08:47:51.324280  3347 net.cpp:396] relu_u2c -> u2c (in-place)
+I0715 08:47:51.324287  3347 net.cpp:144] Setting up relu_u2c
+I0715 08:47:51.324291  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.324295  3347 net.cpp:159] Memory required for data: 2227175424
+I0715 08:47:51.324297  3347 layer_factory.hpp:77] Creating layer conv_u2c-d
+I0715 08:47:51.324306  3347 net.cpp:94] Creating Layer conv_u2c-d
+I0715 08:47:51.324308  3347 net.cpp:435] conv_u2c-d <- u2c
+I0715 08:47:51.324314  3347 net.cpp:409] conv_u2c-d -> u2d
+I0715 08:47:51.325727  3347 net.cpp:144] Setting up conv_u2c-d
+I0715 08:47:51.325736  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.325738  3347 net.cpp:159] Memory required for data: 2260729856
+I0715 08:47:51.325744  3347 layer_factory.hpp:77] Creating layer relu_u2d
+I0715 08:47:51.325749  3347 net.cpp:94] Creating Layer relu_u2d
+I0715 08:47:51.325753  3347 net.cpp:435] relu_u2d <- u2d
+I0715 08:47:51.325757  3347 net.cpp:396] relu_u2d -> u2d (in-place)
+I0715 08:47:51.325763  3347 net.cpp:144] Setting up relu_u2d
+I0715 08:47:51.325767  3347 net.cpp:151] Top shape: 4 128 128 128 (8388608)
+I0715 08:47:51.325770  3347 net.cpp:159] Memory required for data: 2294284288
+I0715 08:47:51.325773  3347 layer_factory.hpp:77] Creating layer upconv_u2d_u1a
+I0715 08:47:51.325780  3347 net.cpp:94] Creating Layer upconv_u2d_u1a
+I0715 08:47:51.325783  3347 net.cpp:435] upconv_u2d_u1a <- u2d
+I0715 08:47:51.325788  3347 net.cpp:409] upconv_u2d_u1a -> u1a
+I0715 08:47:51.326303  3347 net.cpp:144] Setting up upconv_u2d_u1a
+I0715 08:47:51.326311  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.326314  3347 net.cpp:159] Memory required for data: 2361393152
+I0715 08:47:51.326320  3347 layer_factory.hpp:77] Creating layer relu_u1a
+I0715 08:47:51.326324  3347 net.cpp:94] Creating Layer relu_u1a
+I0715 08:47:51.326328  3347 net.cpp:435] relu_u1a <- u1a
+I0715 08:47:51.326333  3347 net.cpp:396] relu_u1a -> u1a (in-place)
+I0715 08:47:51.326339  3347 net.cpp:144] Setting up relu_u1a
+I0715 08:47:51.326342  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.326346  3347 net.cpp:159] Memory required for data: 2428502016
+I0715 08:47:51.326350  3347 layer_factory.hpp:77] Creating layer concat_d1cc_u1a-b
+I0715 08:47:51.326354  3347 net.cpp:94] Creating Layer concat_d1cc_u1a-b
+I0715 08:47:51.326357  3347 net.cpp:435] concat_d1cc_u1a-b <- u1a
+I0715 08:47:51.326362  3347 net.cpp:435] concat_d1cc_u1a-b <- d1c_conv_d1b-c_0_split_1
+I0715 08:47:51.326366  3347 net.cpp:409] concat_d1cc_u1a-b -> u1b
+I0715 08:47:51.326390  3347 net.cpp:144] Setting up concat_d1cc_u1a-b
+I0715 08:47:51.326393  3347 net.cpp:151] Top shape: 4 128 256 256 (33554432)
+I0715 08:47:51.326397  3347 net.cpp:159] Memory required for data: 2562719744
+I0715 08:47:51.326400  3347 layer_factory.hpp:77] Creating layer conv_u1b-c
+I0715 08:47:51.326419  3347 net.cpp:94] Creating Layer conv_u1b-c
+I0715 08:47:51.326423  3347 net.cpp:435] conv_u1b-c <- u1b
+I0715 08:47:51.326429  3347 net.cpp:409] conv_u1b-c -> u1c
+I0715 08:47:51.327277  3347 net.cpp:144] Setting up conv_u1b-c
+I0715 08:47:51.327286  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.327288  3347 net.cpp:159] Memory required for data: 2629828608
+I0715 08:47:51.327296  3347 layer_factory.hpp:77] Creating layer relu_u1c
+I0715 08:47:51.327299  3347 net.cpp:94] Creating Layer relu_u1c
+I0715 08:47:51.327303  3347 net.cpp:435] relu_u1c <- u1c
+I0715 08:47:51.327307  3347 net.cpp:396] relu_u1c -> u1c (in-place)
+I0715 08:47:51.327313  3347 net.cpp:144] Setting up relu_u1c
+I0715 08:47:51.327317  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.327320  3347 net.cpp:159] Memory required for data: 2696937472
+I0715 08:47:51.327323  3347 layer_factory.hpp:77] Creating layer conv_u1c-d
+I0715 08:47:51.327330  3347 net.cpp:94] Creating Layer conv_u1c-d
+I0715 08:47:51.327333  3347 net.cpp:435] conv_u1c-d <- u1c
+I0715 08:47:51.327338  3347 net.cpp:409] conv_u1c-d -> u1d
+I0715 08:47:51.327896  3347 net.cpp:144] Setting up conv_u1c-d
+I0715 08:47:51.327905  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.327908  3347 net.cpp:159] Memory required for data: 2764046336
+I0715 08:47:51.327913  3347 layer_factory.hpp:77] Creating layer relu_u1d
+I0715 08:47:51.327919  3347 net.cpp:94] Creating Layer relu_u1d
+I0715 08:47:51.327922  3347 net.cpp:435] relu_u1d <- u1d
+I0715 08:47:51.327926  3347 net.cpp:396] relu_u1d -> u1d (in-place)
+I0715 08:47:51.327932  3347 net.cpp:144] Setting up relu_u1d
+I0715 08:47:51.327936  3347 net.cpp:151] Top shape: 4 64 256 256 (16777216)
+I0715 08:47:51.327939  3347 net.cpp:159] Memory required for data: 2831155200
+I0715 08:47:51.327942  3347 layer_factory.hpp:77] Creating layer upconv_u1d_u0a_NEW
+I0715 08:47:51.327949  3347 net.cpp:94] Creating Layer upconv_u1d_u0a_NEW
+I0715 08:47:51.327951  3347 net.cpp:435] upconv_u1d_u0a_NEW <- u1d
+I0715 08:47:51.327957  3347 net.cpp:409] upconv_u1d_u0a_NEW -> u0a
+I0715 08:47:51.329150  3347 net.cpp:144] Setting up upconv_u1d_u0a_NEW
+I0715 08:47:51.329162  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.329166  3347 net.cpp:159] Memory required for data: 2965372928
+I0715 08:47:51.329180  3347 layer_factory.hpp:77] Creating layer relu_u0a
+I0715 08:47:51.329185  3347 net.cpp:94] Creating Layer relu_u0a
+I0715 08:47:51.329188  3347 net.cpp:435] relu_u0a <- u0a
+I0715 08:47:51.329193  3347 net.cpp:396] relu_u0a -> u0a (in-place)
+I0715 08:47:51.329201  3347 net.cpp:144] Setting up relu_u0a
+I0715 08:47:51.329205  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.329208  3347 net.cpp:159] Memory required for data: 3099590656
+I0715 08:47:51.329211  3347 layer_factory.hpp:77] Creating layer concat_d0cc_u0a-b
+I0715 08:47:51.329216  3347 net.cpp:94] Creating Layer concat_d0cc_u0a-b
+I0715 08:47:51.329219  3347 net.cpp:435] concat_d0cc_u0a-b <- u0a
+I0715 08:47:51.329223  3347 net.cpp:435] concat_d0cc_u0a-b <- d0c_conv_d0b-c_0_split_1
+I0715 08:47:51.329228  3347 net.cpp:409] concat_d0cc_u0a-b -> u0b
+I0715 08:47:51.329257  3347 net.cpp:144] Setting up concat_d0cc_u0a-b
+I0715 08:47:51.329263  3347 net.cpp:151] Top shape: 4 64 512 512 (67108864)
+I0715 08:47:51.329267  3347 net.cpp:159] Memory required for data: 3368026112
+I0715 08:47:51.329269  3347 layer_factory.hpp:77] Creating layer conv_u0b-c_New
+I0715 08:47:51.329278  3347 net.cpp:94] Creating Layer conv_u0b-c_New
+I0715 08:47:51.329282  3347 net.cpp:435] conv_u0b-c_New <- u0b
+I0715 08:47:51.329288  3347 net.cpp:409] conv_u0b-c_New -> u0c
+I0715 08:47:51.330488  3347 net.cpp:144] Setting up conv_u0b-c_New
+I0715 08:47:51.330502  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.330504  3347 net.cpp:159] Memory required for data: 3502243840
+I0715 08:47:51.330512  3347 layer_factory.hpp:77] Creating layer relu_u0c
+I0715 08:47:51.330516  3347 net.cpp:94] Creating Layer relu_u0c
+I0715 08:47:51.330521  3347 net.cpp:435] relu_u0c <- u0c
+I0715 08:47:51.330538  3347 net.cpp:396] relu_u0c -> u0c (in-place)
+I0715 08:47:51.330545  3347 net.cpp:144] Setting up relu_u0c
+I0715 08:47:51.330552  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.330556  3347 net.cpp:159] Memory required for data: 3636461568
+I0715 08:47:51.330561  3347 layer_factory.hpp:77] Creating layer conv_u0c-d_New
+I0715 08:47:51.330571  3347 net.cpp:94] Creating Layer conv_u0c-d_New
+I0715 08:47:51.330576  3347 net.cpp:435] conv_u0c-d_New <- u0c
+I0715 08:47:51.330585  3347 net.cpp:409] conv_u0c-d_New -> u0d
+I0715 08:47:51.331719  3347 net.cpp:144] Setting up conv_u0c-d_New
+I0715 08:47:51.331732  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.331734  3347 net.cpp:159] Memory required for data: 3770679296
+I0715 08:47:51.331742  3347 layer_factory.hpp:77] Creating layer relu_u0d
+I0715 08:47:51.331748  3347 net.cpp:94] Creating Layer relu_u0d
+I0715 08:47:51.331751  3347 net.cpp:435] relu_u0d <- u0d
+I0715 08:47:51.331768  3347 net.cpp:396] relu_u0d -> u0d (in-place)
+I0715 08:47:51.331776  3347 net.cpp:144] Setting up relu_u0d
+I0715 08:47:51.331780  3347 net.cpp:151] Top shape: 4 32 512 512 (33554432)
+I0715 08:47:51.331784  3347 net.cpp:159] Memory required for data: 3904897024
+I0715 08:47:51.331785  3347 layer_factory.hpp:77] Creating layer conv_u0d-score_New
+I0715 08:47:51.331794  3347 net.cpp:94] Creating Layer conv_u0d-score_New
+I0715 08:47:51.331797  3347 net.cpp:435] conv_u0d-score_New <- u0d
+I0715 08:47:51.331804  3347 net.cpp:409] conv_u0d-score_New -> conv_u0d-score_New
+I0715 08:47:51.332165  3347 net.cpp:144] Setting up conv_u0d-score_New
+I0715 08:47:51.332173  3347 net.cpp:151] Top shape: 4 19 512 512 (19922944)
+I0715 08:47:51.332176  3347 net.cpp:159] Memory required for data: 3984588800
+I0715 08:47:51.332182  3347 layer_factory.hpp:77] Creating layer conv_u0d-score_New_conv_u0d-score_New_0_split
+I0715 08:47:51.332191  3347 net.cpp:94] Creating Layer conv_u0d-score_New_conv_u0d-score_New_0_split
+I0715 08:47:51.332195  3347 net.cpp:435] conv_u0d-score_New_conv_u0d-score_New_0_split <- conv_u0d-score_New
+I0715 08:47:51.332201  3347 net.cpp:409] conv_u0d-score_New_conv_u0d-score_New_0_split -> conv_u0d-score_New_conv_u0d-score_New_0_split_0
+I0715 08:47:51.332208  3347 net.cpp:409] conv_u0d-score_New_conv_u0d-score_New_0_split -> conv_u0d-score_New_conv_u0d-score_New_0_split_1
+I0715 08:47:51.332243  3347 net.cpp:144] Setting up conv_u0d-score_New_conv_u0d-score_New_0_split
+I0715 08:47:51.332249  3347 net.cpp:151] Top shape: 4 19 512 512 (19922944)
+I0715 08:47:51.332253  3347 net.cpp:151] Top shape: 4 19 512 512 (19922944)
+I0715 08:47:51.332257  3347 net.cpp:159] Memory required for data: 4143972352
+I0715 08:47:51.332259  3347 layer_factory.hpp:77] Creating layer loss
+I0715 08:47:51.332267  3347 net.cpp:94] Creating Layer loss
+I0715 08:47:51.332271  3347 net.cpp:435] loss <- conv_u0d-score_New_conv_u0d-score_New_0_split_0
+I0715 08:47:51.332275  3347 net.cpp:435] loss <- label_data_1_split_0
+I0715 08:47:51.332280  3347 net.cpp:409] loss -> loss
+I0715 08:47:51.332295  3347 layer_factory.hpp:77] Creating layer loss
+I0715 08:47:51.368185  3347 net.cpp:144] Setting up loss
+I0715 08:47:51.368216  3347 net.cpp:151] Top shape: (1)
+I0715 08:47:51.368222  3347 net.cpp:154]     with loss weight 1
+I0715 08:47:51.368250  3347 net.cpp:159] Memory required for data: 4143972356
+I0715 08:47:51.368258  3347 layer_factory.hpp:77] Creating layer acc
+I0715 08:47:51.368276  3347 net.cpp:94] Creating Layer acc
+I0715 08:47:51.368283  3347 net.cpp:435] acc <- conv_u0d-score_New_conv_u0d-score_New_0_split_1
+I0715 08:47:51.368290  3347 net.cpp:435] acc <- label_data_1_split_1
+I0715 08:47:51.368296  3347 net.cpp:409] acc -> acc
+I0715 08:47:51.368309  3347 net.cpp:409] acc -> per_acc
+I0715 08:47:51.368355  3347 net.cpp:144] Setting up acc
+I0715 08:47:51.368363  3347 net.cpp:151] Top shape: (1)
+I0715 08:47:51.368367  3347 net.cpp:151] Top shape: 19 (19)
+I0715 08:47:51.368369  3347 net.cpp:159] Memory required for data: 4143972436
+I0715 08:47:51.368373  3347 net.cpp:222] acc does not need backward computation.
+I0715 08:47:51.368399  3347 net.cpp:220] loss needs backward computation.
+I0715 08:47:51.368403  3347 net.cpp:220] conv_u0d-score_New_conv_u0d-score_New_0_split needs backward computation.
+I0715 08:47:51.368407  3347 net.cpp:220] conv_u0d-score_New needs backward computation.
+I0715 08:47:51.368410  3347 net.cpp:220] relu_u0d needs backward computation.
+I0715 08:47:51.368414  3347 net.cpp:220] conv_u0c-d_New needs backward computation.
+I0715 08:47:51.368418  3347 net.cpp:220] relu_u0c needs backward computation.
+I0715 08:47:51.368422  3347 net.cpp:220] conv_u0b-c_New needs backward computation.
+I0715 08:47:51.368425  3347 net.cpp:220] concat_d0cc_u0a-b needs backward computation.
+I0715 08:47:51.368429  3347 net.cpp:220] relu_u0a needs backward computation.
+I0715 08:47:51.368432  3347 net.cpp:220] upconv_u1d_u0a_NEW needs backward computation.
+I0715 08:47:51.368436  3347 net.cpp:220] relu_u1d needs backward computation.
+I0715 08:47:51.368439  3347 net.cpp:220] conv_u1c-d needs backward computation.
+I0715 08:47:51.368443  3347 net.cpp:220] relu_u1c needs backward computation.
+I0715 08:47:51.368446  3347 net.cpp:220] conv_u1b-c needs backward computation.
+I0715 08:47:51.368449  3347 net.cpp:220] concat_d1cc_u1a-b needs backward computation.
+I0715 08:47:51.368453  3347 net.cpp:220] relu_u1a needs backward computation.
+I0715 08:47:51.368458  3347 net.cpp:220] upconv_u2d_u1a needs backward computation.
+I0715 08:47:51.368460  3347 net.cpp:220] relu_u2d needs backward computation.
+I0715 08:47:51.368463  3347 net.cpp:220] conv_u2c-d needs backward computation.
+I0715 08:47:51.368468  3347 net.cpp:220] relu_u2c needs backward computation.
+I0715 08:47:51.368470  3347 net.cpp:220] conv_u2b-c needs backward computation.
+I0715 08:47:51.368474  3347 net.cpp:220] concat_d2cc_u2a-b needs backward computation.
+I0715 08:47:51.368479  3347 net.cpp:220] relu_u2a needs backward computation.
+I0715 08:47:51.368481  3347 net.cpp:220] upconv_u3d_u2a needs backward computation.
+I0715 08:47:51.368485  3347 net.cpp:220] relu_u3d needs backward computation.
+I0715 08:47:51.368489  3347 net.cpp:220] conv_u3c-d needs backward computation.
+I0715 08:47:51.368491  3347 net.cpp:220] relu_u3c needs backward computation.
+I0715 08:47:51.368494  3347 net.cpp:220] conv_u3b-c needs backward computation.
+I0715 08:47:51.368499  3347 net.cpp:220] concat_d3cc_u3a-b needs backward computation.
+I0715 08:47:51.368502  3347 net.cpp:220] relu_u3a needs backward computation.
+I0715 08:47:51.368505  3347 net.cpp:220] upconv_d4c_u3a needs backward computation.
+I0715 08:47:51.368508  3347 net.cpp:220] relu_d4c needs backward computation.
+I0715 08:47:51.368512  3347 net.cpp:220] conv_d4b-c needs backward computation.
+I0715 08:47:51.368516  3347 net.cpp:220] relu_d4b needs backward computation.
+I0715 08:47:51.368520  3347 net.cpp:220] BatchNorm_2 needs backward computation.
+I0715 08:47:51.368522  3347 net.cpp:220] conv_d4a-b needs backward computation.
+I0715 08:47:51.368526  3347 net.cpp:220] pool_d3c-4a needs backward computation.
+I0715 08:47:51.368530  3347 net.cpp:220] relu_d3c needs backward computation.
+I0715 08:47:51.368533  3347 net.cpp:220] BatchNorm_1 needs backward computation.
+I0715 08:47:51.368537  3347 net.cpp:220] d3c_conv_d3b-c_0_split needs backward computation.
+I0715 08:47:51.368541  3347 net.cpp:220] conv_d3b-c needs backward computation.
+I0715 08:47:51.368546  3347 net.cpp:220] relu_d3b needs backward computation.
+I0715 08:47:51.368548  3347 net.cpp:220] conv_d3a-b needs backward computation.
+I0715 08:47:51.368552  3347 net.cpp:220] pool_d2c-3a needs backward computation.
+I0715 08:47:51.368556  3347 net.cpp:220] relu_d2c needs backward computation.
+I0715 08:47:51.368559  3347 net.cpp:220] BatchNorm_d2c needs backward computation.
+I0715 08:47:51.368562  3347 net.cpp:220] d2c_conv_d2b-c_0_split needs backward computation.
+I0715 08:47:51.368566  3347 net.cpp:220] conv_d2b-c needs backward computation.
+I0715 08:47:51.368571  3347 net.cpp:220] relu_d2b needs backward computation.
+I0715 08:47:51.368573  3347 net.cpp:220] conv_d2a-b needs backward computation.
+I0715 08:47:51.368582  3347 net.cpp:220] pool_d1c-2a needs backward computation.
+I0715 08:47:51.368585  3347 net.cpp:220] relu_d1c needs backward computation.
+I0715 08:47:51.368589  3347 net.cpp:220] BatchNorm_d1c needs backward computation.
+I0715 08:47:51.368592  3347 net.cpp:220] d1c_conv_d1b-c_0_split needs backward computation.
+I0715 08:47:51.368597  3347 net.cpp:220] conv_d1b-c needs backward computation.
+I0715 08:47:51.368600  3347 net.cpp:220] relu_d1b needs backward computation.
+I0715 08:47:51.368604  3347 net.cpp:220] conv_d1a-b needs backward computation.
+I0715 08:47:51.368608  3347 net.cpp:220] pool_d0c-1a needs backward computation.
+I0715 08:47:51.368611  3347 net.cpp:220] relu_d0c needs backward computation.
+I0715 08:47:51.368615  3347 net.cpp:220] BatchNorm_d0c needs backward computation.
+I0715 08:47:51.368619  3347 net.cpp:220] d0c_conv_d0b-c_0_split needs backward computation.
+I0715 08:47:51.368623  3347 net.cpp:220] conv_d0b-c needs backward computation.
+I0715 08:47:51.368626  3347 net.cpp:220] relu_d0b needs backward computation.
+I0715 08:47:51.368629  3347 net.cpp:220] conv_d0a-b needs backward computation.
+I0715 08:47:51.368634  3347 net.cpp:222] label_data_1_split does not need backward computation.
+I0715 08:47:51.368638  3347 net.cpp:222] data does not need backward computation.
+I0715 08:47:51.368641  3347 net.cpp:264] This network produces output acc
+I0715 08:47:51.368645  3347 net.cpp:264] This network produces output loss
+I0715 08:47:51.368649  3347 net.cpp:264] This network produces output per_acc
+I0715 08:47:51.368693  3347 net.cpp:284] Network initialization done.
+I0715 08:47:51.368906  3347 solver.cpp:63] Solver scaffolding done.
+I0715 08:47:51.371774  3347 caffe.cpp:237] Resuming from ../workspace/model/unet-lite/final_models/_iter_18000.solverstate
+I0715 08:47:51.894467  3347 sgd_solver.cpp:318] SGDSolver: restoring history
+I0715 08:47:51.929613  3347 caffe.cpp:247] Starting Optimization
+I0715 08:47:51.929641  3347 solver.cpp:341] Solving unet
+I0715 08:47:51.929644  3347 solver.cpp:342] Learning Rate Policy: poly
+I0715 08:48:37.045017  3347 solver.cpp:270] Iteration 18000 (398.993 iter/s, 45.1136s/50 iter), loss = 0.187086, remaining 0 hours and 0 minutes
+I0715 08:48:37.045086  3347 solver.cpp:291]     Train net output #0: acc = 0.962232
+I0715 08:48:37.045097  3347 solver.cpp:291]     Train net output #1: loss = 0.122417 (* 1 = 0.122417 loss)
+I0715 08:48:37.045102  3347 solver.cpp:291]     Train net output #2: per_acc = 0.991214
+I0715 08:48:37.045106  3347 solver.cpp:291]     Train net output #3: per_acc = 0.920905
+I0715 08:48:37.045109  3347 solver.cpp:291]     Train net output #4: per_acc = 0.97098
+I0715 08:48:37.045114  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 08:48:37.045117  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 08:48:37.045121  3347 solver.cpp:291]     Train net output #7: per_acc = 0.493721
+I0715 08:48:37.045125  3347 solver.cpp:291]     Train net output #8: per_acc = 0.901297
+I0715 08:48:37.045128  3347 solver.cpp:291]     Train net output #9: per_acc = 0.863236
+I0715 08:48:37.045131  3347 solver.cpp:291]     Train net output #10: per_acc = 0.965747
+I0715 08:48:37.045135  3347 solver.cpp:291]     Train net output #11: per_acc = 0.801662
+I0715 08:48:37.045140  3347 solver.cpp:291]     Train net output #12: per_acc = 0.986307
+I0715 08:48:37.045142  3347 solver.cpp:291]     Train net output #13: per_acc = 0.90388
+I0715 08:48:37.045146  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 08:48:37.045150  3347 solver.cpp:291]     Train net output #15: per_acc = 0.921957
+I0715 08:48:37.045153  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 08:48:37.045157  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 08:48:37.045161  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 08:48:37.045164  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 08:48:37.045168  3347 solver.cpp:291]     Train net output #20: per_acc = 0.884987
+I0715 08:48:37.045182  3347 sgd_solver.cpp:106] Iteration 18000, lr = 0.0005
+I0715 09:19:17.443646  3347 solver.cpp:270] Iteration 18050 (0.0271691 iter/s, 1840.33s/50 iter), loss = 0.194581, remaining 60 hours and 42 minutes
+I0715 09:19:17.443827  3347 solver.cpp:291]     Train net output #0: acc = 0.968484
+I0715 09:19:17.443840  3347 solver.cpp:291]     Train net output #1: loss = 0.102612 (* 1 = 0.102612 loss)
+I0715 09:19:17.443845  3347 solver.cpp:291]     Train net output #2: per_acc = 0.996746
+I0715 09:19:17.443848  3347 solver.cpp:291]     Train net output #3: per_acc = 0.981053
+I0715 09:19:17.443852  3347 solver.cpp:291]     Train net output #4: per_acc = 0.916331
+I0715 09:19:17.443856  3347 solver.cpp:291]     Train net output #5: per_acc = 0.0508384
+I0715 09:19:17.443859  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 09:19:17.443862  3347 solver.cpp:291]     Train net output #7: per_acc = 0.981818
+I0715 09:19:17.443867  3347 solver.cpp:291]     Train net output #8: per_acc = 0.67546
+I0715 09:19:17.443871  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0715 09:19:17.443873  3347 solver.cpp:291]     Train net output #10: per_acc = 0.896963
+I0715 09:19:17.443877  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0715 09:19:17.443881  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 09:19:17.443884  3347 solver.cpp:291]     Train net output #13: per_acc = 0.971097
+I0715 09:19:17.443888  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 09:19:17.443892  3347 solver.cpp:291]     Train net output #15: per_acc = 0.973647
+I0715 09:19:17.443895  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 09:19:17.443898  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 09:19:17.443902  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 09:19:17.443905  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 09:19:17.443909  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 09:19:17.443919  3347 sgd_solver.cpp:106] Iteration 18050, lr = 0.0005
+I0715 09:49:21.921159  3347 solver.cpp:270] Iteration 18100 (0.02771 iter/s, 1804.4s/50 iter), loss = 0.202552, remaining 58 hours and 55 minutes
+I0715 09:49:21.921294  3347 solver.cpp:291]     Train net output #0: acc = 0.927612
+I0715 09:49:21.921305  3347 solver.cpp:291]     Train net output #1: loss = 0.23628 (* 1 = 0.23628 loss)
+I0715 09:49:21.921310  3347 solver.cpp:291]     Train net output #2: per_acc = 0.959595
+I0715 09:49:21.921314  3347 solver.cpp:291]     Train net output #3: per_acc = 0.912369
+I0715 09:49:21.921317  3347 solver.cpp:291]     Train net output #4: per_acc = 0.942784
+I0715 09:49:21.921324  3347 solver.cpp:291]     Train net output #5: per_acc = 0.627738
+I0715 09:49:21.921326  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 09:49:21.921330  3347 solver.cpp:291]     Train net output #7: per_acc = 0.704558
+I0715 09:49:21.921334  3347 solver.cpp:291]     Train net output #8: per_acc = 0.572159
+I0715 09:49:21.921337  3347 solver.cpp:291]     Train net output #9: per_acc = 0.936
+I0715 09:49:21.921341  3347 solver.cpp:291]     Train net output #10: per_acc = 0.983021
+I0715 09:49:21.921344  3347 solver.cpp:291]     Train net output #11: per_acc = 0.702136
+I0715 09:49:21.921348  3347 solver.cpp:291]     Train net output #12: per_acc = 0.903599
+I0715 09:49:21.921352  3347 solver.cpp:291]     Train net output #13: per_acc = 0.944626
+I0715 09:49:21.921355  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 09:49:21.921360  3347 solver.cpp:291]     Train net output #15: per_acc = 0.977445
+I0715 09:49:21.921362  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 09:49:21.921366  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 09:49:21.921370  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 09:49:21.921373  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 09:49:21.921376  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 09:49:21.921386  3347 sgd_solver.cpp:106] Iteration 18100, lr = 0.0005
+I0715 10:19:28.763517  3347 solver.cpp:270] Iteration 18150 (0.0276737 iter/s, 1806.77s/50 iter), loss = 0.199847, remaining 58 hours and 23 minutes
+I0715 10:19:28.763691  3347 solver.cpp:291]     Train net output #0: acc = 0.960264
+I0715 10:19:28.763705  3347 solver.cpp:291]     Train net output #1: loss = 0.126791 (* 1 = 0.126791 loss)
+I0715 10:19:28.763708  3347 solver.cpp:291]     Train net output #2: per_acc = 0.992124
+I0715 10:19:28.763712  3347 solver.cpp:291]     Train net output #3: per_acc = 0.974526
+I0715 10:19:28.763717  3347 solver.cpp:291]     Train net output #4: per_acc = 0.980563
+I0715 10:19:28.763721  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 10:19:28.763725  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 10:19:28.763728  3347 solver.cpp:291]     Train net output #7: per_acc = 0.436906
+I0715 10:19:28.763732  3347 solver.cpp:291]     Train net output #8: per_acc = 0.953947
+I0715 10:19:28.763736  3347 solver.cpp:291]     Train net output #9: per_acc = 0.946666
+I0715 10:19:28.763739  3347 solver.cpp:291]     Train net output #10: per_acc = 0.894582
+I0715 10:19:28.763743  3347 solver.cpp:291]     Train net output #11: per_acc = 0.706027
+I0715 10:19:28.763746  3347 solver.cpp:291]     Train net output #12: per_acc = 0.998474
+I0715 10:19:28.763751  3347 solver.cpp:291]     Train net output #13: per_acc = 0.757058
+I0715 10:19:28.763758  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 10:19:28.763762  3347 solver.cpp:291]     Train net output #15: per_acc = 0.97108
+I0715 10:19:28.763767  3347 solver.cpp:291]     Train net output #16: per_acc = 0.820584
+I0715 10:19:28.763769  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 10:19:28.763773  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 10:19:28.763777  3347 solver.cpp:291]     Train net output #19: per_acc = 0.902744
+I0715 10:19:28.763780  3347 solver.cpp:291]     Train net output #20: per_acc = 0.832507
+I0715 10:19:28.763790  3347 sgd_solver.cpp:106] Iteration 18150, lr = 0.0005
+I0715 10:49:34.617009  3347 solver.cpp:270] Iteration 18200 (0.0276888 iter/s, 1805.78s/50 iter), loss = 0.194545, remaining 57 hours and 45 minutes
+I0715 10:49:34.617170  3347 solver.cpp:291]     Train net output #0: acc = 0.850806
+I0715 10:49:34.617182  3347 solver.cpp:291]     Train net output #1: loss = 0.447441 (* 1 = 0.447441 loss)
+I0715 10:49:34.617185  3347 solver.cpp:291]     Train net output #2: per_acc = 0.876738
+I0715 10:49:34.617190  3347 solver.cpp:291]     Train net output #3: per_acc = 0.729304
+I0715 10:49:34.617193  3347 solver.cpp:291]     Train net output #4: per_acc = 0.969684
+I0715 10:49:34.617197  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 10:49:34.617200  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 10:49:34.617204  3347 solver.cpp:291]     Train net output #7: per_acc = 0.722679
+I0715 10:49:34.617208  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 10:49:34.617211  3347 solver.cpp:291]     Train net output #9: per_acc = 0.635845
+I0715 10:49:34.617215  3347 solver.cpp:291]     Train net output #10: per_acc = 0.902263
+I0715 10:49:34.617219  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0715 10:49:34.617223  3347 solver.cpp:291]     Train net output #12: per_acc = 0.996797
+I0715 10:49:34.617226  3347 solver.cpp:291]     Train net output #13: per_acc = 0.438596
+I0715 10:49:34.617229  3347 solver.cpp:291]     Train net output #14: per_acc = 0.229512
+I0715 10:49:34.617234  3347 solver.cpp:291]     Train net output #15: per_acc = 0.941699
+I0715 10:49:34.617238  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 10:49:34.617241  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 10:49:34.617244  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 10:49:34.617249  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 10:49:34.617252  3347 solver.cpp:291]     Train net output #20: per_acc = 0.0207241
+I0715 10:49:34.617262  3347 sgd_solver.cpp:106] Iteration 18200, lr = 0.0005
+I0715 11:19:37.582469  3347 solver.cpp:270] Iteration 18250 (0.0277332 iter/s, 1802.89s/50 iter), loss = 0.196245, remaining 57 hours and 4 minutes
+I0715 11:19:37.582660  3347 solver.cpp:291]     Train net output #0: acc = 0.967427
+I0715 11:19:37.582674  3347 solver.cpp:291]     Train net output #1: loss = 0.103948 (* 1 = 0.103948 loss)
+I0715 11:19:37.582679  3347 solver.cpp:291]     Train net output #2: per_acc = 0.988716
+I0715 11:19:37.582682  3347 solver.cpp:291]     Train net output #3: per_acc = 0.980349
+I0715 11:19:37.582686  3347 solver.cpp:291]     Train net output #4: per_acc = 0.983092
+I0715 11:19:37.582690  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 11:19:37.582693  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 11:19:37.582697  3347 solver.cpp:291]     Train net output #7: per_acc = 0.620122
+I0715 11:19:37.582701  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 11:19:37.582705  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0715 11:19:37.582708  3347 solver.cpp:291]     Train net output #10: per_acc = 0.958051
+I0715 11:19:37.582711  3347 solver.cpp:291]     Train net output #11: per_acc = 0.051618
+I0715 11:19:37.582715  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 11:19:37.582720  3347 solver.cpp:291]     Train net output #13: per_acc = 0.707842
+I0715 11:19:37.582722  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 11:19:37.582726  3347 solver.cpp:291]     Train net output #15: per_acc = 0.974536
+I0715 11:19:37.582731  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 11:19:37.582736  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 11:19:37.582741  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 11:19:37.582744  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 11:19:37.582748  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 11:19:37.582758  3347 sgd_solver.cpp:106] Iteration 18250, lr = 0.0005
+I0715 11:49:57.255470  3347 solver.cpp:270] Iteration 18300 (0.0274786 iter/s, 1819.6s/50 iter), loss = 0.189776, remaining 57 hours and 35 minutes
+I0715 11:49:57.255631  3347 solver.cpp:291]     Train net output #0: acc = 0.961911
+I0715 11:49:57.255645  3347 solver.cpp:291]     Train net output #1: loss = 0.117641 (* 1 = 0.117641 loss)
+I0715 11:49:57.255650  3347 solver.cpp:291]     Train net output #2: per_acc = 0.993189
+I0715 11:49:57.255653  3347 solver.cpp:291]     Train net output #3: per_acc = 0.847414
+I0715 11:49:57.255656  3347 solver.cpp:291]     Train net output #4: per_acc = 0.907874
+I0715 11:49:57.255661  3347 solver.cpp:291]     Train net output #5: per_acc = 0.921179
+I0715 11:49:57.255664  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 11:49:57.255668  3347 solver.cpp:291]     Train net output #7: per_acc = 0.714141
+I0715 11:49:57.255671  3347 solver.cpp:291]     Train net output #8: per_acc = 0.885747
+I0715 11:49:57.255676  3347 solver.cpp:291]     Train net output #9: per_acc = 0.640444
+I0715 11:49:57.255679  3347 solver.cpp:291]     Train net output #10: per_acc = 0.969888
+I0715 11:49:57.255682  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0715 11:49:57.255686  3347 solver.cpp:291]     Train net output #12: per_acc = 0.971692
+I0715 11:49:57.255689  3347 solver.cpp:291]     Train net output #13: per_acc = 0.449493
+I0715 11:49:57.255693  3347 solver.cpp:291]     Train net output #14: per_acc = 0.451716
+I0715 11:49:57.255697  3347 solver.cpp:291]     Train net output #15: per_acc = 0.988295
+I0715 11:49:57.255700  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 11:49:57.255704  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 11:49:57.255707  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 11:49:57.255712  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 11:49:57.255714  3347 solver.cpp:291]     Train net output #20: per_acc = 0.849149
+I0715 11:49:57.255724  3347 sgd_solver.cpp:106] Iteration 18300, lr = 0.0005
+I0715 12:19:52.290259  3347 solver.cpp:270] Iteration 18350 (0.0278557 iter/s, 1794.96s/50 iter), loss = 0.198628, remaining 56 hours and 13 minutes
+I0715 12:19:52.290428  3347 solver.cpp:291]     Train net output #0: acc = 0.958012
+I0715 12:19:52.290439  3347 solver.cpp:291]     Train net output #1: loss = 0.143242 (* 1 = 0.143242 loss)
+I0715 12:19:52.290444  3347 solver.cpp:291]     Train net output #2: per_acc = 0.992399
+I0715 12:19:52.290448  3347 solver.cpp:291]     Train net output #3: per_acc = 0.911786
+I0715 12:19:52.290452  3347 solver.cpp:291]     Train net output #4: per_acc = 0.956754
+I0715 12:19:52.290457  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 12:19:52.290462  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 12:19:52.290464  3347 solver.cpp:291]     Train net output #7: per_acc = 0.339163
+I0715 12:19:52.290467  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 12:19:52.290472  3347 solver.cpp:291]     Train net output #9: per_acc = 0.635498
+I0715 12:19:52.290475  3347 solver.cpp:291]     Train net output #10: per_acc = 0.964819
+I0715 12:19:52.290479  3347 solver.cpp:291]     Train net output #11: per_acc = 0.978037
+I0715 12:19:52.290482  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 12:19:52.290485  3347 solver.cpp:291]     Train net output #13: per_acc = 0.587207
+I0715 12:19:52.290489  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 12:19:52.290493  3347 solver.cpp:291]     Train net output #15: per_acc = 0.971844
+I0715 12:19:52.290496  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 12:19:52.290500  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 12:19:52.290504  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 12:19:52.290508  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 12:19:52.290510  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 12:19:52.290519  3347 sgd_solver.cpp:106] Iteration 18350, lr = 0.0005
+I0715 12:49:14.469365  3347 solver.cpp:270] Iteration 18400 (0.0283751 iter/s, 1762.11s/50 iter), loss = 0.195671, remaining 54 hours and 36 minutes
+I0715 12:49:14.469501  3347 solver.cpp:291]     Train net output #0: acc = 0.919012
+I0715 12:49:14.469512  3347 solver.cpp:291]     Train net output #1: loss = 0.250697 (* 1 = 0.250697 loss)
+I0715 12:49:14.469516  3347 solver.cpp:291]     Train net output #2: per_acc = 0.967517
+I0715 12:49:14.469521  3347 solver.cpp:291]     Train net output #3: per_acc = 0.861504
+I0715 12:49:14.469524  3347 solver.cpp:291]     Train net output #4: per_acc = 0.921121
+I0715 12:49:14.469527  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 12:49:14.469532  3347 solver.cpp:291]     Train net output #6: per_acc = 0.426988
+I0715 12:49:14.469535  3347 solver.cpp:291]     Train net output #7: per_acc = 0.636397
+I0715 12:49:14.469539  3347 solver.cpp:291]     Train net output #8: per_acc = 0.588207
+I0715 12:49:14.469542  3347 solver.cpp:291]     Train net output #9: per_acc = 0.250677
+I0715 12:49:14.469545  3347 solver.cpp:291]     Train net output #10: per_acc = 0.960406
+I0715 12:49:14.469550  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0715 12:49:14.469553  3347 solver.cpp:291]     Train net output #12: per_acc = 0.915244
+I0715 12:49:14.469557  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0715 12:49:14.469560  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 12:49:14.469564  3347 solver.cpp:291]     Train net output #15: per_acc = 0.958177
+I0715 12:49:14.469568  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 12:49:14.469571  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 12:49:14.469574  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 12:49:14.469578  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 12:49:14.469581  3347 solver.cpp:291]     Train net output #20: per_acc = 0.882397
+I0715 12:49:14.469590  3347 sgd_solver.cpp:106] Iteration 18400, lr = 0.0005
+I0715 13:18:08.242288  3347 solver.cpp:270] Iteration 18450 (0.02884 iter/s, 1733.71s/50 iter), loss = 0.197478, remaining 53 hours and 8 minutes
+I0715 13:18:08.242465  3347 solver.cpp:291]     Train net output #0: acc = 0.950489
+I0715 13:18:08.242476  3347 solver.cpp:291]     Train net output #1: loss = 0.156201 (* 1 = 0.156201 loss)
+I0715 13:18:08.242481  3347 solver.cpp:291]     Train net output #2: per_acc = 0.988393
+I0715 13:18:08.242486  3347 solver.cpp:291]     Train net output #3: per_acc = 0.950739
+I0715 13:18:08.242489  3347 solver.cpp:291]     Train net output #4: per_acc = 0.944127
+I0715 13:18:08.242492  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 13:18:08.242496  3347 solver.cpp:291]     Train net output #6: per_acc = 0.357674
+I0715 13:18:08.242499  3347 solver.cpp:291]     Train net output #7: per_acc = 0.331901
+I0715 13:18:08.242503  3347 solver.cpp:291]     Train net output #8: per_acc = 0.764548
+I0715 13:18:08.242507  3347 solver.cpp:291]     Train net output #9: per_acc = 0.704296
+I0715 13:18:08.242511  3347 solver.cpp:291]     Train net output #10: per_acc = 0.960339
+I0715 13:18:08.242514  3347 solver.cpp:291]     Train net output #11: per_acc = 0.5
+I0715 13:18:08.242518  3347 solver.cpp:291]     Train net output #12: per_acc = 0.969725
+I0715 13:18:08.242522  3347 solver.cpp:291]     Train net output #13: per_acc = 0.8722
+I0715 13:18:08.242525  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 13:18:08.242529  3347 solver.cpp:291]     Train net output #15: per_acc = 0.981329
+I0715 13:18:08.242533  3347 solver.cpp:291]     Train net output #16: per_acc = 0.00666296
+I0715 13:18:08.242537  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 13:18:08.242540  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 13:18:08.242544  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 13:18:08.242548  3347 solver.cpp:291]     Train net output #20: per_acc = 0.415864
+I0715 13:18:08.242558  3347 sgd_solver.cpp:106] Iteration 18450, lr = 0.0005
+I0715 13:47:03.032269  3347 solver.cpp:270] Iteration 18500 (0.0288231 iter/s, 1734.72s/50 iter), loss = 0.204804, remaining 52 hours and 36 minutes
+I0715 13:47:03.032986  3347 solver.cpp:291]     Train net output #0: acc = 0.948046
+I0715 13:47:03.032997  3347 solver.cpp:291]     Train net output #1: loss = 0.171655 (* 1 = 0.171655 loss)
+I0715 13:47:03.033001  3347 solver.cpp:291]     Train net output #2: per_acc = 0.980897
+I0715 13:47:03.033005  3347 solver.cpp:291]     Train net output #3: per_acc = 0.949756
+I0715 13:47:03.033010  3347 solver.cpp:291]     Train net output #4: per_acc = 0.947725
+I0715 13:47:03.033013  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 13:47:03.033017  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 13:47:03.033020  3347 solver.cpp:291]     Train net output #7: per_acc = 0.602438
+I0715 13:47:03.033023  3347 solver.cpp:291]     Train net output #8: per_acc = 0.554466
+I0715 13:47:03.033027  3347 solver.cpp:291]     Train net output #9: per_acc = 0.414762
+I0715 13:47:03.033031  3347 solver.cpp:291]     Train net output #10: per_acc = 0.980938
+I0715 13:47:03.033051  3347 solver.cpp:291]     Train net output #11: per_acc = 0.825013
+I0715 13:47:03.033053  3347 solver.cpp:291]     Train net output #12: per_acc = 0.911708
+I0715 13:47:03.033057  3347 solver.cpp:291]     Train net output #13: per_acc = 0.0123239
+I0715 13:47:03.033061  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 13:47:03.033064  3347 solver.cpp:291]     Train net output #15: per_acc = 0.941973
+I0715 13:47:03.033068  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 13:47:03.033072  3347 solver.cpp:291]     Train net output #17: per_acc = 0.0261333
+I0715 13:47:03.033077  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 13:47:03.033079  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 13:47:03.033082  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 13:47:03.033092  3347 sgd_solver.cpp:106] Iteration 18500, lr = 0.0005
+I0715 14:16:25.151957  3347 solver.cpp:270] Iteration 18550 (0.0283761 iter/s, 1762.05s/50 iter), loss = 0.214737, remaining 52 hours and 50 minutes
+I0715 14:16:25.152120  3347 solver.cpp:291]     Train net output #0: acc = 0.962498
+I0715 14:16:25.152132  3347 solver.cpp:291]     Train net output #1: loss = 0.122971 (* 1 = 0.122971 loss)
+I0715 14:16:25.152137  3347 solver.cpp:291]     Train net output #2: per_acc = 0.994773
+I0715 14:16:25.152140  3347 solver.cpp:291]     Train net output #3: per_acc = 0.954079
+I0715 14:16:25.152145  3347 solver.cpp:291]     Train net output #4: per_acc = 0.97542
+I0715 14:16:25.152149  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 14:16:25.152153  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 14:16:25.152156  3347 solver.cpp:291]     Train net output #7: per_acc = 0.463993
+I0715 14:16:25.152160  3347 solver.cpp:291]     Train net output #8: per_acc = 0.255
+I0715 14:16:25.152163  3347 solver.cpp:291]     Train net output #9: per_acc = 0.735566
+I0715 14:16:25.152168  3347 solver.cpp:291]     Train net output #10: per_acc = 0.967079
+I0715 14:16:25.152171  3347 solver.cpp:291]     Train net output #11: per_acc = 0.652632
+I0715 14:16:25.152174  3347 solver.cpp:291]     Train net output #12: per_acc = 0.964268
+I0715 14:16:25.152177  3347 solver.cpp:291]     Train net output #13: per_acc = 0.910194
+I0715 14:16:25.152182  3347 solver.cpp:291]     Train net output #14: per_acc = 0.621973
+I0715 14:16:25.152185  3347 solver.cpp:291]     Train net output #15: per_acc = 0.840636
+I0715 14:16:25.152189  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 14:16:25.152192  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 14:16:25.152196  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 14:16:25.152199  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 14:16:25.152204  3347 solver.cpp:291]     Train net output #20: per_acc = 0.87292
+I0715 14:16:25.152212  3347 sgd_solver.cpp:106] Iteration 18550, lr = 0.0005
+I0715 14:45:37.387018  3347 solver.cpp:270] Iteration 18600 (0.0285361 iter/s, 1752.17s/50 iter), loss = 0.200717, remaining 52 hours and 32 minutes
+I0715 14:45:37.387168  3347 solver.cpp:291]     Train net output #0: acc = 0.973009
+I0715 14:45:37.387178  3347 solver.cpp:291]     Train net output #1: loss = 0.113139 (* 1 = 0.113139 loss)
+I0715 14:45:37.387183  3347 solver.cpp:291]     Train net output #2: per_acc = 0.99845
+I0715 14:45:37.387187  3347 solver.cpp:291]     Train net output #3: per_acc = 0.839775
+I0715 14:45:37.387192  3347 solver.cpp:291]     Train net output #4: per_acc = 0.983213
+I0715 14:45:37.387194  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 14:45:37.387198  3347 solver.cpp:291]     Train net output #6: per_acc = 0.404179
+I0715 14:45:37.387202  3347 solver.cpp:291]     Train net output #7: per_acc = 0.905458
+I0715 14:45:37.387205  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 14:45:37.387208  3347 solver.cpp:291]     Train net output #9: per_acc = 0.787378
+I0715 14:45:37.387212  3347 solver.cpp:291]     Train net output #10: per_acc = 0.616363
+I0715 14:45:37.387217  3347 solver.cpp:291]     Train net output #11: per_acc = 0.940467
+I0715 14:45:37.387220  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 14:45:37.387223  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0715 14:45:37.387226  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 14:45:37.387230  3347 solver.cpp:291]     Train net output #15: per_acc = 0.974943
+I0715 14:45:37.387234  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 14:45:37.387238  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 14:45:37.387241  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 14:45:37.387245  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 14:45:37.387248  3347 solver.cpp:291]     Train net output #20: per_acc = 0.920699
+I0715 14:45:37.387257  3347 sgd_solver.cpp:106] Iteration 18600, lr = 0.0005
+I0715 15:14:37.032941  3347 solver.cpp:270] Iteration 18650 (0.0287426 iter/s, 1739.58s/50 iter), loss = 0.194902, remaining 51 hours and 35 minutes
+I0715 15:14:37.033108  3347 solver.cpp:291]     Train net output #0: acc = 0.959524
+I0715 15:14:37.033120  3347 solver.cpp:291]     Train net output #1: loss = 0.129074 (* 1 = 0.129074 loss)
+I0715 15:14:37.033125  3347 solver.cpp:291]     Train net output #2: per_acc = 0.986071
+I0715 15:14:37.033129  3347 solver.cpp:291]     Train net output #3: per_acc = 0.82388
+I0715 15:14:37.033133  3347 solver.cpp:291]     Train net output #4: per_acc = 0.947583
+I0715 15:14:37.033136  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 15:14:37.033140  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 15:14:37.033143  3347 solver.cpp:291]     Train net output #7: per_acc = 0.956132
+I0715 15:14:37.033147  3347 solver.cpp:291]     Train net output #8: per_acc = 0.646503
+I0715 15:14:37.033151  3347 solver.cpp:291]     Train net output #9: per_acc = 0.872719
+I0715 15:14:37.033154  3347 solver.cpp:291]     Train net output #10: per_acc = 0.945476
+I0715 15:14:37.033159  3347 solver.cpp:291]     Train net output #11: per_acc = 0.697717
+I0715 15:14:37.033162  3347 solver.cpp:291]     Train net output #12: per_acc = 0.987487
+I0715 15:14:37.033165  3347 solver.cpp:291]     Train net output #13: per_acc = 0.850226
+I0715 15:14:37.033169  3347 solver.cpp:291]     Train net output #14: per_acc = 0.582627
+I0715 15:14:37.033172  3347 solver.cpp:291]     Train net output #15: per_acc = 0.984119
+I0715 15:14:37.033176  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 15:14:37.033180  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 15:14:37.033183  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 15:14:37.033187  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 15:14:37.033191  3347 solver.cpp:291]     Train net output #20: per_acc = 0.827686
+I0715 15:14:37.033200  3347 sgd_solver.cpp:106] Iteration 18650, lr = 0.0005
+I0715 15:43:32.140516  3347 solver.cpp:270] Iteration 18700 (0.0288178 iter/s, 1735.04s/50 iter), loss = 0.187878, remaining 50 hours and 52 minutes
+I0715 15:43:32.140664  3347 solver.cpp:291]     Train net output #0: acc = 0.985102
+I0715 15:43:32.140676  3347 solver.cpp:291]     Train net output #1: loss = 0.0499115 (* 1 = 0.0499115 loss)
+I0715 15:43:32.140681  3347 solver.cpp:291]     Train net output #2: per_acc = 0.994191
+I0715 15:43:32.140684  3347 solver.cpp:291]     Train net output #3: per_acc = 0.963731
+I0715 15:43:32.140687  3347 solver.cpp:291]     Train net output #4: per_acc = 0.974315
+I0715 15:43:32.140692  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 15:43:32.140695  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 15:43:32.140698  3347 solver.cpp:291]     Train net output #7: per_acc = 0.37156
+I0715 15:43:32.140702  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 15:43:32.140707  3347 solver.cpp:291]     Train net output #9: per_acc = 0.713058
+I0715 15:43:32.140709  3347 solver.cpp:291]     Train net output #10: per_acc = 0.968974
+I0715 15:43:32.140713  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0715 15:43:32.140717  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 15:43:32.140720  3347 solver.cpp:291]     Train net output #13: per_acc = 0.958953
+I0715 15:43:32.140724  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 15:43:32.140727  3347 solver.cpp:291]     Train net output #15: per_acc = 0.993901
+I0715 15:43:32.140731  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 15:43:32.140735  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 15:43:32.140738  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 15:43:32.140743  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 15:43:32.140745  3347 solver.cpp:291]     Train net output #20: per_acc = 0.956395
+I0715 15:43:32.140754  3347 sgd_solver.cpp:106] Iteration 18700, lr = 0.0005
+I0715 16:12:39.411363  3347 solver.cpp:270] Iteration 18750 (0.0286172 iter/s, 1747.2s/50 iter), loss = 0.201149, remaining 50 hours and 39 minutes
+I0715 16:12:39.411540  3347 solver.cpp:291]     Train net output #0: acc = 0.958221
+I0715 16:12:39.411551  3347 solver.cpp:291]     Train net output #1: loss = 0.13771 (* 1 = 0.13771 loss)
+I0715 16:12:39.411557  3347 solver.cpp:291]     Train net output #2: per_acc = 0.984891
+I0715 16:12:39.411561  3347 solver.cpp:291]     Train net output #3: per_acc = 0.991455
+I0715 16:12:39.411564  3347 solver.cpp:291]     Train net output #4: per_acc = 0.784351
+I0715 16:12:39.411567  3347 solver.cpp:291]     Train net output #5: per_acc = 0.203769
+I0715 16:12:39.411571  3347 solver.cpp:291]     Train net output #6: per_acc = 0.0682977
+I0715 16:12:39.411576  3347 solver.cpp:291]     Train net output #7: per_acc = 0.604457
+I0715 16:12:39.411578  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 16:12:39.411582  3347 solver.cpp:291]     Train net output #9: per_acc = 0.391673
+I0715 16:12:39.411586  3347 solver.cpp:291]     Train net output #10: per_acc = 0.831223
+I0715 16:12:39.411589  3347 solver.cpp:291]     Train net output #11: per_acc = 0.272727
+I0715 16:12:39.411593  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 16:12:39.411597  3347 solver.cpp:291]     Train net output #13: per_acc = 0.976416
+I0715 16:12:39.411600  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 16:12:39.411604  3347 solver.cpp:291]     Train net output #15: per_acc = 0.901028
+I0715 16:12:39.411607  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 16:12:39.411612  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 16:12:39.411615  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 16:12:39.411618  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 16:12:39.411622  3347 solver.cpp:291]     Train net output #20: per_acc = 0.582393
+I0715 16:12:39.411631  3347 sgd_solver.cpp:106] Iteration 18750, lr = 0.0005
+I0715 16:42:12.174082  3347 solver.cpp:270] Iteration 18800 (0.0282056 iter/s, 1772.7s/50 iter), loss = 0.199634, remaining 50 hours and 47 minutes
+I0715 16:42:12.174234  3347 solver.cpp:291]     Train net output #0: acc = 0.934377
+I0715 16:42:12.174244  3347 solver.cpp:291]     Train net output #1: loss = 0.206541 (* 1 = 0.206541 loss)
+I0715 16:42:12.174249  3347 solver.cpp:291]     Train net output #2: per_acc = 0.993317
+I0715 16:42:12.174253  3347 solver.cpp:291]     Train net output #3: per_acc = 0.966966
+I0715 16:42:12.174257  3347 solver.cpp:291]     Train net output #4: per_acc = 0.927701
+I0715 16:42:12.174260  3347 solver.cpp:291]     Train net output #5: per_acc = 0.744586
+I0715 16:42:12.174264  3347 solver.cpp:291]     Train net output #6: per_acc = 0.902965
+I0715 16:42:12.174268  3347 solver.cpp:291]     Train net output #7: per_acc = 0.326855
+I0715 16:42:12.174271  3347 solver.cpp:291]     Train net output #8: per_acc = 0.71937
+I0715 16:42:12.174275  3347 solver.cpp:291]     Train net output #9: per_acc = 0.76039
+I0715 16:42:12.174279  3347 solver.cpp:291]     Train net output #10: per_acc = 0.966683
+I0715 16:42:12.174283  3347 solver.cpp:291]     Train net output #11: per_acc = 0.644914
+I0715 16:42:12.174288  3347 solver.cpp:291]     Train net output #12: per_acc = 0.945443
+I0715 16:42:12.174290  3347 solver.cpp:291]     Train net output #13: per_acc = 0.944253
+I0715 16:42:12.174294  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 16:42:12.174299  3347 solver.cpp:291]     Train net output #15: per_acc = 0.971084
+I0715 16:42:12.174301  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 16:42:12.174305  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 16:42:12.174309  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 16:42:12.174312  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 16:42:12.174316  3347 solver.cpp:291]     Train net output #20: per_acc = 0.00352734
+I0715 16:42:12.174324  3347 sgd_solver.cpp:106] Iteration 18800, lr = 0.0005
+I0715 17:12:10.162984  3347 solver.cpp:270] Iteration 18850 (0.0278099 iter/s, 1797.92s/50 iter), loss = 0.198419, remaining 50 hours and 55 minutes
+I0715 17:12:10.163154  3347 solver.cpp:291]     Train net output #0: acc = 0.926287
+I0715 17:12:10.163166  3347 solver.cpp:291]     Train net output #1: loss = 0.230168 (* 1 = 0.230168 loss)
+I0715 17:12:10.163172  3347 solver.cpp:291]     Train net output #2: per_acc = 0.99273
+I0715 17:12:10.163175  3347 solver.cpp:291]     Train net output #3: per_acc = 0.986446
+I0715 17:12:10.163179  3347 solver.cpp:291]     Train net output #4: per_acc = 0.958729
+I0715 17:12:10.163183  3347 solver.cpp:291]     Train net output #5: per_acc = 0.537596
+I0715 17:12:10.163187  3347 solver.cpp:291]     Train net output #6: per_acc = 0.497077
+I0715 17:12:10.163189  3347 solver.cpp:291]     Train net output #7: per_acc = 0.630296
+I0715 17:12:10.163193  3347 solver.cpp:291]     Train net output #8: per_acc = 0.620007
+I0715 17:12:10.163197  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0715 17:12:10.163200  3347 solver.cpp:291]     Train net output #10: per_acc = 0.795241
+I0715 17:12:10.163204  3347 solver.cpp:291]     Train net output #11: per_acc = 0.810087
+I0715 17:12:10.163208  3347 solver.cpp:291]     Train net output #12: per_acc = 0.901904
+I0715 17:12:10.163211  3347 solver.cpp:291]     Train net output #13: per_acc = 0.956362
+I0715 17:12:10.163215  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 17:12:10.163218  3347 solver.cpp:291]     Train net output #15: per_acc = 0.985859
+I0715 17:12:10.163223  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 17:12:10.163226  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 17:12:10.163229  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 17:12:10.163233  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 17:12:10.163237  3347 solver.cpp:291]     Train net output #20: per_acc = 0.972179
+I0715 17:12:10.163247  3347 sgd_solver.cpp:106] Iteration 18850, lr = 0.0005
+I0715 17:42:08.307657  3347 solver.cpp:270] Iteration 18900 (0.0278076 iter/s, 1798.07s/50 iter), loss = 0.198371, remaining 50 hours and 55 minutes
+I0715 17:42:08.307803  3347 solver.cpp:291]     Train net output #0: acc = 0.93794
+I0715 17:42:08.307816  3347 solver.cpp:291]     Train net output #1: loss = 0.20807 (* 1 = 0.20807 loss)
+I0715 17:42:08.307819  3347 solver.cpp:291]     Train net output #2: per_acc = 0.997333
+I0715 17:42:08.307823  3347 solver.cpp:291]     Train net output #3: per_acc = 0.862645
+I0715 17:42:08.307826  3347 solver.cpp:291]     Train net output #4: per_acc = 0.988276
+I0715 17:42:08.307832  3347 solver.cpp:291]     Train net output #5: per_acc = 0.935579
+I0715 17:42:08.307835  3347 solver.cpp:291]     Train net output #6: per_acc = 0.860856
+I0715 17:42:08.307838  3347 solver.cpp:291]     Train net output #7: per_acc = 0.443789
+I0715 17:42:08.307842  3347 solver.cpp:291]     Train net output #8: per_acc = 0.250096
+I0715 17:42:08.307847  3347 solver.cpp:291]     Train net output #9: per_acc = 0.7938
+I0715 17:42:08.307849  3347 solver.cpp:291]     Train net output #10: per_acc = 0.973937
+I0715 17:42:08.307853  3347 solver.cpp:291]     Train net output #11: per_acc = 0.664328
+I0715 17:42:08.307857  3347 solver.cpp:291]     Train net output #12: per_acc = 0.573516
+I0715 17:42:08.307860  3347 solver.cpp:291]     Train net output #13: per_acc = 0.865646
+I0715 17:42:08.307864  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 17:42:08.307868  3347 solver.cpp:291]     Train net output #15: per_acc = 0.516511
+I0715 17:42:08.307871  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 17:42:08.307875  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 17:42:08.307878  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 17:42:08.307883  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 17:42:08.307885  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 17:42:08.307894  3347 sgd_solver.cpp:106] Iteration 18900, lr = 0.0005
+I0715 18:11:54.140154  3347 solver.cpp:270] Iteration 18950 (0.0279993 iter/s, 1785.76s/50 iter), loss = 0.194527, remaining 49 hours and 59 minutes
+I0715 18:11:54.140321  3347 solver.cpp:291]     Train net output #0: acc = 0.921193
+I0715 18:11:54.140332  3347 solver.cpp:291]     Train net output #1: loss = 0.215485 (* 1 = 0.215485 loss)
+I0715 18:11:54.140337  3347 solver.cpp:291]     Train net output #2: per_acc = 0.922742
+I0715 18:11:54.140341  3347 solver.cpp:291]     Train net output #3: per_acc = 0.913783
+I0715 18:11:54.140344  3347 solver.cpp:291]     Train net output #4: per_acc = 0.979853
+I0715 18:11:54.140348  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 18:11:54.140352  3347 solver.cpp:291]     Train net output #6: per_acc = 0.117748
+I0715 18:11:54.140357  3347 solver.cpp:291]     Train net output #7: per_acc = 0.635072
+I0715 18:11:54.140359  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 18:11:54.140363  3347 solver.cpp:291]     Train net output #9: per_acc = 0.693577
+I0715 18:11:54.140367  3347 solver.cpp:291]     Train net output #10: per_acc = 0.936332
+I0715 18:11:54.140370  3347 solver.cpp:291]     Train net output #11: per_acc = 0.947539
+I0715 18:11:54.140374  3347 solver.cpp:291]     Train net output #12: per_acc = 0.902815
+I0715 18:11:54.140377  3347 solver.cpp:291]     Train net output #13: per_acc = 0.954051
+I0715 18:11:54.140381  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 18:11:54.140385  3347 solver.cpp:291]     Train net output #15: per_acc = 0.943858
+I0715 18:11:54.140388  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 18:11:54.140391  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 18:11:54.140395  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 18:11:54.140399  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 18:11:54.140403  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 18:11:54.140411  3347 sgd_solver.cpp:106] Iteration 18950, lr = 0.0005
+I0715 18:40:54.844584  3347 solver.cpp:935] Snapshotting to binary proto file ../workspace/model/unet-lite/final_models/_iter_19000.caffemodel
+I0715 18:40:54.952888  3347 sgd_solver.cpp:273] Snapshotting solver state to binary proto file ../workspace/model/unet-lite/final_models/_iter_19000.solverstate
+I0715 18:41:30.694511  3347 solver.cpp:270] Iteration 19000 (0.0281454 iter/s, 1776.49s/50 iter), loss = 0.195379, remaining 49 hours and 7 minutes
+I0715 18:41:30.694640  3347 solver.cpp:291]     Train net output #0: acc = 0.949065
+I0715 18:41:30.694651  3347 solver.cpp:291]     Train net output #1: loss = 0.146336 (* 1 = 0.146336 loss)
+I0715 18:41:30.694655  3347 solver.cpp:291]     Train net output #2: per_acc = 0.963112
+I0715 18:41:30.694659  3347 solver.cpp:291]     Train net output #3: per_acc = 0.969039
+I0715 18:41:30.694663  3347 solver.cpp:291]     Train net output #4: per_acc = 0.991895
+I0715 18:41:30.694666  3347 solver.cpp:291]     Train net output #5: per_acc = 0.926205
+I0715 18:41:30.694670  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 18:41:30.694675  3347 solver.cpp:291]     Train net output #7: per_acc = 0.369037
+I0715 18:41:30.694679  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 18:41:30.694684  3347 solver.cpp:291]     Train net output #9: per_acc = 0.892019
+I0715 18:41:30.694686  3347 solver.cpp:291]     Train net output #10: per_acc = 0.851698
+I0715 18:41:30.694689  3347 solver.cpp:291]     Train net output #11: per_acc = 0.77391
+I0715 18:41:30.694694  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 18:41:30.694697  3347 solver.cpp:291]     Train net output #13: per_acc = 0.622916
+I0715 18:41:30.694700  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 18:41:30.694705  3347 solver.cpp:291]     Train net output #15: per_acc = 0.946542
+I0715 18:41:30.694707  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 18:41:30.694711  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 18:41:30.694715  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 18:41:30.694718  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 18:41:30.694721  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 18:41:30.694731  3347 sgd_solver.cpp:106] Iteration 19000, lr = 0.0005
+I0715 19:11:10.291023  3347 solver.cpp:270] Iteration 19050 (0.0280973 iter/s, 1779.53s/50 iter), loss = 0.200831, remaining 48 hours and 37 minutes
+I0715 19:11:10.291210  3347 solver.cpp:291]     Train net output #0: acc = 0.888603
+I0715 19:11:10.291232  3347 solver.cpp:291]     Train net output #1: loss = 0.322251 (* 1 = 0.322251 loss)
+I0715 19:11:10.291237  3347 solver.cpp:291]     Train net output #2: per_acc = 0.937657
+I0715 19:11:10.291240  3347 solver.cpp:291]     Train net output #3: per_acc = 0.874642
+I0715 19:11:10.291244  3347 solver.cpp:291]     Train net output #4: per_acc = 0.93923
+I0715 19:11:10.291247  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 19:11:10.291252  3347 solver.cpp:291]     Train net output #6: per_acc = 0.226178
+I0715 19:11:10.291255  3347 solver.cpp:291]     Train net output #7: per_acc = 0.484824
+I0715 19:11:10.291258  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 19:11:10.291262  3347 solver.cpp:291]     Train net output #9: per_acc = 0.92833
+I0715 19:11:10.291266  3347 solver.cpp:291]     Train net output #10: per_acc = 0.894072
+I0715 19:11:10.291270  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0715 19:11:10.291273  3347 solver.cpp:291]     Train net output #12: per_acc = 0.991289
+I0715 19:11:10.291276  3347 solver.cpp:291]     Train net output #13: per_acc = 0.969077
+I0715 19:11:10.291280  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 19:11:10.291285  3347 solver.cpp:291]     Train net output #15: per_acc = 0.944816
+I0715 19:11:10.291287  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 19:11:10.291290  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 19:11:10.291294  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 19:11:10.291298  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 19:11:10.291301  3347 solver.cpp:291]     Train net output #20: per_acc = 0.931856
+I0715 19:11:10.291311  3347 sgd_solver.cpp:106] Iteration 19050, lr = 0.0005
+I0715 19:40:44.718895  3347 solver.cpp:270] Iteration 19100 (0.0281792 iter/s, 1774.36s/50 iter), loss = 0.18588, remaining 47 hours and 53 minutes
+I0715 19:40:44.719061  3347 solver.cpp:291]     Train net output #0: acc = 0.915359
+I0715 19:40:44.719072  3347 solver.cpp:291]     Train net output #1: loss = 0.26241 (* 1 = 0.26241 loss)
+I0715 19:40:44.719076  3347 solver.cpp:291]     Train net output #2: per_acc = 0.989916
+I0715 19:40:44.719081  3347 solver.cpp:291]     Train net output #3: per_acc = 0.964332
+I0715 19:40:44.719084  3347 solver.cpp:291]     Train net output #4: per_acc = 0.873361
+I0715 19:40:44.719089  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 19:40:44.719091  3347 solver.cpp:291]     Train net output #6: per_acc = 0.555239
+I0715 19:40:44.719095  3347 solver.cpp:291]     Train net output #7: per_acc = 0.332243
+I0715 19:40:44.719099  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 19:40:44.719102  3347 solver.cpp:291]     Train net output #9: per_acc = 0.710101
+I0715 19:40:44.719106  3347 solver.cpp:291]     Train net output #10: per_acc = 0.945545
+I0715 19:40:44.719110  3347 solver.cpp:291]     Train net output #11: per_acc = 0.195223
+I0715 19:40:44.719113  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 19:40:44.719117  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0715 19:40:44.719120  3347 solver.cpp:291]     Train net output #14: per_acc = 0.839717
+I0715 19:40:44.719125  3347 solver.cpp:291]     Train net output #15: per_acc = 0.90195
+I0715 19:40:44.719128  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 19:40:44.719131  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 19:40:44.719135  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 19:40:44.719139  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 19:40:44.719142  3347 solver.cpp:291]     Train net output #20: per_acc = 0.850855
+I0715 19:40:44.719151  3347 sgd_solver.cpp:106] Iteration 19100, lr = 0.0005
+I0715 20:10:20.011037  3347 solver.cpp:270] Iteration 19150 (0.0281655 iter/s, 1775.22s/50 iter), loss = 0.199536, remaining 47 hours and 19 minutes
+I0715 20:10:20.011206  3347 solver.cpp:291]     Train net output #0: acc = 0.964755
+I0715 20:10:20.011219  3347 solver.cpp:291]     Train net output #1: loss = 0.118039 (* 1 = 0.118039 loss)
+I0715 20:10:20.011224  3347 solver.cpp:291]     Train net output #2: per_acc = 0.986998
+I0715 20:10:20.011226  3347 solver.cpp:291]     Train net output #3: per_acc = 0.952801
+I0715 20:10:20.011231  3347 solver.cpp:291]     Train net output #4: per_acc = 0.945427
+I0715 20:10:20.011234  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 20:10:20.011237  3347 solver.cpp:291]     Train net output #6: per_acc = 0.716792
+I0715 20:10:20.011241  3347 solver.cpp:291]     Train net output #7: per_acc = 0.697736
+I0715 20:10:20.011245  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 20:10:20.011248  3347 solver.cpp:291]     Train net output #9: per_acc = 0.734667
+I0715 20:10:20.011252  3347 solver.cpp:291]     Train net output #10: per_acc = 0.946367
+I0715 20:10:20.011255  3347 solver.cpp:291]     Train net output #11: per_acc = 0.79416
+I0715 20:10:20.011260  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 20:10:20.011263  3347 solver.cpp:291]     Train net output #13: per_acc = 0.95605
+I0715 20:10:20.011266  3347 solver.cpp:291]     Train net output #14: per_acc = 0.858682
+I0715 20:10:20.011270  3347 solver.cpp:291]     Train net output #15: per_acc = 0.974824
+I0715 20:10:20.011274  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 20:10:20.011277  3347 solver.cpp:291]     Train net output #17: per_acc = 0.907364
+I0715 20:10:20.011281  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 20:10:20.011284  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 20:10:20.011289  3347 solver.cpp:291]     Train net output #20: per_acc = 0.507736
+I0715 20:10:20.011309  3347 sgd_solver.cpp:106] Iteration 19150, lr = 0.0005
+I0715 20:39:55.178061  3347 solver.cpp:270] Iteration 19200 (0.0281674 iter/s, 1775.1s/50 iter), loss = 0.200929, remaining 47 hours and 19 minutes
+I0715 20:39:55.178203  3347 solver.cpp:291]     Train net output #0: acc = 0.945503
+I0715 20:39:55.178215  3347 solver.cpp:291]     Train net output #1: loss = 0.178398 (* 1 = 0.178398 loss)
+I0715 20:39:55.178220  3347 solver.cpp:291]     Train net output #2: per_acc = 0.994417
+I0715 20:39:55.178222  3347 solver.cpp:291]     Train net output #3: per_acc = 0.837184
+I0715 20:39:55.178225  3347 solver.cpp:291]     Train net output #4: per_acc = 0.894167
+I0715 20:39:55.178231  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 20:39:55.178233  3347 solver.cpp:291]     Train net output #6: per_acc = 0.79477
+I0715 20:39:55.178236  3347 solver.cpp:291]     Train net output #7: per_acc = 0.761549
+I0715 20:39:55.178241  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 20:39:55.178244  3347 solver.cpp:291]     Train net output #9: per_acc = 0.460863
+I0715 20:39:55.178247  3347 solver.cpp:291]     Train net output #10: per_acc = 0.802832
+I0715 20:39:55.178251  3347 solver.cpp:291]     Train net output #11: per_acc = 0.414657
+I0715 20:39:55.178254  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 20:39:55.178258  3347 solver.cpp:291]     Train net output #13: per_acc = 0.951578
+I0715 20:39:55.178262  3347 solver.cpp:291]     Train net output #14: per_acc = 0.752115
+I0715 20:39:55.178266  3347 solver.cpp:291]     Train net output #15: per_acc = 0.980733
+I0715 20:39:55.178268  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 20:39:55.178272  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 20:39:55.178277  3347 solver.cpp:291]     Train net output #18: per_acc = 0.72972
+I0715 20:39:55.178279  3347 solver.cpp:291]     Train net output #19: per_acc = 0.866858
+I0715 20:39:55.178283  3347 solver.cpp:291]     Train net output #20: per_acc = 0.832726
+I0715 20:39:55.178292  3347 sgd_solver.cpp:106] Iteration 19200, lr = 0.0005
+I0715 21:09:28.473675  3347 solver.cpp:270] Iteration 19250 (0.0281972 iter/s, 1773.22s/50 iter), loss = 0.205001, remaining 46 hours and 40 minutes
+I0715 21:09:28.473847  3347 solver.cpp:291]     Train net output #0: acc = 0.951485
+I0715 21:09:28.473860  3347 solver.cpp:291]     Train net output #1: loss = 0.138651 (* 1 = 0.138651 loss)
+I0715 21:09:28.473865  3347 solver.cpp:291]     Train net output #2: per_acc = 0.987086
+I0715 21:09:28.473867  3347 solver.cpp:291]     Train net output #3: per_acc = 0.889501
+I0715 21:09:28.473871  3347 solver.cpp:291]     Train net output #4: per_acc = 0.952822
+I0715 21:09:28.473875  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 21:09:28.473878  3347 solver.cpp:291]     Train net output #6: per_acc = 0.533628
+I0715 21:09:28.473882  3347 solver.cpp:291]     Train net output #7: per_acc = 0.533195
+I0715 21:09:28.473886  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 21:09:28.473891  3347 solver.cpp:291]     Train net output #9: per_acc = 0.856638
+I0715 21:09:28.473894  3347 solver.cpp:291]     Train net output #10: per_acc = 0.932384
+I0715 21:09:28.473897  3347 solver.cpp:291]     Train net output #11: per_acc = 0.854913
+I0715 21:09:28.473901  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 21:09:28.473913  3347 solver.cpp:291]     Train net output #13: per_acc = 0.905622
+I0715 21:09:28.473917  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 21:09:28.473920  3347 solver.cpp:291]     Train net output #15: per_acc = 0.992962
+I0715 21:09:28.473924  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 21:09:28.473927  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 21:09:28.473932  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 21:09:28.473935  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 21:09:28.473938  3347 solver.cpp:291]     Train net output #20: per_acc = 0.56962
+I0715 21:09:28.473948  3347 sgd_solver.cpp:106] Iteration 19250, lr = 0.0005
+I0715 21:38:59.136850  3347 solver.cpp:270] Iteration 19300 (0.0282391 iter/s, 1770.59s/50 iter), loss = 0.189136, remaining 46 hours and 1 minutes
+I0715 21:38:59.136989  3347 solver.cpp:291]     Train net output #0: acc = 0.910869
+I0715 21:38:59.136999  3347 solver.cpp:291]     Train net output #1: loss = 0.307423 (* 1 = 0.307423 loss)
+I0715 21:38:59.137004  3347 solver.cpp:291]     Train net output #2: per_acc = 0.97422
+I0715 21:38:59.137008  3347 solver.cpp:291]     Train net output #3: per_acc = 0.923179
+I0715 21:38:59.137012  3347 solver.cpp:291]     Train net output #4: per_acc = 0.846492
+I0715 21:38:59.137015  3347 solver.cpp:291]     Train net output #5: per_acc = 0.7873
+I0715 21:38:59.137018  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 21:38:59.137023  3347 solver.cpp:291]     Train net output #7: per_acc = 0.145344
+I0715 21:38:59.137027  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 21:38:59.137029  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0715 21:38:59.137033  3347 solver.cpp:291]     Train net output #10: per_acc = 0.90859
+I0715 21:38:59.137038  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0715 21:38:59.137042  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 21:38:59.137045  3347 solver.cpp:291]     Train net output #13: per_acc = 0.162946
+I0715 21:38:59.137048  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 21:38:59.137053  3347 solver.cpp:291]     Train net output #15: per_acc = 0.676562
+I0715 21:38:59.137056  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 21:38:59.137059  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 21:38:59.137063  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 21:38:59.137068  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 21:38:59.137070  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0715 21:38:59.137079  3347 sgd_solver.cpp:106] Iteration 19300, lr = 0.0005
+I0715 22:08:23.549659  3347 solver.cpp:270] Iteration 19350 (0.0283392 iter/s, 1764.34s/50 iter), loss = 0.227233, remaining 45 hours and 16 minutes
+I0715 22:08:23.549835  3347 solver.cpp:291]     Train net output #0: acc = 0.892086
+I0715 22:08:23.549846  3347 solver.cpp:291]     Train net output #1: loss = 0.331708 (* 1 = 0.331708 loss)
+I0715 22:08:23.549850  3347 solver.cpp:291]     Train net output #2: per_acc = 0.982021
+I0715 22:08:23.549854  3347 solver.cpp:291]     Train net output #3: per_acc = 0.882335
+I0715 22:08:23.549859  3347 solver.cpp:291]     Train net output #4: per_acc = 0.988276
+I0715 22:08:23.549863  3347 solver.cpp:291]     Train net output #5: per_acc = 0.752911
+I0715 22:08:23.549867  3347 solver.cpp:291]     Train net output #6: per_acc = 0.803068
+I0715 22:08:23.549870  3347 solver.cpp:291]     Train net output #7: per_acc = 0.490194
+I0715 22:08:23.549875  3347 solver.cpp:291]     Train net output #8: per_acc = 0.532879
+I0715 22:08:23.549878  3347 solver.cpp:291]     Train net output #9: per_acc = 0.648111
+I0715 22:08:23.549881  3347 solver.cpp:291]     Train net output #10: per_acc = 0.801018
+I0715 22:08:23.549885  3347 solver.cpp:291]     Train net output #11: per_acc = 0.655352
+I0715 22:08:23.549890  3347 solver.cpp:291]     Train net output #12: per_acc = 0.994838
+I0715 22:08:23.549892  3347 solver.cpp:291]     Train net output #13: per_acc = 0.542205
+I0715 22:08:23.549896  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 22:08:23.549899  3347 solver.cpp:291]     Train net output #15: per_acc = 0.902714
+I0715 22:08:23.549903  3347 solver.cpp:291]     Train net output #16: per_acc = 0.00845744
+I0715 22:08:23.549907  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 22:08:23.549911  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 22:08:23.549914  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 22:08:23.549918  3347 solver.cpp:291]     Train net output #20: per_acc = 0.735625
+I0715 22:08:23.549927  3347 sgd_solver.cpp:106] Iteration 19350, lr = 0.0005
+I0715 22:37:47.986984  3347 solver.cpp:270] Iteration 19400 (0.0283388 iter/s, 1764.37s/50 iter), loss = 0.195967, remaining 44 hours and 40 minutes
+I0715 22:37:47.987124  3347 solver.cpp:291]     Train net output #0: acc = 0.905275
+I0715 22:37:47.987135  3347 solver.cpp:291]     Train net output #1: loss = 0.514524 (* 1 = 0.514524 loss)
+I0715 22:37:47.987140  3347 solver.cpp:291]     Train net output #2: per_acc = 0.995027
+I0715 22:37:47.987143  3347 solver.cpp:291]     Train net output #3: per_acc = 0.845708
+I0715 22:37:47.987148  3347 solver.cpp:291]     Train net output #4: per_acc = 0.974825
+I0715 22:37:47.987151  3347 solver.cpp:291]     Train net output #5: per_acc = 0.00568637
+I0715 22:37:47.987154  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0715 22:37:47.987159  3347 solver.cpp:291]     Train net output #7: per_acc = 0.453424
+I0715 22:37:47.987161  3347 solver.cpp:291]     Train net output #8: per_acc = 0.1125
+I0715 22:37:47.987165  3347 solver.cpp:291]     Train net output #9: per_acc = 0.699086
+I0715 22:37:47.987169  3347 solver.cpp:291]     Train net output #10: per_acc = 0.96534
+I0715 22:37:47.987177  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0715 22:37:47.987180  3347 solver.cpp:291]     Train net output #12: per_acc = 0.956195
+I0715 22:37:47.987185  3347 solver.cpp:291]     Train net output #13: per_acc = 0.690453
+I0715 22:37:47.987188  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 22:37:47.987191  3347 solver.cpp:291]     Train net output #15: per_acc = 0.976881
+I0715 22:37:47.987195  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 22:37:47.987200  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 22:37:47.987202  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 22:37:47.987206  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 22:37:47.987210  3347 solver.cpp:291]     Train net output #20: per_acc = 0.00337187
+I0715 22:37:47.987219  3347 sgd_solver.cpp:106] Iteration 19400, lr = 0.0005
+I0715 23:07:16.780285  3347 solver.cpp:270] Iteration 19450 (0.028269 iter/s, 1768.72s/50 iter), loss = 0.199175, remaining 44 hours and 12 minutes
+I0715 23:07:16.780448  3347 solver.cpp:291]     Train net output #0: acc = 0.944087
+I0715 23:07:16.780460  3347 solver.cpp:291]     Train net output #1: loss = 0.190264 (* 1 = 0.190264 loss)
+I0715 23:07:16.780465  3347 solver.cpp:291]     Train net output #2: per_acc = 0.991249
+I0715 23:07:16.780469  3347 solver.cpp:291]     Train net output #3: per_acc = 0.857629
+I0715 23:07:16.780472  3347 solver.cpp:291]     Train net output #4: per_acc = 0.94096
+I0715 23:07:16.780477  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 23:07:16.780480  3347 solver.cpp:291]     Train net output #6: per_acc = 0.358591
+I0715 23:07:16.780483  3347 solver.cpp:291]     Train net output #7: per_acc = 0.805978
+I0715 23:07:16.780488  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 23:07:16.780490  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0715 23:07:16.780494  3347 solver.cpp:291]     Train net output #10: per_acc = 0.944079
+I0715 23:07:16.780498  3347 solver.cpp:291]     Train net output #11: per_acc = 0.0356732
+I0715 23:07:16.780501  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 23:07:16.780504  3347 solver.cpp:291]     Train net output #13: per_acc = 0.86569
+I0715 23:07:16.780509  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0715 23:07:16.780513  3347 solver.cpp:291]     Train net output #15: per_acc = 0.958865
+I0715 23:07:16.780515  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 23:07:16.780519  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 23:07:16.780524  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 23:07:16.780526  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 23:07:16.780529  3347 solver.cpp:291]     Train net output #20: per_acc = 0.94926
+I0715 23:07:16.780539  3347 sgd_solver.cpp:106] Iteration 19450, lr = 0.0005
+I0715 23:36:43.406141  3347 solver.cpp:270] Iteration 19500 (0.0283036 iter/s, 1766.56s/50 iter), loss = 0.202733, remaining 44 hours and 8 minutes
+I0715 23:36:43.406303  3347 solver.cpp:291]     Train net output #0: acc = 0.923973
+I0715 23:36:43.406313  3347 solver.cpp:291]     Train net output #1: loss = 0.248045 (* 1 = 0.248045 loss)
+I0715 23:36:43.406318  3347 solver.cpp:291]     Train net output #2: per_acc = 0.98331
+I0715 23:36:43.406323  3347 solver.cpp:291]     Train net output #3: per_acc = 0.778208
+I0715 23:36:43.406327  3347 solver.cpp:291]     Train net output #4: per_acc = 0.949321
+I0715 23:36:43.406330  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0715 23:36:43.406333  3347 solver.cpp:291]     Train net output #6: per_acc = 0.200228
+I0715 23:36:43.406337  3347 solver.cpp:291]     Train net output #7: per_acc = 0.614021
+I0715 23:36:43.406342  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0715 23:36:43.406344  3347 solver.cpp:291]     Train net output #9: per_acc = 0.168693
+I0715 23:36:43.406348  3347 solver.cpp:291]     Train net output #10: per_acc = 0.976144
+I0715 23:36:43.406352  3347 solver.cpp:291]     Train net output #11: per_acc = 0.934917
+I0715 23:36:43.406355  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0715 23:36:43.406359  3347 solver.cpp:291]     Train net output #13: per_acc = 0.847811
+I0715 23:36:43.406363  3347 solver.cpp:291]     Train net output #14: per_acc = 0.553335
+I0715 23:36:43.406368  3347 solver.cpp:291]     Train net output #15: per_acc = 0.907323
+I0715 23:36:43.406370  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0715 23:36:43.406374  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0715 23:36:43.406378  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0715 23:36:43.406381  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0715 23:36:43.406385  3347 solver.cpp:291]     Train net output #20: per_acc = 0.848875
+I0715 23:36:43.406394  3347 sgd_solver.cpp:106] Iteration 19500, lr = 0.0005
+I0716 00:06:10.244683  3347 solver.cpp:270] Iteration 19550 (0.0283002 iter/s, 1766.77s/50 iter), loss = 0.19021, remaining 43 hours and 33 minutes
+I0716 00:06:10.244837  3347 solver.cpp:291]     Train net output #0: acc = 0.92335
+I0716 00:06:10.244848  3347 solver.cpp:291]     Train net output #1: loss = 0.249992 (* 1 = 0.249992 loss)
+I0716 00:06:10.244853  3347 solver.cpp:291]     Train net output #2: per_acc = 0.936025
+I0716 00:06:10.244855  3347 solver.cpp:291]     Train net output #3: per_acc = 0.929671
+I0716 00:06:10.244859  3347 solver.cpp:291]     Train net output #4: per_acc = 0.952496
+I0716 00:06:10.244863  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 00:06:10.244866  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 00:06:10.244870  3347 solver.cpp:291]     Train net output #7: per_acc = 0.434596
+I0716 00:06:10.244874  3347 solver.cpp:291]     Train net output #8: per_acc = 0.599866
+I0716 00:06:10.244879  3347 solver.cpp:291]     Train net output #9: per_acc = 0.588574
+I0716 00:06:10.244881  3347 solver.cpp:291]     Train net output #10: per_acc = 0.947489
+I0716 00:06:10.244885  3347 solver.cpp:291]     Train net output #11: per_acc = 0.470785
+I0716 00:06:10.244889  3347 solver.cpp:291]     Train net output #12: per_acc = 0.99595
+I0716 00:06:10.244892  3347 solver.cpp:291]     Train net output #13: per_acc = 0.618717
+I0716 00:06:10.244896  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 00:06:10.244900  3347 solver.cpp:291]     Train net output #15: per_acc = 0.868565
+I0716 00:06:10.244904  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 00:06:10.244909  3347 solver.cpp:291]     Train net output #17: per_acc = 0.887333
+I0716 00:06:10.244911  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 00:06:10.244915  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 00:06:10.244920  3347 solver.cpp:291]     Train net output #20: per_acc = 0.876629
+I0716 00:06:10.244928  3347 sgd_solver.cpp:106] Iteration 19550, lr = 0.0005
+I0716 00:35:37.239491  3347 solver.cpp:270] Iteration 19600 (0.0282978 iter/s, 1766.92s/50 iter), loss = 0.189177, remaining 42 hours and 58 minutes
+I0716 00:35:37.239643  3347 solver.cpp:291]     Train net output #0: acc = 0.948209
+I0716 00:35:37.239655  3347 solver.cpp:291]     Train net output #1: loss = 0.149131 (* 1 = 0.149131 loss)
+I0716 00:35:37.239660  3347 solver.cpp:291]     Train net output #2: per_acc = 0.989387
+I0716 00:35:37.239662  3347 solver.cpp:291]     Train net output #3: per_acc = 0.919934
+I0716 00:35:37.239666  3347 solver.cpp:291]     Train net output #4: per_acc = 0.948548
+I0716 00:35:37.239670  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 00:35:37.239673  3347 solver.cpp:291]     Train net output #6: per_acc = 0.60013
+I0716 00:35:37.239677  3347 solver.cpp:291]     Train net output #7: per_acc = 0.523831
+I0716 00:35:37.239681  3347 solver.cpp:291]     Train net output #8: per_acc = 0.528
+I0716 00:35:37.239686  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0716 00:35:37.239688  3347 solver.cpp:291]     Train net output #10: per_acc = 0.879298
+I0716 00:35:37.239692  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 00:35:37.239696  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 00:35:37.239699  3347 solver.cpp:291]     Train net output #13: per_acc = 0.941673
+I0716 00:35:37.239703  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 00:35:37.239706  3347 solver.cpp:291]     Train net output #15: per_acc = 0.971113
+I0716 00:35:37.239709  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 00:35:37.239713  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 00:35:37.239717  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 00:35:37.239720  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 00:35:37.239724  3347 solver.cpp:291]     Train net output #20: per_acc = 0.871453
+I0716 00:35:37.239733  3347 sgd_solver.cpp:106] Iteration 19600, lr = 0.0005
+I0716 01:05:03.559103  3347 solver.cpp:270] Iteration 19650 (0.0283086 iter/s, 1766.25s/50 iter), loss = 0.190181, remaining 42 hours and 22 minutes
+I0716 01:05:03.559283  3347 solver.cpp:291]     Train net output #0: acc = 0.957357
+I0716 01:05:03.559293  3347 solver.cpp:291]     Train net output #1: loss = 0.138084 (* 1 = 0.138084 loss)
+I0716 01:05:03.559298  3347 solver.cpp:291]     Train net output #2: per_acc = 0.996319
+I0716 01:05:03.559303  3347 solver.cpp:291]     Train net output #3: per_acc = 0.86285
+I0716 01:05:03.559305  3347 solver.cpp:291]     Train net output #4: per_acc = 0.912015
+I0716 01:05:03.559309  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 01:05:03.559314  3347 solver.cpp:291]     Train net output #6: per_acc = 0.0785256
+I0716 01:05:03.559317  3347 solver.cpp:291]     Train net output #7: per_acc = 0.7234
+I0716 01:05:03.559320  3347 solver.cpp:291]     Train net output #8: per_acc = 0.550973
+I0716 01:05:03.559324  3347 solver.cpp:291]     Train net output #9: per_acc = 0.802611
+I0716 01:05:03.559329  3347 solver.cpp:291]     Train net output #10: per_acc = 0.937556
+I0716 01:05:03.559332  3347 solver.cpp:291]     Train net output #11: per_acc = 0.103539
+I0716 01:05:03.559335  3347 solver.cpp:291]     Train net output #12: per_acc = 0.983325
+I0716 01:05:03.559340  3347 solver.cpp:291]     Train net output #13: per_acc = 0.678826
+I0716 01:05:03.559343  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 01:05:03.559346  3347 solver.cpp:291]     Train net output #15: per_acc = 0.986104
+I0716 01:05:03.559350  3347 solver.cpp:291]     Train net output #16: per_acc = 0.045556
+I0716 01:05:03.559353  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 01:05:03.559357  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 01:05:03.559361  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 01:05:03.559365  3347 solver.cpp:291]     Train net output #20: per_acc = 0.630097
+I0716 01:05:03.559384  3347 sgd_solver.cpp:106] Iteration 19650, lr = 0.0005
+I0716 01:34:30.137552  3347 solver.cpp:270] Iteration 19700 (0.0283044 iter/s, 1766.51s/50 iter), loss = 0.192728, remaining 41 hours and 47 minutes
+I0716 01:34:30.137712  3347 solver.cpp:291]     Train net output #0: acc = 0.955359
+I0716 01:34:30.137722  3347 solver.cpp:291]     Train net output #1: loss = 0.15438 (* 1 = 0.15438 loss)
+I0716 01:34:30.137727  3347 solver.cpp:291]     Train net output #2: per_acc = 0.97773
+I0716 01:34:30.137730  3347 solver.cpp:291]     Train net output #3: per_acc = 0.959522
+I0716 01:34:30.137734  3347 solver.cpp:291]     Train net output #4: per_acc = 0.985525
+I0716 01:34:30.137737  3347 solver.cpp:291]     Train net output #5: per_acc = 0.0234802
+I0716 01:34:30.137742  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 01:34:30.137745  3347 solver.cpp:291]     Train net output #7: per_acc = 0.884499
+I0716 01:34:30.137748  3347 solver.cpp:291]     Train net output #8: per_acc = 0.783844
+I0716 01:34:30.137753  3347 solver.cpp:291]     Train net output #9: per_acc = 0.356605
+I0716 01:34:30.137755  3347 solver.cpp:291]     Train net output #10: per_acc = 0.880017
+I0716 01:34:30.137759  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 01:34:30.137763  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 01:34:30.137766  3347 solver.cpp:291]     Train net output #13: per_acc = 0.882518
+I0716 01:34:30.137770  3347 solver.cpp:291]     Train net output #14: per_acc = 0.852632
+I0716 01:34:30.137774  3347 solver.cpp:291]     Train net output #15: per_acc = 0.941623
+I0716 01:34:30.137778  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 01:34:30.137781  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 01:34:30.137784  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 01:34:30.137789  3347 solver.cpp:291]     Train net output #19: per_acc = 0.801296
+I0716 01:34:30.137792  3347 solver.cpp:291]     Train net output #20: per_acc = 0.923966
+I0716 01:34:30.137800  3347 sgd_solver.cpp:106] Iteration 19700, lr = 0.0005
+I0716 02:03:57.903199  3347 solver.cpp:270] Iteration 19750 (0.0282854 iter/s, 1767.7s/50 iter), loss = 0.204678, remaining 41 hours and 13 minutes
+I0716 02:03:57.903370  3347 solver.cpp:291]     Train net output #0: acc = 0.928428
+I0716 02:03:57.903381  3347 solver.cpp:291]     Train net output #1: loss = 0.218379 (* 1 = 0.218379 loss)
+I0716 02:03:57.903385  3347 solver.cpp:291]     Train net output #2: per_acc = 0.986296
+I0716 02:03:57.903389  3347 solver.cpp:291]     Train net output #3: per_acc = 0.388136
+I0716 02:03:57.903393  3347 solver.cpp:291]     Train net output #4: per_acc = 0.982884
+I0716 02:03:57.903398  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 02:03:57.903411  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 02:03:57.903414  3347 solver.cpp:291]     Train net output #7: per_acc = 0.416078
+I0716 02:03:57.903419  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 02:03:57.903422  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0716 02:03:57.903425  3347 solver.cpp:291]     Train net output #10: per_acc = 0.968605
+I0716 02:03:57.903429  3347 solver.cpp:291]     Train net output #11: per_acc = 0.950548
+I0716 02:03:57.903434  3347 solver.cpp:291]     Train net output #12: per_acc = 0.837997
+I0716 02:03:57.903436  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0716 02:03:57.903440  3347 solver.cpp:291]     Train net output #14: per_acc = 0.497578
+I0716 02:03:57.903443  3347 solver.cpp:291]     Train net output #15: per_acc = 0.880897
+I0716 02:03:57.903447  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 02:03:57.903451  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 02:03:57.903455  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 02:03:57.903458  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 02:03:57.903462  3347 solver.cpp:291]     Train net output #20: per_acc = 0.948642
+I0716 02:03:57.903470  3347 sgd_solver.cpp:106] Iteration 19750, lr = 0.0005
+I0716 02:33:26.703480  3347 solver.cpp:270] Iteration 19800 (0.0282689 iter/s, 1768.73s/50 iter), loss = 0.200935, remaining 41 hours and 15 minutes
+I0716 02:33:26.703613  3347 solver.cpp:291]     Train net output #0: acc = 0.950208
+I0716 02:33:26.703624  3347 solver.cpp:291]     Train net output #1: loss = 0.155198 (* 1 = 0.155198 loss)
+I0716 02:33:26.703627  3347 solver.cpp:291]     Train net output #2: per_acc = 0.987432
+I0716 02:33:26.703631  3347 solver.cpp:291]     Train net output #3: per_acc = 0.948874
+I0716 02:33:26.703634  3347 solver.cpp:291]     Train net output #4: per_acc = 0.980818
+I0716 02:33:26.703639  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 02:33:26.703642  3347 solver.cpp:291]     Train net output #6: per_acc = 0.837641
+I0716 02:33:26.703646  3347 solver.cpp:291]     Train net output #7: per_acc = 0.814414
+I0716 02:33:26.703649  3347 solver.cpp:291]     Train net output #8: per_acc = 0.461114
+I0716 02:33:26.703653  3347 solver.cpp:291]     Train net output #9: per_acc = 0.943914
+I0716 02:33:26.703657  3347 solver.cpp:291]     Train net output #10: per_acc = 0.938897
+I0716 02:33:26.703661  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 02:33:26.703665  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 02:33:26.703668  3347 solver.cpp:291]     Train net output #13: per_acc = 0.915911
+I0716 02:33:26.703672  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 02:33:26.703675  3347 solver.cpp:291]     Train net output #15: per_acc = 0.665008
+I0716 02:33:26.703678  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 02:33:26.703683  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 02:33:26.703686  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 02:33:26.703689  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 02:33:26.703693  3347 solver.cpp:291]     Train net output #20: per_acc = 0.113739
+I0716 02:33:26.703702  3347 sgd_solver.cpp:106] Iteration 19800, lr = 0.0005
+I0716 03:02:54.810674  3347 solver.cpp:270] Iteration 19850 (0.0282799 iter/s, 1768.04s/50 iter), loss = 0.197332, remaining 40 hours and 39 minutes
+I0716 03:02:54.810873  3347 solver.cpp:291]     Train net output #0: acc = 0.955889
+I0716 03:02:54.810884  3347 solver.cpp:291]     Train net output #1: loss = 0.143276 (* 1 = 0.143276 loss)
+I0716 03:02:54.810889  3347 solver.cpp:291]     Train net output #2: per_acc = 0.996295
+I0716 03:02:54.810894  3347 solver.cpp:291]     Train net output #3: per_acc = 0.913433
+I0716 03:02:54.810897  3347 solver.cpp:291]     Train net output #4: per_acc = 0.930368
+I0716 03:02:54.810900  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 03:02:54.810905  3347 solver.cpp:291]     Train net output #6: per_acc = 0.97434
+I0716 03:02:54.810909  3347 solver.cpp:291]     Train net output #7: per_acc = 0.815043
+I0716 03:02:54.810912  3347 solver.cpp:291]     Train net output #8: per_acc = 0.256158
+I0716 03:02:54.810915  3347 solver.cpp:291]     Train net output #9: per_acc = 0.602419
+I0716 03:02:54.810920  3347 solver.cpp:291]     Train net output #10: per_acc = 0.959366
+I0716 03:02:54.810923  3347 solver.cpp:291]     Train net output #11: per_acc = 0.917098
+I0716 03:02:54.810926  3347 solver.cpp:291]     Train net output #12: per_acc = 0.878242
+I0716 03:02:54.810930  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0716 03:02:54.810935  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 03:02:54.810937  3347 solver.cpp:291]     Train net output #15: per_acc = 0.966305
+I0716 03:02:54.810941  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 03:02:54.810945  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 03:02:54.810948  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 03:02:54.810951  3347 solver.cpp:291]     Train net output #19: per_acc = 0.379953
+I0716 03:02:54.810956  3347 solver.cpp:291]     Train net output #20: per_acc = 0.958115
+I0716 03:02:54.810964  3347 sgd_solver.cpp:106] Iteration 19850, lr = 0.0005
+I0716 03:32:21.092548  3347 solver.cpp:270] Iteration 19900 (0.0283092 iter/s, 1766.21s/50 iter), loss = 0.191886, remaining 40 hours and 1 minutes
+I0716 03:32:21.092684  3347 solver.cpp:291]     Train net output #0: acc = 0.972944
+I0716 03:32:21.092694  3347 solver.cpp:291]     Train net output #1: loss = 0.0715472 (* 1 = 0.0715472 loss)
+I0716 03:32:21.092700  3347 solver.cpp:291]     Train net output #2: per_acc = 0.986632
+I0716 03:32:21.092703  3347 solver.cpp:291]     Train net output #3: per_acc = 0.949544
+I0716 03:32:21.092707  3347 solver.cpp:291]     Train net output #4: per_acc = 0.968429
+I0716 03:32:21.092710  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 03:32:21.092715  3347 solver.cpp:291]     Train net output #6: per_acc = 0.254313
+I0716 03:32:21.092718  3347 solver.cpp:291]     Train net output #7: per_acc = 0.625702
+I0716 03:32:21.092721  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 03:32:21.092725  3347 solver.cpp:291]     Train net output #9: per_acc = 0.897297
+I0716 03:32:21.092728  3347 solver.cpp:291]     Train net output #10: per_acc = 0.932115
+I0716 03:32:21.092732  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 03:32:21.092736  3347 solver.cpp:291]     Train net output #12: per_acc = 0.970949
+I0716 03:32:21.092739  3347 solver.cpp:291]     Train net output #13: per_acc = 0.670465
+I0716 03:32:21.092742  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 03:32:21.092746  3347 solver.cpp:291]     Train net output #15: per_acc = 0.959977
+I0716 03:32:21.092751  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 03:32:21.092753  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 03:32:21.092756  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 03:32:21.092761  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 03:32:21.092764  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 03:32:21.092772  3347 sgd_solver.cpp:106] Iteration 19900, lr = 0.0005
+I0716 04:01:49.178000  3347 solver.cpp:270] Iteration 19950 (0.0282803 iter/s, 1768.01s/50 iter), loss = 0.194898, remaining 39 hours and 28 minutes
+I0716 04:01:49.178171  3347 solver.cpp:291]     Train net output #0: acc = 0.938847
+I0716 04:01:49.178184  3347 solver.cpp:291]     Train net output #1: loss = 0.201975 (* 1 = 0.201975 loss)
+I0716 04:01:49.178189  3347 solver.cpp:291]     Train net output #2: per_acc = 0.98584
+I0716 04:01:49.178191  3347 solver.cpp:291]     Train net output #3: per_acc = 0.921831
+I0716 04:01:49.178195  3347 solver.cpp:291]     Train net output #4: per_acc = 0.930032
+I0716 04:01:49.178200  3347 solver.cpp:291]     Train net output #5: per_acc = 0.876741
+I0716 04:01:49.178203  3347 solver.cpp:291]     Train net output #6: per_acc = 0.97285
+I0716 04:01:49.178206  3347 solver.cpp:291]     Train net output #7: per_acc = 0.669592
+I0716 04:01:49.178210  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 04:01:49.178215  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0716 04:01:49.178217  3347 solver.cpp:291]     Train net output #10: per_acc = 0.933183
+I0716 04:01:49.178220  3347 solver.cpp:291]     Train net output #11: per_acc = 0.299152
+I0716 04:01:49.178225  3347 solver.cpp:291]     Train net output #12: per_acc = 0.997732
+I0716 04:01:49.178228  3347 solver.cpp:291]     Train net output #13: per_acc = 0.972272
+I0716 04:01:49.178231  3347 solver.cpp:291]     Train net output #14: per_acc = 0.598824
+I0716 04:01:49.178236  3347 solver.cpp:291]     Train net output #15: per_acc = 0.976811
+I0716 04:01:49.178239  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 04:01:49.178242  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 04:01:49.178246  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 04:01:49.178249  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 04:01:49.178253  3347 solver.cpp:291]     Train net output #20: per_acc = 0.944741
+I0716 04:01:49.178262  3347 sgd_solver.cpp:106] Iteration 19950, lr = 0.0005
+I0716 04:30:43.174013  3347 solver.cpp:935] Snapshotting to binary proto file ../workspace/model/unet-lite/final_models/_iter_20000.caffemodel
+I0716 04:30:43.292601  3347 sgd_solver.cpp:273] Snapshotting solver state to binary proto file ../workspace/model/unet-lite/final_models/_iter_20000.solverstate
+I0716 04:31:18.768669  3347 solver.cpp:270] Iteration 20000 (0.0282561 iter/s, 1769.53s/50 iter), loss = 0.213833, remaining 38 hours and 54 minutes
+I0716 04:31:18.768785  3347 solver.cpp:291]     Train net output #0: acc = 0.909781
+I0716 04:31:18.768796  3347 solver.cpp:291]     Train net output #1: loss = 0.261062 (* 1 = 0.261062 loss)
+I0716 04:31:18.768800  3347 solver.cpp:291]     Train net output #2: per_acc = 0.987553
+I0716 04:31:18.768805  3347 solver.cpp:291]     Train net output #3: per_acc = 0.933186
+I0716 04:31:18.768808  3347 solver.cpp:291]     Train net output #4: per_acc = 0.975968
+I0716 04:31:18.768812  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 04:31:18.768815  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 04:31:18.768820  3347 solver.cpp:291]     Train net output #7: per_acc = 0.808576
+I0716 04:31:18.768823  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 04:31:18.768826  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0716 04:31:18.768831  3347 solver.cpp:291]     Train net output #10: per_acc = 0
+I0716 04:31:18.768834  3347 solver.cpp:291]     Train net output #11: per_acc = 0.660361
+I0716 04:31:18.768837  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 04:31:18.768841  3347 solver.cpp:291]     Train net output #13: per_acc = 0.563292
+I0716 04:31:18.768844  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 04:31:18.768848  3347 solver.cpp:291]     Train net output #15: per_acc = 0.9712
+I0716 04:31:18.768852  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 04:31:18.768855  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 04:31:18.768859  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 04:31:18.768863  3347 solver.cpp:291]     Train net output #19: per_acc = 0.303594
+I0716 04:31:18.768867  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 04:31:18.768875  3347 sgd_solver.cpp:106] Iteration 20000, lr = 0.0005
+I0716 05:00:47.106690  3347 solver.cpp:270] Iteration 20050 (0.0282762 iter/s, 1768.27s/50 iter), loss = 0.192529, remaining 38 hours and 17 minutes
+I0716 05:00:47.106868  3347 solver.cpp:291]     Train net output #0: acc = 0.951548
+I0716 05:00:47.106879  3347 solver.cpp:291]     Train net output #1: loss = 0.163781 (* 1 = 0.163781 loss)
+I0716 05:00:47.106884  3347 solver.cpp:291]     Train net output #2: per_acc = 0.993056
+I0716 05:00:47.106889  3347 solver.cpp:291]     Train net output #3: per_acc = 0.783177
+I0716 05:00:47.106892  3347 solver.cpp:291]     Train net output #4: per_acc = 0.960087
+I0716 05:00:47.106895  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 05:00:47.106899  3347 solver.cpp:291]     Train net output #6: per_acc = 0.28799
+I0716 05:00:47.106902  3347 solver.cpp:291]     Train net output #7: per_acc = 0.356551
+I0716 05:00:47.106907  3347 solver.cpp:291]     Train net output #8: per_acc = 0.519194
+I0716 05:00:47.106910  3347 solver.cpp:291]     Train net output #9: per_acc = 0.811594
+I0716 05:00:47.106914  3347 solver.cpp:291]     Train net output #10: per_acc = 0.875483
+I0716 05:00:47.106917  3347 solver.cpp:291]     Train net output #11: per_acc = 0.00738837
+I0716 05:00:47.106922  3347 solver.cpp:291]     Train net output #12: per_acc = 0.982566
+I0716 05:00:47.106926  3347 solver.cpp:291]     Train net output #13: per_acc = 0.566274
+I0716 05:00:47.106930  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 05:00:47.106933  3347 solver.cpp:291]     Train net output #15: per_acc = 0.994354
+I0716 05:00:47.106937  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 05:00:47.106940  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 05:00:47.106945  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 05:00:47.106947  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 05:00:47.106951  3347 solver.cpp:291]     Train net output #20: per_acc = 0.789783
+I0716 05:00:47.106961  3347 sgd_solver.cpp:106] Iteration 20050, lr = 0.0005
+I0716 05:30:13.656565  3347 solver.cpp:270] Iteration 20100 (0.0283049 iter/s, 1766.48s/50 iter), loss = 0.186951, remaining 38 hours and 15 minutes
+I0716 05:30:13.656718  3347 solver.cpp:291]     Train net output #0: acc = 0.955843
+I0716 05:30:13.656729  3347 solver.cpp:291]     Train net output #1: loss = 0.129992 (* 1 = 0.129992 loss)
+I0716 05:30:13.656733  3347 solver.cpp:291]     Train net output #2: per_acc = 0.987017
+I0716 05:30:13.656738  3347 solver.cpp:291]     Train net output #3: per_acc = 0.770596
+I0716 05:30:13.656740  3347 solver.cpp:291]     Train net output #4: per_acc = 0.959428
+I0716 05:30:13.656744  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 05:30:13.656749  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 05:30:13.656751  3347 solver.cpp:291]     Train net output #7: per_acc = 0.570577
+I0716 05:30:13.656755  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 05:30:13.656759  3347 solver.cpp:291]     Train net output #9: per_acc = 0.918833
+I0716 05:30:13.656762  3347 solver.cpp:291]     Train net output #10: per_acc = 0.951154
+I0716 05:30:13.656766  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 05:30:13.656769  3347 solver.cpp:291]     Train net output #12: per_acc = 0.951811
+I0716 05:30:13.656774  3347 solver.cpp:291]     Train net output #13: per_acc = 0.967549
+I0716 05:30:13.656777  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 05:30:13.656780  3347 solver.cpp:291]     Train net output #15: per_acc = 0.993244
+I0716 05:30:13.656785  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 05:30:13.656788  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 05:30:13.656791  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 05:30:13.656795  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 05:30:13.656798  3347 solver.cpp:291]     Train net output #20: per_acc = 0.935927
+I0716 05:30:13.656808  3347 sgd_solver.cpp:106] Iteration 20100, lr = 0.0005
+I0716 05:59:39.767204  3347 solver.cpp:270] Iteration 20150 (0.0283119 iter/s, 1766.04s/50 iter), loss = 0.200862, remaining 37 hours and 39 minutes
+I0716 05:59:39.767391  3347 solver.cpp:291]     Train net output #0: acc = 0.943375
+I0716 05:59:39.767402  3347 solver.cpp:291]     Train net output #1: loss = 0.170565 (* 1 = 0.170565 loss)
+I0716 05:59:39.767407  3347 solver.cpp:291]     Train net output #2: per_acc = 0.99506
+I0716 05:59:39.767411  3347 solver.cpp:291]     Train net output #3: per_acc = 0.819813
+I0716 05:59:39.767416  3347 solver.cpp:291]     Train net output #4: per_acc = 0.944869
+I0716 05:59:39.767418  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 05:59:39.767432  3347 solver.cpp:291]     Train net output #6: per_acc = 0.0922247
+I0716 05:59:39.767436  3347 solver.cpp:291]     Train net output #7: per_acc = 0.865309
+I0716 05:59:39.767439  3347 solver.cpp:291]     Train net output #8: per_acc = 0.521997
+I0716 05:59:39.767442  3347 solver.cpp:291]     Train net output #9: per_acc = 0.742033
+I0716 05:59:39.767447  3347 solver.cpp:291]     Train net output #10: per_acc = 0.872039
+I0716 05:59:39.767452  3347 solver.cpp:291]     Train net output #11: per_acc = 0.685908
+I0716 05:59:39.767454  3347 solver.cpp:291]     Train net output #12: per_acc = 0.914163
+I0716 05:59:39.767458  3347 solver.cpp:291]     Train net output #13: per_acc = 0.90503
+I0716 05:59:39.767462  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 05:59:39.767465  3347 solver.cpp:291]     Train net output #15: per_acc = 0.945823
+I0716 05:59:39.767469  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 05:59:39.767472  3347 solver.cpp:291]     Train net output #17: per_acc = 0.836619
+I0716 05:59:39.767477  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 05:59:39.767480  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 05:59:39.767483  3347 solver.cpp:291]     Train net output #20: per_acc = 0.868775
+I0716 05:59:39.767493  3347 sgd_solver.cpp:106] Iteration 20150, lr = 0.0005
+I0716 06:29:06.856550  3347 solver.cpp:270] Iteration 20200 (0.0282962 iter/s, 1767.02s/50 iter), loss = 0.193713, remaining 37 hours and 5 minutes
+I0716 06:29:06.856700  3347 solver.cpp:291]     Train net output #0: acc = 0.947171
+I0716 06:29:06.856711  3347 solver.cpp:291]     Train net output #1: loss = 0.166515 (* 1 = 0.166515 loss)
+I0716 06:29:06.856715  3347 solver.cpp:291]     Train net output #2: per_acc = 0.990138
+I0716 06:29:06.856719  3347 solver.cpp:291]     Train net output #3: per_acc = 0.893009
+I0716 06:29:06.856724  3347 solver.cpp:291]     Train net output #4: per_acc = 0.956463
+I0716 06:29:06.856726  3347 solver.cpp:291]     Train net output #5: per_acc = 0.614074
+I0716 06:29:06.856730  3347 solver.cpp:291]     Train net output #6: per_acc = 0.239266
+I0716 06:29:06.856734  3347 solver.cpp:291]     Train net output #7: per_acc = 0.798567
+I0716 06:29:06.856737  3347 solver.cpp:291]     Train net output #8: per_acc = 0.497222
+I0716 06:29:06.856741  3347 solver.cpp:291]     Train net output #9: per_acc = 0.503915
+I0716 06:29:06.856745  3347 solver.cpp:291]     Train net output #10: per_acc = 0.977476
+I0716 06:29:06.856748  3347 solver.cpp:291]     Train net output #11: per_acc = 0.636723
+I0716 06:29:06.856751  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 06:29:06.856755  3347 solver.cpp:291]     Train net output #13: per_acc = 0.81795
+I0716 06:29:06.856758  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 06:29:06.856763  3347 solver.cpp:291]     Train net output #15: per_acc = 0.928362
+I0716 06:29:06.856766  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 06:29:06.856770  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 06:29:06.856773  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 06:29:06.856777  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 06:29:06.856781  3347 solver.cpp:291]     Train net output #20: per_acc = 0.625951
+I0716 06:29:06.856789  3347 sgd_solver.cpp:106] Iteration 20200, lr = 0.0005
+I0716 06:58:36.773674  3347 solver.cpp:270] Iteration 20250 (0.0282511 iter/s, 1769.84s/50 iter), loss = 0.178533, remaining 36 hours and 33 minutes
+I0716 06:58:36.773835  3347 solver.cpp:291]     Train net output #0: acc = 0.976104
+I0716 06:58:36.773847  3347 solver.cpp:291]     Train net output #1: loss = 0.0731531 (* 1 = 0.0731531 loss)
+I0716 06:58:36.773852  3347 solver.cpp:291]     Train net output #2: per_acc = 0.996685
+I0716 06:58:36.773855  3347 solver.cpp:291]     Train net output #3: per_acc = 0.854816
+I0716 06:58:36.773860  3347 solver.cpp:291]     Train net output #4: per_acc = 0.944346
+I0716 06:58:36.773864  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 06:58:36.773866  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 06:58:36.773870  3347 solver.cpp:291]     Train net output #7: per_acc = 0.909589
+I0716 06:58:36.773874  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 06:58:36.773877  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0716 06:58:36.773880  3347 solver.cpp:291]     Train net output #10: per_acc = 0.970999
+I0716 06:58:36.773885  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 06:58:36.773888  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 06:58:36.773891  3347 solver.cpp:291]     Train net output #13: per_acc = 0.887715
+I0716 06:58:36.773895  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 06:58:36.773898  3347 solver.cpp:291]     Train net output #15: per_acc = 0.980671
+I0716 06:58:36.773902  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 06:58:36.773906  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 06:58:36.773910  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 06:58:36.773912  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 06:58:36.773916  3347 solver.cpp:291]     Train net output #20: per_acc = 0.629613
+I0716 06:58:36.773926  3347 sgd_solver.cpp:106] Iteration 20250, lr = 0.0005
+I0716 07:28:04.188066  3347 solver.cpp:270] Iteration 20300 (0.028291 iter/s, 1767.35s/50 iter), loss = 0.203915, remaining 35 hours and 55 minutes
+I0716 07:28:04.188247  3347 solver.cpp:291]     Train net output #0: acc = 0.96696
+I0716 07:28:04.188261  3347 solver.cpp:291]     Train net output #1: loss = 0.105195 (* 1 = 0.105195 loss)
+I0716 07:28:04.188266  3347 solver.cpp:291]     Train net output #2: per_acc = 0.996901
+I0716 07:28:04.188269  3347 solver.cpp:291]     Train net output #3: per_acc = 0.820673
+I0716 07:28:04.188273  3347 solver.cpp:291]     Train net output #4: per_acc = 0.936017
+I0716 07:28:04.188277  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 07:28:04.188280  3347 solver.cpp:291]     Train net output #6: per_acc = 0.860187
+I0716 07:28:04.188284  3347 solver.cpp:291]     Train net output #7: per_acc = 0.732389
+I0716 07:28:04.188287  3347 solver.cpp:291]     Train net output #8: per_acc = 0.291874
+I0716 07:28:04.188292  3347 solver.cpp:291]     Train net output #9: per_acc = 0.673657
+I0716 07:28:04.188295  3347 solver.cpp:291]     Train net output #10: per_acc = 0.841257
+I0716 07:28:04.188299  3347 solver.cpp:291]     Train net output #11: per_acc = 0.5
+I0716 07:28:04.188302  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 07:28:04.188307  3347 solver.cpp:291]     Train net output #13: per_acc = 0.935419
+I0716 07:28:04.188310  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 07:28:04.188313  3347 solver.cpp:291]     Train net output #15: per_acc = 0.967991
+I0716 07:28:04.188318  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 07:28:04.188321  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 07:28:04.188324  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 07:28:04.188328  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 07:28:04.188331  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 07:28:04.188341  3347 sgd_solver.cpp:106] Iteration 20300, lr = 0.0005
+I0716 07:57:42.587641  3347 solver.cpp:270] Iteration 20350 (0.0281163 iter/s, 1778.33s/50 iter), loss = 0.201546, remaining 35 hours and 33 minutes
+I0716 07:57:42.587813  3347 solver.cpp:291]     Train net output #0: acc = 0.949307
+I0716 07:57:42.587824  3347 solver.cpp:291]     Train net output #1: loss = 0.153028 (* 1 = 0.153028 loss)
+I0716 07:57:42.587829  3347 solver.cpp:291]     Train net output #2: per_acc = 0.970938
+I0716 07:57:42.587833  3347 solver.cpp:291]     Train net output #3: per_acc = 0.733902
+I0716 07:57:42.587836  3347 solver.cpp:291]     Train net output #4: per_acc = 0.902635
+I0716 07:57:42.587841  3347 solver.cpp:291]     Train net output #5: per_acc = 0.0430646
+I0716 07:57:42.587846  3347 solver.cpp:291]     Train net output #6: per_acc = 0.26663
+I0716 07:57:42.587848  3347 solver.cpp:291]     Train net output #7: per_acc = 0.357853
+I0716 07:57:42.587852  3347 solver.cpp:291]     Train net output #8: per_acc = 0.0387349
+I0716 07:57:42.587855  3347 solver.cpp:291]     Train net output #9: per_acc = 0.607158
+I0716 07:57:42.587859  3347 solver.cpp:291]     Train net output #10: per_acc = 0.962361
+I0716 07:57:42.587863  3347 solver.cpp:291]     Train net output #11: per_acc = 0.042328
+I0716 07:57:42.587867  3347 solver.cpp:291]     Train net output #12: per_acc = 1
+I0716 07:57:42.587870  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0716 07:57:42.587874  3347 solver.cpp:291]     Train net output #14: per_acc = 0.376779
+I0716 07:57:42.587877  3347 solver.cpp:291]     Train net output #15: per_acc = 0.989459
+I0716 07:57:42.587882  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 07:57:42.587884  3347 solver.cpp:291]     Train net output #17: per_acc = 0.919632
+I0716 07:57:42.587888  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 07:57:42.587893  3347 solver.cpp:291]     Train net output #19: per_acc = 0.791384
+I0716 07:57:42.587895  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 07:57:42.587904  3347 sgd_solver.cpp:106] Iteration 20350, lr = 0.0005
+I0716 08:28:00.777967  3347 solver.cpp:270] Iteration 20400 (0.0275009 iter/s, 1818.12s/50 iter), loss = 0.187045, remaining 36 hours and 20 minutes
+I0716 08:28:00.778138  3347 solver.cpp:291]     Train net output #0: acc = 0.973271
+I0716 08:28:00.778149  3347 solver.cpp:291]     Train net output #1: loss = 0.0818591 (* 1 = 0.0818591 loss)
+I0716 08:28:00.778154  3347 solver.cpp:291]     Train net output #2: per_acc = 0.997111
+I0716 08:28:00.778158  3347 solver.cpp:291]     Train net output #3: per_acc = 0.991835
+I0716 08:28:00.778162  3347 solver.cpp:291]     Train net output #4: per_acc = 0.756313
+I0716 08:28:00.778165  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 08:28:00.778169  3347 solver.cpp:291]     Train net output #6: per_acc = 0.926087
+I0716 08:28:00.778173  3347 solver.cpp:291]     Train net output #7: per_acc = 0.0892019
+I0716 08:28:00.778177  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 08:28:00.778180  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0716 08:28:00.778183  3347 solver.cpp:291]     Train net output #10: per_acc = 0.854373
+I0716 08:28:00.778187  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 08:28:00.778192  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 08:28:00.778194  3347 solver.cpp:291]     Train net output #13: per_acc = 0.92583
+I0716 08:28:00.778198  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 08:28:00.778203  3347 solver.cpp:291]     Train net output #15: per_acc = 0.976748
+I0716 08:28:00.778205  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 08:28:00.778209  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 08:28:00.778213  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 08:28:00.778216  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 08:28:00.778219  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 08:28:00.778229  3347 sgd_solver.cpp:106] Iteration 20400, lr = 0.0005
+I0716 08:57:27.144577  3347 solver.cpp:270] Iteration 20450 (0.0283078 iter/s, 1766.3s/50 iter), loss = 0.19309, remaining 34 hours and 43 minutes
+I0716 08:57:27.144742  3347 solver.cpp:291]     Train net output #0: acc = 0.921913
+I0716 08:57:27.144757  3347 solver.cpp:291]     Train net output #1: loss = 0.230763 (* 1 = 0.230763 loss)
+I0716 08:57:27.144762  3347 solver.cpp:291]     Train net output #2: per_acc = 0.926658
+I0716 08:57:27.144765  3347 solver.cpp:291]     Train net output #3: per_acc = 0.961191
+I0716 08:57:27.144769  3347 solver.cpp:291]     Train net output #4: per_acc = 0.95926
+I0716 08:57:27.144773  3347 solver.cpp:291]     Train net output #5: per_acc = 0.57369
+I0716 08:57:27.144776  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 08:57:27.144780  3347 solver.cpp:291]     Train net output #7: per_acc = 0.831515
+I0716 08:57:27.144784  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 08:57:27.144788  3347 solver.cpp:291]     Train net output #9: per_acc = 0.850518
+I0716 08:57:27.144791  3347 solver.cpp:291]     Train net output #10: per_acc = 0.989666
+I0716 08:57:27.144794  3347 solver.cpp:291]     Train net output #11: per_acc = 0.439669
+I0716 08:57:27.144799  3347 solver.cpp:291]     Train net output #12: per_acc = 0.672705
+I0716 08:57:27.144803  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0716 08:57:27.144806  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 08:57:27.144809  3347 solver.cpp:291]     Train net output #15: per_acc = 0.981742
+I0716 08:57:27.144814  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 08:57:27.144817  3347 solver.cpp:291]     Train net output #17: per_acc = 0.442895
+I0716 08:57:27.144820  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 08:57:27.144824  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 08:57:27.144829  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 08:57:27.144840  3347 sgd_solver.cpp:106] Iteration 20450, lr = 0.0005
+I0716 09:27:17.704679  3347 solver.cpp:270] Iteration 20500 (0.0279253 iter/s, 1790.49s/50 iter), loss = 0.192411, remaining 34 hours and 36 minutes
+I0716 09:27:17.704819  3347 solver.cpp:291]     Train net output #0: acc = 0.921469
+I0716 09:27:17.704831  3347 solver.cpp:291]     Train net output #1: loss = 0.246608 (* 1 = 0.246608 loss)
+I0716 09:27:17.704836  3347 solver.cpp:291]     Train net output #2: per_acc = 0.940622
+I0716 09:27:17.704839  3347 solver.cpp:291]     Train net output #3: per_acc = 0.267551
+I0716 09:27:17.704843  3347 solver.cpp:291]     Train net output #4: per_acc = 0.963916
+I0716 09:27:17.704847  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 09:27:17.704850  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 09:27:17.704854  3347 solver.cpp:291]     Train net output #7: per_acc = 0.190633
+I0716 09:27:17.704857  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 09:27:17.704861  3347 solver.cpp:291]     Train net output #9: per_acc = 0.829302
+I0716 09:27:17.704864  3347 solver.cpp:291]     Train net output #10: per_acc = 0.973741
+I0716 09:27:17.704869  3347 solver.cpp:291]     Train net output #11: per_acc = 0.984485
+I0716 09:27:17.704871  3347 solver.cpp:291]     Train net output #12: per_acc = 0.838937
+I0716 09:27:17.704875  3347 solver.cpp:291]     Train net output #13: per_acc = 0.803287
+I0716 09:27:17.704880  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 09:27:17.704885  3347 solver.cpp:291]     Train net output #15: per_acc = 0.96222
+I0716 09:27:17.704890  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 09:27:17.704896  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 09:27:17.704901  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 09:27:17.704907  3347 solver.cpp:291]     Train net output #19: per_acc = 0.537635
+I0716 09:27:17.704912  3347 solver.cpp:291]     Train net output #20: per_acc = 0.915094
+I0716 09:27:17.704926  3347 sgd_solver.cpp:106] Iteration 20500, lr = 0.0005
+I0716 09:57:51.722389  3347 solver.cpp:270] Iteration 20550 (0.0272636 iter/s, 1833.94s/50 iter), loss = 0.196909, remaining 34 hours and 49 minutes
+I0716 09:57:51.722558  3347 solver.cpp:291]     Train net output #0: acc = 0.931422
+I0716 09:57:51.722569  3347 solver.cpp:291]     Train net output #1: loss = 0.20368 (* 1 = 0.20368 loss)
+I0716 09:57:51.722574  3347 solver.cpp:291]     Train net output #2: per_acc = 0.954102
+I0716 09:57:51.722579  3347 solver.cpp:291]     Train net output #3: per_acc = 0.879462
+I0716 09:57:51.722581  3347 solver.cpp:291]     Train net output #4: per_acc = 0.967329
+I0716 09:57:51.722585  3347 solver.cpp:291]     Train net output #5: per_acc = 0.858073
+I0716 09:57:51.722589  3347 solver.cpp:291]     Train net output #6: per_acc = 0.562464
+I0716 09:57:51.722594  3347 solver.cpp:291]     Train net output #7: per_acc = 0.743664
+I0716 09:57:51.722596  3347 solver.cpp:291]     Train net output #8: per_acc = 0.314199
+I0716 09:57:51.722600  3347 solver.cpp:291]     Train net output #9: per_acc = 0.824514
+I0716 09:57:51.722604  3347 solver.cpp:291]     Train net output #10: per_acc = 0.972147
+I0716 09:57:51.722607  3347 solver.cpp:291]     Train net output #11: per_acc = 0.69369
+I0716 09:57:51.722611  3347 solver.cpp:291]     Train net output #12: per_acc = 0.948856
+I0716 09:57:51.722615  3347 solver.cpp:291]     Train net output #13: per_acc = 0.972331
+I0716 09:57:51.722618  3347 solver.cpp:291]     Train net output #14: per_acc = 0.572093
+I0716 09:57:51.722622  3347 solver.cpp:291]     Train net output #15: per_acc = 0.94203
+I0716 09:57:51.722625  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 09:57:51.722630  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 09:57:51.722633  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 09:57:51.722636  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 09:57:51.722640  3347 solver.cpp:291]     Train net output #20: per_acc = 0.52381
+I0716 09:57:51.722648  3347 sgd_solver.cpp:106] Iteration 20550, lr = 0.0005
+I0716 10:27:52.426302  3347 solver.cpp:270] Iteration 20600 (0.027768 iter/s, 1800.63s/50 iter), loss = 0.197413, remaining 33 hours and 35 minutes
+I0716 10:27:52.426425  3347 solver.cpp:291]     Train net output #0: acc = 0.962175
+I0716 10:27:52.426436  3347 solver.cpp:291]     Train net output #1: loss = 0.115399 (* 1 = 0.115399 loss)
+I0716 10:27:52.426441  3347 solver.cpp:291]     Train net output #2: per_acc = 0.983349
+I0716 10:27:52.426445  3347 solver.cpp:291]     Train net output #3: per_acc = 0.945031
+I0716 10:27:52.426450  3347 solver.cpp:291]     Train net output #4: per_acc = 0.980776
+I0716 10:27:52.426452  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 10:27:52.426456  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 10:27:52.426460  3347 solver.cpp:291]     Train net output #7: per_acc = 0.401926
+I0716 10:27:52.426463  3347 solver.cpp:291]     Train net output #8: per_acc = 0.810583
+I0716 10:27:52.426467  3347 solver.cpp:291]     Train net output #9: per_acc = 0.810189
+I0716 10:27:52.426471  3347 solver.cpp:291]     Train net output #10: per_acc = 0.969998
+I0716 10:27:52.426476  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 10:27:52.426478  3347 solver.cpp:291]     Train net output #12: per_acc = 0.977345
+I0716 10:27:52.426482  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0716 10:27:52.426486  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 10:27:52.426489  3347 solver.cpp:291]     Train net output #15: per_acc = 0.987032
+I0716 10:27:52.426493  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 10:27:52.426496  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 10:27:52.426501  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 10:27:52.426503  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 10:27:52.426507  3347 solver.cpp:291]     Train net output #20: per_acc = 0.30359
+I0716 10:27:52.426517  3347 sgd_solver.cpp:106] Iteration 20600, lr = 0.0005
+I0716 10:57:58.864073  3347 solver.cpp:270] Iteration 20650 (0.0276799 iter/s, 1806.37s/50 iter), loss = 0.195321, remaining 33 hours and 6 minutes
+I0716 10:57:58.864253  3347 solver.cpp:291]     Train net output #0: acc = 0.94627
+I0716 10:57:58.864264  3347 solver.cpp:291]     Train net output #1: loss = 0.170077 (* 1 = 0.170077 loss)
+I0716 10:57:58.864269  3347 solver.cpp:291]     Train net output #2: per_acc = 0.982757
+I0716 10:57:58.864272  3347 solver.cpp:291]     Train net output #3: per_acc = 0.443441
+I0716 10:57:58.864276  3347 solver.cpp:291]     Train net output #4: per_acc = 0.925415
+I0716 10:57:58.864279  3347 solver.cpp:291]     Train net output #5: per_acc = 0.539619
+I0716 10:57:58.864284  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 10:57:58.864286  3347 solver.cpp:291]     Train net output #7: per_acc = 0.150082
+I0716 10:57:58.864290  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 10:57:58.864295  3347 solver.cpp:291]     Train net output #9: per_acc = 0.430364
+I0716 10:57:58.864297  3347 solver.cpp:291]     Train net output #10: per_acc = 0.909387
+I0716 10:57:58.864301  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 10:57:58.864305  3347 solver.cpp:291]     Train net output #12: per_acc = 0.998359
+I0716 10:57:58.864308  3347 solver.cpp:291]     Train net output #13: per_acc = 0.889954
+I0716 10:57:58.864311  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 10:57:58.864315  3347 solver.cpp:291]     Train net output #15: per_acc = 0.922256
+I0716 10:57:58.864320  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 10:57:58.864322  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 10:57:58.864326  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 10:57:58.864331  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 10:57:58.864334  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 10:57:58.864343  3347 sgd_solver.cpp:106] Iteration 20650, lr = 0.0005
+I0716 11:28:03.670234  3347 solver.cpp:270] Iteration 20700 (0.0277049 iter/s, 1804.74s/50 iter), loss = 0.19886, remaining 33 hours and 4 minutes
+I0716 11:28:03.670363  3347 solver.cpp:291]     Train net output #0: acc = 0.922767
+I0716 11:28:03.670374  3347 solver.cpp:291]     Train net output #1: loss = 0.243497 (* 1 = 0.243497 loss)
+I0716 11:28:03.670378  3347 solver.cpp:291]     Train net output #2: per_acc = 0.996403
+I0716 11:28:03.670382  3347 solver.cpp:291]     Train net output #3: per_acc = 0.912565
+I0716 11:28:03.670385  3347 solver.cpp:291]     Train net output #4: per_acc = 0.923471
+I0716 11:28:03.670389  3347 solver.cpp:291]     Train net output #5: per_acc = 0.36496
+I0716 11:28:03.670393  3347 solver.cpp:291]     Train net output #6: per_acc = 0.80465
+I0716 11:28:03.670397  3347 solver.cpp:291]     Train net output #7: per_acc = 0.610696
+I0716 11:28:03.670400  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 11:28:03.670405  3347 solver.cpp:291]     Train net output #9: per_acc = 0.874126
+I0716 11:28:03.670408  3347 solver.cpp:291]     Train net output #10: per_acc = 0.925519
+I0716 11:28:03.670413  3347 solver.cpp:291]     Train net output #11: per_acc = 0.684222
+I0716 11:28:03.670415  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 11:28:03.670419  3347 solver.cpp:291]     Train net output #13: per_acc = 0.879413
+I0716 11:28:03.670423  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 11:28:03.670426  3347 solver.cpp:291]     Train net output #15: per_acc = 0.904515
+I0716 11:28:03.670430  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 11:28:03.670434  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 11:28:03.670437  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 11:28:03.670440  3347 solver.cpp:291]     Train net output #19: per_acc = 0.803213
+I0716 11:28:03.670444  3347 solver.cpp:291]     Train net output #20: per_acc = 0.887532
+I0716 11:28:03.670454  3347 sgd_solver.cpp:106] Iteration 20700, lr = 0.0005
+I0716 11:58:12.189036  3347 solver.cpp:270] Iteration 20750 (0.0276481 iter/s, 1808.44s/50 iter), loss = 0.194005, remaining 32 hours and 32 minutes
+I0716 11:58:12.189209  3347 solver.cpp:291]     Train net output #0: acc = 0.931489
+I0716 11:58:12.189221  3347 solver.cpp:291]     Train net output #1: loss = 0.195486 (* 1 = 0.195486 loss)
+I0716 11:58:12.189226  3347 solver.cpp:291]     Train net output #2: per_acc = 0.971551
+I0716 11:58:12.189230  3347 solver.cpp:291]     Train net output #3: per_acc = 0.888827
+I0716 11:58:12.189234  3347 solver.cpp:291]     Train net output #4: per_acc = 0.963046
+I0716 11:58:12.189236  3347 solver.cpp:291]     Train net output #5: per_acc = 0.393964
+I0716 11:58:12.189240  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 11:58:12.189244  3347 solver.cpp:291]     Train net output #7: per_acc = 0.564512
+I0716 11:58:12.189247  3347 solver.cpp:291]     Train net output #8: per_acc = 0.548196
+I0716 11:58:12.189251  3347 solver.cpp:291]     Train net output #9: per_acc = 0.0648855
+I0716 11:58:12.189255  3347 solver.cpp:291]     Train net output #10: per_acc = 0.933935
+I0716 11:58:12.189258  3347 solver.cpp:291]     Train net output #11: per_acc = 0.446803
+I0716 11:58:12.189262  3347 solver.cpp:291]     Train net output #12: per_acc = 0.926473
+I0716 11:58:12.189265  3347 solver.cpp:291]     Train net output #13: per_acc = 0.612383
+I0716 11:58:12.189270  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 11:58:12.189273  3347 solver.cpp:291]     Train net output #15: per_acc = 0.969829
+I0716 11:58:12.189276  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 11:58:12.189280  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 11:58:12.189285  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 11:58:12.189287  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 11:58:12.189291  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 11:58:12.189299  3347 sgd_solver.cpp:106] Iteration 20750, lr = 0.0005
+I0716 12:28:20.618551  3347 solver.cpp:270] Iteration 20800 (0.0276494 iter/s, 1808.36s/50 iter), loss = 0.194303, remaining 31 hours and 56 minutes
+I0716 12:28:20.618707  3347 solver.cpp:291]     Train net output #0: acc = 0.916588
+I0716 12:28:20.618718  3347 solver.cpp:291]     Train net output #1: loss = 0.224043 (* 1 = 0.224043 loss)
+I0716 12:28:20.618723  3347 solver.cpp:291]     Train net output #2: per_acc = 0.987788
+I0716 12:28:20.618727  3347 solver.cpp:291]     Train net output #3: per_acc = 0.896172
+I0716 12:28:20.618731  3347 solver.cpp:291]     Train net output #4: per_acc = 0.886679
+I0716 12:28:20.618734  3347 solver.cpp:291]     Train net output #5: per_acc = 0.0325985
+I0716 12:28:20.618738  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 12:28:20.618742  3347 solver.cpp:291]     Train net output #7: per_acc = 0.788378
+I0716 12:28:20.618746  3347 solver.cpp:291]     Train net output #8: per_acc = 0.480703
+I0716 12:28:20.618749  3347 solver.cpp:291]     Train net output #9: per_acc = 0.915511
+I0716 12:28:20.618752  3347 solver.cpp:291]     Train net output #10: per_acc = 0.831792
+I0716 12:28:20.618757  3347 solver.cpp:291]     Train net output #11: per_acc = 0.906705
+I0716 12:28:20.618760  3347 solver.cpp:291]     Train net output #12: per_acc = 0.963223
+I0716 12:28:20.618763  3347 solver.cpp:291]     Train net output #13: per_acc = 0.749811
+I0716 12:28:20.618767  3347 solver.cpp:291]     Train net output #14: per_acc = 0.556775
+I0716 12:28:20.618772  3347 solver.cpp:291]     Train net output #15: per_acc = 0.965779
+I0716 12:28:20.618774  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 12:28:20.618778  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 12:28:20.618782  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 12:28:20.618785  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 12:28:20.618789  3347 solver.cpp:291]     Train net output #20: per_acc = 0.852322
+I0716 12:28:20.618798  3347 sgd_solver.cpp:106] Iteration 20800, lr = 0.0005
+I0716 12:58:56.361325  3347 solver.cpp:270] Iteration 20850 (0.0272379 iter/s, 1835.67s/50 iter), loss = 0.200761, remaining 31 hours and 48 minutes
+I0716 12:58:56.361511  3347 solver.cpp:291]     Train net output #0: acc = 0.962645
+I0716 12:58:56.361527  3347 solver.cpp:291]     Train net output #1: loss = 0.129467 (* 1 = 0.129467 loss)
+I0716 12:58:56.361532  3347 solver.cpp:291]     Train net output #2: per_acc = 0.996256
+I0716 12:58:56.361536  3347 solver.cpp:291]     Train net output #3: per_acc = 0.712821
+I0716 12:58:56.361539  3347 solver.cpp:291]     Train net output #4: per_acc = 0.967653
+I0716 12:58:56.361543  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 12:58:56.361546  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 12:58:56.361551  3347 solver.cpp:291]     Train net output #7: per_acc = 0
+I0716 12:58:56.361554  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 12:58:56.361557  3347 solver.cpp:291]     Train net output #9: per_acc = 0.329193
+I0716 12:58:56.361562  3347 solver.cpp:291]     Train net output #10: per_acc = 0.979286
+I0716 12:58:56.361564  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 12:58:56.361568  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 12:58:56.361572  3347 solver.cpp:291]     Train net output #13: per_acc = 0.771304
+I0716 12:58:56.361575  3347 solver.cpp:291]     Train net output #14: per_acc = 0.0906344
+I0716 12:58:56.361579  3347 solver.cpp:291]     Train net output #15: per_acc = 0.963783
+I0716 12:58:56.361583  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 12:58:56.361587  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 12:58:56.361590  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 12:58:56.361593  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 12:58:56.361598  3347 solver.cpp:291]     Train net output #20: per_acc = 0.917235
+I0716 12:58:56.362125  3347 sgd_solver.cpp:106] Iteration 20850, lr = 0.0005
+I0716 13:30:18.294426  3347 solver.cpp:270] Iteration 20900 (0.0265694 iter/s, 1881.86s/50 iter), loss = 0.197332, remaining 31 hours and 58 minutes
+I0716 13:30:18.294579  3347 solver.cpp:291]     Train net output #0: acc = 0.964731
+I0716 13:30:18.294591  3347 solver.cpp:291]     Train net output #1: loss = 0.11036 (* 1 = 0.11036 loss)
+I0716 13:30:18.294596  3347 solver.cpp:291]     Train net output #2: per_acc = 0.995168
+I0716 13:30:18.294600  3347 solver.cpp:291]     Train net output #3: per_acc = 0.757242
+I0716 13:30:18.294603  3347 solver.cpp:291]     Train net output #4: per_acc = 0.864689
+I0716 13:30:18.294607  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 13:30:18.294611  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 13:30:18.294615  3347 solver.cpp:291]     Train net output #7: per_acc = 0.734219
+I0716 13:30:18.294620  3347 solver.cpp:291]     Train net output #8: per_acc = 0.782244
+I0716 13:30:18.294623  3347 solver.cpp:291]     Train net output #9: per_acc = 0.851955
+I0716 13:30:18.294626  3347 solver.cpp:291]     Train net output #10: per_acc = 0.977625
+I0716 13:30:18.294631  3347 solver.cpp:291]     Train net output #11: per_acc = 0.802483
+I0716 13:30:18.294634  3347 solver.cpp:291]     Train net output #12: per_acc = 0.948638
+I0716 13:30:18.294638  3347 solver.cpp:291]     Train net output #13: per_acc = 0.935644
+I0716 13:30:18.294642  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 13:30:18.294646  3347 solver.cpp:291]     Train net output #15: per_acc = 0.984153
+I0716 13:30:18.294649  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 13:30:18.294653  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 13:30:18.294657  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 13:30:18.294661  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 13:30:18.294664  3347 solver.cpp:291]     Train net output #20: per_acc = 0.826347
+I0716 13:30:18.294674  3347 sgd_solver.cpp:106] Iteration 20900, lr = 0.0005
+I0716 14:01:16.142626  3347 solver.cpp:270] Iteration 20950 (0.0269139 iter/s, 1857.77s/50 iter), loss = 0.204236, remaining 30 hours and 57 minutes
+I0716 14:01:16.142817  3347 solver.cpp:291]     Train net output #0: acc = 0.863792
+I0716 14:01:16.142835  3347 solver.cpp:291]     Train net output #1: loss = 0.400681 (* 1 = 0.400681 loss)
+I0716 14:01:16.142848  3347 solver.cpp:291]     Train net output #2: per_acc = 0.978619
+I0716 14:01:16.142854  3347 solver.cpp:291]     Train net output #3: per_acc = 0.40603
+I0716 14:01:16.142860  3347 solver.cpp:291]     Train net output #4: per_acc = 0.938007
+I0716 14:01:16.142866  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 14:01:16.142874  3347 solver.cpp:291]     Train net output #6: per_acc = 0
+I0716 14:01:16.142884  3347 solver.cpp:291]     Train net output #7: per_acc = 0.953292
+I0716 14:01:16.142890  3347 solver.cpp:291]     Train net output #8: per_acc = 0.558808
+I0716 14:01:16.142896  3347 solver.cpp:291]     Train net output #9: per_acc = 0.995841
+I0716 14:01:16.142904  3347 solver.cpp:291]     Train net output #10: per_acc = 0.959986
+I0716 14:01:16.142910  3347 solver.cpp:291]     Train net output #11: per_acc = 0
+I0716 14:01:16.142916  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 14:01:16.142922  3347 solver.cpp:291]     Train net output #13: per_acc = 0.29985
+I0716 14:01:16.142930  3347 solver.cpp:291]     Train net output #14: per_acc = 0
+I0716 14:01:16.142935  3347 solver.cpp:291]     Train net output #15: per_acc = 0.964339
+I0716 14:01:16.142941  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 14:01:16.142947  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 14:01:16.142954  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 14:01:16.142961  3347 solver.cpp:291]     Train net output #19: per_acc = 0
+I0716 14:01:16.142966  3347 solver.cpp:291]     Train net output #20: per_acc = 0.404795
+I0716 14:01:16.142982  3347 sgd_solver.cpp:106] Iteration 20950, lr = 0.0005
+I0716 14:31:00.489847  3347 solver.cpp:935] Snapshotting to binary proto file ../workspace/model/unet-lite/final_models/_iter_21000.caffemodel
+I0716 14:31:00.609407  3347 sgd_solver.cpp:273] Snapshotting solver state to binary proto file ../workspace/model/unet-lite/final_models/_iter_21000.solverstate
+I0716 14:31:37.090028  3347 solver.cpp:270] Iteration 21000 (0.0274594 iter/s, 1820.87s/50 iter), loss = 0.209882, remaining 30 hours and 20 minutes
+I0716 14:31:37.090167  3347 solver.cpp:291]     Train net output #0: acc = 0.969703
+I0716 14:31:37.090179  3347 solver.cpp:291]     Train net output #1: loss = 0.0952813 (* 1 = 0.0952813 loss)
+I0716 14:31:37.090185  3347 solver.cpp:291]     Train net output #2: per_acc = 0.994215
+I0716 14:31:37.090188  3347 solver.cpp:291]     Train net output #3: per_acc = 0.91219
+I0716 14:31:37.090193  3347 solver.cpp:291]     Train net output #4: per_acc = 0.989574
+I0716 14:31:37.090196  3347 solver.cpp:291]     Train net output #5: per_acc = 0
+I0716 14:31:37.090200  3347 solver.cpp:291]     Train net output #6: per_acc = 0.299972
+I0716 14:31:37.090204  3347 solver.cpp:291]     Train net output #7: per_acc = 0.845058
+I0716 14:31:37.090207  3347 solver.cpp:291]     Train net output #8: per_acc = 0
+I0716 14:31:37.090211  3347 solver.cpp:291]     Train net output #9: per_acc = 0
+I0716 14:31:37.090214  3347 solver.cpp:291]     Train net output #10: per_acc = 0.704959
+I0716 14:31:37.090219  3347 solver.cpp:291]     Train net output #11: per_acc = 0.989868
+I0716 14:31:37.090221  3347 solver.cpp:291]     Train net output #12: per_acc = 0
+I0716 14:31:37.090225  3347 solver.cpp:291]     Train net output #13: per_acc = 0
+I0716 14:31:37.090229  3347 solver.cpp:291]     Train net output #14: per_acc = 0.656671
+I0716 14:31:37.090232  3347 solver.cpp:291]     Train net output #15: per_acc = 0.964298
+I0716 14:31:37.090235  3347 solver.cpp:291]     Train net output #16: per_acc = 0
+I0716 14:31:37.090240  3347 solver.cpp:291]     Train net output #17: per_acc = 0
+I0716 14:31:37.090243  3347 solver.cpp:291]     Train net output #18: per_acc = 0
+I0716 14:31:37.090246  3347 solver.cpp:291]     Train net output #19: per_acc = 0.277985
+I0716 14:31:37.090250  3347 solver.cpp:291]     Train net output #20: per_acc = 0
+I0716 14:31:37.090260  3347 sgd_solver.cpp:106] Iteration 21000, lr = 0.0005

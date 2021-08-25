@@ -1,0 +1,1999 @@
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I0716 13:14:33.142730 22071 gpu_memory.cpp:99] GPUMemory::Manager initialized with Caching (CUB) GPU Allocator
+I0716 13:14:33.143254 22071 gpu_memory.cpp:101] Total memory: 11721506816, Free: 4545052672, dev_info[1]: total=11721506816 free=4545052672
+I0716 13:14:33.143262 22071 decent_q.cpp:591] Use GPU with device ID 1
+I0716 13:14:33.143579 22071 decent_q.cpp:595] GPU device name: GeForce GTX 1080 Ti
+I0716 13:14:34.314947 22071 net.cpp:369] The NetState phase (1) differed from the phase (0) specified by a rule in layer data
+I0716 13:14:34.315312 22071 net.cpp:98] Initializing net from parameters: 
+layer {
+  name: "data"
+  type: "ImageSegData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  transform_param {
+    scale: 0.022
+    mean_value: 73
+    mean_value: 82
+    mean_value: 72
+  }
+  image_data_param {
+    source: "../data/val_img_seg_nomap.txt"
+    batch_size: 1
+    shuffle: false
+  }
+}
+layer {
+  name: "resize_down"
+  type: "DeephiResize"
+  bottom: "data"
+  top: "data"
+  include {
+    phase: TEST
+  }
+  deephi_resize_param {
+    new_height: 512
+    new_width: 1024
+  }
+}
+layer {
+  name: "conv_d0a-b"
+  type: "Convolution"
+  bottom: "data"
+  top: "d0b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d0b"
+  type: "ReLU"
+  bottom: "d0b"
+  top: "relu_d0b"
+}
+layer {
+  name: "conv_d0b-c"
+  type: "Convolution"
+  bottom: "relu_d0b"
+  top: "d0c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_d0c"
+  type: "BatchNorm"
+  bottom: "d0c"
+  top: "BatchNorm_d0c"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d0c"
+  type: "ReLU"
+  bottom: "BatchNorm_d0c"
+  top: "relu_d0c"
+}
+layer {
+  name: "pool_d0c-1a"
+  type: "Pooling"
+  bottom: "relu_d0c"
+  top: "d1a"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv_d1a-b"
+  type: "Convolution"
+  bottom: "d1a"
+  top: "d1b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d1b"
+  type: "ReLU"
+  bottom: "d1b"
+  top: "relu_d1b"
+}
+layer {
+  name: "conv_d1b-c"
+  type: "Convolution"
+  bottom: "relu_d1b"
+  top: "d1c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_d1c"
+  type: "BatchNorm"
+  bottom: "d1c"
+  top: "BatchNorm_d1c"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d1c"
+  type: "ReLU"
+  bottom: "BatchNorm_d1c"
+  top: "relu_d1c"
+}
+layer {
+  name: "pool_d1c-2a"
+  type: "Pooling"
+  bottom: "relu_d1c"
+  top: "d2a"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv_d2a-b"
+  type: "Convolution"
+  bottom: "d2a"
+  top: "d2b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d2b"
+  type: "ReLU"
+  bottom: "d2b"
+  top: "relu_d2b"
+}
+layer {
+  name: "conv_d2b-c"
+  type: "Convolution"
+  bottom: "relu_d2b"
+  top: "d2c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_d2c"
+  type: "BatchNorm"
+  bottom: "d2c"
+  top: "BatchNorm_d2c"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d2c"
+  type: "ReLU"
+  bottom: "BatchNorm_d2c"
+  top: "relu_d2c"
+}
+layer {
+  name: "pool_d2c-3a"
+  type: "Pooling"
+  bottom: "relu_d2c"
+  top: "d3a"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv_d3a-b"
+  type: "Convolution"
+  bottom: "d3a"
+  top: "d3b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d3b"
+  type: "ReLU"
+  bottom: "d3b"
+  top: "relu_d3b"
+}
+layer {
+  name: "conv_d3b-c"
+  type: "Convolution"
+  bottom: "relu_d3b"
+  top: "d3c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_1"
+  type: "BatchNorm"
+  bottom: "d3c"
+  top: "BatchNorm_1"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d3c"
+  type: "ReLU"
+  bottom: "BatchNorm_1"
+  top: "relu_d3c"
+}
+layer {
+  name: "pool_d3c-4a"
+  type: "Pooling"
+  bottom: "relu_d3c"
+  top: "d4a"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv_d4a-b"
+  type: "Convolution"
+  bottom: "d4a"
+  top: "d4b"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "BatchNorm_2"
+  type: "BatchNorm"
+  bottom: "d4b"
+  top: "BatchNorm_2"
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  param {
+    lr_mult: 0
+    decay_mult: 0
+  }
+  batch_norm_param {
+    use_global_stats: false
+    eps: 1e-05
+    scale_filler {
+      type: "constant"
+      value: 1
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "relu_d4b"
+  type: "ReLU"
+  bottom: "BatchNorm_2"
+  top: "relu_d4b"
+}
+layer {
+  name: "conv_d4b-c"
+  type: "Convolution"
+  bottom: "relu_d4b"
+  top: "d4c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_d4c"
+  type: "ReLU"
+  bottom: "d4c"
+  top: "relu_d4c"
+}
+layer {
+  name: "upconv_d4c_u3a"
+  type: "Deconvolution"
+  bottom: "relu_d4c"
+  top: "u3a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 0
+    kernel_size: 2
+    stride: 2
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u3a"
+  type: "ReLU"
+  bottom: "u3a"
+  top: "u3a"
+}
+layer {
+  name: "concat_d3cc_u3a-b"
+  type: "Concat"
+  bottom: "u3a"
+  bottom: "d3c"
+  top: "u3b"
+}
+layer {
+  name: "conv_u3b-c"
+  type: "Convolution"
+  bottom: "u3b"
+  top: "u3c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u3c"
+  type: "ReLU"
+  bottom: "u3c"
+  top: "u3c"
+}
+layer {
+  name: "conv_u3c-d"
+  type: "Convolution"
+  bottom: "u3c"
+  top: "u3d"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u3d"
+  type: "ReLU"
+  bottom: "u3d"
+  top: "u3d"
+}
+layer {
+  name: "upconv_u3d_u2a"
+  type: "Deconvolution"
+  bottom: "u3d"
+  top: "u2a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 0
+    kernel_size: 2
+    stride: 2
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u2a"
+  type: "ReLU"
+  bottom: "u2a"
+  top: "u2a"
+}
+layer {
+  name: "concat_d2cc_u2a-b"
+  type: "Concat"
+  bottom: "u2a"
+  bottom: "d2c"
+  top: "u2b"
+}
+layer {
+  name: "conv_u2b-c"
+  type: "Convolution"
+  bottom: "u2b"
+  top: "u2c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u2c"
+  type: "ReLU"
+  bottom: "u2c"
+  top: "u2c"
+}
+layer {
+  name: "conv_u2c-d"
+  type: "Convolution"
+  bottom: "u2c"
+  top: "u2d"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u2d"
+  type: "ReLU"
+  bottom: "u2d"
+  top: "u2d"
+}
+layer {
+  name: "upconv_u2d_u1a"
+  type: "Deconvolution"
+  bottom: "u2d"
+  top: "u1a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 0
+    kernel_size: 2
+    stride: 2
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u1a"
+  type: "ReLU"
+  bottom: "u1a"
+  top: "u1a"
+}
+layer {
+  name: "concat_d1cc_u1a-b"
+  type: "Concat"
+  bottom: "u1a"
+  bottom: "d1c"
+  top: "u1b"
+}
+layer {
+  name: "conv_u1b-c"
+  type: "Convolution"
+  bottom: "u1b"
+  top: "u1c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u1c"
+  type: "ReLU"
+  bottom: "u1c"
+  top: "u1c"
+}
+layer {
+  name: "conv_u1c-d"
+  type: "Convolution"
+  bottom: "u1c"
+  top: "u1d"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u1d"
+  type: "ReLU"
+  bottom: "u1d"
+  top: "u1d"
+}
+layer {
+  name: "upconv_u1d_u0a_NEW"
+  type: "Deconvolution"
+  bottom: "u1d"
+  top: "u0a"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 0
+    kernel_size: 2
+    stride: 2
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u0a"
+  type: "ReLU"
+  bottom: "u0a"
+  top: "u0a"
+}
+layer {
+  name: "concat_d0cc_u0a-b"
+  type: "Concat"
+  bottom: "u0a"
+  bottom: "d0c"
+  top: "u0b"
+}
+layer {
+  name: "conv_u0b-c_New"
+  type: "Convolution"
+  bottom: "u0b"
+  top: "u0c"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u0c"
+  type: "ReLU"
+  bottom: "u0c"
+  top: "u0c"
+}
+layer {
+  name: "conv_u0c-d_New"
+  type: "Convolution"
+  bottom: "u0c"
+  top: "u0d"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 32
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "relu_u0d"
+  type: "ReLU"
+  bottom: "u0d"
+  top: "u0d"
+}
+layer {
+  name: "conv_u0d-score_New"
+  type: "Convolution"
+  bottom: "u0d"
+  top: "conv_u0d-score_New"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 19
+    pad: 0
+    kernel_size: 1
+    weight_filler {
+      type: "msra"
+    }
+  }
+}
+layer {
+  name: "score"
+  type: "Softmax"
+  bottom: "conv_u0d-score_New"
+  top: "score"
+}
+layer {
+  name: "accuracy"
+  type: "SegmentPixelIOU"
+  bottom: "score"
+  bottom: "label"
+  top: "segmentation_eval"
+  include {
+    phase: TEST
+  }
+}
+I0716 13:14:34.315541 22071 layer_factory.hpp:123] Creating layer data
+I0716 13:14:34.315572 22071 net.cpp:140] Creating Layer data
+I0716 13:14:34.315585 22071 net.cpp:455] data -> data
+I0716 13:14:34.315598 22071 net.cpp:455] data -> label
+I0716 13:14:34.315621 22071 image_seg_data_layer.cpp:46] Opening file ../data/val_img_seg_nomap.txt
+I0716 13:14:34.316447 22071 image_seg_data_layer.cpp:68] A total of 500 images.
+I0716 13:14:34.383456 22071 image_seg_data_layer.cpp:97] output data size: 1,3,1024,2048
+I0716 13:14:34.521548 22071 internal_thread.cpp:73] Starting internal thread(s) on GPU 1
+I0716 13:14:34.521721 22071 net.cpp:190] Setting up data
+I0716 13:14:34.521734 22071 net.cpp:197] Top shape: 1 3 1024 2048 (6291456)
+I0716 13:14:34.521741 22071 net.cpp:197] Top shape: 1 1 1024 2048 (2097152)
+I0716 13:14:34.521745 22071 net.cpp:205] Memory required for data: 33554432
+I0716 13:14:34.521752 22071 layer_factory.hpp:123] Creating layer resize_down
+I0716 13:14:34.521767 22071 net.cpp:140] Creating Layer resize_down
+I0716 13:14:34.521775 22071 net.cpp:481] resize_down <- data
+I0716 13:14:34.521790 22071 net.cpp:442] resize_down -> data (in-place)
+I0716 13:14:34.521803 22071 net.cpp:190] Setting up resize_down
+I0716 13:14:34.521811 22071 net.cpp:197] Top shape: 1 3 512 1024 (1572864)
+I0716 13:14:34.521813 22071 net.cpp:205] Memory required for data: 39845888
+I0716 13:14:34.521818 22071 layer_factory.hpp:123] Creating layer conv_d0a-b
+I0716 13:14:34.521831 22071 net.cpp:140] Creating Layer conv_d0a-b
+I0716 13:14:34.521836 22071 net.cpp:481] conv_d0a-b <- data
+I0716 13:14:34.521843 22071 net.cpp:455] conv_d0a-b -> d0b
+I0716 13:14:34.524052 22071 net.cpp:190] Setting up conv_d0a-b
+I0716 13:14:34.524065 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.524067 22071 net.cpp:205] Memory required for data: 106954752
+I0716 13:14:34.524085 22071 layer_factory.hpp:123] Creating layer relu_d0b
+I0716 13:14:34.524091 22071 net.cpp:140] Creating Layer relu_d0b
+I0716 13:14:34.524094 22071 net.cpp:481] relu_d0b <- d0b
+I0716 13:14:34.524099 22071 net.cpp:455] relu_d0b -> relu_d0b
+I0716 13:14:34.524135 22071 net.cpp:190] Setting up relu_d0b
+I0716 13:14:34.524142 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.524145 22071 net.cpp:205] Memory required for data: 174063616
+I0716 13:14:34.524149 22071 layer_factory.hpp:123] Creating layer conv_d0b-c
+I0716 13:14:34.524160 22071 net.cpp:140] Creating Layer conv_d0b-c
+I0716 13:14:34.524169 22071 net.cpp:481] conv_d0b-c <- relu_d0b
+I0716 13:14:34.524175 22071 net.cpp:455] conv_d0b-c -> d0c
+I0716 13:14:34.526644 22071 net.cpp:190] Setting up conv_d0b-c
+I0716 13:14:34.526656 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.526659 22071 net.cpp:205] Memory required for data: 241172480
+I0716 13:14:34.526667 22071 layer_factory.hpp:123] Creating layer d0c_conv_d0b-c_0_split
+I0716 13:14:34.526674 22071 net.cpp:140] Creating Layer d0c_conv_d0b-c_0_split
+I0716 13:14:34.526676 22071 net.cpp:481] d0c_conv_d0b-c_0_split <- d0c
+I0716 13:14:34.526682 22071 net.cpp:455] d0c_conv_d0b-c_0_split -> d0c_conv_d0b-c_0_split_0
+I0716 13:14:34.526688 22071 net.cpp:455] d0c_conv_d0b-c_0_split -> d0c_conv_d0b-c_0_split_1
+I0716 13:14:34.526736 22071 net.cpp:190] Setting up d0c_conv_d0b-c_0_split
+I0716 13:14:34.526744 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.526748 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.526751 22071 net.cpp:205] Memory required for data: 375390208
+I0716 13:14:34.526754 22071 layer_factory.hpp:123] Creating layer BatchNorm_d0c
+I0716 13:14:34.526765 22071 net.cpp:140] Creating Layer BatchNorm_d0c
+I0716 13:14:34.526768 22071 net.cpp:481] BatchNorm_d0c <- d0c_conv_d0b-c_0_split_0
+I0716 13:14:34.526774 22071 net.cpp:455] BatchNorm_d0c -> BatchNorm_d0c
+I0716 13:14:34.528362 22071 net.cpp:190] Setting up BatchNorm_d0c
+I0716 13:14:34.528374 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.528378 22071 net.cpp:205] Memory required for data: 442499072
+I0716 13:14:34.528390 22071 layer_factory.hpp:123] Creating layer relu_d0c
+I0716 13:14:34.528398 22071 net.cpp:140] Creating Layer relu_d0c
+I0716 13:14:34.528400 22071 net.cpp:481] relu_d0c <- BatchNorm_d0c
+I0716 13:14:34.528405 22071 net.cpp:455] relu_d0c -> relu_d0c
+I0716 13:14:34.528429 22071 net.cpp:190] Setting up relu_d0c
+I0716 13:14:34.528434 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.528437 22071 net.cpp:205] Memory required for data: 509607936
+I0716 13:14:34.528440 22071 layer_factory.hpp:123] Creating layer pool_d0c-1a
+I0716 13:14:34.528447 22071 net.cpp:140] Creating Layer pool_d0c-1a
+I0716 13:14:34.528450 22071 net.cpp:481] pool_d0c-1a <- relu_d0c
+I0716 13:14:34.528455 22071 net.cpp:455] pool_d0c-1a -> d1a
+I0716 13:14:34.528489 22071 net.cpp:190] Setting up pool_d0c-1a
+I0716 13:14:34.528496 22071 net.cpp:197] Top shape: 1 32 256 512 (4194304)
+I0716 13:14:34.528499 22071 net.cpp:205] Memory required for data: 526385152
+I0716 13:14:34.528502 22071 layer_factory.hpp:123] Creating layer conv_d1a-b
+I0716 13:14:34.528511 22071 net.cpp:140] Creating Layer conv_d1a-b
+I0716 13:14:34.528513 22071 net.cpp:481] conv_d1a-b <- d1a
+I0716 13:14:34.528518 22071 net.cpp:455] conv_d1a-b -> d1b
+I0716 13:14:34.530356 22071 net.cpp:190] Setting up conv_d1a-b
+I0716 13:14:34.530369 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.530371 22071 net.cpp:205] Memory required for data: 559939584
+I0716 13:14:34.530377 22071 layer_factory.hpp:123] Creating layer relu_d1b
+I0716 13:14:34.530383 22071 net.cpp:140] Creating Layer relu_d1b
+I0716 13:14:34.530387 22071 net.cpp:481] relu_d1b <- d1b
+I0716 13:14:34.530391 22071 net.cpp:455] relu_d1b -> relu_d1b
+I0716 13:14:34.530421 22071 net.cpp:190] Setting up relu_d1b
+I0716 13:14:34.530426 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.530431 22071 net.cpp:205] Memory required for data: 593494016
+I0716 13:14:34.530432 22071 layer_factory.hpp:123] Creating layer conv_d1b-c
+I0716 13:14:34.530441 22071 net.cpp:140] Creating Layer conv_d1b-c
+I0716 13:14:34.530443 22071 net.cpp:481] conv_d1b-c <- relu_d1b
+I0716 13:14:34.530448 22071 net.cpp:455] conv_d1b-c -> d1c
+I0716 13:14:34.531050 22071 net.cpp:190] Setting up conv_d1b-c
+I0716 13:14:34.531059 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.531062 22071 net.cpp:205] Memory required for data: 627048448
+I0716 13:14:34.531067 22071 layer_factory.hpp:123] Creating layer d1c_conv_d1b-c_0_split
+I0716 13:14:34.531074 22071 net.cpp:140] Creating Layer d1c_conv_d1b-c_0_split
+I0716 13:14:34.531076 22071 net.cpp:481] d1c_conv_d1b-c_0_split <- d1c
+I0716 13:14:34.531081 22071 net.cpp:455] d1c_conv_d1b-c_0_split -> d1c_conv_d1b-c_0_split_0
+I0716 13:14:34.531087 22071 net.cpp:455] d1c_conv_d1b-c_0_split -> d1c_conv_d1b-c_0_split_1
+I0716 13:14:34.531124 22071 net.cpp:190] Setting up d1c_conv_d1b-c_0_split
+I0716 13:14:34.531132 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.531136 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.531139 22071 net.cpp:205] Memory required for data: 694157312
+I0716 13:14:34.531142 22071 layer_factory.hpp:123] Creating layer BatchNorm_d1c
+I0716 13:14:34.531149 22071 net.cpp:140] Creating Layer BatchNorm_d1c
+I0716 13:14:34.531152 22071 net.cpp:481] BatchNorm_d1c <- d1c_conv_d1b-c_0_split_0
+I0716 13:14:34.531157 22071 net.cpp:455] BatchNorm_d1c -> BatchNorm_d1c
+I0716 13:14:34.531836 22071 net.cpp:190] Setting up BatchNorm_d1c
+I0716 13:14:34.531846 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.531848 22071 net.cpp:205] Memory required for data: 727711744
+I0716 13:14:34.531859 22071 layer_factory.hpp:123] Creating layer relu_d1c
+I0716 13:14:34.531865 22071 net.cpp:140] Creating Layer relu_d1c
+I0716 13:14:34.531868 22071 net.cpp:481] relu_d1c <- BatchNorm_d1c
+I0716 13:14:34.531873 22071 net.cpp:455] relu_d1c -> relu_d1c
+I0716 13:14:34.531896 22071 net.cpp:190] Setting up relu_d1c
+I0716 13:14:34.531903 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.531906 22071 net.cpp:205] Memory required for data: 761266176
+I0716 13:14:34.531909 22071 layer_factory.hpp:123] Creating layer pool_d1c-2a
+I0716 13:14:34.531915 22071 net.cpp:140] Creating Layer pool_d1c-2a
+I0716 13:14:34.531919 22071 net.cpp:481] pool_d1c-2a <- relu_d1c
+I0716 13:14:34.531924 22071 net.cpp:455] pool_d1c-2a -> d2a
+I0716 13:14:34.531953 22071 net.cpp:190] Setting up pool_d1c-2a
+I0716 13:14:34.531960 22071 net.cpp:197] Top shape: 1 64 128 256 (2097152)
+I0716 13:14:34.531963 22071 net.cpp:205] Memory required for data: 769654784
+I0716 13:14:34.531966 22071 layer_factory.hpp:123] Creating layer conv_d2a-b
+I0716 13:14:34.531973 22071 net.cpp:140] Creating Layer conv_d2a-b
+I0716 13:14:34.531977 22071 net.cpp:481] conv_d2a-b <- d2a
+I0716 13:14:34.531982 22071 net.cpp:455] conv_d2a-b -> d2b
+I0716 13:14:34.533555 22071 net.cpp:190] Setting up conv_d2a-b
+I0716 13:14:34.533567 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.533571 22071 net.cpp:205] Memory required for data: 786432000
+I0716 13:14:34.533577 22071 layer_factory.hpp:123] Creating layer relu_d2b
+I0716 13:14:34.533582 22071 net.cpp:140] Creating Layer relu_d2b
+I0716 13:14:34.533586 22071 net.cpp:481] relu_d2b <- d2b
+I0716 13:14:34.533591 22071 net.cpp:455] relu_d2b -> relu_d2b
+I0716 13:14:34.533615 22071 net.cpp:190] Setting up relu_d2b
+I0716 13:14:34.533622 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.533627 22071 net.cpp:205] Memory required for data: 803209216
+I0716 13:14:34.533629 22071 layer_factory.hpp:123] Creating layer conv_d2b-c
+I0716 13:14:34.533638 22071 net.cpp:140] Creating Layer conv_d2b-c
+I0716 13:14:34.533643 22071 net.cpp:481] conv_d2b-c <- relu_d2b
+I0716 13:14:34.533650 22071 net.cpp:455] conv_d2b-c -> d2c
+I0716 13:14:34.535154 22071 net.cpp:190] Setting up conv_d2b-c
+I0716 13:14:34.535163 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.535166 22071 net.cpp:205] Memory required for data: 819986432
+I0716 13:14:34.535171 22071 layer_factory.hpp:123] Creating layer d2c_conv_d2b-c_0_split
+I0716 13:14:34.535177 22071 net.cpp:140] Creating Layer d2c_conv_d2b-c_0_split
+I0716 13:14:34.535181 22071 net.cpp:481] d2c_conv_d2b-c_0_split <- d2c
+I0716 13:14:34.535187 22071 net.cpp:455] d2c_conv_d2b-c_0_split -> d2c_conv_d2b-c_0_split_0
+I0716 13:14:34.535192 22071 net.cpp:455] d2c_conv_d2b-c_0_split -> d2c_conv_d2b-c_0_split_1
+I0716 13:14:34.535230 22071 net.cpp:190] Setting up d2c_conv_d2b-c_0_split
+I0716 13:14:34.535238 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.535241 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.535244 22071 net.cpp:205] Memory required for data: 853540864
+I0716 13:14:34.535248 22071 layer_factory.hpp:123] Creating layer BatchNorm_d2c
+I0716 13:14:34.535254 22071 net.cpp:140] Creating Layer BatchNorm_d2c
+I0716 13:14:34.535257 22071 net.cpp:481] BatchNorm_d2c <- d2c_conv_d2b-c_0_split_0
+I0716 13:14:34.535264 22071 net.cpp:455] BatchNorm_d2c -> BatchNorm_d2c
+I0716 13:14:34.535832 22071 net.cpp:190] Setting up BatchNorm_d2c
+I0716 13:14:34.535841 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.535845 22071 net.cpp:205] Memory required for data: 870318080
+I0716 13:14:34.535853 22071 layer_factory.hpp:123] Creating layer relu_d2c
+I0716 13:14:34.535859 22071 net.cpp:140] Creating Layer relu_d2c
+I0716 13:14:34.535862 22071 net.cpp:481] relu_d2c <- BatchNorm_d2c
+I0716 13:14:34.535866 22071 net.cpp:455] relu_d2c -> relu_d2c
+I0716 13:14:34.535887 22071 net.cpp:190] Setting up relu_d2c
+I0716 13:14:34.535893 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.535898 22071 net.cpp:205] Memory required for data: 887095296
+I0716 13:14:34.535900 22071 layer_factory.hpp:123] Creating layer pool_d2c-3a
+I0716 13:14:34.535907 22071 net.cpp:140] Creating Layer pool_d2c-3a
+I0716 13:14:34.535909 22071 net.cpp:481] pool_d2c-3a <- relu_d2c
+I0716 13:14:34.535914 22071 net.cpp:455] pool_d2c-3a -> d3a
+I0716 13:14:34.535948 22071 net.cpp:190] Setting up pool_d2c-3a
+I0716 13:14:34.535955 22071 net.cpp:197] Top shape: 1 128 64 128 (1048576)
+I0716 13:14:34.535959 22071 net.cpp:205] Memory required for data: 891289600
+I0716 13:14:34.535961 22071 layer_factory.hpp:123] Creating layer conv_d3a-b
+I0716 13:14:34.535970 22071 net.cpp:140] Creating Layer conv_d3a-b
+I0716 13:14:34.535975 22071 net.cpp:481] conv_d3a-b <- d3a
+I0716 13:14:34.535981 22071 net.cpp:455] conv_d3a-b -> d3b
+I0716 13:14:34.540161 22071 net.cpp:190] Setting up conv_d3a-b
+I0716 13:14:34.540174 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.540176 22071 net.cpp:205] Memory required for data: 899678208
+I0716 13:14:34.540184 22071 layer_factory.hpp:123] Creating layer relu_d3b
+I0716 13:14:34.540189 22071 net.cpp:140] Creating Layer relu_d3b
+I0716 13:14:34.540192 22071 net.cpp:481] relu_d3b <- d3b
+I0716 13:14:34.540197 22071 net.cpp:455] relu_d3b -> relu_d3b
+I0716 13:14:34.540221 22071 net.cpp:190] Setting up relu_d3b
+I0716 13:14:34.540228 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.540232 22071 net.cpp:205] Memory required for data: 908066816
+I0716 13:14:34.540235 22071 layer_factory.hpp:123] Creating layer conv_d3b-c
+I0716 13:14:34.540246 22071 net.cpp:140] Creating Layer conv_d3b-c
+I0716 13:14:34.540251 22071 net.cpp:481] conv_d3b-c <- relu_d3b
+I0716 13:14:34.540257 22071 net.cpp:455] conv_d3b-c -> d3c
+I0716 13:14:34.547101 22071 net.cpp:190] Setting up conv_d3b-c
+I0716 13:14:34.547116 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.547118 22071 net.cpp:205] Memory required for data: 916455424
+I0716 13:14:34.547124 22071 layer_factory.hpp:123] Creating layer d3c_conv_d3b-c_0_split
+I0716 13:14:34.547130 22071 net.cpp:140] Creating Layer d3c_conv_d3b-c_0_split
+I0716 13:14:34.547134 22071 net.cpp:481] d3c_conv_d3b-c_0_split <- d3c
+I0716 13:14:34.547139 22071 net.cpp:455] d3c_conv_d3b-c_0_split -> d3c_conv_d3b-c_0_split_0
+I0716 13:14:34.547147 22071 net.cpp:455] d3c_conv_d3b-c_0_split -> d3c_conv_d3b-c_0_split_1
+I0716 13:14:34.547181 22071 net.cpp:190] Setting up d3c_conv_d3b-c_0_split
+I0716 13:14:34.547188 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.547191 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.547194 22071 net.cpp:205] Memory required for data: 933232640
+I0716 13:14:34.547197 22071 layer_factory.hpp:123] Creating layer BatchNorm_1
+I0716 13:14:34.547204 22071 net.cpp:140] Creating Layer BatchNorm_1
+I0716 13:14:34.547207 22071 net.cpp:481] BatchNorm_1 <- d3c_conv_d3b-c_0_split_0
+I0716 13:14:34.547214 22071 net.cpp:455] BatchNorm_1 -> BatchNorm_1
+I0716 13:14:34.547773 22071 net.cpp:190] Setting up BatchNorm_1
+I0716 13:14:34.547782 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.547785 22071 net.cpp:205] Memory required for data: 941621248
+I0716 13:14:34.547798 22071 layer_factory.hpp:123] Creating layer relu_d3c
+I0716 13:14:34.547807 22071 net.cpp:140] Creating Layer relu_d3c
+I0716 13:14:34.547811 22071 net.cpp:481] relu_d3c <- BatchNorm_1
+I0716 13:14:34.547816 22071 net.cpp:455] relu_d3c -> relu_d3c
+I0716 13:14:34.547839 22071 net.cpp:190] Setting up relu_d3c
+I0716 13:14:34.547845 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.547848 22071 net.cpp:205] Memory required for data: 950009856
+I0716 13:14:34.547852 22071 layer_factory.hpp:123] Creating layer pool_d3c-4a
+I0716 13:14:34.547857 22071 net.cpp:140] Creating Layer pool_d3c-4a
+I0716 13:14:34.547860 22071 net.cpp:481] pool_d3c-4a <- relu_d3c
+I0716 13:14:34.547865 22071 net.cpp:455] pool_d3c-4a -> d4a
+I0716 13:14:34.547895 22071 net.cpp:190] Setting up pool_d3c-4a
+I0716 13:14:34.547901 22071 net.cpp:197] Top shape: 1 256 32 64 (524288)
+I0716 13:14:34.547904 22071 net.cpp:205] Memory required for data: 952107008
+I0716 13:14:34.547907 22071 layer_factory.hpp:123] Creating layer conv_d4a-b
+I0716 13:14:34.547915 22071 net.cpp:140] Creating Layer conv_d4a-b
+I0716 13:14:34.547919 22071 net.cpp:481] conv_d4a-b <- d4a
+I0716 13:14:34.547924 22071 net.cpp:455] conv_d4a-b -> d4b
+I0716 13:14:34.561954 22071 net.cpp:190] Setting up conv_d4a-b
+I0716 13:14:34.561977 22071 net.cpp:197] Top shape: 1 512 32 64 (1048576)
+I0716 13:14:34.561980 22071 net.cpp:205] Memory required for data: 956301312
+I0716 13:14:34.561990 22071 layer_factory.hpp:123] Creating layer BatchNorm_2
+I0716 13:14:34.562000 22071 net.cpp:140] Creating Layer BatchNorm_2
+I0716 13:14:34.562005 22071 net.cpp:481] BatchNorm_2 <- d4b
+I0716 13:14:34.562013 22071 net.cpp:455] BatchNorm_2 -> BatchNorm_2
+I0716 13:14:34.562557 22071 net.cpp:190] Setting up BatchNorm_2
+I0716 13:14:34.562566 22071 net.cpp:197] Top shape: 1 512 32 64 (1048576)
+I0716 13:14:34.562569 22071 net.cpp:205] Memory required for data: 960495616
+I0716 13:14:34.562577 22071 layer_factory.hpp:123] Creating layer relu_d4b
+I0716 13:14:34.562585 22071 net.cpp:140] Creating Layer relu_d4b
+I0716 13:14:34.562589 22071 net.cpp:481] relu_d4b <- BatchNorm_2
+I0716 13:14:34.562594 22071 net.cpp:455] relu_d4b -> relu_d4b
+I0716 13:14:34.562616 22071 net.cpp:190] Setting up relu_d4b
+I0716 13:14:34.562621 22071 net.cpp:197] Top shape: 1 512 32 64 (1048576)
+I0716 13:14:34.562624 22071 net.cpp:205] Memory required for data: 964689920
+I0716 13:14:34.562628 22071 layer_factory.hpp:123] Creating layer conv_d4b-c
+I0716 13:14:34.562636 22071 net.cpp:140] Creating Layer conv_d4b-c
+I0716 13:14:34.562639 22071 net.cpp:481] conv_d4b-c <- relu_d4b
+I0716 13:14:34.562644 22071 net.cpp:455] conv_d4b-c -> d4c
+I0716 13:14:34.590214 22071 net.cpp:190] Setting up conv_d4b-c
+I0716 13:14:34.590237 22071 net.cpp:197] Top shape: 1 512 32 64 (1048576)
+I0716 13:14:34.590240 22071 net.cpp:205] Memory required for data: 968884224
+I0716 13:14:34.590250 22071 layer_factory.hpp:123] Creating layer relu_d4c
+I0716 13:14:34.590258 22071 net.cpp:140] Creating Layer relu_d4c
+I0716 13:14:34.590263 22071 net.cpp:481] relu_d4c <- d4c
+I0716 13:14:34.590270 22071 net.cpp:455] relu_d4c -> relu_d4c
+I0716 13:14:34.590298 22071 net.cpp:190] Setting up relu_d4c
+I0716 13:14:34.590303 22071 net.cpp:197] Top shape: 1 512 32 64 (1048576)
+I0716 13:14:34.590306 22071 net.cpp:205] Memory required for data: 973078528
+I0716 13:14:34.590309 22071 layer_factory.hpp:123] Creating layer upconv_d4c_u3a
+I0716 13:14:34.590317 22071 net.cpp:140] Creating Layer upconv_d4c_u3a
+I0716 13:14:34.590320 22071 net.cpp:481] upconv_d4c_u3a <- relu_d4c
+I0716 13:14:34.590325 22071 net.cpp:455] upconv_d4c_u3a -> u3a
+I0716 13:14:34.596532 22071 net.cpp:190] Setting up upconv_d4c_u3a
+I0716 13:14:34.596547 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.596550 22071 net.cpp:205] Memory required for data: 981467136
+I0716 13:14:34.596557 22071 layer_factory.hpp:123] Creating layer relu_u3a
+I0716 13:14:34.596565 22071 net.cpp:140] Creating Layer relu_u3a
+I0716 13:14:34.596568 22071 net.cpp:481] relu_u3a <- u3a
+I0716 13:14:34.596573 22071 net.cpp:442] relu_u3a -> u3a (in-place)
+I0716 13:14:34.596580 22071 net.cpp:190] Setting up relu_u3a
+I0716 13:14:34.596585 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.596587 22071 net.cpp:205] Memory required for data: 989855744
+I0716 13:14:34.596590 22071 layer_factory.hpp:123] Creating layer concat_d3cc_u3a-b
+I0716 13:14:34.596596 22071 net.cpp:140] Creating Layer concat_d3cc_u3a-b
+I0716 13:14:34.596598 22071 net.cpp:481] concat_d3cc_u3a-b <- u3a
+I0716 13:14:34.596602 22071 net.cpp:481] concat_d3cc_u3a-b <- d3c_conv_d3b-c_0_split_1
+I0716 13:14:34.596607 22071 net.cpp:455] concat_d3cc_u3a-b -> u3b
+I0716 13:14:34.596632 22071 net.cpp:190] Setting up concat_d3cc_u3a-b
+I0716 13:14:34.596637 22071 net.cpp:197] Top shape: 1 512 64 128 (4194304)
+I0716 13:14:34.596639 22071 net.cpp:205] Memory required for data: 1006632960
+I0716 13:14:34.596642 22071 layer_factory.hpp:123] Creating layer conv_u3b-c
+I0716 13:14:34.596650 22071 net.cpp:140] Creating Layer conv_u3b-c
+I0716 13:14:34.596652 22071 net.cpp:481] conv_u3b-c <- u3b
+I0716 13:14:34.596657 22071 net.cpp:455] conv_u3b-c -> u3c
+I0716 13:14:34.614384 22071 net.cpp:190] Setting up conv_u3b-c
+I0716 13:14:34.614405 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.614408 22071 net.cpp:205] Memory required for data: 1015021568
+I0716 13:14:34.614416 22071 layer_factory.hpp:123] Creating layer relu_u3c
+I0716 13:14:34.614424 22071 net.cpp:140] Creating Layer relu_u3c
+I0716 13:14:34.614428 22071 net.cpp:481] relu_u3c <- u3c
+I0716 13:14:34.614434 22071 net.cpp:442] relu_u3c -> u3c (in-place)
+I0716 13:14:34.614442 22071 net.cpp:190] Setting up relu_u3c
+I0716 13:14:34.614446 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.614449 22071 net.cpp:205] Memory required for data: 1023410176
+I0716 13:14:34.614452 22071 layer_factory.hpp:123] Creating layer conv_u3c-d
+I0716 13:14:34.614461 22071 net.cpp:140] Creating Layer conv_u3c-d
+I0716 13:14:34.614464 22071 net.cpp:481] conv_u3c-d <- u3c
+I0716 13:14:34.614468 22071 net.cpp:455] conv_u3c-d -> u3d
+I0716 13:14:34.621383 22071 net.cpp:190] Setting up conv_u3c-d
+I0716 13:14:34.621398 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.621402 22071 net.cpp:205] Memory required for data: 1031798784
+I0716 13:14:34.621408 22071 layer_factory.hpp:123] Creating layer relu_u3d
+I0716 13:14:34.621415 22071 net.cpp:140] Creating Layer relu_u3d
+I0716 13:14:34.621419 22071 net.cpp:481] relu_u3d <- u3d
+I0716 13:14:34.621425 22071 net.cpp:442] relu_u3d -> u3d (in-place)
+I0716 13:14:34.621433 22071 net.cpp:190] Setting up relu_u3d
+I0716 13:14:34.621436 22071 net.cpp:197] Top shape: 1 256 64 128 (2097152)
+I0716 13:14:34.621439 22071 net.cpp:205] Memory required for data: 1040187392
+I0716 13:14:34.621443 22071 layer_factory.hpp:123] Creating layer upconv_u3d_u2a
+I0716 13:14:34.621449 22071 net.cpp:140] Creating Layer upconv_u3d_u2a
+I0716 13:14:34.621453 22071 net.cpp:481] upconv_u3d_u2a <- u3d
+I0716 13:14:34.621457 22071 net.cpp:455] upconv_u3d_u2a -> u2a
+I0716 13:14:34.622864 22071 net.cpp:190] Setting up upconv_u3d_u2a
+I0716 13:14:34.622872 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.622875 22071 net.cpp:205] Memory required for data: 1056964608
+I0716 13:14:34.622880 22071 layer_factory.hpp:123] Creating layer relu_u2a
+I0716 13:14:34.622885 22071 net.cpp:140] Creating Layer relu_u2a
+I0716 13:14:34.622889 22071 net.cpp:481] relu_u2a <- u2a
+I0716 13:14:34.622892 22071 net.cpp:442] relu_u2a -> u2a (in-place)
+I0716 13:14:34.622898 22071 net.cpp:190] Setting up relu_u2a
+I0716 13:14:34.622901 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.622905 22071 net.cpp:205] Memory required for data: 1073741824
+I0716 13:14:34.622907 22071 layer_factory.hpp:123] Creating layer concat_d2cc_u2a-b
+I0716 13:14:34.622912 22071 net.cpp:140] Creating Layer concat_d2cc_u2a-b
+I0716 13:14:34.622915 22071 net.cpp:481] concat_d2cc_u2a-b <- u2a
+I0716 13:14:34.622920 22071 net.cpp:481] concat_d2cc_u2a-b <- d2c_conv_d2b-c_0_split_1
+I0716 13:14:34.622923 22071 net.cpp:455] concat_d2cc_u2a-b -> u2b
+I0716 13:14:34.622949 22071 net.cpp:190] Setting up concat_d2cc_u2a-b
+I0716 13:14:34.622953 22071 net.cpp:197] Top shape: 1 256 128 256 (8388608)
+I0716 13:14:34.622956 22071 net.cpp:205] Memory required for data: 1107296256
+I0716 13:14:34.622959 22071 layer_factory.hpp:123] Creating layer conv_u2b-c
+I0716 13:14:34.622967 22071 net.cpp:140] Creating Layer conv_u2b-c
+I0716 13:14:34.622969 22071 net.cpp:481] conv_u2b-c <- u2b
+I0716 13:14:34.622974 22071 net.cpp:455] conv_u2b-c -> u2c
+I0716 13:14:34.627696 22071 net.cpp:190] Setting up conv_u2b-c
+I0716 13:14:34.627710 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.627713 22071 net.cpp:205] Memory required for data: 1124073472
+I0716 13:14:34.627719 22071 layer_factory.hpp:123] Creating layer relu_u2c
+I0716 13:14:34.627724 22071 net.cpp:140] Creating Layer relu_u2c
+I0716 13:14:34.627728 22071 net.cpp:481] relu_u2c <- u2c
+I0716 13:14:34.627732 22071 net.cpp:442] relu_u2c -> u2c (in-place)
+I0716 13:14:34.627739 22071 net.cpp:190] Setting up relu_u2c
+I0716 13:14:34.627743 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.627746 22071 net.cpp:205] Memory required for data: 1140850688
+I0716 13:14:34.627749 22071 layer_factory.hpp:123] Creating layer conv_u2c-d
+I0716 13:14:34.627763 22071 net.cpp:140] Creating Layer conv_u2c-d
+I0716 13:14:34.627765 22071 net.cpp:481] conv_u2c-d <- u2c
+I0716 13:14:34.627770 22071 net.cpp:455] conv_u2c-d -> u2d
+I0716 13:14:34.629288 22071 net.cpp:190] Setting up conv_u2c-d
+I0716 13:14:34.629297 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.629300 22071 net.cpp:205] Memory required for data: 1157627904
+I0716 13:14:34.629307 22071 layer_factory.hpp:123] Creating layer relu_u2d
+I0716 13:14:34.629312 22071 net.cpp:140] Creating Layer relu_u2d
+I0716 13:14:34.629314 22071 net.cpp:481] relu_u2d <- u2d
+I0716 13:14:34.629318 22071 net.cpp:442] relu_u2d -> u2d (in-place)
+I0716 13:14:34.629324 22071 net.cpp:190] Setting up relu_u2d
+I0716 13:14:34.629328 22071 net.cpp:197] Top shape: 1 128 128 256 (4194304)
+I0716 13:14:34.629331 22071 net.cpp:205] Memory required for data: 1174405120
+I0716 13:14:34.629333 22071 layer_factory.hpp:123] Creating layer upconv_u2d_u1a
+I0716 13:14:34.629340 22071 net.cpp:140] Creating Layer upconv_u2d_u1a
+I0716 13:14:34.629343 22071 net.cpp:481] upconv_u2d_u1a <- u2d
+I0716 13:14:34.629348 22071 net.cpp:455] upconv_u2d_u1a -> u1a
+I0716 13:14:34.629947 22071 net.cpp:190] Setting up upconv_u2d_u1a
+I0716 13:14:34.629956 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.629959 22071 net.cpp:205] Memory required for data: 1207959552
+I0716 13:14:34.629964 22071 layer_factory.hpp:123] Creating layer relu_u1a
+I0716 13:14:34.629968 22071 net.cpp:140] Creating Layer relu_u1a
+I0716 13:14:34.629972 22071 net.cpp:481] relu_u1a <- u1a
+I0716 13:14:34.629976 22071 net.cpp:442] relu_u1a -> u1a (in-place)
+I0716 13:14:34.629981 22071 net.cpp:190] Setting up relu_u1a
+I0716 13:14:34.629986 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.629988 22071 net.cpp:205] Memory required for data: 1241513984
+I0716 13:14:34.629992 22071 layer_factory.hpp:123] Creating layer concat_d1cc_u1a-b
+I0716 13:14:34.629995 22071 net.cpp:140] Creating Layer concat_d1cc_u1a-b
+I0716 13:14:34.629998 22071 net.cpp:481] concat_d1cc_u1a-b <- u1a
+I0716 13:14:34.630002 22071 net.cpp:481] concat_d1cc_u1a-b <- d1c_conv_d1b-c_0_split_1
+I0716 13:14:34.630007 22071 net.cpp:455] concat_d1cc_u1a-b -> u1b
+I0716 13:14:34.630031 22071 net.cpp:190] Setting up concat_d1cc_u1a-b
+I0716 13:14:34.630036 22071 net.cpp:197] Top shape: 1 128 256 512 (16777216)
+I0716 13:14:34.630039 22071 net.cpp:205] Memory required for data: 1308622848
+I0716 13:14:34.630043 22071 layer_factory.hpp:123] Creating layer conv_u1b-c
+I0716 13:14:34.630049 22071 net.cpp:140] Creating Layer conv_u1b-c
+I0716 13:14:34.630051 22071 net.cpp:481] conv_u1b-c <- u1b
+I0716 13:14:34.630056 22071 net.cpp:455] conv_u1b-c -> u1c
+I0716 13:14:34.631692 22071 net.cpp:190] Setting up conv_u1b-c
+I0716 13:14:34.631703 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.631706 22071 net.cpp:205] Memory required for data: 1342177280
+I0716 13:14:34.631712 22071 layer_factory.hpp:123] Creating layer relu_u1c
+I0716 13:14:34.631718 22071 net.cpp:140] Creating Layer relu_u1c
+I0716 13:14:34.631721 22071 net.cpp:481] relu_u1c <- u1c
+I0716 13:14:34.631726 22071 net.cpp:442] relu_u1c -> u1c (in-place)
+I0716 13:14:34.631732 22071 net.cpp:190] Setting up relu_u1c
+I0716 13:14:34.631737 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.631741 22071 net.cpp:205] Memory required for data: 1375731712
+I0716 13:14:34.631742 22071 layer_factory.hpp:123] Creating layer conv_u1c-d
+I0716 13:14:34.631750 22071 net.cpp:140] Creating Layer conv_u1c-d
+I0716 13:14:34.631753 22071 net.cpp:481] conv_u1c-d <- u1c
+I0716 13:14:34.631763 22071 net.cpp:455] conv_u1c-d -> u1d
+I0716 13:14:34.632405 22071 net.cpp:190] Setting up conv_u1c-d
+I0716 13:14:34.632413 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.632416 22071 net.cpp:205] Memory required for data: 1409286144
+I0716 13:14:34.632421 22071 layer_factory.hpp:123] Creating layer relu_u1d
+I0716 13:14:34.632426 22071 net.cpp:140] Creating Layer relu_u1d
+I0716 13:14:34.632429 22071 net.cpp:481] relu_u1d <- u1d
+I0716 13:14:34.632434 22071 net.cpp:442] relu_u1d -> u1d (in-place)
+I0716 13:14:34.632439 22071 net.cpp:190] Setting up relu_u1d
+I0716 13:14:34.632443 22071 net.cpp:197] Top shape: 1 64 256 512 (8388608)
+I0716 13:14:34.632447 22071 net.cpp:205] Memory required for data: 1442840576
+I0716 13:14:34.632449 22071 layer_factory.hpp:123] Creating layer upconv_u1d_u0a_NEW
+I0716 13:14:34.632455 22071 net.cpp:140] Creating Layer upconv_u1d_u0a_NEW
+I0716 13:14:34.632457 22071 net.cpp:481] upconv_u1d_u0a_NEW <- u1d
+I0716 13:14:34.632463 22071 net.cpp:455] upconv_u1d_u0a_NEW -> u0a
+I0716 13:14:34.633726 22071 net.cpp:190] Setting up upconv_u1d_u0a_NEW
+I0716 13:14:34.633738 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.633741 22071 net.cpp:205] Memory required for data: 1509949440
+I0716 13:14:34.633754 22071 layer_factory.hpp:123] Creating layer relu_u0a
+I0716 13:14:34.633759 22071 net.cpp:140] Creating Layer relu_u0a
+I0716 13:14:34.633762 22071 net.cpp:481] relu_u0a <- u0a
+I0716 13:14:34.633766 22071 net.cpp:442] relu_u0a -> u0a (in-place)
+I0716 13:14:34.633774 22071 net.cpp:190] Setting up relu_u0a
+I0716 13:14:34.633777 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.633780 22071 net.cpp:205] Memory required for data: 1577058304
+I0716 13:14:34.633782 22071 layer_factory.hpp:123] Creating layer concat_d0cc_u0a-b
+I0716 13:14:34.633787 22071 net.cpp:140] Creating Layer concat_d0cc_u0a-b
+I0716 13:14:34.633790 22071 net.cpp:481] concat_d0cc_u0a-b <- u0a
+I0716 13:14:34.633795 22071 net.cpp:481] concat_d0cc_u0a-b <- d0c_conv_d0b-c_0_split_1
+I0716 13:14:34.633798 22071 net.cpp:455] concat_d0cc_u0a-b -> u0b
+I0716 13:14:34.633827 22071 net.cpp:190] Setting up concat_d0cc_u0a-b
+I0716 13:14:34.633834 22071 net.cpp:197] Top shape: 1 64 512 1024 (33554432)
+I0716 13:14:34.633837 22071 net.cpp:205] Memory required for data: 1711276032
+I0716 13:14:34.633841 22071 layer_factory.hpp:123] Creating layer conv_u0b-c_New
+I0716 13:14:34.633847 22071 net.cpp:140] Creating Layer conv_u0b-c_New
+I0716 13:14:34.633850 22071 net.cpp:481] conv_u0b-c_New <- u0b
+I0716 13:14:34.633855 22071 net.cpp:455] conv_u0b-c_New -> u0c
+I0716 13:14:34.635221 22071 net.cpp:190] Setting up conv_u0b-c_New
+I0716 13:14:34.635232 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.635236 22071 net.cpp:205] Memory required for data: 1778384896
+I0716 13:14:34.635241 22071 layer_factory.hpp:123] Creating layer relu_u0c
+I0716 13:14:34.635246 22071 net.cpp:140] Creating Layer relu_u0c
+I0716 13:14:34.635249 22071 net.cpp:481] relu_u0c <- u0c
+I0716 13:14:34.635254 22071 net.cpp:442] relu_u0c -> u0c (in-place)
+I0716 13:14:34.635260 22071 net.cpp:190] Setting up relu_u0c
+I0716 13:14:34.635264 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.635267 22071 net.cpp:205] Memory required for data: 1845493760
+I0716 13:14:34.635269 22071 layer_factory.hpp:123] Creating layer conv_u0c-d_New
+I0716 13:14:34.635277 22071 net.cpp:140] Creating Layer conv_u0c-d_New
+I0716 13:14:34.635279 22071 net.cpp:481] conv_u0c-d_New <- u0c
+I0716 13:14:34.635284 22071 net.cpp:455] conv_u0c-d_New -> u0d
+I0716 13:14:34.636584 22071 net.cpp:190] Setting up conv_u0c-d_New
+I0716 13:14:34.636596 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.636600 22071 net.cpp:205] Memory required for data: 1912602624
+I0716 13:14:34.636605 22071 layer_factory.hpp:123] Creating layer relu_u0d
+I0716 13:14:34.636610 22071 net.cpp:140] Creating Layer relu_u0d
+I0716 13:14:34.636615 22071 net.cpp:481] relu_u0d <- u0d
+I0716 13:14:34.636618 22071 net.cpp:442] relu_u0d -> u0d (in-place)
+I0716 13:14:34.636626 22071 net.cpp:190] Setting up relu_u0d
+I0716 13:14:34.636629 22071 net.cpp:197] Top shape: 1 32 512 1024 (16777216)
+I0716 13:14:34.636631 22071 net.cpp:205] Memory required for data: 1979711488
+I0716 13:14:34.636634 22071 layer_factory.hpp:123] Creating layer conv_u0d-score_New
+I0716 13:14:34.636641 22071 net.cpp:140] Creating Layer conv_u0d-score_New
+I0716 13:14:34.636644 22071 net.cpp:481] conv_u0d-score_New <- u0d
+I0716 13:14:34.636649 22071 net.cpp:455] conv_u0d-score_New -> conv_u0d-score_New
+I0716 13:14:34.637867 22071 net.cpp:190] Setting up conv_u0d-score_New
+I0716 13:14:34.637879 22071 net.cpp:197] Top shape: 1 19 512 1024 (9961472)
+I0716 13:14:34.637882 22071 net.cpp:205] Memory required for data: 2019557376
+I0716 13:14:34.637888 22071 layer_factory.hpp:123] Creating layer score
+I0716 13:14:34.637897 22071 net.cpp:140] Creating Layer score
+I0716 13:14:34.637902 22071 net.cpp:481] score <- conv_u0d-score_New
+I0716 13:14:34.637907 22071 net.cpp:455] score -> score
+I0716 13:14:34.637975 22071 net.cpp:190] Setting up score
+I0716 13:14:34.637982 22071 net.cpp:197] Top shape: 1 19 512 1024 (9961472)
+I0716 13:14:34.637985 22071 net.cpp:205] Memory required for data: 2059403264
+I0716 13:14:34.637989 22071 layer_factory.hpp:123] Creating layer accuracy
+I0716 13:14:34.638016 22071 net.cpp:140] Creating Layer accuracy
+I0716 13:14:34.638021 22071 net.cpp:481] accuracy <- score
+I0716 13:14:34.638026 22071 net.cpp:481] accuracy <- label
+I0716 13:14:34.638031 22071 net.cpp:455] accuracy -> segmentation_eval
+I0716 13:14:34.638056 22071 net.cpp:190] Setting up accuracy
+I0716 13:14:34.638062 22071 net.cpp:197] Top shape: 3 19 (57)
+I0716 13:14:34.638065 22071 net.cpp:205] Memory required for data: 2059403492
+I0716 13:14:34.638069 22071 net.cpp:268] accuracy does not need backward computation.
+I0716 13:14:34.638077 22071 net.cpp:268] score does not need backward computation.
+I0716 13:14:34.638080 22071 net.cpp:268] conv_u0d-score_New does not need backward computation.
+I0716 13:14:34.638084 22071 net.cpp:268] relu_u0d does not need backward computation.
+I0716 13:14:34.638087 22071 net.cpp:268] conv_u0c-d_New does not need backward computation.
+I0716 13:14:34.638090 22071 net.cpp:268] relu_u0c does not need backward computation.
+I0716 13:14:34.638092 22071 net.cpp:268] conv_u0b-c_New does not need backward computation.
+I0716 13:14:34.638097 22071 net.cpp:268] concat_d0cc_u0a-b does not need backward computation.
+I0716 13:14:34.638099 22071 net.cpp:268] relu_u0a does not need backward computation.
+I0716 13:14:34.638103 22071 net.cpp:268] upconv_u1d_u0a_NEW does not need backward computation.
+I0716 13:14:34.638105 22071 net.cpp:268] relu_u1d does not need backward computation.
+I0716 13:14:34.638108 22071 net.cpp:268] conv_u1c-d does not need backward computation.
+I0716 13:14:34.638111 22071 net.cpp:268] relu_u1c does not need backward computation.
+I0716 13:14:34.638113 22071 net.cpp:268] conv_u1b-c does not need backward computation.
+I0716 13:14:34.638116 22071 net.cpp:268] concat_d1cc_u1a-b does not need backward computation.
+I0716 13:14:34.638121 22071 net.cpp:268] relu_u1a does not need backward computation.
+I0716 13:14:34.638124 22071 net.cpp:268] upconv_u2d_u1a does not need backward computation.
+I0716 13:14:34.638128 22071 net.cpp:268] relu_u2d does not need backward computation.
+I0716 13:14:34.638130 22071 net.cpp:268] conv_u2c-d does not need backward computation.
+I0716 13:14:34.638134 22071 net.cpp:268] relu_u2c does not need backward computation.
+I0716 13:14:34.638136 22071 net.cpp:268] conv_u2b-c does not need backward computation.
+I0716 13:14:34.638139 22071 net.cpp:268] concat_d2cc_u2a-b does not need backward computation.
+I0716 13:14:34.638144 22071 net.cpp:268] relu_u2a does not need backward computation.
+I0716 13:14:34.638146 22071 net.cpp:268] upconv_u3d_u2a does not need backward computation.
+I0716 13:14:34.638149 22071 net.cpp:268] relu_u3d does not need backward computation.
+I0716 13:14:34.638152 22071 net.cpp:268] conv_u3c-d does not need backward computation.
+I0716 13:14:34.638155 22071 net.cpp:268] relu_u3c does not need backward computation.
+I0716 13:14:34.638159 22071 net.cpp:268] conv_u3b-c does not need backward computation.
+I0716 13:14:34.638162 22071 net.cpp:268] concat_d3cc_u3a-b does not need backward computation.
+I0716 13:14:34.638165 22071 net.cpp:268] relu_u3a does not need backward computation.
+I0716 13:14:34.638168 22071 net.cpp:268] upconv_d4c_u3a does not need backward computation.
+I0716 13:14:34.638171 22071 net.cpp:268] relu_d4c does not need backward computation.
+I0716 13:14:34.638175 22071 net.cpp:268] conv_d4b-c does not need backward computation.
+I0716 13:14:34.638178 22071 net.cpp:268] relu_d4b does not need backward computation.
+I0716 13:14:34.638181 22071 net.cpp:268] BatchNorm_2 does not need backward computation.
+I0716 13:14:34.638185 22071 net.cpp:268] conv_d4a-b does not need backward computation.
+I0716 13:14:34.638188 22071 net.cpp:268] pool_d3c-4a does not need backward computation.
+I0716 13:14:34.638191 22071 net.cpp:268] relu_d3c does not need backward computation.
+I0716 13:14:34.638195 22071 net.cpp:268] BatchNorm_1 does not need backward computation.
+I0716 13:14:34.638200 22071 net.cpp:268] d3c_conv_d3b-c_0_split does not need backward computation.
+I0716 13:14:34.638202 22071 net.cpp:268] conv_d3b-c does not need backward computation.
+I0716 13:14:34.638206 22071 net.cpp:268] relu_d3b does not need backward computation.
+I0716 13:14:34.638208 22071 net.cpp:268] conv_d3a-b does not need backward computation.
+I0716 13:14:34.638212 22071 net.cpp:268] pool_d2c-3a does not need backward computation.
+I0716 13:14:34.638216 22071 net.cpp:268] relu_d2c does not need backward computation.
+I0716 13:14:34.638218 22071 net.cpp:268] BatchNorm_d2c does not need backward computation.
+I0716 13:14:34.638222 22071 net.cpp:268] d2c_conv_d2b-c_0_split does not need backward computation.
+I0716 13:14:34.638226 22071 net.cpp:268] conv_d2b-c does not need backward computation.
+I0716 13:14:34.638229 22071 net.cpp:268] relu_d2b does not need backward computation.
+I0716 13:14:34.638232 22071 net.cpp:268] conv_d2a-b does not need backward computation.
+I0716 13:14:34.638236 22071 net.cpp:268] pool_d1c-2a does not need backward computation.
+I0716 13:14:34.638238 22071 net.cpp:268] relu_d1c does not need backward computation.
+I0716 13:14:34.638242 22071 net.cpp:268] BatchNorm_d1c does not need backward computation.
+I0716 13:14:34.638245 22071 net.cpp:268] d1c_conv_d1b-c_0_split does not need backward computation.
+I0716 13:14:34.638248 22071 net.cpp:268] conv_d1b-c does not need backward computation.
+I0716 13:14:34.638252 22071 net.cpp:268] relu_d1b does not need backward computation.
+I0716 13:14:34.638255 22071 net.cpp:268] conv_d1a-b does not need backward computation.
+I0716 13:14:34.638258 22071 net.cpp:268] pool_d0c-1a does not need backward computation.
+I0716 13:14:34.638262 22071 net.cpp:268] relu_d0c does not need backward computation.
+I0716 13:14:34.638265 22071 net.cpp:268] BatchNorm_d0c does not need backward computation.
+I0716 13:14:34.638269 22071 net.cpp:268] d0c_conv_d0b-c_0_split does not need backward computation.
+I0716 13:14:34.638273 22071 net.cpp:268] conv_d0b-c does not need backward computation.
+I0716 13:14:34.638275 22071 net.cpp:268] relu_d0b does not need backward computation.
+I0716 13:14:34.638279 22071 net.cpp:268] conv_d0a-b does not need backward computation.
+I0716 13:14:34.638283 22071 net.cpp:268] resize_down does not need backward computation.
+I0716 13:14:34.638285 22071 net.cpp:268] data does not need backward computation.
+I0716 13:14:34.638288 22071 net.cpp:310] This network produces output segmentation_eval
+I0716 13:14:34.638332 22071 net.cpp:330] Network initialization done.
+I0716 13:14:34.644193 22071 net.cpp:869] Ignoring source layer loss
+I0716 13:14:34.644208 22071 net.cpp:869] Ignoring source layer acc
+I0716 13:14:34.644223 22071 net_test.cpp:403] Net type: segmentation
+I0716 13:14:34.644227 22071 net_test.cpp:407] Testing metric for segmentation net: classIOU
+I0716 13:14:34.644229 22071 net_test.cpp:408] Number of classes for segmentation net: 19
+I0716 13:14:34.644232 22071 net_test.cpp:411] Test Start, total iterations: 500
+I0716 13:14:34.644235 22071 net_test.cpp:296] Testing Segmentation Net ...
+I0716 13:14:34.644255 22071 blocking_queue.cpp:96] Data layer prefetch queue empty
+I0716 13:14:35.947051 22071 net_test.cpp:319] Test iter: 1/500
+I0716 13:14:37.102843 22071 net_test.cpp:319] Test iter: 2/500
+I0716 13:14:38.251966 22071 net_test.cpp:319] Test iter: 3/500
+I0716 13:14:39.454537 22071 net_test.cpp:319] Test iter: 4/500
+I0716 13:14:40.597144 22071 net_test.cpp:319] Test iter: 5/500
+I0716 13:14:41.742381 22071 net_test.cpp:319] Test iter: 6/500
+I0716 13:14:43.028715 22071 net_test.cpp:319] Test iter: 7/500
+I0716 13:14:44.183410 22071 net_test.cpp:319] Test iter: 8/500
+I0716 13:14:45.340274 22071 net_test.cpp:319] Test iter: 9/500
+I0716 13:14:46.545845 22071 net_test.cpp:319] Test iter: 10/500
+I0716 13:14:47.704515 22071 net_test.cpp:319] Test iter: 11/500
+I0716 13:14:48.863297 22071 net_test.cpp:319] Test iter: 12/500
+I0716 13:14:50.041957 22071 net_test.cpp:319] Test iter: 13/500
+I0716 13:14:51.197930 22071 net_test.cpp:319] Test iter: 14/500
+I0716 13:14:52.394156 22071 net_test.cpp:319] Test iter: 15/500
+I0716 13:14:53.548557 22071 net_test.cpp:319] Test iter: 16/500
+I0716 13:14:54.702739 22071 net_test.cpp:319] Test iter: 17/500
+I0716 13:14:55.898613 22071 net_test.cpp:319] Test iter: 18/500
+I0716 13:14:57.047981 22071 net_test.cpp:319] Test iter: 19/500
+I0716 13:14:58.198011 22071 net_test.cpp:319] Test iter: 20/500
+I0716 13:14:59.403434 22071 net_test.cpp:319] Test iter: 21/500
+I0716 13:15:00.560957 22071 net_test.cpp:319] Test iter: 22/500
+I0716 13:15:01.716725 22071 net_test.cpp:319] Test iter: 23/500
+I0716 13:15:02.904230 22071 net_test.cpp:319] Test iter: 24/500
+I0716 13:15:04.068938 22071 net_test.cpp:319] Test iter: 25/500
+I0716 13:15:05.227383 22071 net_test.cpp:319] Test iter: 26/500
+I0716 13:15:06.432490 22071 net_test.cpp:319] Test iter: 27/500
+I0716 13:15:07.584470 22071 net_test.cpp:319] Test iter: 28/500
+I0716 13:15:08.783388 22071 net_test.cpp:319] Test iter: 29/500
+I0716 13:15:09.947242 22071 net_test.cpp:319] Test iter: 30/500
+I0716 13:15:11.101016 22071 net_test.cpp:319] Test iter: 31/500
+I0716 13:15:12.299986 22071 net_test.cpp:319] Test iter: 32/500
+I0716 13:15:13.454237 22071 net_test.cpp:319] Test iter: 33/500
+I0716 13:15:14.613662 22071 net_test.cpp:319] Test iter: 34/500
+I0716 13:15:15.765533 22071 net_test.cpp:319] Test iter: 35/500
+I0716 13:15:16.920331 22071 net_test.cpp:319] Test iter: 36/500
+I0716 13:15:18.106237 22071 net_test.cpp:319] Test iter: 37/500
+I0716 13:15:19.260712 22071 net_test.cpp:319] Test iter: 38/500
+I0716 13:15:20.412075 22071 net_test.cpp:319] Test iter: 39/500
+I0716 13:15:21.611181 22071 net_test.cpp:319] Test iter: 40/500
+I0716 13:15:22.743583 22071 net_test.cpp:319] Test iter: 41/500
+I0716 13:15:23.874296 22071 net_test.cpp:319] Test iter: 42/500
+I0716 13:15:25.038532 22071 net_test.cpp:319] Test iter: 43/500
+I0716 13:15:26.194075 22071 net_test.cpp:319] Test iter: 44/500
+I0716 13:15:27.399871 22071 net_test.cpp:319] Test iter: 45/500
+I0716 13:15:28.548120 22071 net_test.cpp:319] Test iter: 46/500
+I0716 13:15:29.693878 22071 net_test.cpp:319] Test iter: 47/500
+I0716 13:15:30.886643 22071 net_test.cpp:319] Test iter: 48/500
+I0716 13:15:32.030189 22071 net_test.cpp:319] Test iter: 49/500
+I0716 13:15:33.208899 22071 net_test.cpp:319] Test iter: 50/500
+I0716 13:15:34.364749 22071 net_test.cpp:319] Test iter: 51/500
+I0716 13:15:35.516259 22071 net_test.cpp:319] Test iter: 52/500
+I0716 13:15:36.722548 22071 net_test.cpp:319] Test iter: 53/500
+I0716 13:15:37.874315 22071 net_test.cpp:319] Test iter: 54/500
+I0716 13:15:39.022127 22071 net_test.cpp:319] Test iter: 55/500
+I0716 13:15:40.172354 22071 net_test.cpp:319] Test iter: 56/500
+I0716 13:15:41.310817 22071 net_test.cpp:319] Test iter: 57/500
+I0716 13:15:42.465653 22071 net_test.cpp:319] Test iter: 58/500
+I0716 13:15:43.607651 22071 net_test.cpp:319] Test iter: 59/500
+I0716 13:15:44.749219 22071 net_test.cpp:319] Test iter: 60/500
+I0716 13:15:45.938679 22071 net_test.cpp:319] Test iter: 61/500
+I0716 13:15:47.103344 22071 net_test.cpp:319] Test iter: 62/500
+I0716 13:15:48.256866 22071 net_test.cpp:319] Test iter: 63/500
+I0716 13:15:49.459545 22071 net_test.cpp:319] Test iter: 64/500
+I0716 13:15:50.610746 22071 net_test.cpp:319] Test iter: 65/500
+I0716 13:15:51.765661 22071 net_test.cpp:319] Test iter: 66/500
+I0716 13:15:52.915905 22071 net_test.cpp:319] Test iter: 67/500
+I0716 13:15:54.070354 22071 net_test.cpp:319] Test iter: 68/500
+I0716 13:15:55.264372 22071 net_test.cpp:319] Test iter: 69/500
+I0716 13:15:56.412371 22071 net_test.cpp:319] Test iter: 70/500
+I0716 13:15:57.558447 22071 net_test.cpp:319] Test iter: 71/500
+I0716 13:15:58.747229 22071 net_test.cpp:319] Test iter: 72/500
+I0716 13:15:59.884371 22071 net_test.cpp:319] Test iter: 73/500
+I0716 13:16:01.019618 22071 net_test.cpp:319] Test iter: 74/500
+I0716 13:16:02.175525 22071 net_test.cpp:319] Test iter: 75/500
+I0716 13:16:03.331823 22071 net_test.cpp:319] Test iter: 76/500
+I0716 13:16:04.526963 22071 net_test.cpp:319] Test iter: 77/500
+I0716 13:16:05.681885 22071 net_test.cpp:319] Test iter: 78/500
+I0716 13:16:06.837694 22071 net_test.cpp:319] Test iter: 79/500
+I0716 13:16:08.046140 22071 net_test.cpp:319] Test iter: 80/500
+I0716 13:16:09.214434 22071 net_test.cpp:319] Test iter: 81/500
+I0716 13:16:10.405802 22071 net_test.cpp:319] Test iter: 82/500
+I0716 13:16:11.623262 22071 net_test.cpp:319] Test iter: 83/500
+I0716 13:16:12.779513 22071 net_test.cpp:319] Test iter: 84/500
+I0716 13:16:13.938575 22071 net_test.cpp:319] Test iter: 85/500
+I0716 13:16:15.156545 22071 net_test.cpp:319] Test iter: 86/500
+I0716 13:16:16.315855 22071 net_test.cpp:319] Test iter: 87/500
+I0716 13:16:17.466457 22071 net_test.cpp:319] Test iter: 88/500
+I0716 13:16:18.637478 22071 net_test.cpp:319] Test iter: 89/500
+I0716 13:16:19.784922 22071 net_test.cpp:319] Test iter: 90/500
+I0716 13:16:20.929742 22071 net_test.cpp:319] Test iter: 91/500
+I0716 13:16:22.091082 22071 net_test.cpp:319] Test iter: 92/500
+I0716 13:16:23.248989 22071 net_test.cpp:319] Test iter: 93/500
+I0716 13:16:24.445384 22071 net_test.cpp:319] Test iter: 94/500
+I0716 13:16:25.599751 22071 net_test.cpp:319] Test iter: 95/500
+I0716 13:16:26.770601 22071 net_test.cpp:319] Test iter: 96/500
+I0716 13:16:27.969399 22071 net_test.cpp:319] Test iter: 97/500
+I0716 13:16:29.123387 22071 net_test.cpp:319] Test iter: 98/500
+I0716 13:16:30.265558 22071 net_test.cpp:319] Test iter: 99/500
+I0716 13:16:31.455094 22071 net_test.cpp:319] Test iter: 100/500
+I0716 13:16:32.613739 22071 net_test.cpp:319] Test iter: 101/500
+I0716 13:16:33.869905 22071 net_test.cpp:319] Test iter: 102/500
+I0716 13:16:35.084162 22071 net_test.cpp:319] Test iter: 103/500
+I0716 13:16:36.246557 22071 net_test.cpp:319] Test iter: 104/500
+I0716 13:16:37.409634 22071 net_test.cpp:319] Test iter: 105/500
+I0716 13:16:38.582957 22071 net_test.cpp:319] Test iter: 106/500
+I0716 13:16:39.743750 22071 net_test.cpp:319] Test iter: 107/500
+I0716 13:16:40.935827 22071 net_test.cpp:319] Test iter: 108/500
+I0716 13:16:42.097409 22071 net_test.cpp:319] Test iter: 109/500
+I0716 13:16:43.260876 22071 net_test.cpp:319] Test iter: 110/500
+I0716 13:16:44.475952 22071 net_test.cpp:319] Test iter: 111/500
+I0716 13:16:45.629185 22071 net_test.cpp:319] Test iter: 112/500
+I0716 13:16:46.787974 22071 net_test.cpp:319] Test iter: 113/500
+I0716 13:16:47.986073 22071 net_test.cpp:319] Test iter: 114/500
+I0716 13:16:49.145005 22071 net_test.cpp:319] Test iter: 115/500
+I0716 13:16:50.307035 22071 net_test.cpp:319] Test iter: 116/500
+I0716 13:16:51.473986 22071 net_test.cpp:319] Test iter: 117/500
+I0716 13:16:52.636341 22071 net_test.cpp:319] Test iter: 118/500
+I0716 13:16:53.844269 22071 net_test.cpp:319] Test iter: 119/500
+I0716 13:16:55.004099 22071 net_test.cpp:319] Test iter: 120/500
+I0716 13:16:56.167507 22071 net_test.cpp:319] Test iter: 121/500
+I0716 13:16:57.362133 22071 net_test.cpp:319] Test iter: 122/500
+I0716 13:16:58.519649 22071 net_test.cpp:319] Test iter: 123/500
+I0716 13:16:59.679169 22071 net_test.cpp:319] Test iter: 124/500
+I0716 13:17:00.879951 22071 net_test.cpp:319] Test iter: 125/500
+I0716 13:17:02.034552 22071 net_test.cpp:319] Test iter: 126/500
+I0716 13:17:03.191923 22071 net_test.cpp:319] Test iter: 127/500
+I0716 13:17:04.391286 22071 net_test.cpp:319] Test iter: 128/500
+I0716 13:17:05.547951 22071 net_test.cpp:319] Test iter: 129/500
+I0716 13:17:06.700373 22071 net_test.cpp:319] Test iter: 130/500
+I0716 13:17:07.876932 22071 net_test.cpp:319] Test iter: 131/500
+I0716 13:17:09.031417 22071 net_test.cpp:319] Test iter: 132/500
+I0716 13:17:10.185442 22071 net_test.cpp:319] Test iter: 133/500
+I0716 13:17:11.373796 22071 net_test.cpp:319] Test iter: 134/500
+I0716 13:17:12.527525 22071 net_test.cpp:319] Test iter: 135/500
+I0716 13:17:13.680598 22071 net_test.cpp:319] Test iter: 136/500
+I0716 13:17:14.876863 22071 net_test.cpp:319] Test iter: 137/500
+I0716 13:17:16.043359 22071 net_test.cpp:319] Test iter: 138/500
+I0716 13:17:17.195672 22071 net_test.cpp:319] Test iter: 139/500
+I0716 13:17:18.402230 22071 net_test.cpp:319] Test iter: 140/500
+I0716 13:17:19.555639 22071 net_test.cpp:319] Test iter: 141/500
+I0716 13:17:20.709693 22071 net_test.cpp:319] Test iter: 142/500
+I0716 13:17:21.897104 22071 net_test.cpp:319] Test iter: 143/500
+I0716 13:17:23.048601 22071 net_test.cpp:319] Test iter: 144/500
+I0716 13:17:24.208082 22071 net_test.cpp:319] Test iter: 145/500
+I0716 13:17:25.364706 22071 net_test.cpp:319] Test iter: 146/500
+I0716 13:17:26.512114 22071 net_test.cpp:319] Test iter: 147/500
+I0716 13:17:27.715672 22071 net_test.cpp:319] Test iter: 148/500
+I0716 13:17:28.879596 22071 net_test.cpp:319] Test iter: 149/500
+I0716 13:17:30.038097 22071 net_test.cpp:319] Test iter: 150/500
+I0716 13:17:31.249616 22071 net_test.cpp:319] Test iter: 151/500
+I0716 13:17:32.420477 22071 net_test.cpp:319] Test iter: 152/500
+I0716 13:17:33.578785 22071 net_test.cpp:319] Test iter: 153/500
+I0716 13:17:34.739976 22071 net_test.cpp:319] Test iter: 154/500
+I0716 13:17:35.905769 22071 net_test.cpp:319] Test iter: 155/500
+I0716 13:17:37.113998 22071 net_test.cpp:319] Test iter: 156/500
+I0716 13:17:38.278681 22071 net_test.cpp:319] Test iter: 157/500
+I0716 13:17:39.437927 22071 net_test.cpp:319] Test iter: 158/500
+I0716 13:17:40.694355 22071 net_test.cpp:319] Test iter: 159/500
+I0716 13:17:41.849305 22071 net_test.cpp:319] Test iter: 160/500
+I0716 13:17:43.009929 22071 net_test.cpp:319] Test iter: 161/500
+I0716 13:17:44.203742 22071 net_test.cpp:319] Test iter: 162/500
+I0716 13:17:45.362466 22071 net_test.cpp:319] Test iter: 163/500
+I0716 13:17:46.529125 22071 net_test.cpp:319] Test iter: 164/500
+I0716 13:17:47.702630 22071 net_test.cpp:319] Test iter: 165/500
+I0716 13:17:48.869529 22071 net_test.cpp:319] Test iter: 166/500
+I0716 13:17:50.036105 22071 net_test.cpp:319] Test iter: 167/500
+I0716 13:17:51.203227 22071 net_test.cpp:319] Test iter: 168/500
+I0716 13:17:52.368280 22071 net_test.cpp:319] Test iter: 169/500
+I0716 13:17:53.577294 22071 net_test.cpp:319] Test iter: 170/500
+I0716 13:17:54.734757 22071 net_test.cpp:319] Test iter: 171/500
+I0716 13:17:55.880461 22071 net_test.cpp:319] Test iter: 172/500
+I0716 13:17:57.070628 22071 net_test.cpp:319] Test iter: 173/500
+I0716 13:17:58.228193 22071 net_test.cpp:319] Test iter: 174/500
+I0716 13:17:59.387713 22071 net_test.cpp:319] Test iter: 175/500
+I0716 13:18:00.545223 22071 net_test.cpp:319] Test iter: 176/500
+I0716 13:18:01.700222 22071 net_test.cpp:319] Test iter: 177/500
+I0716 13:18:02.861692 22071 net_test.cpp:319] Test iter: 178/500
+I0716 13:18:04.018936 22071 net_test.cpp:319] Test iter: 179/500
+I0716 13:18:05.176079 22071 net_test.cpp:319] Test iter: 180/500
+I0716 13:18:06.369454 22071 net_test.cpp:319] Test iter: 181/500
+I0716 13:18:07.527276 22071 net_test.cpp:319] Test iter: 182/500
+I0716 13:18:08.680882 22071 net_test.cpp:319] Test iter: 183/500
+I0716 13:18:09.877279 22071 net_test.cpp:319] Test iter: 184/500
+I0716 13:18:11.030496 22071 net_test.cpp:319] Test iter: 185/500
+I0716 13:18:12.190275 22071 net_test.cpp:319] Test iter: 186/500
+I0716 13:18:13.372983 22071 net_test.cpp:319] Test iter: 187/500
+I0716 13:18:14.529263 22071 net_test.cpp:319] Test iter: 188/500
+I0716 13:18:15.684573 22071 net_test.cpp:319] Test iter: 189/500
+I0716 13:18:16.893213 22071 net_test.cpp:319] Test iter: 190/500
+I0716 13:18:18.054913 22071 net_test.cpp:319] Test iter: 191/500
+I0716 13:18:19.212035 22071 net_test.cpp:319] Test iter: 192/500
+I0716 13:18:20.393231 22071 net_test.cpp:319] Test iter: 193/500
+I0716 13:18:21.557324 22071 net_test.cpp:319] Test iter: 194/500
+I0716 13:18:22.762337 22071 net_test.cpp:319] Test iter: 195/500
+I0716 13:18:23.914525 22071 net_test.cpp:319] Test iter: 196/500
+I0716 13:18:25.105688 22071 net_test.cpp:319] Test iter: 197/500
+I0716 13:18:26.258872 22071 net_test.cpp:319] Test iter: 198/500
+I0716 13:18:27.409272 22071 net_test.cpp:319] Test iter: 199/500
+I0716 13:18:28.612646 22071 net_test.cpp:319] Test iter: 200/500
+I0716 13:18:29.780663 22071 net_test.cpp:319] Test iter: 201/500
+I0716 13:18:30.940253 22071 net_test.cpp:319] Test iter: 202/500
+I0716 13:18:32.138545 22071 net_test.cpp:319] Test iter: 203/500
+I0716 13:18:33.289989 22071 net_test.cpp:319] Test iter: 204/500
+I0716 13:18:34.440886 22071 net_test.cpp:319] Test iter: 205/500
+I0716 13:18:35.647578 22071 net_test.cpp:319] Test iter: 206/500
+I0716 13:18:36.798028 22071 net_test.cpp:319] Test iter: 207/500
+I0716 13:18:37.951774 22071 net_test.cpp:319] Test iter: 208/500
+I0716 13:18:39.146363 22071 net_test.cpp:319] Test iter: 209/500
+I0716 13:18:40.296435 22071 net_test.cpp:319] Test iter: 210/500
+I0716 13:18:41.493707 22071 net_test.cpp:319] Test iter: 211/500
+I0716 13:18:42.651953 22071 net_test.cpp:319] Test iter: 212/500
+I0716 13:18:43.809165 22071 net_test.cpp:319] Test iter: 213/500
+I0716 13:18:44.996946 22071 net_test.cpp:319] Test iter: 214/500
+I0716 13:18:46.143986 22071 net_test.cpp:319] Test iter: 215/500
+I0716 13:18:47.348176 22071 net_test.cpp:319] Test iter: 216/500
+I0716 13:18:48.496363 22071 net_test.cpp:319] Test iter: 217/500
+I0716 13:18:49.650966 22071 net_test.cpp:319] Test iter: 218/500
+I0716 13:18:50.854403 22071 net_test.cpp:319] Test iter: 219/500
+I0716 13:18:52.013304 22071 net_test.cpp:319] Test iter: 220/500
+I0716 13:18:53.182072 22071 net_test.cpp:319] Test iter: 221/500
+I0716 13:18:54.395489 22071 net_test.cpp:319] Test iter: 222/500
+I0716 13:18:55.553165 22071 net_test.cpp:319] Test iter: 223/500
+I0716 13:18:56.712674 22071 net_test.cpp:319] Test iter: 224/500
+I0716 13:18:57.919636 22071 net_test.cpp:319] Test iter: 225/500
+I0716 13:18:59.086437 22071 net_test.cpp:319] Test iter: 226/500
+I0716 13:19:00.250286 22071 net_test.cpp:319] Test iter: 227/500
+I0716 13:19:01.425628 22071 net_test.cpp:319] Test iter: 228/500
+I0716 13:19:02.594135 22071 net_test.cpp:319] Test iter: 229/500
+I0716 13:19:03.777817 22071 net_test.cpp:319] Test iter: 230/500
+I0716 13:19:04.945039 22071 net_test.cpp:319] Test iter: 231/500
+I0716 13:19:06.097615 22071 net_test.cpp:319] Test iter: 232/500
+I0716 13:19:07.296381 22071 net_test.cpp:319] Test iter: 233/500
+I0716 13:19:08.445541 22071 net_test.cpp:319] Test iter: 234/500
+I0716 13:19:09.595731 22071 net_test.cpp:319] Test iter: 235/500
+I0716 13:19:10.789690 22071 net_test.cpp:319] Test iter: 236/500
+I0716 13:19:11.942175 22071 net_test.cpp:319] Test iter: 237/500
+I0716 13:19:13.097802 22071 net_test.cpp:319] Test iter: 238/500
+I0716 13:19:14.306828 22071 net_test.cpp:319] Test iter: 239/500
+I0716 13:19:15.461045 22071 net_test.cpp:319] Test iter: 240/500
+I0716 13:19:16.667248 22071 net_test.cpp:319] Test iter: 241/500
+I0716 13:19:17.818723 22071 net_test.cpp:319] Test iter: 242/500
+I0716 13:19:18.961832 22071 net_test.cpp:319] Test iter: 243/500
+I0716 13:19:20.162940 22071 net_test.cpp:319] Test iter: 244/500
+I0716 13:19:21.319494 22071 net_test.cpp:319] Test iter: 245/500
+I0716 13:19:22.470544 22071 net_test.cpp:319] Test iter: 246/500
+I0716 13:19:23.666997 22071 net_test.cpp:319] Test iter: 247/500
+I0716 13:19:24.807678 22071 net_test.cpp:319] Test iter: 248/500
+I0716 13:19:26.014535 22071 net_test.cpp:319] Test iter: 249/500
+I0716 13:19:27.170230 22071 net_test.cpp:319] Test iter: 250/500
+I0716 13:19:28.314254 22071 net_test.cpp:319] Test iter: 251/500
+I0716 13:19:29.499490 22071 net_test.cpp:319] Test iter: 252/500
+I0716 13:19:30.656080 22071 net_test.cpp:319] Test iter: 253/500
+I0716 13:19:31.803968 22071 net_test.cpp:319] Test iter: 254/500
+I0716 13:19:32.995198 22071 net_test.cpp:319] Test iter: 255/500
+I0716 13:19:34.143436 22071 net_test.cpp:319] Test iter: 256/500
+I0716 13:19:35.294315 22071 net_test.cpp:319] Test iter: 257/500
+I0716 13:19:36.497710 22071 net_test.cpp:319] Test iter: 258/500
+I0716 13:19:37.648478 22071 net_test.cpp:319] Test iter: 259/500
+I0716 13:19:38.794145 22071 net_test.cpp:319] Test iter: 260/500
+I0716 13:19:39.996078 22071 net_test.cpp:319] Test iter: 261/500
+I0716 13:19:41.155087 22071 net_test.cpp:319] Test iter: 262/500
+I0716 13:19:42.310492 22071 net_test.cpp:319] Test iter: 263/500
+I0716 13:19:43.497581 22071 net_test.cpp:319] Test iter: 264/500
+I0716 13:19:44.644284 22071 net_test.cpp:319] Test iter: 265/500
+I0716 13:19:45.815402 22071 net_test.cpp:319] Test iter: 266/500
+I0716 13:19:46.960384 22071 net_test.cpp:319] Test iter: 267/500
+I0716 13:19:48.122447 22071 net_test.cpp:319] Test iter: 268/500
+I0716 13:19:49.357383 22071 net_test.cpp:319] Test iter: 269/500
+I0716 13:19:50.526376 22071 net_test.cpp:319] Test iter: 270/500
+I0716 13:19:51.683223 22071 net_test.cpp:319] Test iter: 271/500
+I0716 13:19:52.886907 22071 net_test.cpp:319] Test iter: 272/500
+I0716 13:19:54.049185 22071 net_test.cpp:319] Test iter: 273/500
+I0716 13:19:55.203564 22071 net_test.cpp:319] Test iter: 274/500
+I0716 13:19:56.411701 22071 net_test.cpp:319] Test iter: 275/500
+I0716 13:19:57.568418 22071 net_test.cpp:319] Test iter: 276/500
+I0716 13:19:58.781492 22071 net_test.cpp:319] Test iter: 277/500
+I0716 13:19:59.927857 22071 net_test.cpp:319] Test iter: 278/500
+I0716 13:20:01.107847 22071 net_test.cpp:319] Test iter: 279/500
+I0716 13:20:02.279637 22071 net_test.cpp:319] Test iter: 280/500
+I0716 13:20:03.451099 22071 net_test.cpp:319] Test iter: 281/500
+I0716 13:20:04.666076 22071 net_test.cpp:319] Test iter: 282/500
+I0716 13:20:05.822361 22071 net_test.cpp:319] Test iter: 283/500
+I0716 13:20:06.975428 22071 net_test.cpp:319] Test iter: 284/500
+I0716 13:20:08.107494 22071 net_test.cpp:319] Test iter: 285/500
+I0716 13:20:09.233742 22071 net_test.cpp:319] Test iter: 286/500
+I0716 13:20:10.352844 22071 net_test.cpp:319] Test iter: 287/500
+I0716 13:20:11.557245 22071 net_test.cpp:319] Test iter: 288/500
+I0716 13:20:12.714778 22071 net_test.cpp:319] Test iter: 289/500
+I0716 13:20:13.876077 22071 net_test.cpp:319] Test iter: 290/500
+I0716 13:20:15.040181 22071 net_test.cpp:319] Test iter: 291/500
+I0716 13:20:16.193739 22071 net_test.cpp:319] Test iter: 292/500
+I0716 13:20:17.388058 22071 net_test.cpp:319] Test iter: 293/500
+I0716 13:20:18.520843 22071 net_test.cpp:319] Test iter: 294/500
+I0716 13:20:19.653214 22071 net_test.cpp:319] Test iter: 295/500
+I0716 13:20:20.800243 22071 net_test.cpp:319] Test iter: 296/500
+I0716 13:20:21.930436 22071 net_test.cpp:319] Test iter: 297/500
+I0716 13:20:23.074172 22071 net_test.cpp:319] Test iter: 298/500
+I0716 13:20:24.236964 22071 net_test.cpp:319] Test iter: 299/500
+I0716 13:20:25.389940 22071 net_test.cpp:319] Test iter: 300/500
+I0716 13:20:26.538555 22071 net_test.cpp:319] Test iter: 301/500
+I0716 13:20:27.717558 22071 net_test.cpp:319] Test iter: 302/500
+I0716 13:20:28.836292 22071 net_test.cpp:319] Test iter: 303/500
+I0716 13:20:29.994061 22071 net_test.cpp:319] Test iter: 304/500
+I0716 13:20:31.201905 22071 net_test.cpp:319] Test iter: 305/500
+I0716 13:20:32.351617 22071 net_test.cpp:319] Test iter: 306/500
+I0716 13:20:33.498323 22071 net_test.cpp:319] Test iter: 307/500
+I0716 13:20:34.680002 22071 net_test.cpp:319] Test iter: 308/500
+I0716 13:20:35.835558 22071 net_test.cpp:319] Test iter: 309/500
+I0716 13:20:36.983952 22071 net_test.cpp:319] Test iter: 310/500
+I0716 13:20:38.189957 22071 net_test.cpp:319] Test iter: 311/500
+I0716 13:20:39.320128 22071 net_test.cpp:319] Test iter: 312/500
+I0716 13:20:40.451987 22071 net_test.cpp:319] Test iter: 313/500
+I0716 13:20:41.613669 22071 net_test.cpp:319] Test iter: 314/500
+I0716 13:20:42.746979 22071 net_test.cpp:319] Test iter: 315/500
+I0716 13:20:43.939383 22071 net_test.cpp:319] Test iter: 316/500
+I0716 13:20:45.077224 22071 net_test.cpp:319] Test iter: 317/500
+I0716 13:20:46.228778 22071 net_test.cpp:319] Test iter: 318/500
+I0716 13:20:47.419445 22071 net_test.cpp:319] Test iter: 319/500
+I0716 13:20:48.555951 22071 net_test.cpp:319] Test iter: 320/500
+I0716 13:20:49.717042 22071 net_test.cpp:319] Test iter: 321/500
+I0716 13:20:50.941794 22071 net_test.cpp:319] Test iter: 322/500
+I0716 13:20:52.117892 22071 net_test.cpp:319] Test iter: 323/500
+I0716 13:20:53.292793 22071 net_test.cpp:319] Test iter: 324/500
+I0716 13:20:54.478837 22071 net_test.cpp:319] Test iter: 325/500
+I0716 13:20:55.648612 22071 net_test.cpp:319] Test iter: 326/500
+I0716 13:20:56.814180 22071 net_test.cpp:319] Test iter: 327/500
+I0716 13:20:58.039674 22071 net_test.cpp:319] Test iter: 328/500
+I0716 13:20:59.226765 22071 net_test.cpp:319] Test iter: 329/500
+I0716 13:21:00.395849 22071 net_test.cpp:319] Test iter: 330/500
+I0716 13:21:01.592411 22071 net_test.cpp:319] Test iter: 331/500
+I0716 13:21:02.739856 22071 net_test.cpp:319] Test iter: 332/500
+I0716 13:21:03.946208 22071 net_test.cpp:319] Test iter: 333/500
+I0716 13:21:05.105998 22071 net_test.cpp:319] Test iter: 334/500
+I0716 13:21:06.269376 22071 net_test.cpp:319] Test iter: 335/500
+I0716 13:21:07.441635 22071 net_test.cpp:319] Test iter: 336/500
+I0716 13:21:08.591635 22071 net_test.cpp:319] Test iter: 337/500
+I0716 13:21:09.799975 22071 net_test.cpp:319] Test iter: 338/500
+I0716 13:21:10.955997 22071 net_test.cpp:319] Test iter: 339/500
+I0716 13:21:12.119662 22071 net_test.cpp:319] Test iter: 340/500
+I0716 13:21:13.316416 22071 net_test.cpp:319] Test iter: 341/500
+I0716 13:21:14.498256 22071 net_test.cpp:319] Test iter: 342/500
+I0716 13:21:15.663857 22071 net_test.cpp:319] Test iter: 343/500
+I0716 13:21:16.837142 22071 net_test.cpp:319] Test iter: 344/500
+I0716 13:21:18.008306 22071 net_test.cpp:319] Test iter: 345/500
+I0716 13:21:19.209383 22071 net_test.cpp:319] Test iter: 346/500
+I0716 13:21:20.379600 22071 net_test.cpp:319] Test iter: 347/500
+I0716 13:21:21.555804 22071 net_test.cpp:319] Test iter: 348/500
+I0716 13:21:22.762688 22071 net_test.cpp:319] Test iter: 349/500
+I0716 13:21:23.923693 22071 net_test.cpp:319] Test iter: 350/500
+I0716 13:21:25.103597 22071 net_test.cpp:319] Test iter: 351/500
+I0716 13:21:26.276633 22071 net_test.cpp:319] Test iter: 352/500
+I0716 13:21:27.465237 22071 net_test.cpp:319] Test iter: 353/500
+I0716 13:21:28.680795 22071 net_test.cpp:319] Test iter: 354/500
+I0716 13:21:29.860810 22071 net_test.cpp:319] Test iter: 355/500
+I0716 13:21:31.040338 22071 net_test.cpp:319] Test iter: 356/500
+I0716 13:21:32.217561 22071 net_test.cpp:319] Test iter: 357/500
+I0716 13:21:33.385152 22071 net_test.cpp:319] Test iter: 358/500
+I0716 13:21:34.606984 22071 net_test.cpp:319] Test iter: 359/500
+I0716 13:21:35.776890 22071 net_test.cpp:319] Test iter: 360/500
+I0716 13:21:36.946466 22071 net_test.cpp:319] Test iter: 361/500
+I0716 13:21:38.149132 22071 net_test.cpp:319] Test iter: 362/500
+I0716 13:21:39.322624 22071 net_test.cpp:319] Test iter: 363/500
+I0716 13:21:40.496429 22071 net_test.cpp:319] Test iter: 364/500
+I0716 13:21:41.665295 22071 net_test.cpp:319] Test iter: 365/500
+I0716 13:21:42.830029 22071 net_test.cpp:319] Test iter: 366/500
+I0716 13:21:44.044240 22071 net_test.cpp:319] Test iter: 367/500
+I0716 13:21:45.204573 22071 net_test.cpp:319] Test iter: 368/500
+I0716 13:21:46.363445 22071 net_test.cpp:319] Test iter: 369/500
+I0716 13:21:47.574581 22071 net_test.cpp:319] Test iter: 370/500
+I0716 13:21:48.752723 22071 net_test.cpp:319] Test iter: 371/500
+I0716 13:21:49.917657 22071 net_test.cpp:319] Test iter: 372/500
+I0716 13:21:51.101929 22071 net_test.cpp:319] Test iter: 373/500
+I0716 13:21:52.268075 22071 net_test.cpp:319] Test iter: 374/500
+I0716 13:21:53.479984 22071 net_test.cpp:319] Test iter: 375/500
+I0716 13:21:54.637518 22071 net_test.cpp:319] Test iter: 376/500
+I0716 13:21:55.783040 22071 net_test.cpp:319] Test iter: 377/500
+I0716 13:21:56.966074 22071 net_test.cpp:319] Test iter: 378/500
+I0716 13:21:58.135303 22071 net_test.cpp:319] Test iter: 379/500
+I0716 13:21:59.340562 22071 net_test.cpp:319] Test iter: 380/500
+I0716 13:22:00.513003 22071 net_test.cpp:319] Test iter: 381/500
+I0716 13:22:01.672879 22071 net_test.cpp:319] Test iter: 382/500
+I0716 13:22:02.857503 22071 net_test.cpp:319] Test iter: 383/500
+I0716 13:22:04.018818 22071 net_test.cpp:319] Test iter: 384/500
+I0716 13:22:05.232544 22071 net_test.cpp:319] Test iter: 385/500
+I0716 13:22:06.401458 22071 net_test.cpp:319] Test iter: 386/500
+I0716 13:22:07.563330 22071 net_test.cpp:319] Test iter: 387/500
+I0716 13:22:08.766662 22071 net_test.cpp:319] Test iter: 388/500
+I0716 13:22:09.938622 22071 net_test.cpp:319] Test iter: 389/500
+I0716 13:22:11.111878 22071 net_test.cpp:319] Test iter: 390/500
+I0716 13:22:12.276506 22071 net_test.cpp:319] Test iter: 391/500
+I0716 13:22:13.431998 22071 net_test.cpp:319] Test iter: 392/500
+I0716 13:22:14.634157 22071 net_test.cpp:319] Test iter: 393/500
+I0716 13:22:15.790594 22071 net_test.cpp:319] Test iter: 394/500
+I0716 13:22:16.974664 22071 net_test.cpp:319] Test iter: 395/500
+I0716 13:22:18.130061 22071 net_test.cpp:319] Test iter: 396/500
+I0716 13:22:19.293036 22071 net_test.cpp:319] Test iter: 397/500
+I0716 13:22:20.479250 22071 net_test.cpp:319] Test iter: 398/500
+I0716 13:22:21.652209 22071 net_test.cpp:319] Test iter: 399/500
+I0716 13:22:22.817557 22071 net_test.cpp:319] Test iter: 400/500
+I0716 13:22:23.981889 22071 net_test.cpp:319] Test iter: 401/500
+I0716 13:22:25.144299 22071 net_test.cpp:319] Test iter: 402/500
+I0716 13:22:26.360812 22071 net_test.cpp:319] Test iter: 403/500
+I0716 13:22:27.521144 22071 net_test.cpp:319] Test iter: 404/500
+I0716 13:22:28.686631 22071 net_test.cpp:319] Test iter: 405/500
+I0716 13:22:29.887588 22071 net_test.cpp:319] Test iter: 406/500
+I0716 13:22:31.056658 22071 net_test.cpp:319] Test iter: 407/500
+I0716 13:22:32.227843 22071 net_test.cpp:319] Test iter: 408/500
+I0716 13:22:33.456243 22071 net_test.cpp:319] Test iter: 409/500
+I0716 13:22:34.629146 22071 net_test.cpp:319] Test iter: 410/500
+I0716 13:22:35.821964 22071 net_test.cpp:319] Test iter: 411/500
+I0716 13:22:37.000010 22071 net_test.cpp:319] Test iter: 412/500
+I0716 13:22:38.168728 22071 net_test.cpp:319] Test iter: 413/500
+I0716 13:22:39.403620 22071 net_test.cpp:319] Test iter: 414/500
+I0716 13:22:40.574929 22071 net_test.cpp:319] Test iter: 415/500
+I0716 13:22:41.747337 22071 net_test.cpp:319] Test iter: 416/500
+I0716 13:22:42.965605 22071 net_test.cpp:319] Test iter: 417/500
+I0716 13:22:44.127856 22071 net_test.cpp:319] Test iter: 418/500
+I0716 13:22:45.336695 22071 net_test.cpp:319] Test iter: 419/500
+I0716 13:22:46.517705 22071 net_test.cpp:319] Test iter: 420/500
+I0716 13:22:47.700734 22071 net_test.cpp:319] Test iter: 421/500
+I0716 13:22:48.915032 22071 net_test.cpp:319] Test iter: 422/500
+I0716 13:22:50.088060 22071 net_test.cpp:319] Test iter: 423/500
+I0716 13:22:51.360757 22071 net_test.cpp:319] Test iter: 424/500
+I0716 13:22:52.537504 22071 net_test.cpp:319] Test iter: 425/500
+I0716 13:22:53.704561 22071 net_test.cpp:319] Test iter: 426/500
+I0716 13:22:54.967697 22071 net_test.cpp:319] Test iter: 427/500
+I0716 13:22:56.139688 22071 net_test.cpp:319] Test iter: 428/500
+I0716 13:22:57.305861 22071 net_test.cpp:319] Test iter: 429/500
+I0716 13:22:58.482918 22071 net_test.cpp:319] Test iter: 430/500
+I0716 13:22:59.642196 22071 net_test.cpp:319] Test iter: 431/500
+I0716 13:23:00.882479 22071 net_test.cpp:319] Test iter: 432/500
+I0716 13:23:02.052307 22071 net_test.cpp:319] Test iter: 433/500
+I0716 13:23:03.224406 22071 net_test.cpp:319] Test iter: 434/500
+I0716 13:23:04.426648 22071 net_test.cpp:319] Test iter: 435/500
+I0716 13:23:05.588681 22071 net_test.cpp:319] Test iter: 436/500
+I0716 13:23:06.753880 22071 net_test.cpp:319] Test iter: 437/500
+I0716 13:23:07.907783 22071 net_test.cpp:319] Test iter: 438/500
+I0716 13:23:09.070294 22071 net_test.cpp:319] Test iter: 439/500
+I0716 13:23:10.265578 22071 net_test.cpp:319] Test iter: 440/500
+I0716 13:23:11.421716 22071 net_test.cpp:319] Test iter: 441/500
+I0716 13:23:12.578003 22071 net_test.cpp:319] Test iter: 442/500
+I0716 13:23:13.803663 22071 net_test.cpp:319] Test iter: 443/500
+I0716 13:23:14.968367 22071 net_test.cpp:319] Test iter: 444/500
+I0716 13:23:16.135131 22071 net_test.cpp:319] Test iter: 445/500
+I0716 13:23:17.352864 22071 net_test.cpp:319] Test iter: 446/500
+I0716 13:23:18.514813 22071 net_test.cpp:319] Test iter: 447/500
+I0716 13:23:19.675438 22071 net_test.cpp:319] Test iter: 448/500
+I0716 13:23:20.897346 22071 net_test.cpp:319] Test iter: 449/500
+I0716 13:23:22.093549 22071 net_test.cpp:319] Test iter: 450/500
+I0716 13:23:23.261405 22071 net_test.cpp:319] Test iter: 451/500
+I0716 13:23:24.457558 22071 net_test.cpp:319] Test iter: 452/500
+I0716 13:23:25.607729 22071 net_test.cpp:319] Test iter: 453/500
+I0716 13:23:26.815181 22071 net_test.cpp:319] Test iter: 454/500
+I0716 13:23:27.969396 22071 net_test.cpp:319] Test iter: 455/500
+I0716 13:23:29.130223 22071 net_test.cpp:319] Test iter: 456/500
+I0716 13:23:30.286357 22071 net_test.cpp:319] Test iter: 457/500
+I0716 13:23:31.453609 22071 net_test.cpp:319] Test iter: 458/500
+I0716 13:23:32.658733 22071 net_test.cpp:319] Test iter: 459/500
+I0716 13:23:33.815817 22071 net_test.cpp:319] Test iter: 460/500
+I0716 13:23:34.981644 22071 net_test.cpp:319] Test iter: 461/500
+I0716 13:23:36.193421 22071 net_test.cpp:319] Test iter: 462/500
+I0716 13:23:37.351759 22071 net_test.cpp:319] Test iter: 463/500
+I0716 13:23:38.526441 22071 net_test.cpp:319] Test iter: 464/500
+I0716 13:23:39.680375 22071 net_test.cpp:319] Test iter: 465/500
+I0716 13:23:40.863795 22071 net_test.cpp:319] Test iter: 466/500
+I0716 13:23:42.050478 22071 net_test.cpp:319] Test iter: 467/500
+I0716 13:23:43.225754 22071 net_test.cpp:319] Test iter: 468/500
+I0716 13:23:44.386790 22071 net_test.cpp:319] Test iter: 469/500
+I0716 13:23:45.594379 22071 net_test.cpp:319] Test iter: 470/500
+I0716 13:23:46.741824 22071 net_test.cpp:319] Test iter: 471/500
+I0716 13:23:47.945698 22071 net_test.cpp:319] Test iter: 472/500
+I0716 13:23:49.100337 22071 net_test.cpp:319] Test iter: 473/500
+I0716 13:23:50.263917 22071 net_test.cpp:319] Test iter: 474/500
+I0716 13:23:51.456856 22071 net_test.cpp:319] Test iter: 475/500
+I0716 13:23:52.618522 22071 net_test.cpp:319] Test iter: 476/500
+I0716 13:23:53.782833 22071 net_test.cpp:319] Test iter: 477/500
+I0716 13:23:54.996875 22071 net_test.cpp:319] Test iter: 478/500
+I0716 13:23:56.172854 22071 net_test.cpp:319] Test iter: 479/500
+I0716 13:23:57.384408 22071 net_test.cpp:319] Test iter: 480/500
+I0716 13:23:58.549535 22071 net_test.cpp:319] Test iter: 481/500
+I0716 13:23:59.699057 22071 net_test.cpp:319] Test iter: 482/500
+I0716 13:24:00.905576 22071 net_test.cpp:319] Test iter: 483/500
+I0716 13:24:02.061166 22071 net_test.cpp:319] Test iter: 484/500
+I0716 13:24:03.218888 22071 net_test.cpp:319] Test iter: 485/500
+I0716 13:24:04.418282 22071 net_test.cpp:319] Test iter: 486/500
+I0716 13:24:05.584115 22071 net_test.cpp:319] Test iter: 487/500
+I0716 13:24:06.791888 22071 net_test.cpp:319] Test iter: 488/500
+I0716 13:24:07.945641 22071 net_test.cpp:319] Test iter: 489/500
+I0716 13:24:09.113124 22071 net_test.cpp:319] Test iter: 490/500
+I0716 13:24:10.330652 22071 net_test.cpp:319] Test iter: 491/500
+I0716 13:24:11.497457 22071 net_test.cpp:319] Test iter: 492/500
+I0716 13:24:12.654232 22071 net_test.cpp:319] Test iter: 493/500
+I0716 13:24:13.816074 22071 net_test.cpp:319] Test iter: 494/500
+I0716 13:24:14.971689 22071 net_test.cpp:319] Test iter: 495/500
+I0716 13:24:16.165863 22071 net_test.cpp:319] Test iter: 496/500
+I0716 13:24:17.330747 22071 net_test.cpp:319] Test iter: 497/500
+I0716 13:24:18.484779 22071 net_test.cpp:319] Test iter: 498/500
+I0716 13:24:19.673293 22071 net_test.cpp:319] Test iter: 499/500
+I0716 13:24:20.826210 22071 net_test.cpp:319] Test iter: 500/500
+I0716 13:24:20.826227 22071 net_test.cpp:347]     Test net output #0: segmentation_eval_classIOU = 0.501972
+I0716 13:24:20.826278 22071 net_test.cpp:419] Test Done!

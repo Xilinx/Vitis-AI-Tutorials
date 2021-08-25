@@ -1,0 +1,75 @@
+/**
+
+* © Copyright (C) 2016-2020 Xilinx, Inc
+*
+* Licensed under the Apache License, Version 2.0 (the "License"). You may
+* not use this file except in compliance with the License. A copy of the
+* License is located at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations
+* under the License.
+*/
+
+
+
+Using TensorFlow backend.
+This script is located in:  /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET
+Directory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist created 
+Directory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train created 
+Directory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid created 
+Directory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test created 
+Directory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/top created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/trouser created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/pullover created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/dress created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/coat created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/sandal created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/shirt created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/sneaker created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/bag created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/train/ankleBoot created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/top created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/trouser created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/pullover created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/dress created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/coat created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/sandal created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/shirt created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/sneaker created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/bag created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/valid/ankleBoot created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/top created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/trouser created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/pullover created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/dress created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/coat created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/sandal created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/shirt created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/sneaker created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/bag created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/test/ankleBoot created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/top created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/trouser created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/pullover created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/dress created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/coat created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/sandal created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/shirt created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/sneaker created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/bag created 
+subDirectory /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/dataset/fashion-mnist/calib/ankleBoot created 
+60000 images in original train dataset
+10000 images in original test  dataset
+classes histogram in train and test dataset:  [1000 1000 1000 1000 1000 1000 1000 1000 1000 1000]
+num images in train folder =  60000
+num images in val folder   =  5000
+num images in pred folder  =  5000
+
+FINISHED CREATING DATASET
+

@@ -1,0 +1,14 @@
+evaluate_cityscapes.py:27: VisibleDeprecationWarning: boolean index did not match indexed array along dimension 0; dimension is 524288 but corresponding boolean dimension is 2097152
+  n * gt[k].astype(int) + prediction[k], minlength=n ** 2).reshape(n, n)
+('Found', 500, 'results')
+('Evaluating', 500, 'results')
+Traceback (most recent call last):
+  File "evaluate_cityscapes.py", line 218, in <module>
+    main()
+  File "evaluate_cityscapes.py", line 209, in main
+    mean, breakdown = evaluate_segmentation(args.gt, args.result, 19, 17)
+  File "evaluate_cityscapes.py", line 71, in evaluate_segmentation
+    hist += fast_hist(gt.flatten(), prediction.flatten(), num_classes)
+  File "evaluate_cityscapes.py", line 27, in fast_hist
+    n * gt[k].astype(int) + prediction[k], minlength=n ** 2).reshape(n, n)
+IndexError: index 524297 is out of bounds for axis 1 with size 524288

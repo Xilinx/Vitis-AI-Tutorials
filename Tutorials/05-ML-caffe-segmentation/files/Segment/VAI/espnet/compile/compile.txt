@@ -1,0 +1,23 @@
+[0;33m[DNNC][Warning] layer [score] is not supported in DPU, deploy it in CPU instead.
+[m
+DNNC Kernel Information
+
+1. Overview
+kernel numbers  : 2
+kernel topology : segmentation_kernel_graph.jpg
+
+2. Kernel Description in Detail
+kernel id       : 0
+kernel name     : segmentation_0
+type            : DPUKernel
+nodes           : NA
+input node(s)   : ConvNd_1(0) AvgPool2d_2(0) AvgPool2d_1(0) 
+output node(s)  : ConvNd_85(0) 
+
+kernel id       : 1
+kernel name     : segmentation_1
+type            : CPUKernel
+nodes           : NA
+input node(s)   : score 
+output node(s)  : score 
+
