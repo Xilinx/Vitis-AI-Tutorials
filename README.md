@@ -7,6 +7,8 @@
  </tr>
 </table>
 
+### Design tutorials
+
 These tutorials illustrate end-to-end design concepts or workflows using Vitis AI.
 
  <table style="width:100%">
