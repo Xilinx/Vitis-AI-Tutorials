@@ -1,0 +1,46 @@
+##
+##* © Copyright (C) 2016-2020 Xilinx, Inc
+##*
+##* Licensed under the Apache License, Version 2.0 (the "License"). You may
+##* not use this file except in compliance with the License. A copy of the
+##* License is located at
+##*
+##*     http://www.apache.org/licenses/LICENSE-2.0
+##*
+##* Unless required by applicable law or agreed to in writing, software
+##* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+##* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+##* License for the specific language governing permissions and limitations
+##* under the License.
+##*/
+
+I0318 23:06:59.090622 28986 pruning_runner.cpp:236] Analysis info found.
+I0318 23:07:00.316625 28986 pruning_runner.cpp:267] Start pruning, please wait...
+I0318 23:07:06.909150 28986 pruning_runner.cpp:314] Compression complete 0.100005%
+I0318 23:07:13.102118 28986 pruning_runner.cpp:314] Compression complete 0.19981%
+I0318 23:07:19.403985 28986 pruning_runner.cpp:314] Compression complete 0.398823%
+I0318 23:07:25.819329 28986 pruning_runner.cpp:314] Compression complete 0.794477%
+I0318 23:07:32.257475 28986 pruning_runner.cpp:314] Compression complete 1.57643%
+I0318 23:07:38.741056 28986 pruning_runner.cpp:314] Compression complete 50.7882%
+I0318 23:07:45.177490 28986 pruning_runner.cpp:314] Compression complete 80.4997%
+I0318 23:07:51.643440 28986 pruning_runner.cpp:314] Compression complete 90.2499%
+I0318 23:07:58.288596 28986 pruning_runner.cpp:314] Compression complete 99.3293%
+I0318 23:08:04.759685 28986 pruning_runner.cpp:314] Compression complete 99.6647%
+I0318 23:08:11.171983 28986 pruning_runner.cpp:314] Compression complete 99.979%
+I0318 23:08:17.355948 28986 pruning_runner.cpp:314] Compression complete 99.9974%
+I0318 23:08:23.544206 28986 pruning_runner.cpp:314] Compression complete 99.9993%
+I0318 23:08:29.645334 28986 pruning_runner.cpp:314] Compression complete 100%
+I0318 23:08:35.784852 28986 pruning_runner.cpp:314] Compression complete 100%
+I0318 23:08:44.502382 28986 pruning_runner.cpp:367] pruning done, output model: pruning/alexnetBNnoLRN/regular_rate_0.6/sparse.caffemodel
+I0318 23:08:44.502406 28986 pruning_runner.cpp:381] summary of REGULAR compression with rate 0.6:
++-------------------------------------------------------------------+
+| Item           | Baseline       | Compressed     | Delta          |
++-------------------------------------------------------------------+
+| Accuracy       | 0.922749817    | 0.952249646    | 0.0294998288   |
++-------------------------------------------------------------------+
+| Weights        | 3.7649951 M    | 668.856995 K   | -82.234848%    |
++-------------------------------------------------------------------+
+| Operations     | 2.1539185 G    | 910.465393 M   | -57.7298164%   |
++-------------------------------------------------------------------+
+To fine-tune the pruned model, please run:
+decent_p finetune -config /home/danieleb/ML/VAI/Vitis-AI/tutorials/VAI-Caffe-ML-CATSvsDOGS/files/pruning/alexnetBNnoLRN/config6.prototxt
