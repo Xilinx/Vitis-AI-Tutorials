@@ -1,8 +1,0 @@
-{
-  "target": "DPUv2",
-  "lib": "libvart-dpu-runner.so",
-  "filename": "dpu_mobilenetv2_ssd.elf",
-  "kernel": [ "mobilenetv2_ssd" ],
-  "config_file": "mobilenetv2_ssd.prototxt"
-}
-

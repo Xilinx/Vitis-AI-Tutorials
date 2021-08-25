@@ -1,7 +1,0 @@
-{
-  "target": "DPUv2",
-  "lib": "libvart_dpu.so",
-  "filename": "dpu_densebox.elf",
-  "kernel": [ "densebox" ],
-  "config_file": "densebox.prototxt"
-}

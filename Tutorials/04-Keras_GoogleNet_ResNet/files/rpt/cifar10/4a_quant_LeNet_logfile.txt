@@ -1,33 +1,0 @@
-/**
-
-* © Copyright (C) 2016-2020 Xilinx, Inc
-*
-* Licensed under the Apache License, Version 2.0 (the "License"). You may
-* not use this file except in compliance with the License. A copy of the
-* License is located at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-* License for the specific language governing permissions and limitations
-* under the License.
-*/
-
-
-
-Using TensorFlow backend.
-                                                                               N/A% (0 of 20) |                         | Elapsed Time: 0:00:00 ETA:  --:--:--                                                                                 5% (1 of 20) |#                        | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                10% (2 of 20) |##                       | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                15% (3 of 20) |###                      | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                20% (4 of 20) |#####                    | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                25% (5 of 20) |######                   | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                30% (6 of 20) |#######                  | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                35% (7 of 20) |########                 | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                40% (8 of 20) |##########               | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                45% (9 of 20) |###########              | Elapsed Time: 0:00:00 ETA:   0:00:01                                                                                50% (10 of 20) |############            | Elapsed Time: 0:00:00 ETA:   0:00:00                                                                                55% (11 of 20) |#############           | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                                60% (12 of 20) |##############          | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                                65% (13 of 20) |###############         | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                                70% (14 of 20) |################        | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                                75% (15 of 20) |##################      | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                                80% (16 of 20) |###################     | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                                85% (17 of 20) |####################    | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                                90% (18 of 20) |#####################   | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                                95% (19 of 20) |######################  | Elapsed Time: 0:00:01 ETA:   0:00:00                                                                               100% (20 of 20) |########################| Elapsed Time: 0:00:01 Time:  0:00:01
-script running on folder  /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/code
-CALIB DIR  /workspace/VAI-KERAS-CUSTOM-GOOGLENET-RESNET/code/../dataset/cifar10/calib/
-INFO: Checking Float Graph...
-INFO: Float Graph Check Done.
-INFO: Calibrating for 20 iterations...
-INFO: Calibration Done.
-INFO: Generating Deploy Model...
-INFO: Deploy Model Generated.
-********************* Quantization Summary *********************      
-INFO: Output:       
-  quantize_eval_model: ../quantized_results/cifar10/LeNet/quantize_eval_model.pb       
-  deploy_model: ../quantized_results/cifar10/LeNet/deploy_model.pb

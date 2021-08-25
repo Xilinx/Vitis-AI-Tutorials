@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<driveimage creator="DriveImage XML - Private Edition" version="Version 2.60" time="2020-04-17T14:16:29.069-08:00" destpath="C:\Users\alimulh\Documents\Projects\xilinx_internal\medical\article\" filename="zcu102_image_skinl" compressed="FALSE" compressionengine="0" raw="FALSE" split="TRUE" password="FALSE" id="162995157">
+<!-- 
+This XML document describes a drive image created with Runtime Software's DriveImageXML.
+It uses the following XML tags:
+<driveimage>      - the root node
+    Attributes:
+        creator    - application that created this image (usually "DriveImage XML")
+        version    - version of the application that created this image (e.g. "Version 1.00")
+        time       - date and time this image was created (e.g. "2005-09-08T23:40:03.767-08:00")
+        destpath   - path where this image was originally written to (e.g. "X:\backup\")
+        filename   - original name of this image file (e.g. "Drive_C")
+        compressed - accompanying binary file is compressed
+        raw        - the image is a raw image
+        split      - accompanying binary file is split in CD-ROM sized files
+        password   - a password will be required for browsing or restoring of the image
+        id         - a unique identifier for this image
+<drive>           - opening tag for the drive that follows
+<driveletter>     - the original drive letter of the imaged drive
+<drivelabel>      - the label of the imaged drive
+<totalspace>      - capacity of the imaged drive in bytes
+<freespace>       - unused space on the imaged drive in bytes
+<usedlock>        - how the drive was locked during imaging:
+                    V = Volume Shadow Services (VSS)
+                    L = Volume locking
+                    A = no lock
+<filesystem>      - drive's file system (e.g. "NTFS")
+<bootsector>      - the drive's mime-encoded boot sector
+<physicaldrive>   - the physical drive's name (e.g. "DISK0")
+<physicaldrive>   - the partition on the physical drive (e.g. "1")
+<physicaloffset>  - the offset the partition starts on the physical drive (e.g. "63")
+<physicalsectors> - the length of the partition on the physical drive in sectors (e.g. "16002", which is 8 MB)
+<physicalcapacity>- the size of the physical drive in sectors (e.g. "195371568", which is 95 GB)
+<physicalidename> - the IDE name of the physical drive (e.g. "ST9100823A")
+<clustersize>     - number of sectors per cluster (e.g. "8")
+<bitmap>          - opening tag for the drive's bitmap of used clusters
+<bitmapcount>     - number of contiguous fragments (e.g. "6")
+<bitmapitem>      - description of one contiguous fragment (e.g. "0,5016", which means 5016 clusters beginning at cluster 0)
+<overhead>        - number of sectors outside the cluster based address space (e.g. "0,0")
+<filetree>        - opening tag for the file tree
+    Attributes:
+        rootname   - file path parsed for obtaining the file tree (e.g. "\\?\C:")
+NOTE: The following tags are very short because they are repeated for every single file.
+<d>               - opening tag for a directory
+<f>               - opening tag for a file
+<n>               - file name (e.g. "myfile.txt")
+<a>               - alternate file name (e.g. "MYFILE~1.TXT")
+<map>             - opening tag for the file's cluster map
+<mc>              - number of contiguous file fragments (e.g. "2")
+<m>               - description of one contiguous file fragment (e.g. "5007,7", which means 7 clusters beginning at cluster 5007
+<locationunknown> - indicates the content could not be located. You won't be able to browse this file.
+<content>         - entire file content for small files
+<at>              - the file's attributes (e.g. "$00000020", which means "Archive set")
+<ct>              - file create time (e.g. "2005-07-04T03:18:39.308-08:00")
+<mt>              - file modificatioin time (e.g. "2005-07-04T03:18:39.308-08:00")
+<lt>              - last access time (e.g. "2005-07-04T03:18:39.308-08:00")
+<s>               - file size in bytes
+<i>               - file index
+
+ --><drive>
+<driveletter>D:</driveletter>
+<drivelabel>BOOT</drivelabel>
+<totalspace>397664256</totalspace>
+<freespace>320507904</freespace>
+<usedlock>A</usedlock>
+<shadowname>ERR</shadowname>
+<filesystem>FAT32</filesystem>
+<bootsector>61iQbWtmcy5mYXQAAgggAAIAAAAA+AAAIABAAAAAAAAA4AsA+AIAAAAAAAACAAAAAQAGAAAAAAAAAAAAAAAAAIABKYIgQtNCT09UICAgICAgIEZBVDMyICAgDh++d3ysIsB0C1a0DrsHAM0QXuvwMuTNFs0Z6/5UaGlzIGlzIG5vdCBhIGJvb3RhYmxlIGRpc2suICBQbGVhc2UgaW5zZXJ0IGEgYm9vdGFibGUgZmxvcHB5IGFuZA0KcHJlc3MgYW55IGtleSB0byB0cnkgYWdhaW4gLi4uIA0KAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVao=</bootsector>
+<physicaldrive>DISK1</physicaldrive>
+<physicalpartition>1</physicalpartition>
+<physicaloffset>2048</physicaloffset>
+<physicalsectors>778240</physicalsectors>
+<physicalcapacity>15523840</physicalcapacity>
+<physicalidename></physicalidename>
+<clustersize>8</clustersize>
+<bitmap><bitmapcount>2</bitmapcount>
+<bitmapitem>0,18835</bitmapitem>
+<bitmapitem>18840,2</bitmapitem>
+</bitmap>
+<overhead>0,1552</overhead>
+<filetree rootname="\\?\D:">
+<f><n>init.sh</n>
+<a>INIT.SH</a>
+<at>$00000020</at>
+<ct>2020-03-18T10:42:40.000-08:00</ct>
+<mt>2020-03-18T10:42:40.000-08:00</mt>
+<lt>2020-04-02T00:00:00.000-08:00</lt>
+<s>181</s>
+<i>$C2040</i>
+<map><mc>1</mc>
+<m>18840,1</m>
+</map>
+</f>
+<f><n>BOOT.BIN</n>
+<a></a>
+<at>$00000020</at>
+<ct>2019-11-27T09:09:08.570-08:00</ct>
+<mt>2019-11-27T09:09:08.000-08:00</mt>
+<lt>2019-11-27T00:00:00.000-08:00</lt>
+<s>27663480</s>
+<i>$C2060</i>
+<map><mc>1</mc>
+<m>2,6754</m>
+</map>
+</f>
+<f><n>image.ub</n>
+<a>IMAGE.UB</a>
+<at>$00000020</at>
+<ct>2019-11-27T09:09:08.600-08:00</ct>
+<mt>2019-11-27T09:09:08.000-08:00</mt>
+<lt>2019-11-27T00:00:00.000-08:00</lt>
+<s>21753512</s>
+<i>$C20A0</i>
+<map><mc>1</mc>
+<m>6756,5311</m>
+</map>
+</f>
+<f><n>README.txt</n>
+<a>README.TXT</a>
+<at>$00000020</at>
+<ct>2019-11-27T09:09:08.610-08:00</ct>
+<mt>2019-11-27T09:09:08.000-08:00</mt>
+<lt>2019-11-27T00:00:00.000-08:00</lt>
+<s>180</s>
+<i>$C20E0</i>
+<map><mc>1</mc>
+<m>12067,1</m>
+</map>
+</f>
+<f><n>dpu.xclbin</n>
+<a>DPU~1.XCL</a>
+<at>$00000020</at>
+<ct>2019-11-27T09:09:08.640-08:00</ct>
+<mt>2019-11-27T09:09:08.000-08:00</mt>
+<lt>2020-02-07T00:00:00.000-08:00</lt>
+<s>26557432</s>
+<i>$C2120</i>
+<map><mc>1</mc>
+<m>12068,6484</m>
+</map>
+</f>
+<f><n>zcu102_dpu.hwh</n>
+<a>ZCU102~1.HWH</a>
+<at>$00000020</at>
+<ct>2019-11-27T09:09:08.640-08:00</ct>
+<mt>2019-11-27T09:09:08.000-08:00</mt>
+<lt>2019-11-27T00:00:00.000-08:00</lt>
+<s>1136357</s>
+<i>$C2180</i>
+<map><mc>1</mc>
+<m>18552,278</m>
+</map>
+</f>
+<f><n>platform_desc.txt</n>
+<a>PLATFO~1.TXT</a>
+<at>$00000020</at>
+<ct>2019-11-27T09:09:08.640-08:00</ct>
+<mt>2019-11-27T09:09:08.000-08:00</mt>
+<lt>2020-04-02T00:00:00.000-08:00</lt>
+<s>11</s>
+<i>$C21E0</i>
+<map><mc>1</mc>
+<m>18830,1</m>
+</map>
+</f>
+<d><n>ODB$</n>
+<a></a>
+<at>$00000012</at>
+<ct>2020-02-07T15:48:56.510-08:00</ct>
+<mt>2020-02-07T15:48:58.000-08:00</mt>
+<lt>2020-02-07T00:00:00.000-08:00</lt>
+<s>0</s>
+</d><f><n>init.sh~</n>
+<a>INIT.SH~</a>
+<at>$00000020</at>
+<ct>2020-03-18T10:35:37.000-08:00</ct>
+<mt>2020-03-18T10:35:36.000-08:00</mt>
+<lt>2020-03-18T00:00:00.000-08:00</lt>
+<s>176</s>
+<i>$C2280</i>
+<map><mc>1</mc>
+<m>18834,1</m>
+</map>
+</f>
+<f><n>.init.sh.un~</n>
+<a>INITSH~1.UN~</a>
+<at>$00000020</at>
+<ct>2020-03-18T10:42:40.000-08:00</ct>
+<mt>2020-03-18T10:42:40.000-08:00</mt>
+<lt>2020-03-18T00:00:00.000-08:00</lt>
+<s>1527</s>
+<i>$C22C0</i>
+<map><mc>1</mc>
+<m>18841,1</m>
+</map>
+</f>
+<d><n>System Volume Information</n>
+<a>SYSTEM~1</a>
+<at>$00000016</at>
+<ct>2020-04-17T13:49:46.670-08:00</ct>
+<mt>2020-04-17T13:49:48.000-08:00</mt>
+<lt>2020-04-17T00:00:00.000-08:00</lt>
+<s>0</s>
+<f><n>WPSettings.dat</n>
+<a>WPSETT~1.DAT</a>
+<at>$00000020</at>
+<ct>2020-04-17T13:49:46.690-08:00</ct>
+<mt>2020-04-17T13:49:48.000-08:00</mt>
+<lt>2020-04-17T00:00:00.000-08:00</lt>
+<s>12</s>
+<i>$C3080</i>
+<map><mc>1</mc>
+<m>18832,1</m>
+</map>
+</f>
+<f><n>IndexerVolumeGuid</n>
+<a>INDEXE~1</a>
+<at>$00000020</at>
+<ct>2020-04-17T13:49:47.540-08:00</ct>
+<mt>2020-04-17T13:49:48.000-08:00</mt>
+<lt>2020-04-17T00:00:00.000-08:00</lt>
+<s>76</s>
+<i>$C30E0</i>
+<map><mc>1</mc>
+<m>18833,1</m>
+</map>
+</f>
+</d></filetree></drive></driveimage>
