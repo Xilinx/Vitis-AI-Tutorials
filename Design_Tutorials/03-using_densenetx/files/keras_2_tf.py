@@ -34,11 +34,6 @@
    folders will be created. If the files already exist, they will be overwritten.
 '''
 
-'''
-Author: Mark Harvey, Xilinx Inc
-'''
-
-
 import os
 import argparse
 
@@ -89,7 +84,7 @@ def keras_convert(keras_json,keras_hdf5,tf_ckpt):
 
 
     # write out tensorflow checkpoint & meta graph
-    saver = tf.compat.v1.train.Saver()
+    saver = tf.train.Saver()
     save_path = saver.save(tf_session,tf_ckpt)
     print (' Checkpoint created :',tf_ckpt)
 

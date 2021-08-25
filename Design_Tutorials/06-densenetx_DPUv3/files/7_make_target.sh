@@ -22,16 +22,16 @@ echo "-----------------------------------------"
 
 # remove previous results
 rm -rf ${TARGET}
-mkdir -p ${TARGET}
 
-# copy application code to target folder
-cp ${APP}/*.py ${TARGET}
-echo "  Copied application code to target folder"
+# copy target template to build folder
+cp -ar ${TARGET_TEMPLATE} ${BUILD}
+mv ${BUILD}/target_template ${TARGET}
+echo "  Copied target template to target folder"
 
-# copy xmodel to target folder
-mkdir -p ${TARGET}/model_dir
-cp ${COMPILE}/${NET_NAME}.xmodel ${TARGET}/model_dir/.
-echo "  Copied xmodel file(s) to target folder"
+
+# copy elf to target folder
+cp ${COMPILE}/*.elf ${TARGET}/model_dir/.
+echo "  Copied elf file(s) to target folder"
 
 
 mkdir -p ${TARGET}/images

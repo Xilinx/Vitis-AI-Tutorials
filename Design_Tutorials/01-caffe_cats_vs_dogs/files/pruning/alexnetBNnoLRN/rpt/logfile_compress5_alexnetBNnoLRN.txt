@@ -1,0 +1,37 @@
+##
+##* © Copyright (C) 2016-2020 Xilinx, Inc
+##*
+##* Licensed under the Apache License, Version 2.0 (the "License"). You may
+##* not use this file except in compliance with the License. A copy of the
+##* License is located at
+##*
+##*     http://www.apache.org/licenses/LICENSE-2.0
+##*
+##* Unless required by applicable law or agreed to in writing, software
+##* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+##* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+##* License for the specific language governing permissions and limitations
+##* under the License.
+##*/
+
+I0318 22:13:00.224304 27180 pruning_runner.cpp:236] Analysis info found.
+I0318 22:13:01.446600 27180 pruning_runner.cpp:267] Start pruning, please wait...
+I0318 22:13:07.447132 27180 pruning_runner.cpp:314] Compression complete 0.0500024%
+I0318 22:13:13.565517 27180 pruning_runner.cpp:314] Compression complete 0.0999548%
+I0318 22:13:19.698745 27180 pruning_runner.cpp:314] Compression complete 0.19971%
+I0318 22:13:26.041273 27180 pruning_runner.cpp:314] Compression complete 0.398624%
+I0318 22:13:32.213748 27180 pruning_runner.cpp:314] Compression complete 0.794082%
+I0318 22:13:38.604660 27180 pruning_runner.cpp:314] Compression complete 1.57565%
+I0318 22:13:47.290069 27180 pruning_runner.cpp:367] pruning done, output model: pruning/alexnetBNnoLRN/regular_rate_0.5/sparse.caffemodel
+I0318 22:13:47.290091 27180 pruning_runner.cpp:381] summary of REGULAR compression with rate 0.5:
++-------------------------------------------------------------------+
+| Item           | Baseline       | Compressed     | Delta          |
++-------------------------------------------------------------------+
+| Accuracy       | 0.922749817    | 0.948749542    | 0.0259997249   |
++-------------------------------------------------------------------+
+| Weights        | 3.7649951 M    | 797.106995 K   | -78.8284683%   |
++-------------------------------------------------------------------+
+| Operations     | 2.1539185 G    | 1.07696569 G   | -49.9996948%   |
++-------------------------------------------------------------------+
+To fine-tune the pruned model, please run:
+decent_p finetune -config /home/danieleb/ML/VAI/Vitis-AI/tutorials/VAI-Caffe-ML-CATSvsDOGS/files/pruning/alexnetBNnoLRN/config5.prototxt

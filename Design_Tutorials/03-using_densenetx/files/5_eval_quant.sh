@@ -15,19 +15,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Author: Mark Harvey, Xilinx Inc
-
+TF_CPP_MIN_LOG_LEVEL=3
 
 # evaluate graph with test dataset
 eval_graph() {
   dir_name=$1
   graph=$2
-  python -u eval_graph.py \
+  python eval_graph.py \
     --graph        $dir_name/$graph \
     --input_node   ${INPUT_NODE} \
     --output_node  ${OUTPUT_NODE} \
-    --batchsize    ${BATCHSIZE} \
-    --gpu          ${CUDA_VISIBLE_DEVICES}
+    --batchsize    100
 }
 
 echo "-----------------------------------------"

@@ -16,12 +16,9 @@
 
 '''
 Trains the DenseNetX model on the CIFAR-10 dataset
-'''
 
+Author: Mark Harvey
 '''
-Author: Mark Harvey, Xilinx Inc
-'''
-
 
 
 import numpy as np
@@ -32,7 +29,7 @@ import argparse
 from datadownload import datadownload
 
 # Silence TensorFlow messages
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # workaround for TF1.15 bug "Could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR"
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
@@ -84,8 +81,11 @@ def train(input_height,input_width,input_chan,batchsize,learnrate,epochs,keras_h
     
 
     '''
-    Callbacks
+    -----------------------------------------------
+    CALLBACKS
+    -----------------------------------------------
     '''
+
     chkpt_call = ModelCheckpoint(filepath=keras_hdf5,
                                  monitor='val_acc',
                                  verbose=1,
@@ -106,7 +106,11 @@ def train(input_height,input_width,input_chan,batchsize,learnrate,epochs,keras_h
 
     callbacks_list = [tb_call, lr_scheduler_call, lr_plateau_call, chkpt_call]
 
-
+    '''
+    -----------------------------------------------
+    TRAINING
+    -----------------------------------------------
+    '''
 
     '''
     Input image pipeline for training, validation
@@ -160,12 +164,39 @@ def train(input_height,input_width,input_chan,batchsize,learnrate,epochs,keras_h
     print(DIVIDER)
 
     '''
-    Evaluation
+    -----------------------------------------------
+    EVALUATION
+    -----------------------------------------------
     '''
 
     scores = model.evaluate(x=x_test,y=y_test,batch_size=50, verbose=0)
     print ('Evaluation Loss    : ', scores[0])
     print ('Evaluation Accuracy: ', scores[1])
+
+
+    '''
+    -----------------------------------------------
+    PREDICTIONS
+    -----------------------------------------------
+    '''
+
+    # make predictions
+    predictions = model.predict(x_test,
+                                batch_size=batchsize,
+                                verbose=1)
+
+    # check accuracy
+    correct = 0
+    wrong = 0
+    for i in range(len(predictions)):
+        pred = np.argmax(predictions[i])
+        if (pred== np.argmax(y_test[i])):
+            correct+=1
+        else:
+            wrong+=1
+
+    print ('Correct predictions:',correct,' Wrong predictions:',wrong,' Accuracy:',(correct/len(predictions)))
+
 
 
     return
@@ -213,10 +244,6 @@ def run_main():
                     type=str,
                     default='./tb_logs',
     	            help='path to folder for saving TensorBoard data. Default is ./tb_logs.')    
-    ap.add_argument('-g', '--gpu',
-                    type=str,
-                    default='0',
-    	            help='List of GPUs to use. Default is 0')    
     args = ap.parse_args()
 
 
@@ -229,14 +256,7 @@ def run_main():
     print ('--epochs       : ',args.epochs)
     print ('--keras_hdf5   : ',args.keras_hdf5)
     print ('--tboard       : ',args.tboard)
-    print ('--gpu          : ',args.gpu)
     print(DIVIDER)
-
-    
-    os.environ["CUDA_DEVICE_ORDER"]='PCI_BUS_ID'
-    
-    # indicate which GPU to use
-    os.environ["CUDA_VISIBLE_DEVICES"]=args.gpu
 
     train(args.input_height,args.input_width,args.input_chan,args.batchsize,args.learnrate,args.epochs,args.keras_hdf5,args.tboard)
 

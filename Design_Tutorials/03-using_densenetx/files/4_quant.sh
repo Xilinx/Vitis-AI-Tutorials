@@ -14,13 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-# Author: Mark Harvey, Xilinx Inc
+TF_CPP_MIN_LOG_LEVEL=3
 
 # quantize
-quantize() {  
-  echo "Making calibration images.." 
-  python -u tf_gen_images.py  \
+quantize() {
+  
+  echo "Making calibration images.."  
+
+  python tf_gen_images.py  \
       --dataset=train \
       --image_dir=${QUANT}/images \
       --calib_list=calib_list.txt \
@@ -37,8 +38,7 @@ quantize() {
 	  --input_nodes        ${INPUT_NODE} \
 		--output_nodes       ${OUTPUT_NODE} \
 		--input_shapes       ${INPUT_SHAPE} \
-		--calib_iter         10 \
-    --gpu                ${CUDA_VISIBLE_DEVICES}
+		--calib_iter         10
 }
 
 echo "-----------------------------------------"

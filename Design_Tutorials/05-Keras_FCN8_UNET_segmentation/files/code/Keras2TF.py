@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 '''
@@ -19,9 +20,6 @@
 */
 '''
 
-# modified by daniele.bagni@xilinx.com
-# date 20 / 11 / 2020
-
 
 # USAGE
 # python Keras2TFy -w weights_file.hdf52
@@ -29,13 +27,10 @@
 import os
 import sys
 import shutil
-
-# Silence TensorFlow messages
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
+from keras import backend as K
+#from tensorflow.keras.models import model_from_json
+from keras.models import load_model
 import tensorflow as tf
-from tensorflow.keras import backend as K
-from tensorflow.keras.models import model_from_json, load_model
 
 from config import fcn_config as cfg
 
@@ -90,10 +85,14 @@ model = load_model(filename)
 output_names=[out.op.name for out in model.outputs]
 
 # set up tensorflow saver object
-saver = tf.compat.v1.train.Saver()
+saver = tf.train.Saver()
 
 # fetch the tensorflow session using the Keras backend
-sess = tf.compat.v1.keras.backend.get_session()
+sess = K.get_session()
+
+# get the tensorflow session graph
+graph_def = sess.graph.as_graph_def()
+
 
 # Check the input and output name
 print ("\n TF input node name:")
@@ -101,16 +100,21 @@ print(model.inputs)
 print ("\n TF output node name:")
 print(model.outputs)
 
-# write out tensorflow checkpoint & meta graph
+# write out tensorflow checkpoint & inference graph (from MH's "MNIST classification with TensorFlow and Xilinx DNNDK")
 if model_name=="fcn8ups" :
 	save_path = saver.save(sess, os.path.join(CHKPT_MODEL_DIR, "fcn8ups/float_model.ckpt"))
+	tf.train.write_graph(graph_def, CHKPT_MODEL_DIR + "/", "fcn8ups/infer_graph.pb", as_text=False)
 elif model_name=="fcn8" :
 	save_path = saver.save(sess, os.path.join(CHKPT_MODEL_DIR, "fcn8/float_model.ckpt"))
+	tf.train.write_graph(graph_def, CHKPT_MODEL_DIR + "/", "fcn8/infer_graph.pb", as_text=False)
 elif model_name=="unet1" :
 	save_path = saver.save(sess, os.path.join(CHKPT_MODEL_DIR, "unet1/float_model.ckpt"))
+	tf.train.write_graph(graph_def, CHKPT_MODEL_DIR + "/", "unet1/infer_graph.pb", as_text=False)
 elif model_name=="unet2" :
 	save_path = saver.save(sess, os.path.join(CHKPT_MODEL_DIR, "unet2/float_model.ckpt"))
+	tf.train.write_graph(graph_def, CHKPT_MODEL_DIR + "/", "unet2/infer_graph.pb", as_text=False)
 else: # elif model_name=="unet3" :
 	save_path = saver.save(sess, os.path.join(CHKPT_MODEL_DIR, "unet3/float_model.ckpt"))
+	tf.train.write_graph(graph_def, CHKPT_MODEL_DIR + "/", "unet3/infer_graph.pb", as_text=False)
 
 print ("\nFINISHED CREATING TF FILES\n")

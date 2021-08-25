@@ -31,7 +31,7 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.layers import Conv2D,BatchNormalization,Dense,Dropout,MaxPooling2D,Input
-from tensorflow.keras.layers import Activation,Concatenate,AveragePooling2D,Flatten
+from tensorflow.keras.layers import Activation,Concatenate,AveragePooling2D,GlobalAveragePooling2D
 
 
 
@@ -139,17 +139,9 @@ def densenetx(input_shape=(224,224,3),classes=1000,k=32,drop_rate=0.2,theta=0.5,
         net = transition_layer(net,theta,drop_rate,weight_decay)
     net = dense_block(net, convlayers[-1],k,drop_rate,weight_decay)
 
-
-    # replace GlobalAveragePooling2D with AveragePooling2D + Flatten
-    # pool size = input feature map size and set strides 
-    # stride = input feature map width
-    h = K.int_shape(net)[1]
-    w = K.int_shape(net)[2]
-    net = AveragePooling2D((h,w), strides=w, padding='same')(net)
-    net = Flatten()(net)
-
+    # Global average Pooling 2D
+    net = GlobalAveragePooling2D()(net)
     net = Dense(classes, kernel_initializer='he_normal')(net)
-    
     output_layer = Activation('softmax')(net)
     
     return Model(inputs=input_layer, outputs=output_layer)

@@ -20,19 +20,13 @@
 */
 '''
 
-# modified by daniele.bagni@xilinx.com
-# date 20 / 11 / 2020
-
 
 
 import cv2
 import os
 import numpy as np
 
-## Silence TensorFlow messages
-#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-#import tensorflow as tf
-#from tensorflow.keras.preprocessing.image import img_to_array
+from keras.preprocessing.image import img_to_array
 from config import fcn_config as cfg
 from config import fcn8_cnn as cnn
 

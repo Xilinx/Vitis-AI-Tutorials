@@ -1,0 +1,6 @@
+numpy
+keras
+tensorflow==1.12
+pandas
+pandas_profiling
+matplotlib

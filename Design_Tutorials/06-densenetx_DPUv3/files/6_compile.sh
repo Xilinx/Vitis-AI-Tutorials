@@ -14,16 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TF_CPP_MIN_LOG_LEVEL=3
-
 
 # compile
 compile() {
   vai_c_tensorflow \
-    --frozen_pb  ${QUANT}/quantize_eval_model.pb \
+    --frozen_pb  ${QUANT}/deploy_model.pb \
     --arch       ${ARCH} \
     --output_dir ${COMPILE} \
-    --net_name   ${NET_NAME}
+    --net_name   ${NET_NAME} \
+    --options    "{'mode':'${DPU_MODE}'}"
 }
 
 echo "-----------------------------------------"

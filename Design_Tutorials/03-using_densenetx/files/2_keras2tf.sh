@@ -14,14 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Author: Mark Harvey, Xilinx Inc
 
 TF_CPP_MIN_LOG_LEVEL=3
 
 
 # convert keras model to frozen graph
 keras_2_tf() {
-  python -u keras_2_tf.py \
+  python keras_2_tf.py \
     --keras_hdf5 ${KERAS}/${K_MODEL} \
     --tf_ckpt    ${TFCKPT_DIR}/${TFCKPT}  
 }
