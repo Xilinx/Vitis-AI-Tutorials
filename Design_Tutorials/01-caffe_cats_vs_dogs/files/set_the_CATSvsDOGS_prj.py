@@ -65,6 +65,12 @@ if (not os.path.exists(path_root + "/input")):
 ## unzip the kaggle_dogs_vs_cats.zip file
 os.system("unzip kaggle_dogs_vs_cats.zip -d" + path_root + "/input")
 
+## extract train.zip in input/train
+if (not os.path.exists(path_root + "/input/kaggle_dogs_vs_cats")):
+    os.mkdir(path_root + "/input/kaggle_dogs_vs_cats")
+
+os.system("unzip " + path_root + "/input/train.zip -d " + path_root + "/input/kaggle_dogs_vs_cats")
+
 # rename "/input/train" as "input/jpg"
 os.system("mv "    + path_root + "/input/kaggle_dogs_vs_cats/train " + path_root + "/input/jpg")
 os.system("rm -r " + path_root + "/input/kaggle_dogs_vs_cats")
