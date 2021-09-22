@@ -1,6 +1,6 @@
-<table class="sphinxhide">
+﻿<table class="sphinxhide">
  <tr width="100%">
-    <td align="center"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>Vitis™ 2020.2 / Vitis-AI™ 1.3 - Machine Learning Tutorials</h1>
+    <td align="center"><img src="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/xilinx-logo.png" width="30%"/><h1>Vitis™ 2020.2 / Vitis-AI™ 1.3 - Machine Learning Tutorials</h1>
     <a href="https://www.xilinx.com/products/design-tools/vitis.html">See Vitis™ Development Environment on xilinx.com</br></a>
     <a href="https://www.xilinx.com/products/design-tools/vitis/vitis-ai.html">See Vitis-AI™ Development Environment on xilinx.com</a>
     </td>
@@ -92,8 +92,7 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
   <td align="center">
    <a href="./Design_Tutorials/10-RF_modulation_recognition/README.md">RF Modulation Recognition with TensorFlow 2</a>
  </td>
- <td>Machine learning applications are certainly not limited to image processing! Learn how to apply
- machine learning with Vitis AI to the recognition of RF modulation from signal data.
+ <td>Machine learning applications are certainly not limited to image processing! Learn how to apply machine learning with Vitis AI to the recognition of RF modulation from signal data.
 </td>
  </tr>
  </table>
@@ -124,7 +123,21 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  <td align="center"><a href="./Feature_Tutorials/04-tensorflow-ai-optimizer/README.md">TensorFlow AI Optimizer Example Using Low-level Coding Style (UG1512)</a></td>
  <td>Use AI Optimizer for TensorFlow to prune an AlexNet CNN by 80% while maintaining the original accuracy.</td>
  </tr>
- </table>
+  <tr>
+ <td align="center"><a href="./Feature_Tutorials/pytorch-subgraphs/README.md">Partitioning Vitis AI SubGraphs on CPU/DPU</a></td>
+ <td>Learn how to deploy a CNN on the Xilinx <a href="https://www.xilinx.com/products/boards-and-kits/vck190.html">VCK190</a> board using Vitis AI.</td>
+ </tr>
+  <tr>
+ <td align="center"><a href="./Feature_Tutorials/tf2_quant_fine_tune/README.md">Fine-Tuning TensorFlow2 quantized model</a></td>
+ <td>Learn how to implement the Vitis-AI quantization fine-tuning for TensorFlow2.3.</td>
+ </tr>
+  <tr>
+ <td align="center"><a href="./Feature_Tutorials/Vitis-AI-based-Deployment-Flow-on-VCK190/README.md">Vitis AI based Deployment Flow on VCK190</a></td>
+ <td>DPU integration with VCK190 production platform.</td>
+ </tr>
+  </table>
+
+
 
 </hr>
 <p class="sphinxhide" align="center"><sup>Copyright&copy; 2020-2021 Xilinx</sup></p>
