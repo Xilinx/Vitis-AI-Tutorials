@@ -109,10 +109,6 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  <td width="35%" align="center"><b>Tutorial</b>
  <td width="65%" align="center"><b>Description</b>
  </tr>
- <tr>
- <td align="center"><a href="./Feature_Tutorials/01-freezing_a_keras_model/README.md">Freezing a Keras Model for use with Vitis AI (UG1380)</a></td>
- <td>Freeze a Keras model by generating a binary protobuf (.pb) file.</td>
- </tr>
   <tr>
  <td align="center"><a href="./Feature_Tutorials/pytorch-subgraphs/README.md">Partitioning Vitis AI SubGraphs on CPU/DPU</a></td>
  <td>Learn how to deploy a CNN on the Xilinx <a href="https://www.xilinx.com/products/boards-and-kits/vck190.html">VCK190</a> board using Vitis AI.</td>
