@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 Copyright 2020 Xilinx Inc.
  
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@ Author: Mark Harvey, Xilinx Inc
 -->
 <table class="sphinxhide">
  <tr>
-   <td align="center"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>Vitis AI Tutorials</h1>
+   <td align="center"><img src="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/xilinx-logo.png" width="30%"/><h1>Vitis AI Tutorials</h1>
   </td>
  </tr>
  <tr>
@@ -28,12 +28,12 @@ Author: Mark Harvey, Xilinx Inc
 
 This tutorial shows you how to compile and run the same identical design and application code on a number of different Xilinx cards. The virtually seamless transition between Edge and Cloud is made possible by the Vitis&trade; AI RunTime (VART) which is common to all target platforms and its unified APIs.
 
+
 ### Current status
 
 + Tested on ZCU102, Alveo U50
-+ Tools used: TensorFlow2.3 & Vitis AI 1.3
-+ Dataset: [Kaggle dogs-vs-cats](https://www.kaggle.com/c/dogs-vs-cats/data)
-+ Network: Custom CNN
++ Tools used: TensorFlow2.3 & Vitis AI 1.4
+
 
 ## Introduction
 
@@ -64,7 +64,7 @@ The 25000 images are all resized to 200 x 250 pixels and then divided into one o
 
 ## The Convolutional Neural Network
 
-The customcnn.py script uses the Keras Functional API to describe the simple CNN. It is a fully convolutional network and has no fully connected or dense layers. There are also no pooling layers—data reduction is achieved by using convolutional layers that have strides greater than one.
+The customcnn.py script uses the Keras Functional API to describe the simple CNN. It is a fully convolutional network and has no fully connected or dense layers. There are also no pooling layers — data reduction is achieved by using convolutional layers that have strides greater than one.
 
 The CNN has deliberately been kept simple (so the expected prediction accuracy will not be much higher than approximately 95%. To reduce overfitting, batch normalization, dropout and L2 kernel regularization have been used.
 
@@ -77,21 +77,20 @@ The number of skip blocks and the number of filters used in each one is set by t
 
 ## Before You Begin
 
-
 The host machine has several requirements that need to be met before we begin. You will need:
 
-  + An x86 host machine with a supported OS and the GPU version of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/system_requirements.md).
+  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
 
-  + The host machine will require Docker to be installed and the Vitis-AI GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
+  + The host machine will require Docker to be installed and the Vitis-AI CPU or GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
 
-  + A GPU card suitable for ML training - a GPU with at least 8GB of memory is recommended.
+  + A GPU card suitable for training.
 
-  + If you plan to use the ZCU102 evaluation board, it should be prepared with the board image as per the [Setup the Target](https://github.com/Xilinx/Vitis-AI/tree/master/setup/mpsoc/VART#step2-setup-the-target) instructions. Hints on how to connect the various cables to the ZCU102 are also available [here](https://www.xilinx.com/html_docs/vitis_ai/1_3/installation.html#yjf1570690235238).
+  + If you plan to use the ZCU102 evaluation board, it should be prepared with the board image as per the [Step2: Setup the Target](https://github.com/Xilinx/Vitis-AI/tree/master/setup/mpsoc/VART#step2-setup-the-target) instructions. Hints on how to connect the various cables to the ZCU102 are also available [here](https://www.xilinx.com/html_docs/vitis_ai/1_4/installation.html#yjf1570690235238).
 
-  + For the Alveo U50, follow the [Setup Alveo Accelerator Card with HBM for DPUCAHX8H/L](https://github.com/Xilinx/Vitis-AI/tree/master/setup/alveo/u50_u50lv_u280#setup-alveo-accelerator-card-with-hbm-for-dpucahx8hl) instructions. You will need to install the specified version of XRT on your host system (i.e. *not* in the Vitis-AI docker container), install the Alveo U50 card target platform also on your host system and then flash the Alveo U50 card. Note that a cold reboot will be necessary after flashing the Alveo U50.
+  + For the Alveo U50, follow the [Setup Alveo Accelerator Card](https://github.com/Xilinx/Vitis-AI/tree/master/setup/alveo) instructions.
 
  
-For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_3/zmw1606771874842.html)).
+For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_4/zmw1606771874842.html)).
 
 This tutorial assumes the user is familiar with Python3, TensorFlow and has some knowledge of machine learning principles.
 
@@ -119,8 +118,8 @@ This tutorial assumes the user is familiar with Python3, TensorFlow and has some
 4. Start the Vitis AI GPU docker:
 
      ```shell
-     # navigate to densenet tutorial folder
-     cd <path_to_densenet_design>/files
+     # navigate to tutorial folder
+     cd <path_to_tutorial>/files
 
      # to start GPU docker container
      ./docker_run.sh xilinx/vitis-ai-gpu:latest
@@ -140,11 +139,11 @@ This tutorial assumes the user is familiar with Python3, TensorFlow and has some
      
      ==========================================
 
-     Docker Image Version:  1.3 
-     Build Date: 2020-12-20
+     Docker Image Version:  1.4.776
+     Build Date: 2021-06-22
      VAI_ROOT: /opt/vitis_ai
 
-     For TensorFlow Workflows do:
+     For TensorFlow 1.15 Workflows do:
           conda activate vitis-ai-tensorflow 
      For Caffe Workflows do:
           conda activate vitis-ai-caffe 
@@ -246,14 +245,6 @@ To run step 1:
 (vitis-ai-tensorflow2) Vitis-AI /workspace > python -u train.py 2>&1 | tee train.log
 ```
 
->:bulb: *Training can take a considerable amount of time so a pretrained checkpoint is provided in the `pretrained` folder. To use this pretrained checkpoint, run the following commands instead of the command given above:*
->    
-> ```shell
-> mkdir -p float_model
-> cp -f pretrained/f_model.h5 float_model/.
-> ```
-
-
 During training, the TFRecord files are read into the tf.data pipeline by the `input_fn_trn` function defined in `dataset_utils.py`. This function finds all TFRecord files whose names match the pattern train_*.tfrecord and creates a tf.data.Dataset object. The function also includes all the image pre-processing (resizing and random cropping, augmentation and normalization):
 
 
@@ -316,7 +307,7 @@ To run step 2:
 (vitis-ai-tensorflow2) Vitis-AI /workspace > python -u quantize.py --evaluate 2>&1 | tee quantize.log
 ```
 
-The Xilinx DPU family of ML accelerators execute models and networks that have their parameters in integer format so we must convert the trained, floating-point checkpoint into a fixed-point integer checkpoint - this process is known as quantization.
+The Xilinx DPU family of ML accelerators execute CNN models that have their parameters in integer format so we must convert the trained, floating-point checkpoint into a fixed-point integer checkpoint - this process is known as quantization.
 
 The `quantize.py` script will do the following:
 
@@ -336,7 +327,7 @@ To run step 3, run the `source compile.sh` with one of the target boards as a co
 (vitis-ai-tensorflow2) Vitis-AI /workspace > source compile.sh zcu102
 ```
 
-The script also supports `u50` as a command line argument to target the Alveo U50. The `compile.sh` shell script will compile the quantized model and create an .xmodel file which contains the instructions and data to be executed by the DPU.
+The script also supports `zcu104`,`vck190` and `u50`, as a command line arguments to target other boards. The `compile.sh` shell script will compile the quantized model and create an .xmodel file which contains the instructions and data to be executed by the DPU.
 
 
 ## Step 4 - Running the application on the target
@@ -344,7 +335,7 @@ The script also supports `u50` as a command line argument to target the Alveo U5
 To prepare the images, xmodel and application code for copying to the selected target, run the following command:
 
 ```shell
-(vitis-ai-tensorflow2) Vitis-AI /workspace > python -u target.py 2>&1 | tee target.log
+(vitis-ai-tensorflow2) Vitis-AI /workspace > python -u target.py -m compiled_zcu102/customcnn.xmodel -t target_zcu102 2>&1 | tee target_zcu102.log
 ```
 
 The `target.py` script will do the following:
@@ -357,32 +348,32 @@ The `target.py` script will do the following:
 
 ### ZCU102
 
-The entire `target` folder will be copied to the ZCU102. Copy it to the /home/root folder of the flashed SD card, this can be done in one of several ways:
+The entire `target_zcu102` folder should be copied to the ZCU102. Copy it to the /home/root folder of the flashed SD card, this can be done in one of several ways:
 
 1. Direct copy to SD Card:
 
-  + If the host machine has an SD card slot, insert the flashed SD card and when it is recognised you will see two volumes, BOOT and ROOTFS. Navigate into the ROOTFS and then into the /home folder.  Make the ./root folder writeable by issuing the command ``sudo chmod -R 777 root`` and then copy the entire `target` folder from the host machine into the /home/root folder of the SD card.
+  + If the host machine has an SD card slot, insert the flashed SD card and when it is recognised you will see two volumes, BOOT and ROOTFS. Navigate into the ROOTFS and then into the /home folder.  Make the ./root folder writeable by issuing the command ``sudo chmod -R 777 root`` and then copy the entire `target_zcu102` folder from the host machine into the /home/root folder of the SD card.
 
   + Unmount both the BOOT and ROOTFS volumes from the host machine and then eject the SD Card from the host machine.
 
 2. With scp command:
 
-  + If the target evaluation board is connected to the same network as the host machine, the `target` folder can be copied using scp.
+  + If the target evaluation board is connected to the same network as the host machine, the `target_zcu102` folder can be copied using scp.
 
-  + The command will be something like ``scp -r ./build/target root@192.168.1.227:~/.``  assuming that the target board IP address is 192.168.1.227 - adjust this as appropriate for your system.
+  + The command will be something like ``scp -r ./build/target_zcu102 root@192.168.1.227:~/.``  assuming that the target board IP address is 192.168.1.227 - adjust this as appropriate for your system.
 
   + If the password is asked for, insert 'root'.
 
 
-With the `target` folder copied to the SD Card and the evaluation board booted, you can issue the command for launching the application - note that this done on the target evaluation board, not the host machine, so it requires a connection to the board such as a serial connection to the UART or an SSH connection via Ethernet.
+With the `target_zcu102` folder copied to the SD Card and the evaluation board booted, you can issue the command for launching the application - note that this done on the target evaluation board, not the host machine, so it requires a connection to the board such as a serial connection to the UART or an SSH connection via Ethernet.
 
-The application can be started by navigating into the `target` folder on the evaluation board and then issuing the command ``python3 app_mt.py``. The application will start and after a few seconds will show the throughput in frames/sec, like this:
+The application can be started by navigating into the `target_zcu102` folder on the evaluation board and then issuing the command ``python3 app_mt.py``. The application will start and after a few seconds will show the throughput in frames/sec, like this:
 
 
 
 ```shell
-root@xilinx-zcu102-2020_2:~/target# python3 app_mt.py 
-------------------------------------
+root@xilinx-zcu102-2021_1:~# cd target_zcu102/
+root@xilinx-zcu102-2021_1:~/target_zcu102# python3 app_mt.py
 Command line options:
  --image_dir :  images
  --threads   :  1
@@ -391,9 +382,9 @@ Command line options:
 Pre-processing 1000 images...
 Starting 1 threads...
 ------------------------------------
-Throughput=199.88 fps, total frames = 1000, time=5.0030 seconds
+Throughput=377.79 fps, total frames = 1000, time=2.6470 seconds
 Post-processing 1000 images..
-Correct:975, Wrong:25, Accuracy:0.9750
+Correct:960, Wrong:40, Accuracy:0.9600
 ------------------------------------
 ```
 
@@ -402,8 +393,72 @@ The throughput can be improved by increasing the number of threads with the `--t
 
 
 ```shell
-root@xilinx-zcu102-2020_2:~/target# python3 app_mt.py --threads 6
+root@xilinx-zcu102-2021_1:~/target_zcu102# python3 app_mt.py --threads 8
+Command line options:
+ --image_dir :  images
+ --threads   :  8
+ --model     :  customcnn.xmodel
 ------------------------------------
+Pre-processing 1000 images...
+Starting 8 threads...
+------------------------------------
+Throughput=1055.84 fps, total frames = 1000, time=0.9471 seconds
+Post-processing 1000 images..
+Correct:960, Wrong:40, Accuracy:0.9600
+------------------------------------
+```
+### ZCU104 and VCK190
+
+The procedure is identical to that described above for the ZCU102 board - just use either the `target_zcu104` or `target_vck190` folder instead of the `target_zcu10` folder.
+
+
+### Alveo U50
+
+To prepare the images, xmodel and application code for copying to the selected target, run the following command:
+
+```shell
+(vitis-ai-tensorflow2) Vitis-AI /workspace > python -u target.py -m compiled_u50/customcnn.xmodel -t target_u50 2>&1 | tee target_u50.log
+```
+
+Note that the U50 will need to have been flashed with the correct deployment shell - this should have been done in the 'Preparing the host machine and target boards' section above.
+
+The following steps should be run from inside the Vitis-AI Docker container:
+
+  + Ensure that Vitis-AI's TensorFlow2 conda environment is enabled (if not, the run `conda activate vitis-ai-tensorflow2`).
+
+  + Run `source setup.sh DPUCAHX8H` which sets environment variables to point to the correct overlay for the U50. The complete steps to run are as follows:
+
+
+```shell
+conda activate vitis-ai-tensorflow2
+source setup.sh DPUCAHX8H
+cd build/target_u50
+/usr/bin/python3 app_mt.py
+```
+
+The expected console output will be like this:
+
+```shell
+(vitis-ai-tensorflow2) Vitis-AI /workspace/build/target_u50 > /usr/bin/python3 app_mt.py
+Command line options:
+ --image_dir :  images
+ --threads   :  1
+ --model     :  customcnn.xmodel
+------------------------------------
+Pre-processing 1000 images...
+Starting 1 threads...
+------------------------------------
+Throughput=1322.94 fps, total frames = 1000, time=0.7559 seconds
+Post-processing 1000 images..
+Correct:960, Wrong:40, Accuracy:0.9600
+------------------------------------ 
+```
+
+As with the ZCU102, the performance can be increased by using more threads:
+
+
+```shell
+(vitis-ai-tensorflow2) Vitis-AI /workspace/build/target_u50 > /usr/bin/python3 app_mt.py -t 6
 Command line options:
  --image_dir :  images
  --threads   :  6
@@ -412,42 +467,10 @@ Command line options:
 Pre-processing 1000 images...
 Starting 6 threads...
 ------------------------------------
-Throughput=760.49 fps, total frames = 1000, time=1.3149 seconds
+Throughput=2442.85 fps, total frames = 1000, time=0.4094 seconds
 Post-processing 1000 images..
-Correct:975, Wrong:25, Accuracy:0.9750
-------------------------------------
-```
-
-### Alveo U50
-
-Note that these steps need to be run from inside of the Vitis-AI Docker container.
-
-Run the `U50_overlay.sh` script (internet connection required) to download and install the correct overlay. Note that the U50 will need to have been flashed with the correct deployment shell - this should have been done in the [Before You Begin](#before-you-begin) section above. The complete steps to run on the Alveo U50 are as follows:
-
-
-```shell
-Vitis-AI /workspace > source U50_overlay.sh
-Vitis-AI /workspace > cd target
-Vitis-AI /workspace > /usr/bin/python3 app_mt.py --threads 4
-```
-
-
-As with the ZCU102, the performance can be increased by using more threads:
-
-```shell
-------------------------------------
-Command line options:
- --image_dir :  images
- --threads   :  4
- --model     :  customcnn.xmodel
-------------------------------------
-Pre-processing 1000 images...
-Starting 4 threads...
-------------------------------------
-Throughput=2706.25 fps, total frames = 1000, time=0.3695 seconds
-Post-processing 1000 images..
-Correct:975, Wrong:25, Accuracy:0.9750
-------------------------------------
+Correct:960, Wrong:40, Accuracy:0.9600
+------------------------------------ 
 ```
 
 </hr>

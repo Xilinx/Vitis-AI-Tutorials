@@ -49,6 +49,7 @@ ln -nsf ${ML_DIR}/caffe/models/alexnetBNnoLRN/m2/snapshot_2_alexnetBNnoLRN__iter
 
 conda activate vitis-ai-optimizer_caffe
 
+
 # analysis: you do it only once
 $VAI_P_CAFFE ana -config ${WORK_DIR}/config0.prototxt      2>&1 | tee ${WORK_DIR}/rpt/logfile_ana_alexnetBNnoLRN.txt
 
@@ -84,6 +85,8 @@ $VAI_P_CAFFE finetune -config ${WORK_DIR}/config5.prototxt 2>&1 | tee ${WORK_DIR
 
 ## compression: 6-th run
 $VAI_P_CAFFE prune -config ${WORK_DIR}/config6.prototxt 2>&1 | tee ${WORK_DIR}/rpt/logfile_compress6_alexnetBNnoLRN.txt
+
+
 ## fine-tuning: 6-th run
 $VAI_P_CAFFE finetune -config ${WORK_DIR}/config6.prototxt 2>&1 | tee ${WORK_DIR}/rpt/logfile_finetune6_alexnetBNnoLRN.txt
 

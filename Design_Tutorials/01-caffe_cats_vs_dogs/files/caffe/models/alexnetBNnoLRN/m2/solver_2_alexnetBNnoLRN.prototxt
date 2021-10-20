@@ -37,9 +37,9 @@ snapshot: 5000
 snapshot_prefix: "caffe/models/alexnetBNnoLRN/m2/snapshot_2_alexnetBNnoLRN_"
 
 solver_mode: GPU
+#solver_mode: CPU
 
 #type: "SGD"
 type: "Adam"
 
 random_seed: 1201
-

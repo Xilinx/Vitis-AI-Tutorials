@@ -18,7 +18,7 @@ Author: Mark Harvey, Xilinx Inc
 
 <table>
  <tr>
-   <td align="center"><img src="https://www.xilinx.com/content/dam/xilinx/imgs/press/media-kits/corporate/xilinx-logo.png" width="30%"/><h1>Vitis AI Tutorials</h1>
+   <td align="center"><img src="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/xilinx-logo.png" width="30%"/><h1>Vitis AI Tutorials</h1>
    </td>
  </tr>
  <tr>
@@ -30,7 +30,7 @@ Author: Mark Harvey, Xilinx Inc
 
 ### Current status
 
- + Tested with Vitis AI 1.3 and TensorFlow 1.15
+ + Tested with Vitis AI 1.4 and TensorFlow 1.15
  + Tested on the following platforms: ZCU102, Alveo U50
 
 
@@ -68,18 +68,18 @@ The convolutional neural network in this design has deliberately been kept as si
 
 The host machine has several requirements that need to be met before we begin. You will need:
 
-  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/system_requirements.md).
+  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
 
-  + The host machine will require Docker to be installed and the Vitis-AI GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
+  + The host machine will require Docker to be installed and the Vitis-AI CPU or GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
 
   + A GPU card suitable for training is recommended, but the training in this tutorial is quite simple and a CPU can be used.
 
-  + If you plan to use the ZCU102 evaluation board, it should be prepared with the board image as per the [Setup the Target](https://github.com/Xilinx/Vitis-AI/tree/master/setup/mpsoc/VART#step2-setup-the-target) instructions. Hints on how to connect the various cables to the ZCU102 are also available [here](https://www.xilinx.com/html_docs/vitis_ai/1_3/installation.html#yjf1570690235238).
+  + If you plan to use the ZCU102 evaluation board, it should be prepared with the board image as per the [Step2: Setup the Target](https://github.com/Xilinx/Vitis-AI/tree/master/setup/mpsoc/VART#step2-setup-the-target) instructions. Hints on how to connect the various cables to the ZCU102 are also available [here](https://www.xilinx.com/html_docs/vitis_ai/1_4/installation.html#yjf1570690235238).
 
-  + For the Alveo U50, follow the [Setup Alveo Accelerator Card with HBM for DPUCAHX8H/L](https://github.com/Xilinx/Vitis-AI/tree/master/setup/alveo/u50_u50lv_u280#setup-alveo-accelerator-card-with-hbm-for-dpucahx8hl) instructions
+  + For the Alveo U50, follow the [Setup Alveo Accelerator Card](https://github.com/Xilinx/Vitis-AI/tree/master/setup/alveo) instructions.
 
  
-For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_3/zmw1606771874842.html)).
+For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_4/zmw1606771874842.html)).
 
 This tutorial assumes the user is familiar with Python3, TensorFlow and has some knowledge of machine learning principles.
 
@@ -125,8 +125,8 @@ Clone or download this GitHub repository to your local machine where you have in
 
 
 ```shell
-# navigate to densenet tutorial folder
-cd <path_to_MNIST_design>/files
+# navigate to tutorial folder
+cd <path_to_tutorial>/files
 
 # to start GPU docker
 ./docker_run.sh xilinx/vitis-ai-gpu:latest
@@ -151,8 +151,8 @@ __      ___ _   _                   _____
  
 ==========================================
 
-Docker Image Version:  1.3 
-Build Date: 2020-12-20
+Docker Image Version:  1.4 
+Build Date: 2021-12-20
 VAI_ROOT: /opt/vitis_ai
 
 For TensorFlow Workflows do:
@@ -222,45 +222,49 @@ The application can be started by navigating into the target_zcu102 folder (`cd 
 
 
 ```shell
-root@xilinx-zcu102-2020_2:~ cd target_zcu102
-root@xilinx-zcu102-2020_2:~/target_zcu102# python3 app_mt.py 
+root@xilinx-zcu102-2021_1:~ cd target_zcu102
+root@xilinx-zcu102-2021_1:~/target_zcu102# python3 app_mt.py
 Command line options:
  --image_dir :  images
  --threads   :  1
  --model     :  model_dir/customcnn.xmodel
 Pre-processing 10000 images...
 Starting 1 threads...
-Throughput=3248.51 fps, total frames = 10000, time=3.0783 seconds
-Correct:9870, Wrong:130, Accuracy:0.9870
+Throughput=3644.82 fps, total frames = 10000, time=2.7436 seconds
+Correct:9857, Wrong:143, Accuracy:0.9857 
 ```
 
 For better throughput, the number of threads can be increased by using the `-t` option. For example, to execute with 4 threads:
 
 ```shell
-root@xilinx-zcu102-2020_2:~/target_zcu102# python3 app_mt.py -t 4
+root@xilinx-zcu102-2021_1:~/target_zcu102# python3 app_mt.py -t 4
 Command line options:
  --image_dir :  images
  --threads   :  4
  --model     :  model_dir/customcnn.xmodel
 Pre-processing 10000 images...
 Starting 4 threads...
-Throughput=5771.71 fps, total frames = 10000, time=1.7326 seconds
-Correct:9870, Wrong:130, Accuracy:0.9870
+Throughput=5224.95 fps, total frames = 10000, time=1.9139 seconds
+Correct:9857, Wrong:143, Accuracy:0.9857 
 ```
 
 ## Running the application on the Alveo U50
 
 This final step will copy all the required files for running on the U50 into the `./build/target_u50` folder. The `7_make_target_u50.sh` script also copies the test set images to `/build/target_u50/images` - the application code will preprocess and classify these images.
 
-The following steps should be run from inside the Vitis-AI Docker container.
+Note that the U50 will need to have been flashed with the correct deployment shell - this should have been done in the 'Preparing the host machine and target boards' section above.
 
-Run the `U50_overlay.sh` script (internet connection required) to download and install the correct overlay on the U50 (note that the U50 will need to have been flashed with the correct deployment shell - this should have been done in the 'Preparing the host machine and target boards' section above). The complete steps to run are as follows:
+The following steps should be run from inside the Vitis-AI Docker container:
+
+  + Ensure that Vitis-AI's TensorFlow1 conda environment is enabled (if not, the run `conda activate vitis-ai-tensorflow`).
+
+  + Run `source setup.sh DPUCAHX8H` which sets environment variables to point to the correct overlay for the U50. The complete steps to run are as follows:
 
 
 ```shell
-source U50_overlay.sh
+source setup.sh DPUCAHX8H
 cd build/target_u50
-/usr/bin/python3 app_mt.py -m model_dir/customcnn.xmodel
+/usr/bin/python3 app_mt.py
 ```
 
 You should see something like this:

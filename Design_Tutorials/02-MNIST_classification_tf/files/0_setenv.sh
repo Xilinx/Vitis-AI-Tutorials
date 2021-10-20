@@ -29,9 +29,11 @@ export QUANT=${BUILD}/quantize
 
 export COMPILE_U50=${BUILD}/compile_u50
 export COMPILE_ZCU102=${BUILD}/compile_zcu102
+export COMPILE_VCK190=${BUILD}/compile_vck190
 
 export TARGET_U50=${BUILD}/target_u50
 export TARGET_ZCU102=${BUILD}/target_zcu102
+export TARGET_VCK190=${BUILD}/target_vck190
 
 export APP=./application
 
@@ -54,15 +56,16 @@ export EVAL_Q_LOG=eval_quant_graph.log
 export QUANT_LOG=quant.log
 export COMP_LOG_U50=compile_u50.log
 export COMP_LOG_ZCU102=compile_zcu102.log
+export COMP_LOG_VCK190=compile_vck190.log
 
 # training parameters
 export EPOCHS=10
 export LEARNRATE=0.0001
 export BATCHSIZE=100
 
-# list of GPUs to use
+# list of GPUs to use -modify for your system
 export CUDA_DEVICE_ORDER=PCI_BUS_ID
-export CUDA_VISIBLE_DEVICES="1"
+export CUDA_VISIBLE_DEVICES="0"
 
 export TF_FORCE_GPU_ALLOW_GROWTH=true
 

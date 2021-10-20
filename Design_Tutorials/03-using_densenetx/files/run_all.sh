@@ -17,12 +17,8 @@
 
 source 0_setenv.sh
 
-# Uncomment the next line if you want to train from scratch
-#source 1_train.sh
-
-# unzip & copy pretrained checkpoint
-# Comment this line if running training from scratch
-unzip -o pretrained/k_model.zip -d ${KERAS}
+# training
+source 1_train.sh
 
 # convert Keras model to Tensorflow frozen graph
 source 2_keras2tf.sh
@@ -36,14 +32,14 @@ source 4_quant.sh
 # Evaluate quantized model
 source 5_eval_quant.sh
 
-# compile for ZCU102
+# compile for target
 source 6_compile.sh zcu102
-
-# compile for U50
+source 6_compile.sh vck190
 source 6_compile.sh u50
 
-
-source 7_make_target_zcu102.sh
-source 7_make_target_vck190.sh
+# make target folders
+source 7_make_target.sh zcu102
+source 7_make_target.sh vck190
+source 7_make_target.sh u50
 
 

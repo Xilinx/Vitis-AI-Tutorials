@@ -70,13 +70,13 @@ def main():
 
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument('-t', '--target_dir', type=str,  default='target', help='Full path of target folder. Default is target')
-    ap.add_argument('-i', '--image_dir',  type=str,  default='dataset/test', help='Full path of images folder. Default is dataset/test')
+    ap.add_argument('-t', '--target_dir', type=str,  default='build/target', help='Full path of target folder. Default is build/target')
+    ap.add_argument('-i', '--image_dir',  type=str,  default='build/dataset/test', help='Full path of images folder. Default is build/dataset/test')
     ap.add_argument('-ih','--input_height',type=int, default=200,  help='Input image height in pixels.')
     ap.add_argument('-iw','--input_width', type=int, default=250,  help='Input image width in pixels.')
     ap.add_argument('-n', '--num_images', type=int,  default=1000, help='Number of test images. Default is 1000')
     ap.add_argument('-a', '--app_dir',    type=str,  default='application', help='Full path of application code folder. Default is application')
-    ap.add_argument('-m', '--model',      type=str,  default='compiled_model/customcnn.xmodel', help='Full path of compiled model.Default is compiled_model/customcnn.xmodel')
+    ap.add_argument('-m', '--model',      type=str,  default='build/compiled_model/customcnn.xmodel', help='Full path of compiled model.Default is build/compiled_model/customcnn.xmodel')
     args = ap.parse_args()  
 
     print('\n------------------------------------')

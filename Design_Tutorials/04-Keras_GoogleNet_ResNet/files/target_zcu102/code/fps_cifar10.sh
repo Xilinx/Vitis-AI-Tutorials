@@ -14,23 +14,31 @@
 ## License for the specific language governing permissions and limitations
 ## under the License.
 
-# check LeNet fps
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 1 --model ./cifar10/LeNet/model/LeNet.xmodel  --classes CIFAR10
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 5 --model ./cifar10/LeNet/model/LeNet.xmodel  --classes CIFAR10
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 6 --model ./cifar10/LeNet/model/LeNet.xmodel  --classes CIFAR10
+echo " "
+echo " CIFAR10 LEnet fps"
+echo " "
+./get_dpu_fps ./cifar10/LeNet/LeNet.xmodel  1 10000  # 1 thread
+./get_dpu_fps ./cifar10/LeNet/LeNet.xmodel  5 10000  # 5 threads
+./get_dpu_fps ./cifar10/LeNet/LeNet.xmodel  6 10000  # 6 threads
 
-# check miniVggNet fps
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 1 --model ./cifar10/miniVggNet/model/miniVggNet.xmodel  --classes CIFAR10
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 5 --model ./cifar10/miniVggNet/model/miniVggNet.xmodel  --classes CIFAR10
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 6 --model ./cifar10/miniVggNet/model/miniVggNet.xmodel  --classes CIFAR10
-
-# check miniGoogleNet fps
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 1 --model ./cifar10/miniGoogleNet/model/miniGoogleNet.xmodel  --classes CIFAR10
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 5 --model ./cifar10/miniGoogleNet/model/miniGoogleNet.xmodel  --classes CIFAR10
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 6 --model ./cifar10/miniGoogleNet/model/miniGoogleNet.xmodel  --classes CIFAR10
+echo " "
+echo " CIFAR10 miniVGGnet fps"
+echo " "
+./get_dpu_fps ./cifar10/miniVggNet/miniVggNet.xmodel  1 10000  # 1 thread
+./get_dpu_fps ./cifar10/miniVggNet/miniVggNet.xmodel  5 10000  # 5 threads
+./get_dpu_fps ./cifar10/miniVggNet/miniVggNet.xmodel  6 10000  # 6 threads
 
 
-# check miniResNet fps
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 1 --model ./cifar10/miniResNet/model/miniResNet.xmodel  --classes CIFAR10
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 5 --model ./cifar10/miniResNet/model/miniResNet.xmodel  --classes CIFAR10
-python3 ./code/src/classification.py --images ./cifar10_test/ --threads 6 --model ./cifar10/miniResNet/model/miniResNet.xmodel  --classes CIFAR10
+echo " "
+echo " CIFAR10 miniGOOGLEnet fps"
+echo " "
+./get_dpu_fps ./cifar10/miniGoogleNet/miniGoogleNet.xmodel  1 10000  # 1 thread
+./get_dpu_fps ./cifar10/miniGoogleNet/miniGoogleNet.xmodel  5 10000  # 5 threads
+./get_dpu_fps ./cifar10/miniGoogleNet/miniGoogleNet.xmodel  6 10000  # 6 threads
+
+echo " "
+echo " CIFAR10 miniRESnet fps"
+echo " "
+./get_dpu_fps ./cifar10/miniResNet/miniResNet.xmodel  1 10000  # 1 thread
+./get_dpu_fps ./cifar10/miniResNet/miniResNet.xmodel  5 10000  # 5 threads
+./get_dpu_fps ./cifar10/miniResNet/miniResNet.xmodel  6 10000  # 6 threads

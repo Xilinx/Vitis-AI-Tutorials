@@ -27,9 +27,9 @@ layer {
     mirror: true
     crop_size: 227
     #mean_file: "input/lmdb/mean.binaryproto"
-    mean_value: 106 
-    mean_value: 116 
-    mean_value: 124 
+    mean_value: 106
+    mean_value: 116
+    mean_value: 124
   }
   data_param {
     source: "input/lmdb/train_lmdb"
@@ -49,9 +49,9 @@ layer {
     mirror: false
     crop_size: 227
     #mean_file: "input/lmdb/mean.binaryproto"
-    mean_value: 106 
-    mean_value: 116 
-    mean_value: 124 
+    mean_value: 106
+    mean_value: 116
+    mean_value: 124
   }
   data_param {
     source: "input/lmdb/valid_lmdb"
@@ -83,9 +83,11 @@ layer {
   }
   convolution_param {
     num_output: 96
-    kernel_size: 11
+    #kernel_size: 11
+    kernel_size: 8
     stride: 4
-    pad: 1
+    #pad: 1
+    pad: 0
     weight_filler {
       type: "gaussian"
       std: 0.01
@@ -502,7 +504,7 @@ layer {
   name: "loss"
   type: "SoftmaxWithLoss"
   bottom: "fc8"
-  bottom: "label"  
+  bottom: "label"
   top: "loss"
 }
 layer {

@@ -38,3 +38,17 @@ cp ${output_dir}/${CNN}.xmodel  ${output_dir}/../../zcu102/pruned/model/arm64_40
 
 echo " copying the test images to be used by the ZCU102"
 cp -r $ML_DIR/input/jpg/test ${output_dir}/../../zcu102/test_images
+
+
+
+echo "Compiling network: ${CNN} for VCK190"
+vai_c_caffe  --prototxt=${model_dir}/deploy.prototxt     \
+     --caffemodel=${model_dir}/deploy.caffemodel \
+     --output_dir=${output_dir}                  \
+     --net_name=${CNN} \
+     --arch /opt/vitis_ai/compiler/arch/DPUCVDX8G/VCK190/arch.json \
+     --options    "{'mode':'normal', 'save_kernel':''}"
+
+
+echo " copying xmodel file into /../vck190/baseline/model/arm64_4096 "
+cp ${output_dir}/${CNN}.xmodel  ${output_dir}/../../vck190/pruned/model/arm64_4096/
