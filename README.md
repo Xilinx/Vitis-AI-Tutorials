@@ -71,7 +71,7 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  </tr>
  <tr>
   <td align="center">
-   <a href="./Design_Tutorials/09-mnist_pyt-master/README.md">PyTorch flow for Vitis AI</a>
+   <a href="./Design_Tutorials/09-mnist_pyt/README.md">PyTorch flow for Vitis AI</a>
  </td>
  <td>Introduces the Vitis AI TensorFlow design process and illustrates how to go from a python description of the network model to running a compiled model on a Xilinx evaluation board.
 </td>
