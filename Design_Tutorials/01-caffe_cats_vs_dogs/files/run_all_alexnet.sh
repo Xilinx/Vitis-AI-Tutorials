@@ -33,20 +33,29 @@ done
 
 conda activate vitis-ai-caffe
 
+##patch for my docker GPU error: "caffe: error while loading shared libraries: libnccl.so.1: cannot open shared object file: No such file or directory"
+##export LD_LIBRARY_PATH=/opt/vitis_ai/conda/pkgs/nccl-2.8.3.1-h91b26fc_0/lib/:$LD_LIBRARY_PATH
+
+
 # set the project environmental variables
 source caffe/set_prj_env_variables.sh
 
-# set the proejct directories
-python set_the_CATSvsDOGS_prj.py -i $ML_DIR
+
+## set the project directories
+#python set_the_CATSvsDOGS_prj.py -i $ML_DIR
 
 # train the CNN and make predictions
-source caffe/caffe_flow_AlexNet.sh             2>&1 | tee log/logfile_caffe_${CNN}.txt
+#source caffe/caffe_flow_AlexNet.sh             2>&1 | tee log/logfile_caffe_${CNN}.txt
+
 
 # quantize the CNN
 source deploy/${CNN}/quantiz/vaiq_${CNN}.sh    2>&1 | tee log/logfile_vaiq_${CNN}.txt
 
+
+
 # generate ELF file for ZCU102 board
 source deploy/${CNN}/quantiz/vaic_${CNN}.sh    2>&1 | tee log/logfile_vaic_${CNN}.txt
+
 
 # create test images for ZCU102 board
 cd input/jpg/
@@ -54,28 +63,48 @@ tar -cvf test_images.tar ./test
 mv test_images.tar ../../deploy/${CNN}/zcu102/
 cd ../../
 
+
 conda deactivate
+
 
 
 # Pruning with Vitis AI Optimizer
 conda activate vitis-ai-optimizer_caffe
+#patch for my docker GPU error: "caffe: error while loading shared libraries: libnccl.so.1: cannot open shared object file: No such file or directory"
+#export LD_LIBRARY_PATH=/opt/vitis_ai/conda/pkgs/nccl-2.8.3.1-h91b26fc_0/lib/:$LD_LIBRARY_PATH
+
+source caffe/set_prj_env_variables.sh
 source pruning/alexnetBNnoLRN/pruning_flow.sh 2>&1 | tee log/logfile_run_pruning_${CNN}.txt
 conda deactivate
 
+
 # quantize the Optimized CNN
 conda activate vitis-ai-caffe
+
+
+# set the project environmental variables
+source caffe/set_prj_env_variables.sh
+
+#patch for my docker GPU error: "caffe: error while loading shared libraries: libnccl.so.1: cannot open shared object file: No such file or directory"
+#export LD_LIBRARY_PATH=/opt/vitis_ai/conda/pkgs/nccl-2.8.3.1-h91b26fc_0/lib/:$LD_LIBRARY_PATH
+
+
 source deploy/${CNN}/pruned/vaiq_pruned_${CNN}.sh  2>&1 | tee log/logfile_vaiq_pruned_${CNN}.txt
+
 
 # generate ELF file for ZCU102 board
 source deploy/${CNN}/pruned/vaic_pruned_${CNN}.sh 2>&1 | tee log/logfile_vaic_pruned_${CNN}.txt
 
 conda deactivate
-exit #from docker environment
+
+
+#exit #from docker environment
 
 
 cd ..
 # prepare a final tar archive to be copied on the ZCu102 board
 tar -cvf ${CNN}_zcu102.tar ./zcu102
+tar -cvf ${CNN}_vck190.tar ./vck190
 
 
 ##create unified log file

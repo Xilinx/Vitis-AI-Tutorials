@@ -24,17 +24,18 @@ import time
 import sys
 import argparse
 
-
-def preprocess_fn(image_path):
+def preprocess_fn(image_path, fix_scale):
     '''
     Image pre-processing.
-    Opens image as grayscale then normalizes to range 0:1
+    Opens image as grayscale, adds channel dimension, normalizes to range 0:1
+    and then scales by input quantization scaling factor
     input arg: path of image file
     return: numpy array
     '''
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     image = image.reshape(28,28,1)
-    image = image/255.0
+    image = image * (1/255.0) * fix_scale
+    image = image.astype(np.int8)
     return image
 
 
@@ -54,17 +55,25 @@ def get_child_subgraph_dpu(graph: "Graph") -> List["Subgraph"]:
 
 
 def runDPU(id,start,dpu,img):
-
     '''get tensor'''
     inputTensors = dpu.get_input_tensors()
     outputTensors = dpu.get_output_tensors()
     input_ndim = tuple(inputTensors[0].dims)
     output_ndim = tuple(outputTensors[0].dims)
 
+    # we can avoid output scaling if use argmax instead of softmax
+    #output_fixpos = outputTensors[0].get_attr("fix_point")
+    #output_scale = 1 / (2**output_fixpos)
+
     batchSize = input_ndim[0]
     n_of_images = len(img)
     count = 0
     write_index = start
+    ids=[]
+    ids_max = 10
+    outputData = []
+    for i in range(ids_max):
+        outputData.append([np.empty(output_ndim, dtype=np.int8, order="C")])
     while count < n_of_images:
         if (count+batchSize<=n_of_images):
             runSize = batchSize
@@ -72,25 +81,30 @@ def runDPU(id,start,dpu,img):
             runSize=n_of_images-count
 
         '''prepare batch input/output '''
-        outputData = []
         inputData = []
-        inputData = [np.empty(input_ndim, dtype=np.float32, order="C")]
-        outputData = [np.empty(output_ndim, dtype=np.float32, order="C")]
+        inputData = [np.empty(input_ndim, dtype=np.int8, order="C")]
 
         '''init input image to input buffer '''
         for j in range(runSize):
             imageRun = inputData[0]
             imageRun[j, ...] = img[(count + j) % n_of_images].reshape(input_ndim[1:])
-
         '''run with batch '''
-        job_id = dpu.execute_async(inputData,outputData)
-        dpu.wait(job_id)
-
-        '''store output vectors '''
-        for j in range(runSize):
-            out_q[write_index] = np.argmax(outputData[0][j])
-            write_index += 1
-        count = count + runSize
+        job_id = dpu.execute_async(inputData,outputData[len(ids)])
+        ids.append((job_id,runSize,start+count))
+        count = count + runSize 
+        if count<n_of_images:
+            if len(ids) < ids_max-1:
+                continue
+        for index in range(len(ids)):
+            dpu.wait(ids[index][0])
+            write_index = ids[index][2]
+            '''store output vectors '''
+            for j in range(ids[index][1]):
+                # we can avoid output scaling if use argmax instead of softmax
+                # out_q[write_index] = np.argmax(outputData[0][j] * output_scale)
+                out_q[write_index] = np.argmax(outputData[index][0][j])
+                write_index += 1
+        ids=[]
 
 
 def app(image_dir,threads,model):
@@ -107,12 +121,16 @@ def app(image_dir,threads,model):
     for i in range(threads):
         all_dpu_runners.append(vart.Runner.create_runner(subgraphs[0], "run"))
 
+    # input scaling
+    input_fixpos = all_dpu_runners[0].get_input_tensors()[0].get_attr("fix_point")
+    input_scale = 2**input_fixpos
+
     ''' preprocess images '''
     print('Pre-processing',runTotal,'images...')
     img = []
     for i in range(runTotal):
         path = os.path.join(image_dir,listimage[i])
-        img.append(preprocess_fn(path))
+        img.append(preprocess_fn(path, input_scale))
 
     '''run threads '''
     print('Starting',threads,'threads...')

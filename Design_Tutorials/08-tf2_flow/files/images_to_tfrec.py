@@ -233,8 +233,8 @@ def run_main():
 
   # construct the argument parser and parse the arguments
   ap = argparse.ArgumentParser()
-  ap.add_argument('-d', '--dataset_dir', type=str, default='dataset', help='path to dataset images')
-  ap.add_argument('-t', '--tfrec_dir',   type=str, default='tfrecords', help='path to TFRecord files')
+  ap.add_argument('-d', '--dataset_dir', type=str, default='build/dataset', help='path to dataset images')
+  ap.add_argument('-t', '--tfrec_dir',   type=str, default='build/tfrecords', help='path to TFRecord files')
   ap.add_argument('-s', '--img_shard',   type=int, default=2000,  help='Number of images per shard. Default is 1000') 
   args = ap.parse_args()
 

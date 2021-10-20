@@ -18,6 +18,10 @@
 * License for the specific language governing permissions and limitations
 * under the License.
 */
+
+Author: daniele.bagni@xilinx.com
+Date  : 6 July 2021
+
 '''
 
 # USAGE
@@ -62,12 +66,15 @@ if (not os.path.exists(path_root)):
 if (not os.path.exists(path_root + "/input")):
     os.mkdir(path_root + "/input")
 
-## unzip the kaggle_dogs_vs_cats.zip file
-os.system("unzip kaggle_dogs_vs_cats.zip -d" + path_root + "/input")
+## unzip 
+#os.system("unzip kaggle_dogs_vs_cats.zip -d" + path_root + "/input")
+os.system("unzip archive.zip -d" + path_root + "/input > /dev/null")
 
 # rename "/input/train" as "input/jpg"
-os.system("mv "    + path_root + "/input/kaggle_dogs_vs_cats/train " + path_root + "/input/jpg")
-os.system("rm -r " + path_root + "/input/kaggle_dogs_vs_cats")
+#os.system("mv "    + path_root + "/input/kaggle_dogs_vs_cats/train " + path_root + "/input/jpg")
+#os.system("rm -r " + path_root + "/input/kaggle_dogs_vs_cats")
+os.system("mv "    + path_root + "/input/train/train " + path_root + "/input/jpg")
+os.system("rm -r " + path_root + "/input/test")
 
 # create subdirectories "input/jpg/cats" and "input/jpg/dogs"
 os.mkdir(path_root + "/input/jpg/cats")

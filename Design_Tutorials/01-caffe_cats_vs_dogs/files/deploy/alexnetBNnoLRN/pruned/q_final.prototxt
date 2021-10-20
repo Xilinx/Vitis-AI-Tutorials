@@ -59,8 +59,8 @@ layer {
   }
   convolution_param {
     num_output: 78
-    pad: 1
-    kernel_size: 11
+    pad: 0
+    kernel_size: 8
     stride: 4
     weight_filler {
       type: "gaussian"
@@ -121,7 +121,7 @@ layer {
     decay_mult: 0
   }
   convolution_param {
-    num_output: 154
+    num_output: 180
     pad: 2
     kernel_size: 5
     group: 1

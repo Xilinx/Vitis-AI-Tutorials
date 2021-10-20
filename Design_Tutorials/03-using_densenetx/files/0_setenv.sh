@@ -19,6 +19,7 @@
 
 conda activate vitis-ai-tensorflow
 
+
 # folders
 export BUILD=./build
 export APP=./application
@@ -64,11 +65,11 @@ export OUTPUT_NODE=dense/BiasAdd
 export NET_NAME=densenetx
 
 # training parameters
-export EPOCHS=200
+export EPOCHS=120
 export BATCHSIZE=150
 export LEARNRATE=0.001
 
-# list of GPUs to use
+# list of GPUs to use - modify for your system
 export CUDA_DEVICE_ORDER=PCI_BUS_ID
 export CUDA_VISIBLE_DEVICES="0"
 

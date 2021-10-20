@@ -99,10 +99,10 @@ def main():
 
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument('-m', '--float_model',  type=str, default='float_model/f_model.h5', help='Full path of floating-point model. Default is float_model/k_model.h5')
-    ap.add_argument('-q', '--quant_model',  type=str, default='quant_model/q_model.h5', help='Full path of quantized model. Default is quant_model/q_model.h5')
+    ap.add_argument('-m', '--float_model',  type=str, default='build/float_model/f_model.h5', help='Full path of floating-point model. Default is build/float_model/k_model.h5')
+    ap.add_argument('-q', '--quant_model',  type=str, default='build/quant_model/q_model.h5', help='Full path of quantized model. Default is build/quant_model/q_model.h5')
     ap.add_argument('-b', '--batchsize',    type=int, default=50,                       help='Batchsize for quantization. Default is 50')
-    ap.add_argument('-tfdir', '--tfrec_dir',type=str, default='tfrecords',              help='Full path to folder containing TFRecord files. Default is tfrecords')
+    ap.add_argument('-tfdir', '--tfrec_dir',type=str, default='build/tfrecords',              help='Full path to folder containing TFRecord files. Default is build/tfrecords')
     ap.add_argument('-e', '--evaluate',     action='store_true', help='Evaluate floating-point model if set. Default is no evaluation.')
     args = ap.parse_args()  
 

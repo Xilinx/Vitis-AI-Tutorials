@@ -14,23 +14,31 @@
 ## License for the specific language governing permissions and limitations
 ## under the License.
 
-# check LeNet fps
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 1 --model ./fmnist/LeNet/model/LeNet.xmodel  --classes "fmnist"
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 5 --model ./fmnist/LeNet/model/LeNet.xmodel  --classes "fmnist"
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 6 --model ./fmnist/LeNet/model/LeNet.xmodel  --classes "fmnist"
+echo " "
+echo " FMNIST LEnet fps"
+echo " "
+./get_dpu_fps ./fmnist/LeNet/LeNet.xmodel  1 10000  # 1 thread
+./get_dpu_fps ./fmnist/LeNet/LeNet.xmodel  5 10000  # 5 threads
+./get_dpu_fps ./fmnist/LeNet/LeNet.xmodel  6 10000  # 6 threads
 
-# check miniVggNet fps
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 1 --model ./fmnist/miniVggNet/model/miniVggNet.xmodel  --classes "fmnist"
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 5 --model ./fmnist/miniVggNet/model/miniVggNet.xmodel  --classes "fmnist"
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 6 --model ./fmnist/miniVggNet/model/miniVggNet.xmodel  --classes "fmnist"
-
-# check miniGoogleNet fps
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 1 --model ./fmnist/miniGoogleNet/model/miniGoogleNet.xmodel  --classes "fmnist"
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 5 --model ./fmnist/miniGoogleNet/model/miniGoogleNet.xmodel  --classes "fmnist"
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 6 --model ./fmnist/miniGoogleNet/model/miniGoogleNet.xmodel  --classes "fmnist"
+echo " "
+echo " FMNIST miniVGGnet fps"
+echo " "
+./get_dpu_fps ./fmnist/miniVggNet/miniVggNet.xmodel  1 10000  # 1 thread
+./get_dpu_fps ./fmnist/miniVggNet/miniVggNet.xmodel  5 10000  # 5 threads
+./get_dpu_fps ./fmnist/miniVggNet/miniVggNet.xmodel  6 10000  # 6 threads
 
 
-# check miniResNet fps
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 1 --model ./fmnist/miniResNet/model/miniResNet.xmodel  --classes "fmnist"
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 5 --model ./fmnist/miniResNet/model/miniResNet.xmodel  --classes "fmnist"
-python3 ./code/src/classification.py --images ./fmnist_test/ --threads 6 --model ./fmnist/miniResNet/model/miniResNet.xmodel  --classes "fmnist"
+echo " "
+echo " FMNIST miniGOOGLEnet fps"
+echo " "
+./get_dpu_fps ./fmnist/miniGoogleNet/miniGoogleNet.xmodel  1 10000  # 1 thread
+./get_dpu_fps ./fmnist/miniGoogleNet/miniGoogleNet.xmodel  5 10000  # 5 threads
+./get_dpu_fps ./fmnist/miniGoogleNet/miniGoogleNet.xmodel  6 10000  # 6 threads
+
+echo " "
+echo " FMNIST miniRESnet fps"
+echo " "
+./get_dpu_fps ./fmnist/miniResNet/miniResNet.xmodel  1 10000  # 1 thread
+./get_dpu_fps ./fmnist/miniResNet/miniResNet.xmodel  5 10000  # 5 threads
+./get_dpu_fps ./fmnist/miniResNet/miniResNet.xmodel  6 10000  # 6 threads

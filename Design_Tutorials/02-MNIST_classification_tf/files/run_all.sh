@@ -26,9 +26,11 @@ source ./5_eval_quant_graph.sh
 
 source ./6_compile_zcu102.sh
 source ./6_compile_u50.sh
+source ./6_compile_vck190.sh
 
 source ./7_make_target_zcu102.sh
 source ./7_make_target_u50.sh
+source ./7_make_target_vck190.sh
 
 
 echo "--------------------------------------------"

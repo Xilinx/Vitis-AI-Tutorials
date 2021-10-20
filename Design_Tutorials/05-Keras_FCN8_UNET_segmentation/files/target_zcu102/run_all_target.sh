@@ -16,24 +16,29 @@
 
 
 # build  test images
-tar -xvf test.tar.gz
+tar -xvf test.tar.gz >& /dev/null           
 mv ./build/dataset1/ .
-rm -r build
+rm -rf build
 
 # compile CNN application
 cd code
 bash -x ./build_app.sh
 mv code ../run_cnn # change name of the application
+bash -x ./build_get_dpu_fps.sh
+mv code ../get_dpu_fps
 cd ..
 
 # now run semantic segmentation with 3 CNNs using VART C++ APIs with single thread
-./run_cnn ./fcn8/model/fcn8.xmodel        ./dataset1/img_test/ #| tee ./rpt/logfile_cpp_fcn8.txt
-./run_cnn ./fcn8ups/model/fcn8ups.xmodel  ./dataset1/img_test/ #| tee ./rpt/logfile_cpp_fcn8ups.txt
-./run_cnn ./unet/v2/model/unet2.xmodel    ./dataset1/img_test/ #| tee ./rpt/logfile_cpp_unet2.txt
+./run_cnn ./fcn8/model/fcn8.xmodel        ./dataset1/img_test/ 1 1  2> /dev/null | tee ./rpt/logfile_cpp_fcn8.txt
+mv *.png ./png_fcn8/
+./run_cnn ./fcn8ups/model/fcn8ups.xmodel  ./dataset1/img_test/ 1 1  2> /dev/mull | tee ./rpt/logfile_cpp_fcn8ups.txt
+mv *.png ./png_fcn8ups/
+./run_cnn ./unet/v2/model/unet2.xmodel    ./dataset1/img_test/ 1 1  2> /dev/null | tee ./rpt/logfile_cpp_unet2.txt
+mv *.png ./png_unet/
 
-# now run semantic segmentation with 3 CNNs using VART C++ APIs with multithreads
-bash -x ./code/run_cnn_py_fps.sh 2>&1 | tee ./rpt/logfile_py_fps.txt
+# get the fps performance  with multithreads
+bash -x ./code/run_cnn_fps.sh 2> /dev/null | tee ./rpt/logfile_fps.txt
 
+##remove images
+rm -rf dataset1
 
-#remove images
-rm -r dataset1

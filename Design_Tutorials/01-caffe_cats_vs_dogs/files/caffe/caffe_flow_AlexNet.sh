@@ -30,7 +30,7 @@ WORK_DIR=$ML_DIR/caffe
 echo "DATABASE: training and validation in LMDB, test in JPG and MEAN values"
 
 if [ ! -d $ML_DIR/input/lmdb/ ]; then
-	# load the database from keras and write it as JPEG images
+	## load the database from keras and write it as JPEG images
 	python $WORK_DIR/code/1_write_cats-vs-dogs_images.py
 
 	#create LMDB databases -training (50K), validation (9K), test (1K) images - and compute mean values

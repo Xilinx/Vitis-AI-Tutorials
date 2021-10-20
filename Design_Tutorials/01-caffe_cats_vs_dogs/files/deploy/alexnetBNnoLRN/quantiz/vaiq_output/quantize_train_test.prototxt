@@ -71,8 +71,8 @@ layer {
   convolution_param {
     num_output: 96
     bias_term: true
-    pad: 1
-    kernel_size: 11
+    pad: 0
+    kernel_size: 8
     stride: 4
     weight_filler {
       type: "gaussian"

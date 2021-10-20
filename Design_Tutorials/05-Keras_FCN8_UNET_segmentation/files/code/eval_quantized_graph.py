@@ -51,7 +51,7 @@ os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 import tensorflow.contrib.decent_q
 
 from tensorflow.python.platform import gfile
-from keras.preprocessing.image import img_to_array
+from tensorflow.keras.preprocessing.image import img_to_array
 
 from config import fcn_config as cfg
 from config import fcn8_cnn   as cnn

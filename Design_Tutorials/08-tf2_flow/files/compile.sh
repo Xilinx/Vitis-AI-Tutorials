@@ -18,29 +18,43 @@
 
 if [ $1 = zcu102 ]; then
       ARCH=/opt/vitis_ai/compiler/arch/DPUCZDX8G/ZCU102/arch.json
+      TARGET=zcu102
       echo "-----------------------------------------"
       echo "COMPILING MODEL FOR ZCU102.."
       echo "-----------------------------------------"
+elif [ $1 = zcu104 ]; then
+      ARCH=/opt/vitis_ai/compiler/arch/DPUCZDX8G/ZCU104/arch.json
+      TARGET=zcu104
+      echo "-----------------------------------------"
+      echo "COMPILING MODEL FOR ZCU104.."
+      echo "-----------------------------------------"
+elif [ $1 = vck190 ]; then
+      ARCH=/opt/vitis_ai/compiler/arch/DPUCVDX8G/VCK190/arch.json
+      TARGET=vck190
+      echo "-----------------------------------------"
+      echo "COMPILING MODEL FOR VCK190.."
+      echo "-----------------------------------------"
 elif [ $1 = u50 ]; then
       ARCH=/opt/vitis_ai/compiler/arch/DPUCAHX8H/U50/arch.json
+      TARGET=u50
       echo "-----------------------------------------"
       echo "COMPILING MODEL FOR ALVEO U50.."
       echo "-----------------------------------------"
 else
-      echo  "Target not found. Valid choices are: zcu102, u50 ..exiting"
+      echo  "Target not found. Valid choices are: zcu102, zcu104, vck190, u50 ..exiting"
       exit 1
 fi
 
 compile() {
       vai_c_tensorflow2 \
-            --model           quant_model/q_model.h5 \
+            --model           build/quant_model/q_model.h5 \
             --arch            $ARCH \
-            --output_dir      compiled_model \
+            --output_dir      build/compiled_$TARGET \
             --net_name        customcnn
 }
 
 
-compile 2>&1 | tee compile.log
+compile 2>&1 | tee build/logs/compile_$TARGET.log
 
 
 echo "-----------------------------------------"
