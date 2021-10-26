@@ -43,7 +43,7 @@ DIVIDER = '-----------------------------------------'
 
 
 
-def quant_ft(float_dir,quant_ft_dir,batchsize,tfrec_train,tfrec_val,learnrate,epochs,max_classes):
+def quant_ft(build_dir,batchsize,learnrate,epochs,max_classes):
 
     '''
     Quantize & fine-tune the floating-point model
@@ -55,15 +55,16 @@ def quant_ft(float_dir,quant_ft_dir,batchsize,tfrec_train,tfrec_val,learnrate,ep
         Learning rate scheduler used by callback
         Reduces learning rate depending on number of epochs
         '''
-        lr = learnrate
-        '''       
-        if epoch > 150:
-            lr /= 100
-        elif epoch > 5:
+        lr = learnrate       
+        if epoch > 65:
             lr /= 10
-        '''       
         return lr
 
+
+    float_dir = build_dir + '/float_model'
+    quant_ft_dir = build_dir + '/quant_ft_model'
+    tfrec_train = build_dir + '/tfrec_train'
+    tfrec_val = build_dir + '/tfrec_val'
 
     print('\n'+DIVIDER)
     print ('Quantization & Fine-tune')
@@ -162,14 +163,11 @@ def main():
 
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument('-f', '--float_dir',    type=str,   default='float_model',    help='Path to folder containing floating-point model. Default is float_model')
-    ap.add_argument('-cf','--quant_ft_dir', type=str,   default='quant_ft_model', help='Path and name of folder for storing fine-tuned model. Default is quant_ft_model')
-    ap.add_argument('-tft','--tfrec_train', type=str,   default='tfrec_train', help='Path to folder containing TFRecord files for training. Default is tfrec_train') 
-    ap.add_argument('-tfv','--tfrec_val',   type=str,   default='tfrec_val',   help='Path to folder containing TFRecord files for test/validation. Default is tfrec_val') 
-    ap.add_argument('-b', '--batchsize',    type=int,   default=100,    help='Training batchsize. Must be an integer. Default is 100.')
-    ap.add_argument('-e', '--epochs',       type=int,   default=50 ,    help='number of training epochs. Must be an integer. Default is 50.')
-    ap.add_argument('-lr','--learnrate',    type=float, default=0.0001, help='optimizer learning rate. Must be floating-point value. Default is 0.0001')
-    ap.add_argument('-mc', '--max_classes', type=int,   default=1000, help='Number of classes to use. Default is 1000')
+    ap.add_argument('-bd', '--build_dir',   type=str,   default='build', help='Path to build folder. Default is build')
+    ap.add_argument('-b',  '--batchsize',   type=int,   default=100,     help='Training batchsize. Must be an integer. Default is 100.')
+    ap.add_argument('-e',  '--epochs',      type=int,   default=80 ,     help='number of training epochs. Must be an integer. Default is 80.')
+    ap.add_argument('-lr', '--learnrate',   type=float, default=0.0001,  help='optimizer learning rate. Must be floating-point value. Default is 0.0001')
+    ap.add_argument('-mc', '--max_classes', type=int,   default=1000,    help='Number of classes to use. Default is 1000')
     args = ap.parse_args()  
 
     print('\n'+DIVIDER)
@@ -178,18 +176,15 @@ def main():
     print('Python             :',sys.version)
     print(DIVIDER)
     print ('Command line options:')
-    print (' --float_dir     :',args.float_dir)
-    print (' --quant_ft_dir  :',args.quant_ft_dir)
+    print (' --build_dir     :', args.build_dir)
     print (' --batchsize     :',args.batchsize)
-    print (' --tfrec_train   :',args.tfrec_train)
-    print (' --tfrec_val     :',args.tfrec_val)
     print (' --learnrate     :',args.learnrate)
     print (' --epochs        :',args.epochs)
     print (' --max_classes   :',args.max_classes)
     print(DIVIDER+'\n')
 
 
-    quant_ft(args.float_dir,args.quant_ft_dir,args.batchsize,args.tfrec_train,args.tfrec_val,args.learnrate,args.epochs,args.max_classes)
+    quant_ft(args.build_dir,args.batchsize,args.learnrate,args.epochs,args.max_classes)
 
 
 if __name__ ==  "__main__":

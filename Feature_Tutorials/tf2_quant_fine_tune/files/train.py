@@ -43,12 +43,11 @@ DIVIDER = '-----------------------------------------'
 
 
 
-def train(float_dir,tfrec_train,tfrec_val,batchsize,learnrate,epochs,max_classes):
+def train(build_dir,batchsize,learnrate,epochs,max_classes):
 
     '''
     Train MobileNet
     '''
-
 
     def step_decay(epoch):
         '''
@@ -63,6 +62,11 @@ def train(float_dir,tfrec_train,tfrec_val,batchsize,learnrate,epochs,max_classes
         elif epoch > 5:
             lr /= 10        
         return lr
+
+    float_dir = build_dir + '/float_model'
+    tfrec_train = build_dir + '/tfrec_train'
+    tfrec_val = build_dir + '/tfrec_val'
+    tb_logs = build_dir + '/tb_logs'
 
 
     print('\n'+DIVIDER)
@@ -104,7 +108,7 @@ def train(float_dir,tfrec_train,tfrec_val,batchsize,learnrate,epochs,max_classes
                                  monitor='val_accuracy',
                                  verbose=1,
                                  save_best_only=True)
-    tb_call = TensorBoard(log_dir='tb_logs',
+    tb_call = TensorBoard(log_dir=tb_logs,
                           update_freq='epoch')                          
     lr_scheduler_call = LearningRateScheduler(schedule=step_decay,
                                               verbose=1)
@@ -132,8 +136,8 @@ def train(float_dir,tfrec_train,tfrec_val,batchsize,learnrate,epochs,max_classes
     os.makedirs(float_dir, exist_ok=True)
 
     # clean out TensorBoard logs
-    shutil.rmtree('tb_logs', ignore_errors=True)
-    os.makedirs('tb_logs')
+    shutil.rmtree(tb_logs, ignore_errors=True)
+    os.makedirs(tb_logs)
 
 
     # run training
@@ -175,10 +179,8 @@ def main():
 
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument('-cf', '--float_dir',   type=str,   default='float_model', help='Path and name of folder for storing Keras checkpoints. Default is float_model')
-    ap.add_argument('-tft','--tfrec_train', type=str,   default='tfrec_train', help='Path to folder containing TFRecord files for training. Default is tfrec_train') 
-    ap.add_argument('-tfv','--tfrec_val',   type=str,   default='tfrec_val',   help='Path to folder containing TFRecord files for test/validation. Default is tfrec_val') 
-    ap.add_argument('-b',  '--batchsize',   type=int,   default=100,   help='Training batchsize. Must be an integer. Default is 100.')
+    ap.add_argument('-bd', '--build_dir',   type=str, default='build',help='Path to build folder. Default is build')
+    ap.add_argument('-b',  '--batchsize',   type=int,   default=100,  help='Training batchsize. Must be an integer. Default is 100.')
     ap.add_argument('-e',  '--epochs',      type=int,   default=80,   help='number of training epochs. Must be an integer. Default is 80.')
     ap.add_argument('-lr', '--learnrate',   type=float, default=0.01, help='optimizer learning rate. Must be floating-point value. Default is 0.01')
     ap.add_argument('-mc', '--max_classes', type=int,   default=1000, help='Number of classes to use. Default is 1000')
@@ -190,9 +192,7 @@ def main():
     print('Python             :',sys.version)
     print(DIVIDER)
     print ('Command line options:')
-    print (' --float_dir     :',args.float_dir)
-    print (' --tfrec_train   :',args.tfrec_train)
-    print (' --tfrec_val     :',args.tfrec_val)
+    print (' --build_dir     :',args.build_dir)
     print (' --batchsize     :',args.batchsize)
     print (' --learnrate     :',args.learnrate)
     print (' --epochs        :',args.epochs)
@@ -200,7 +200,7 @@ def main():
     print(DIVIDER+'\n')
 
 
-    train(args.float_dir,args.tfrec_train,args.tfrec_val,args.batchsize,args.learnrate,args.epochs,args.max_classes)
+    train(args.build_dir,args.batchsize,args.learnrate,args.epochs,args.max_classes)
 
 
 if __name__ ==  "__main__":

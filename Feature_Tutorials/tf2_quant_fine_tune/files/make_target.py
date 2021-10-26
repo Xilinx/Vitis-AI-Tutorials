@@ -52,7 +52,11 @@ def input_fn(tfrec_dir, batchsize):
 
 
 
-def make_target(target_dir,tfrec_dir,num_images,app_dir,model):
+def make_target(target,build_dir,num_images,app_dir):
+
+    target_dir = build_dir + '/target_' + target
+    tfrec_dir = build_dir + '/tfrec_val'
+    model = build_dir + '/compiled_model_' + target + '/mobilenet.xmodel'
 
     # remove any previous data
     shutil.rmtree(target_dir, ignore_errors=True)    
@@ -103,26 +107,25 @@ def main():
 
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument('-td','--target_dir', type=str,  default='target',     help='Full path of target folder. Default is target')
-    ap.add_argument('-t', '--tfrec_dir',  type=str,  default='tfrec_val',  help='Path to folder for reading TFRecord files. Default is tfrec_val') 
-    ap.add_argument('-n', '--num_images', type=int,  default=1000, help='Number of test images. Default is 1000')
-    ap.add_argument('-a', '--app_dir',    type=str,  default='application', help='Full path of application code folder. Default is application')
-    ap.add_argument('-m', '--model',      type=str,  default='compiled_model/mobilenet.xmodel', help='Full path of compiled model.Default is compiled_model/mobilenet.xmodel')
+    ap.add_argument('-t',  '--target',     type=str, default='zcu102',choices=['zcu102', 'zcu104', 'vck190'], help='Target board. Default is zcu102')
+    ap.add_argument('-bd', '--build_dir',  type=str, default='build',help='Path to build folder. Default is build')
+    ap.add_argument('-n',  '--num_images', type=int, default=1000, help='Number of test images. Default is 1000')
+    ap.add_argument('-a',  '--app_dir',    type=str, default='application', help='Full path of application code folder. Default is application')
     args = ap.parse_args()  
+
 
     print('\n------------------------------------')
     print(sys.version)
     print('------------------------------------')
     print ('Command line options:')
-    print (' --target_dir   : ', args.target_dir)
-    print (' --tfrec_dir    : ', args.tfrec_dir)
+    print (' --target       : ', args.target)
+    print (' --build_dir    : ', args.build_dir)
     print (' --num_images   : ', args.num_images)
     print (' --app_dir      : ', args.app_dir)
-    print (' --model        : ', args.model)
     print('------------------------------------\n')
 
 
-    make_target(args.target_dir,args.tfrec_dir,args.num_images,args.app_dir,args.model)
+    make_target(args.target,args.build_dir,args.num_images,args.app_dir)
 
 
 if __name__ ==  "__main__":

@@ -39,16 +39,21 @@ else
       exit 1
 fi
 
+
+BUILD=$2
+LOGS=$3
+
+
 compile() {
       vai_c_tensorflow2 \
-            --model           quant_ft_model/quant_ft.h5 \
+            --model           ${BUILD}/quant_ft_model/quant_ft.h5 \
             --arch            $ARCH \
-            --output_dir      compiled_model_$TARGET \
+            --output_dir      ${BUILD}/compiled_model_$TARGET \
             --net_name        mobilenet
 }
 
 
-compile 2>&1 | tee logs/compile.log
+compile 2>&1 | tee ${LOGS}/compile_$TARGET.log
 
 
 echo "-----------------------------------------"

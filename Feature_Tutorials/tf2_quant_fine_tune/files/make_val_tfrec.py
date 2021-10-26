@@ -113,7 +113,10 @@ def write_tfrec(tfrec_filename, image_dir, img_list, label_list):
 
 
 
-def make_tfrec(image_dir, img_shard, tfrec_base, tfrec_dir, max_classes):
+def make_tfrec(build_dir, img_shard, tfrec_base, max_classes):
+
+  tfrec_dir = build_dir + '/tfrec_val'
+  image_dir = build_dir + '/val_images'
 
   # make directory to hold validation set images
   os.makedirs(image_dir, exist_ok=True)
@@ -181,10 +184,11 @@ def make_tfrec(image_dir, img_shard, tfrec_base, tfrec_dir, max_classes):
 def main():
   # construct the argument parser and parse the arguments
   ap = argparse.ArgumentParser()
-  ap.add_argument('-dir', '--image_dir',  type=str, default='val_images',help='Path to folder that contains images. Default is val_images')
+
+
+  ap.add_argument('-bd', '--build_dir',  type=str, default='build',help='Path to build folder. Default is build')
   ap.add_argument('-s',   '--img_shard',  type=int, default=5000,        help='Number of images per shard. Default is 5000') 
-  ap.add_argument('-tfb', '--tfrec_base', type=str, default='data',      help='Base file name for TFRecord files. Default is data') 
-  ap.add_argument('-tfd', '--tfrec_dir',  type=str, default='tfrec_val', help='Path to folder for saving TFRecord files. Default is tfrec_val')  
+  ap.add_argument('-tfb', '--tfrec_base', type=str, default='data',      help='Base file name for TFRecord files. Default is data')  
   ap.add_argument('-mc',  '--max_classes',type=int, default=1000,        help='Number of classes to use. Default is 1000')  
   args = ap.parse_args()  
   
@@ -194,15 +198,14 @@ def main():
   print('Python             :',sys.version)
   print (_divider)
   print ('Command line options:')
-  print (' --image_dir  : ', args.image_dir)
+  print (' --build_dir  : ', args.build_dir)
   print (' --img_shard  : ', args.img_shard)
   print (' --tfrec_base : ', args.tfrec_base)
-  print (' --tfrec_dir  : ', args.tfrec_dir)
   print (' --max_classes: ', args.max_classes)
   print (_divider+'\n')
 
 
-  make_tfrec(args.image_dir, args.img_shard, args.tfrec_base, args.tfrec_dir, args.max_classes)
+  make_tfrec(args.build_dir, args.img_shard, args.tfrec_base, args.max_classes)
 
 
 if __name__ == '__main__':
