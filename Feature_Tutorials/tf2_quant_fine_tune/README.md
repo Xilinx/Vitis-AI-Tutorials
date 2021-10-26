@@ -26,9 +26,12 @@ Author: Mark Harvey, Xilinx Inc
  </tr>
 </table>
 
+
 ## Current Status
 
-+ Tested with Vitis-AI 1.3.2, TensorFlow 2.3 and ZCU102 evaluation board
++ Tested with Vitis-AI 1.4, TensorFlow 2.3 and ZCU102 evaluation board
++ Dataset: ImageNet ILSVRC2012
++ Network: MobileNet
 
 
 # Introduction
@@ -96,15 +99,17 @@ output_layer = Dense(classes)(net)
 
 The host machine has several requirements that need to be met before we begin. You will need:
 
-  + An x86 host machine with a supported OS and the GPU version of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/system_requirements.md).
+  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
 
-  + The host machine will require Docker to be installed and the Vitis-AI GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
+  + The host machine will require Docker to be installed and the Vitis-AI CPU or GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
 
-  + A GPU card suitable for ML training - a GPU with at least 8GB of memory is recommended.
+  + A GPU card suitable for training is recommended, but the training in this tutorial is quite simple and a CPU can be used.
 
-  + The ZCU102 evaluation board should be prepared with the board image as per the [Setup the Target](https://github.com/Xilinx/Vitis-AI/tree/master/setup/mpsoc/VART#step2-setup-the-target) instructions. Hints on how to connect the various cables to the ZCU102 are also available [here](https://www.xilinx.com/html_docs/vitis_ai/1_3/installation.html#yjf1570690235238).
+  + If you plan to use the ZCU102 evaluation board, it should be prepared with the board image as per the [Step2: Setup the Target](https://github.com/Xilinx/Vitis-AI/tree/master/setup/mpsoc/VART#step2-setup-the-target) instructions. Hints on how to connect the various cables to the ZCU102 are also available [here](https://www.xilinx.com/html_docs/vitis_ai/1_4/installation.html#yjf1570690235238).
 
-For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_3/zmw1606771874842.html)).
+For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_4/zmw1606771874842.html)).
+
+This tutorial assumes the user is familiar with Python3, TensorFlow and has some knowledge of machine learning principles.
 
 
 # Setting up the workspace
@@ -119,8 +124,8 @@ For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1
 4. Start either the Vitis AI GPU or CPU docker (we recommend using the GPU docker if possible):
 
      ```shell
-     # navigate to densenet tutorial folder
-     cd <path_to_densenet_design>/files
+     # navigate to tutorial folder
+     cd <path_to_tutorial>/files
 
      # to start GPU docker container
      ./docker_run.sh xilinx/vitis-ai-gpu:latest
@@ -143,11 +148,11 @@ For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1
      
      ==========================================
 
-     Docker Image Version:  1.3 
-     Build Date: 2020-12-20
+     Docker Image Version:  1.4.776
+     Build Date: 2021-06-22
      VAI_ROOT: /opt/vitis_ai
 
-     For TensorFlow Workflows do:
+     For TensorFlow 1.15 Workflows do:
           conda activate vitis-ai-tensorflow 
      For Caffe Workflows do:
           conda activate vitis-ai-caffe 
@@ -182,30 +187,6 @@ Activate the Tensorflow2 python virtual environment with `conda activate vitis-a
 Vitis-AI /workspace > conda activate vitis-ai-tensorflow2
 (vitis-ai-tensorflow2) Vitis-AI /workspace > 
 ```
-
-### Install patches (if required)
-
-At the time of writing of this tutorial, the current Vitis-AI version (1.3.2) required some patches to be installed. The patches can be downloaded manually from [here](https://github.com/Xilinx/Vitis-AI/blob/master/docs/quick-start/install/Vitis%20AI%201.3.2%20April%202021%20Patch.md) or by using the Linux shell command shown below.
-
-They must be installed from within the vitis-ai-tensorflow2 conda virtual environment. The order of install is important:
-
-```shell
-# fetch patches
-wget --no-clobber https://www.xilinx.com/bin/public/openDownload?filename=unilog-1.3.2-h7b12538_35.tar.bz2 -O unilog-1.3.2-h7b12538_35.tar.bz2
-wget --no-clobber https://www.xilinx.com/bin/public/openDownload?filename=target_factory-1.3.2-hf484d3e_35.tar.bz2 -O target_factory-1.3.2-hf484d3e_35.tar.bz2
-wget --no-clobber https://www.xilinx.com/bin/public/openDownload?filename=xir-1.3.2-py37h7b12538_47.tar.bz2 -O xir-1.3.2-py37h7b12538_47.tar.bz2
-wget --no-clobber https://www.xilinx.com/bin/public/openDownload?filename=xcompiler-1.3.2-py37h7b12538_53.tar.bz2 -O xcompiler-1.3.2-py37h7b12538_53.tar.bz2
-wget --no-clobber https://www.xilinx.com/bin/public/openDownload?filename=xnnc-1.3.2-py37_48.tar.bz2 -O xnnc-1.3.2-py37_48.tar.bz2
-
-# install patches
-# MUST MAINTAIN THIS INSTALL ORDER!
-sudo env PATH=/opt/vitis_ai/conda/bin:$PATH CONDA_PREFIX=/opt/vitis_ai/conda/envs/vitis-ai-tensorflow2 conda install unilog-1.3.2-h7b12538_35.tar.bz2
-sudo env PATH=/opt/vitis_ai/conda/bin:$PATH CONDA_PREFIX=/opt/vitis_ai/conda/envs/vitis-ai-tensorflow2 conda install target_factory-1.3.2-hf484d3e_35.tar.bz2
-sudo env PATH=/opt/vitis_ai/conda/bin:$PATH CONDA_PREFIX=/opt/vitis_ai/conda/envs/vitis-ai-tensorflow2 conda install xir-1.3.2-py37h7b12538_47.tar.bz2
-sudo env PATH=/opt/vitis_ai/conda/bin:$PATH CONDA_PREFIX=/opt/vitis_ai/conda/envs/vitis-ai-tensorflow2 conda install xcompiler-1.3.2-py37h7b12538_53.tar.bz2
-sudo env PATH=/opt/vitis_ai/conda/bin:$PATH CONDA_PREFIX=/opt/vitis_ai/conda/envs/vitis-ai-tensorflow2 conda install xnnc-1.3.2-py37_48.tar.bz2
-```
-
 
 # Implementing the design
 
@@ -287,7 +268,7 @@ quantizer = vitis_quantize.VitisQuantizer(float_model)
 ft_model = quantizer.get_qat_model()
 ```
 
-After that, training is run using the .compile() and .fit() methods of the tf.kKeras API.
+After that, training is run using the .compile() and .fit() methods of the tf.keras API.
 
 Once the quantization-aware training has completed, evaluation will be run and should give an accuracy of approximately 85% which should be almost identical to the original floating-point model accuracy.
 
@@ -382,7 +363,7 @@ FPS: 731.21, total frames: 500, total time: 0.684 seconds
 
 ## References
 
-1. [Xilinx Vitis-AI User Guide ver 1.3](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_3/ug1414-vitis-ai.pdf)
+1. [Xilinx Vitis-AI User Guide ver 1.4](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_4/ug1414-vitis-ai.pdf)
 
 2. [MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications](https://arxiv.org/abs/1704.04861)
 

@@ -83,7 +83,7 @@ def write_tfrec(tfrec_filename, image_dir, label):
 
   with tf.io.TFRecordWriter(tfrec_filename) as writer:
 
-    img_list = os.listdir('train_images')
+    img_list = os.listdir(image_dir)
 
     for i in range(len(img_list)):
       filePath = os.path.join(image_dir, img_list[i])
@@ -119,10 +119,13 @@ def write_tfrec(tfrec_filename, image_dir, label):
   return
 
 
-def make_tfrec(tfrec_base, tfrec_dir, max_classes):
+def make_tfrec(build_dir, tfrec_base, max_classes):
+
+  tfrec_dir = build_dir + '/tfrec_train'
+  image_dir = build_dir + '/train_images'
 
   # make directory to hold training set images
-  os.makedirs('train_images', exist_ok=True)
+  os.makedirs(image_dir, exist_ok=True)
   print('Directory train_images created')
 
 
@@ -143,23 +146,23 @@ def make_tfrec(tfrec_base, tfrec_dir, max_classes):
 
     # untar class images
     class_tar = tarfile.open(class_tars[i])
-    class_tar.extractall(path='train_images')
+    class_tar.extractall(path=image_dir)
     class_tar.close()
     os.remove(class_tars[i])
 
     # create TFRecords file
     tfrec_filename = tfrec_base+'_'+str(i)+'.tfrecord'
     write_path = os.path.join(tfrec_dir, tfrec_filename)
-    write_tfrec(write_path, 'train_images', i)
+    write_tfrec(write_path, image_dir, i)
 
     # delete images to save space
-    files = os.listdir('train_images')
+    files = os.listdir(image_dir)
     total_images += len(files)
     for f in files:
-      os.remove('train_images/'+f)
+      os.remove(image_dir+'/'+f)
 
   tar.close()
-  shutil.rmtree('train_images')
+  shutil.rmtree(image_dir)
   print('Total images:',total_images)
 
   return
@@ -169,9 +172,10 @@ def make_tfrec(tfrec_base, tfrec_dir, max_classes):
 def main():
   # construct the argument parser and parse the arguments
   ap = argparse.ArgumentParser()
-  ap.add_argument('-tfb', '--tfrec_base', type=str, default='data',        help='Base file name for TFRecord files. Default is data') 
-  ap.add_argument('-tfd', '--tfrec_dir',  type=str, default='tfrec_train', help='Path to folder for saving TFRecord files. Default is tfrec_train')  
-  ap.add_argument('-mc',  '--max_classes',type=int, default=1000, help='Number of classes to use. Default is 1000')  
+
+  ap.add_argument('-bd', '--build_dir',  type=str, default='build',help='Path to build folder. Default is build')
+  ap.add_argument('-tfb','--tfrec_base', type=str, default='data',        help='Base file name for TFRecord files. Default is data')  
+  ap.add_argument('-mc', '--max_classes',type=int, default=1000, help='Number of classes to use. Default is 1000')  
   args = ap.parse_args()  
   
   print ('\n'+_divider)
@@ -180,13 +184,13 @@ def main():
   print('Python             :',sys.version)
   print (_divider)
   print ('Command line options:')
-  print (' --tfrec_base  :',args.tfrec_base)
-  print (' --tfrec_dir   :',args.tfrec_dir)
+  print (' --build_dir   :',args.build_dir)
+  print (' --tfrec_base  :',args.tfrec_base)  
   print (' --max_classes :',args.max_classes)
   print (_divider+'\n')
 
 
-  make_tfrec(args.tfrec_base, args.tfrec_dir, args.max_classes)
+  make_tfrec(args.build_dir, args.tfrec_base, args.max_classes)
 
 
 if __name__ == '__main__':

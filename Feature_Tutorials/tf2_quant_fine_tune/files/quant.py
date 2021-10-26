@@ -42,11 +42,16 @@ DIVIDER = '-----------------------------------------'
 
 
 
-def quant_model(float_dir,quant_dir,batchsize,tfrec_dir,evaluate):
+def quant_model(build_dir,batchsize,evaluate):
     '''
     Quantize the floating-point model
     Save to HDF5 file
     '''
+
+    float_dir = build_dir + '/float_model'
+    quant_dir = build_dir + '/quant_model'
+    tfrec_dir = build_dir + '/tfrec_val'
+
     print(DIVIDER)
     print('Make & Save quantized model..')
 
@@ -99,9 +104,7 @@ def main():
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument('-b',  '--batchsize', type=int, default=50,            help='Batchsize for quantization. Default is 50')
-    ap.add_argument('-f',  '--float_dir', type=str, default='float_model', help='Path to folder containing floating-point model. Default is float_model')
-    ap.add_argument('-q',  '--quant_dir', type=str, default='quant_model', help='Path to folder where quantized model will be saved. Default is quant_model')
-    ap.add_argument('-tfd','--tfrec_dir', type=str, default='tfrec_val',   help='Path to folder containing TFRecord files. Default is tfrec_val')
+    ap.add_argument('-bd', '--build_dir',  type=str, default='build',help='Path to build folder. Default is build')
     ap.add_argument('-e',  '--evaluate',  action='store_true', help='Evaluate quantized model if set.')
     args = ap.parse_args()  
 
@@ -111,15 +114,13 @@ def main():
     print('Python             :',sys.version)
     print(DIVIDER)
     print ('Command line options:')
-    print (' --float_dir   :', args.float_dir)
-    print (' --quant_dir   :', args.quant_dir)
+    print (' --build_dir   :', args.build_dir)
     print (' --batchsize   :', args.batchsize)
-    print (' --tfrec_dir   :', args.tfrec_dir)
     print (' --evaluate    :', args.evaluate)
     print(DIVIDER+'\n')
 
 
-    quant_model(args.float_dir, args.quant_dir, args.batchsize, args.tfrec_dir, args.evaluate)
+    quant_model(args.build_dir, args.batchsize, args.evaluate)
 
 
 if __name__ ==  "__main__":
