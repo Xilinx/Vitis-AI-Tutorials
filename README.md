@@ -121,8 +121,11 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  <td align="center"><a href="./Feature_Tutorials/Vitis-AI-based-Deployment-Flow-on-VCK190/README.md">Vitis AI based Deployment Flow on VCK190</a></td>
  <td>DPU integration with VCK190 production platform.</td>
  </tr>
+  <tr>
+ <td align="center"><a href="./Feature_Tutorials/04-tensorflow-ai-optimizer/README.md">TensorFlow AI Optimizer Example Using Low-level Coding Style</a></td>
+ <td>Use AI Optimizer for TensorFlow to prune an AlexNet CNN by 80% while maintaining the original accuracy.</td>
+ </tr>
   </table>
-
 
 
 </hr>
