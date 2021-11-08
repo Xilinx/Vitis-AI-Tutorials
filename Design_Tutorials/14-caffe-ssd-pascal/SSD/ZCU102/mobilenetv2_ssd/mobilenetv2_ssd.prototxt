@@ -1,0 +1,150 @@
+# Copyright 2019 Xilinx Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+model {
+  name : "mobilenetv2_ssd"
+  kernel {
+     name: "mobilenetv2_ssd"
+     mean: 104.0
+     mean: 117.0
+     mean: 123.0
+     scale: 1.0
+     scale: 1.0
+     scale: 1.0
+  }
+  model_type : SSD
+  ssd_param : {
+     num_classes : 21
+     nms_threshold : 0.45
+     conf_threshold : 0
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     conf_threshold : 0.3
+     keep_top_k : 200
+     top_k : 400
+     output_info {
+       type : CONF
+       order : 0
+       name : "mbox_conf"
+     }
+     output_info {
+       type : BBOX 
+       order : 0
+       name : "mbox_loc"
+     }
+     prior_box_param {
+        layer_width : 60,
+        layer_height: 45,
+        variances: 0.1
+        variances: 0.1
+        variances: 0.2
+        variances: 0.2
+        min_sizes: 15.0
+        min_sizes: 30.0
+        max_sizes: 63.0
+        max_sizes: 66.0
+        aspect_ratios: 2.0
+        offset: 0.5
+        step_width: 8.0
+        step_height: 8.0
+        flip: true
+        clip: false
+     }
+     prior_box_param {
+        layer_width : 30,
+        layer_height: 23,
+        variances: 0.1
+        variances: 0.1
+        variances: 0.2
+        variances: 0.2
+        min_sizes: 66.0
+        max_sizes: 127.0
+        aspect_ratios: 2.0
+        aspect_ratios: 3.0
+        offset: 0.5
+        step_width: 16.0
+        step_height: 16.0
+        flip: true
+        clip: false
+     }
+     prior_box_param {
+        layer_width : 15,
+        layer_height: 12,
+        variances: 0.1
+        variances: 0.1
+        variances: 0.2
+        variances: 0.2
+        min_sizes: 127.0
+        max_sizes: 188.0
+        aspect_ratios: 2.0
+        aspect_ratios: 3.0
+        offset: 0.5
+        step_width: 32.0
+        step_height: 32.0
+        flip: true
+        clip: false
+     }
+     prior_box_param {
+        layer_width: 8,
+        layer_height: 6,
+        variances: 0.1
+        variances: 0.1
+        variances: 0.2
+        variances: 0.2
+        min_sizes: 188.0
+        max_sizes: 249.0
+        aspect_ratios: 2.0
+        aspect_ratios: 3.0
+        offset: 0.5
+        step_width: 64.0
+        step_height: 64.0
+        flip: true
+        clip: false
+     }
+     prior_box_param {
+        layer_width : 4,
+        layer_height: 3,
+        variances: 0.1
+        variances: 0.1
+        variances: 0.2
+        variances: 0.2
+        min_sizes: 249.0
+        max_sizes: 310.0
+        aspect_ratios: 2.0
+        offset: 0.5
+        step_width: 100.0
+        step_height: 100.0
+        flip: true
+        clip: false
+     }
+   }
+}

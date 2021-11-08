@@ -1,0 +1,10 @@
+('Found', 2, 'results')
+('Evaluating', 0, 'results')
+Traceback (most recent call last):
+  File "evaluate_cityscapes.py", line 218, in <module>
+    main()
+  File "evaluate_cityscapes.py", line 209, in main
+    mean, breakdown = evaluate_segmentation(args.gt, args.result, 19, 17)
+  File "evaluate_cityscapes.py", line 75, in evaluate_segmentation
+    gt_id_set.remove(255)
+KeyError: 255

@@ -1,0 +1,37 @@
+[0;33m[VAI_C][Warning] Only 'channel' axis supported on DPU for Concat, current layer is [mbox_priorbox].
+[m
+Kernel topology "mobilenetv2_ssd_kernel_graph.jpg" for network "mobilenetv2_ssd"
+kernel list info for network "mobilenetv2_ssd"
+                               Kernel ID : Name
+                                       0 : mobilenetv2_ssd
+
+                             Kernel Name : mobilenetv2_ssd
+--------------------------------------------------------------------------------
+                             Kernel Type : DPUKernel
+                               Code Size : 0.49MB
+                              Param Size : 7.82MB
+                           Workload MACs : 8736.91MOPS
+                         IO Memory Space : 3.15MB
+                              Mean Value : 104, 117, 123, 
+                      Total Tensor Count : 55
+                Boundary Input Tensor(s)   (H*W*C)
+                               data:0(0) : 360*480*3
+
+               Boundary Output Tensor(s)   (H*W*C)
+                           mbox_loc:0(0) : 1*1*108624
+                          mbox_conf:0(1) : 1*1*570276
+
+                        Total Node Count : 52
+                           Input Node(s)   (H*W*C)
+                                conv1(0) : 360*480*3
+
+                          Output Node(s)   (H*W*C)
+                             mbox_loc(0) : 1*1*108624
+                            mbox_conf(0) : 1*1*570276
+
+
+
+
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
