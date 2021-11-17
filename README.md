@@ -85,19 +85,40 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  </tr>
  <tr>
   <td align="center">
-   <a href="./Design_Tutorials/tf2_var_autoenc/README.md">Denoising Variational Autoencoder with TensorFlow2 and Vitis-AI</a>
+   <a href="./Design_Tutorials/11-tf2_var_autoenc/README.md">Denoising Variational Autoencoder with TensorFlow2 and Vitis-AI</a>
  </td>
  <td>The Xilinx DPU can accelerate the execution of many different types of operations and layers that are commonly found in convolutional neural networks but occasionally we need to execute models that have fully custom layers. One such layer is the sampling function of a convolutional variational autoencoder. The DPU can accelerate the convolutional encoder and decoder but not the statistical sampling layer - this must be executed in software on a CPU. This tutorial will use the variational autoencoder as an example of how to approach this situation.
 </td>
  </tr>
  <tr>
   <td align="center">
-   <a href="./Design_Tutorials/Alveo-U250-TF2-Classification/README.md">Alveo U250 TF2 Classification</a>
+   <a href="./Design_Tutorials/12-Alveo-U250-TF2-Classification/README.md">Alveo U250 TF2 Classification</a>
  </td>
  <td>Demonstrates image classification using the Alveo U250 card with Vitis AI 1.4 and the Tensorflow 2.x framework.
 </td>
  </tr>
-  </table>
+ <tr>
+  <td align="center">
+   <a href="./Design_Tutorials/13-vdpu-pre-post-pl-acc/README.md">Pre- and Post-processing PL Accelerators for ML with Versal DPU</a>
+ </td>
+ <td>A complete example of how using the <a href="https://github.com/Xilinx/Vitis-AI/tree/master/demo/Whole-App-Acceleration">WAA</a> flow with Vitis 2020.2 targeting the VCK190 PP board.
+</td>
+ </tr>
+ <tr>
+  <td align="center">
+   <a href="./Design_Tutorials/14-caffe-ssd-pascal/README.md">Caffe SSD</a>
+ </td>
+ <td>Describes the Single Shot Detector (SSD), which is trained with Caffe on the <a href="https://pjreddie.com/projects/pascal-voc-dataset-mirror/">PASCAL VOC</a> dataset. This dataset contains 21 classes, one of which is background.
+</td>
+ </tr>
+ <tr>
+  <td align="center">
+   <a href="./Design_Tutorials/15-caffe-segmentation-cityscapes/README.md">ML Caffe Segmentation</a>
+ </td>
+ <td>Describes how to train, quantize, compile, and deploy various segmentation networks using Vitis AI, including ENet, ESPNet, FPN, UNet, and a reduced compute version of UNet that we'll call Unet-lite. The training dataset used for this tutorial is the Cityscapes dataset, and the Caffe framework is used for training the models.
+</td>
+ </tr>
+     </table>
 
 
 ### Feature Tutorials
