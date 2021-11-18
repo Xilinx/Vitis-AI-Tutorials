@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Author: Daniele Bagni, Xilinx Inc
 -->
 
 <table class="sphinxhide">
@@ -25,32 +24,35 @@ Author: Daniele Bagni, Xilinx Inc
  </tr>
 </table>
 
+
 # Pre- and Post-processing PL Accelerators for ML with Versal DPU
 
 ## Current status
+
 
 1. Designed with Vitis 2020.2 environment
 
 2. Tested in hardware ON VCK190PP with ``XVDPU-PCIE TRD`` platform.
 
-### Authors
+
+#### Authors
 
 - [Daniele Bagni](mailto:danieleb@xilinx.com):
 - [Peter Schillinger](mailto:peters@xilin.com):
 - [Herve Ratigner](mailto:herver@xilinx.com):
 - [Kay Migge](mailto:kaym@xilinx.com)
 
-### Acknowledgements
+#### Acknowledgements
+- [Srikanth Erusalagandi](mailto:serusal@xilinx.com)
+- [Tony McDowell](mailto:tmcdowe@xilinx.com)
+- [Florent Werbrouck](mailt@florentw@xilinx.com)
 
-- [Srikanth Erusalagandi](mailto:serusal@xilinx.com), designer of the ``XVDPU-PCIE TRD`` platform
-- [Tony McDowell](mailto:tmcdowe@xilinx.com), PCIe functional test and debug
-- [Florent Werbrouck](mailt@florentw@xilinx.com), supporting the SR cases related to this project
 
-### Last update  
+#### Last update  
 
-18 October 2021
+18 November 2021
 
----
+
 
 # 1 Introduction
 
@@ -59,7 +61,7 @@ This repository contains the **Pre- and Post-processing** kernels to be used in 
 The two accelerators were tested using data coming from the Semantic Segmentation CNN of this tutorial:
 [VAI-KERAS-FCN8-SEMSEG](https://github.com/Xilinx/Vitis-AI-Tutorials/tree/master/Design_Tutorials/05-Keras_FCN8_UNET_segmentation), where the CNN was retrained with larger image sizes as 1920x832, but the accelerators are general enough to be used or easily adapted with few changes also to other Deep Learning applications, such as Object Detection or Image Classification.
 
-At the moment we are targeting the VCK190 Pre-Production (PP) board, with the so called ``XVDPU-PCIE TRD`` platform, which contains a DPU designed with 96 AI Engine cores (over the 400 available) besides other PL resources (BRAMs, URAMs, FFs, LUTs, DSPs).
+At the moment we are targeting the VCK190 Pre-Production (PP) board, with the so called ``XVDPU TRD`` platform, which contains a DPU designed with 96 AI Engine cores (over the 400 available) besides other PL resources (BRAMs, URAMs, FFs, LUTs, DSPs).
 
 The two accelerators do not use any core from the AI Engine array of the Versal ACAP, to be more portable later also on MPSoC devices. Their design is done with **Vitis High Level Synthesis** (shortly **HLS** in the following of this document) within the Vitis suite.
 
@@ -347,17 +349,17 @@ Note that this latency is the time to process the entire frame (860x416x28) of d
 
 # 3 Vitis GUI-based Design Flow
 
-This section explains how to build the embedded system project with the Vitis GUI, now that you have developed the two accelerator kernels as standalone HLS projects. You must have available the following ``platform`` and ``petalinux`` folders/files related to the ``XVDPU-PCIE TRD`` platform design:
+This section explains how to build the embedded system project with the Vitis GUI, now that you have developed the two accelerator kernels as standalone HLS projects. You must have available the following ``platform`` and ``petalinux`` folders/files related to the ``XVDPU TRD`` platform design:
 
 ```text
 # TRD platform file
-ZF_VDPU_TRD/platform/vck190_dpu_pcie/vck190_dpu_pcie.xpfm
+VDPU_TRD/platform/vck190_dpu_pcie/vck190_dpu_pcie.xpfm
 # Sysroot path
-ZF_VDPU_TRD/petalinux/xilinx-vck190-base-trd/images/linux/sdk/sysroots/aarch64-xilinx-linux/
+VDPU_TRD/petalinux/xilinx-vck190-base-trd/images/linux/sdk/sysroots/aarch64-xilinx-linux/
 # Root FS file
-ZF_VDPU_TRD/petalinux/xilinx-vck190-base-trd/images/linux/rootfs.ext4
+VDPU_TRD/petalinux/xilinx-vck190-base-trd/images/linux/rootfs.ext4
 # Linux Kernel Image file
-ZF_VDPU_TRD/petalinux/xilinx-vck190-base-trd/images/linux/Image
+VDPU_TRD/petalinux/xilinx-vck190-base-trd/images/linux/Image
 ```
 
 Since the DPU core is not yet in this design, the two PL accelerators work with pre-defined scaling factors. In the real application the information about such scaling factors should arrive by searching for the  ``fix_point`` attributes of the input and output tensors of the CNN subgraph running in the DPU.
