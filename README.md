@@ -118,7 +118,14 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  <td>Describes how to train, quantize, compile, and deploy various segmentation networks using Vitis AI, including ENet, ESPNet, FPN, UNet, and a reduced compute version of UNet that we'll call Unet-lite. The training dataset used for this tutorial is the Cityscapes dataset, and the Caffe framework is used for training the models.
 </td>
  </tr>
-     </table>
+ <tr>
+  <td align="center">
+   <a href="./Design_Tutorials/16-profiler_introduction/README.md">Introduction Tutorial to the Vitis AI Profiler</a>
+ </td>
+ <td>Introduces the the Vitis AI Profiler tool flow and will illustrates how to profile an example from the Vitis AI runtime (VART).
+</td>
+ </tr>
+</table>
 
 
 ### Feature Tutorials

@@ -1,13 +1,13 @@
 /*************************************************************************************
-Vendor:			Xilinx 
+Vendor:			Xilinx
 Associated Filename:	dpupreproc_defines.h
 Purpose:		header file with all the project defines
 Revision History:	23 July 2021
-author:			daniele.bagni@xilinx.com   herver@xilinx.com  
+author:			daniele.bagni@xilinx.com   herver@xilinx.com
 
 **************************************************************************************
 
-Copyright 2020 Xilinx Inc.
+Copyright 2021 Xilinx Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -55,14 +55,22 @@ const int VECTORIZATION_FACTOR = PRE_M_AXI_BITWIDTH/BITS_PER_INP_PIXEL;
 
 // preprocessing normalization factors
 #ifndef DEBUG_TRANSPARENT //normal mode
-#define NORM_FACT   (127.5f)
-#define SHIFT_FACT    (1.0f)
+#define NORM_FACT   (0.007843137) // which is 1.0f/127.5f
+#define SHIFT_FACT  (127.5)
 #define SCALE_FACT       64
 #else
-#define NORM_FACT   (1.0f)
-#define SHIFT_FACT  (0.0f)
-#define SCALE_FACT  (1.0f)
+#define NORM_FACT   (1.0)
+#define SHIFT_FACT  (0.0)
+#define SCALE_FACT  (1.0)
 #endif
+
+#define PRE_FIXPOS 6
+
+
+const float PRE_MEANS[ 3]={SHIFT_FACT,SHIFT_FACT,SHIFT_FACT};
+const float PRE_SCALES[3]={NORM_FACT,  NORM_FACT, NORM_FACT};
+
+
 
 /* ******************************************************************************* */
 // parameters depending on the above ones (do not touch)
@@ -70,12 +78,13 @@ const int VECTORIZATION_FACTOR = PRE_M_AXI_BITWIDTH/BITS_PER_INP_PIXEL;
 const int BITS_PER_INP_3PIXEL =3*BITS_PER_INP_PIXEL;
 const int BITS_PER_OUT_3PIXEL =3*BITS_PER_OUT_PIXEL;
 
-const int PRE_hls_IMGSZ = (PRE_MAX_HEIGHT)*(PRE_MAX_WIDTH); //for HLS pragmas FIFO interfaces
+const int PRE_hls_IMGSZ   = (PRE_MAX_HEIGHT)*(PRE_MAX_WIDTH);
+const int PRE_hls_IMGSZ_V = ((PRE_MAX_HEIGHT)*(PRE_MAX_WIDTH)*3)/VECTORIZATION_FACTOR;
 const int PRE_hls_MIN_H = 1;                      //for HLS pragmas LOOP TRIPCOUNT
 const int PRE_hls_MIN_W = 1;                      //for HLS pragmas LOOP TRIPCOUNT
 const int PRE_hls_MAX_H = (PRE_MAX_HEIGHT);             //for HLS pragmas LOOP TRIPCOUNT
 const int PRE_hls_MAX_W = (PRE_MAX_WIDTH);              //for HLS pragmas LOOP TRIPCOUNT
-const int PRE_hls_trip_count_loop = PRE_hls_MAX_H*PRE_hls_MAX_W*3/VECTORIZATION_FACTOR;    //for HLS pragmas LOOP TRIPCOUNT
+const int PRE_hls_trip_count_loop = PRE_hls_IMGSZ_V;
 
 
 
@@ -112,7 +121,7 @@ typedef struct i_rgb  {
   } iRGB_t;
 
 typedef union u2i_conv {
-	unsigned long int i;  
+	unsigned long int i;
 	  signed long int o;
 } union_u2i_conv_t;
 
@@ -144,22 +153,31 @@ typedef  ap_int<BITS_PER_OUT_3PIXEL>     Dat3_t;     // to pack 3 out pixels int
 
 /* ******************************************************************************* */
 // FUNCTION PROTOTYPES
-void ref_dpupreproc(uRGB_t      *inp_img,  iRGB_t *out_img,  float norm_fact, float shift_fact, float scale_fact, unsigned short int height, unsigned short int width);
+void ref_dpupreproc(uRGB_t *inp_img, iRGB_t *out_img,
+		    float means[3], float scales[3], int dpu_fixpos,
+		    unsigned short int height, unsigned short int width);
 
 float check_output_data( Dat3_t *hls_data, iRGB_t *ref_data, unsigned short int height, unsigned short int width);
 
 
 extern "C"
-void hls_dpupreproc(uPix3_t     *inp_img,  Dat3_t *img_out,  float norm_fact, float shift_fact, float scale_fact, unsigned short int height, unsigned short int width);
+void hls_dpupreproc(uPix3_t     *inp_img,  Dat3_t *img_out,
+		//float norm_fact, float shift_fact, float scale_fact,
+	    float means_0,float means_1,float means_2, float scales_0, float scales_1,float scales_2, int dpu_fixpos,
+		unsigned short int height, unsigned short int width);
 
 extern "C"
-void hls_dpupreproc_m_axi(m_axi_input_word *inp_img, m_axi_output_word *img_out,  float norm_fact, float shift_fact, float scale_fact, unsigned short int height, unsigned short int width);
+void hls_dpupreproc_m_axi(m_axi_input_word *inp_img, m_axi_output_word *img_out,
+		//float norm_fact, float shift_fact, float scale_fact,
+	    float means_0,float means_1,float means_2, float scales_0, float scales_1,float scales_2, int dpu_fixpos,
+		unsigned short int height, unsigned short int width);
 
 #else
 
 void arm_ref_dpupreproc(unsigned char *R, unsigned char *G, unsigned char *B,
-		signed char *out_rgb_img, float norm_fact, float shift_fact, float scale_fact,
+		signed char *out_rgb_img, float means[3], float scales[3], int dpu_fixpos,
 		unsigned short int height, unsigned short int width);
+
 
 void format_ref_img(unsigned char *R, unsigned char *G, unsigned char *B,
 		signed char *out_rgb_img, unsigned short int height, unsigned short int width);

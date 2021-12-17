@@ -6,7 +6,7 @@
 
  **************************************************************************************
 
- Copyright 2020 Xilinx Inc.
+ Copyright 2021 Xilinx Inc.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -67,9 +67,9 @@ void POST_Start(char* POST_xclbinFilename)
 	kernel_post = xrtPLKernelOpen(POST_device, POST_xclbin_uuid, "hls_dpupostproc_m_axi");
 
 	size_t inp_size_in_bytes = POST_MAX_HEIGHT * POST_MAX_WIDTH * MAX_NUM_OF_CLASSES * sizeof(char);
-	printf(" INPUT size_in_byte=%d\n", inp_size_in_bytes);
+	printf(" INPUT size_in_byte=%ld\n", inp_size_in_bytes);
 	size_t out_size_in_bytes = POST_MAX_HEIGHT * POST_MAX_WIDTH * sizeof(char);
-	printf("OUTPUT size_in_byte=%d\n", out_size_in_bytes);
+	printf("OUTPUT size_in_byte=%ld\n", out_size_in_bytes);
 
 
 	POST_range.start("Setup", "Create Buffers");
@@ -78,19 +78,19 @@ void POST_Start(char* POST_xclbinFilename)
 	POST_in_bomapped = reinterpret_cast<uint8_t*>(xrtBOMap(inp_data));
 	memset(POST_in_bomapped, 0x0, inp_size_in_bytes);
 	printf("Input   memory virtual  addr 0x%px\n", POST_in_bomapped);
-	printf("Input   memory physical addr 0x%px\n", xrtBOAddress(inp_data));
+	printf("Input   memory physical addr 0x%px\n", (void*) xrtBOAddress(inp_data));
 	//create buffer1 for the output data
 	max_out = xrtBOAlloc(POST_device, out_size_in_bytes, 0, 0);
 	POST_out1_bomapped = reinterpret_cast<uint8_t*>(xrtBOMap(max_out));
 	memset(POST_out1_bomapped, 0x00000000, out_size_in_bytes);
 	printf("Output1 memory virtual  addr 0x%px\n", POST_out1_bomapped);
-	printf("Output1 memory physical addr 0x%px\n", xrtBOAddress(max_out));
+	printf("Output1 memory physical addr 0x%px\n", (void*) xrtBOAddress(max_out));
 	//create buffer2 for the output data
 	ind_out = xrtBOAlloc(POST_device, out_size_in_bytes, 0, 0);
 	POST_out2_bomapped = reinterpret_cast<uint8_t*>(xrtBOMap(ind_out));
 	memset(POST_out2_bomapped, 0x00000000, out_size_in_bytes);
 	printf("Output2 memory virtual  addr 0x%px\n", POST_out2_bomapped);
-	printf("Output2 memory physical addr 0x%px\n", xrtBOAddress(ind_out));
+	printf("Output2 memory physical addr 0x%px\n", (void*) xrtBOAddress(ind_out));
 	POST_range.end();
 	POST_events.mark("Setup done, Buffers created");
 }
@@ -98,7 +98,7 @@ void POST_Start(char* POST_xclbinFilename)
 /* **************************************************************************************** */
 /* **************************************************************************************** */
 
-int POST_main(char* POST_xclbinFilename)
+int POST_main(char* POST_xclbinFilename, int dpu_output_fixpos)
 {
 	int width, height;
 	float POST_total_error;
@@ -117,9 +117,6 @@ int POST_main(char* POST_xclbinFilename)
 	//set parameters
 	width  = POST_MAX_WIDTH;
 	height = POST_MAX_HEIGHT;
-	//prepare the scaling factor by creating a power of 2 number	
-	float scale_fact = PrepareScalingFactor(POSTPR_SCALE);
-	fprintf(stderr, "scaling factor = %f\n", scale_fact);
 	POST_range.end();
 	POST_events.mark("arguments set");
 
@@ -130,7 +127,7 @@ int POST_main(char* POST_xclbinFilename)
 	signed char   *din       = (  signed char*) POST_in_bomapped;
 	unsigned char *hls_max   = (unsigned char*) POST_out1_bomapped;
 	unsigned char *hls_index = (unsigned char*) POST_out2_bomapped;
-	
+
 	/* **************************************************************************************** */
 	// read input file: do not move it prior to POST_Start() or you will have SEGV ERROR
 
@@ -150,7 +147,7 @@ int POST_main(char* POST_xclbinFilename)
 	POST_range.start("Kernel execution", "run kernel postproc");
 	xrtURStart(0, "kernel execution", "kernel execution");
 	// Execute
-	kernel_post_rhdl = xrtKernelRun(kernel_post, inp_data, max_out, ind_out, scale_fact, height, width );
+	kernel_post_rhdl = xrtKernelRun(kernel_post, inp_data, max_out, ind_out, dpu_output_fixpos, height, width );
 	auto POST_state = xrtRunWait(kernel_post_rhdl); //wait for the kernel to finish
 	xrtUREnd(0);
 	POST_range.end();
@@ -160,8 +157,8 @@ int POST_main(char* POST_xclbinFilename)
 	// call reference function
 
 	POST_range.start("Ref function", "calling reference function");
-	fprintf(stderr, "REF design with scaling factor %f\n", scale_fact);
-	ref_dpupostproc(din, ref_max, ref_index, scale_fact, height, width);
+	fprintf(stderr, "REF design with DPU output fixpos %d\n", dpu_output_fixpos);
+	ref_dpupostproc(din, ref_max, ref_index, dpu_output_fixpos, height, width);
 	//save reference results
 	fprintf(stderr,"writing REF files\n");
 	sprintf(tempbuf1, "%s", "./data_post/arm_ref_max.bin");
@@ -173,7 +170,7 @@ int POST_main(char* POST_xclbinFilename)
 
 	/* **************************************************************************************** */
 	//verify results here
-	
+
 	POST_range.start("verify", "verify results");
 	fprintf(stderr, "HLS Checking results: REF vs. HLS\n");
 	float total_max_error   = check_output_max(  ref_max,   hls_max,   height, width);
@@ -198,7 +195,7 @@ int POST_main(char* POST_xclbinFilename)
 
 	/* **************************************************************************************** */
 	//Clean up
-	
+
 	//note: BO allocated buffers need to be freed first, otherwise error!
 	xrtBOFree(inp_data);
 	xrtBOFree(max_out);
@@ -239,7 +236,8 @@ int main(int argc, char* argv[])
 	char* POST_xclbinFilename = argv[1];
 	std::cout << "POST_xclbinFilename " << POST_xclbinFilename << std::endl;
 
-	int POST_ret = POST_main(POST_xclbinFilename);
+	int dpu_output_fixpos = POSTPR_FIXPOS;
+	int POST_ret = POST_main(POST_xclbinFilename, dpu_output_fixpos);
 	return POST_ret;
 
 }

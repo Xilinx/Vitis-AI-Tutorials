@@ -7,7 +7,7 @@
 
  **************************************************************************************
 
- Copyright 2020 Xilinx Inc.
+ Copyright 2021 Xilinx Inc.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ void Read_Bin_File_of_Uchar(char *filename, int dim, unsigned char *buffer)
 }
 
 
-	
+
 // read from a text file of floating point data organized (ideally) into H lines of W columns and MAX_WIDTH stride
 // each column contains NUM_OF_CLASSES data. In reality the files is stored sequentially, one line at a time with NUM_OF_CLASSES data.
 // the memory buffer is larger than the data to be contained as MAX_NUM_OF_CLASSES >= NUM_OF_CLASSES and fuilled with zeros
@@ -151,10 +151,10 @@ void Read_Byte_Txt_File(char *filename, int H, int W, char *data)
 {
   FILE *fid = fopen(filename, "rt");
   if(!fid) printf("ERROR: could not open %s for reading\n",filename);
-  
+
   unsigned short int y,x, c;
   float value;
-  
+
   for (y = 0; y < H; y++)
   {
     for (x = 0; x < W; x++)
@@ -180,11 +180,11 @@ void Read_Byte_Txt_File(char *filename, int H, int W, char *data)
 template <typename T> void Write_Txt_File(char *filename, int H, int W, T *data)
 {
   FILE *fid = fopen(filename, "wt");
-  if(!fid) printf("ERROR: could not open %s for writing\n",filename);	
-  
+  if(!fid) printf("ERROR: could not open %s for writing\n",filename);
+
   unsigned short int y,x;
   float value;
-  
+
   for (y = 0; y < H; y++)
   {
     for (x = 0; x < W; x++)
@@ -201,7 +201,7 @@ template <typename T> void Write_Txt_File(char *filename, int H, int W, T *data)
 void Write_SoftMax_Txt_File(char *filename, int H, int W, float *data)
 {
   FILE *fid = fopen(filename, "wt");
-  if(!fid) printf("ERROR: could not open %s for writing\n",filename);	  
+  if(!fid) printf("ERROR: could not open %s for writing\n",filename);
 
   unsigned short int y, x, c;
   float value;
@@ -215,7 +215,7 @@ void Write_SoftMax_Txt_File(char *filename, int H, int W, float *data)
     	  value = data[y*POST_MAX_WIDTH*MAX_NUM_OF_CLASSES +x*MAX_NUM_OF_CLASSES +c];
     	  fprintf(fid, "%20.10f ", value);
       }
-      fprintf(fid, "\n");		
+      fprintf(fid, "\n");
     }
   }
   fclose(fid);
@@ -228,13 +228,13 @@ float check_output_max(unsigned char *ref_max, unsigned char *hls_max, unsigned 
   int col = width;
   float tot_diff = 0.0f;
   float diff, r_max, h_max;
-  
+
   for (row = 0; row < height; row++) {
     for (col = 0; col < width; col++) {
-      
+
       r_max = ref_max[row * POST_MAX_WIDTH + col];
       h_max = hls_max[row * POST_MAX_WIDTH + col];
-      
+
       diff = r_max - h_max;
       diff = ABS(diff);
       if (diff > 1)
@@ -249,7 +249,7 @@ float check_output_max(unsigned char *ref_max, unsigned char *hls_max, unsigned 
 
 float check_output_index(unsigned char *ref_index, unsigned char *hls_index, unsigned short int height, unsigned short int width)
 {
-  
+
   int row = height;
   int col = width;
   int r_pix, h_pix;
@@ -257,10 +257,10 @@ float check_output_index(unsigned char *ref_index, unsigned char *hls_index, uns
   float tot_diff = 0.0f;
   for (row = 0; row < height; row++) {
     for (col = 0; col < width; col++) {
-      
+
       r_pix = ref_index[row * POST_MAX_WIDTH + col];
       h_pix = hls_index[row * POST_MAX_WIDTH + col];
-      
+
       diff = r_pix - h_pix;
       diff = ABS(diff);
       if (diff > POST_REF_THRESHOLD)
@@ -342,7 +342,7 @@ void char_to_hlsvector(signed char input[POST_hls_MAXSZ], m_axi_input_word hlsve
 
 extern float ref_LUT_EXP[256];
 
-int POST_tb_main(int argc, char **argv)
+int POST_tb_main(int argc, char **argv, int output_fixpos)
 {
 
   unsigned short int x, y;
@@ -350,17 +350,17 @@ int POST_tb_main(int argc, char **argv)
   char *tempbuf1, *tempbuf2;
   int check_results, ret_res = 0, status;
   float total_error;
-  
+
   //Arrays to send and receive data from the accelerator
   signed char *inp_data, *inp_data2;
   m_axi_input_word *inp_data_m_axi;
   unsigned char *ref_index, *hls_index;
   //  float *hls_softmax, *ref_softmax;
   unsigned char *hls_max, *ref_max;
-  
-  
+
+
   /* **************************************************************************************** */
-  
+
   // memory allocation
   tempbuf1 = (char*) malloc(MAX_PATH * sizeof(char));
   inp_data_m_axi     = new m_axi_input_word[POST_hls_MAXSZWORDS];
@@ -372,7 +372,7 @@ int POST_tb_main(int argc, char **argv)
   hls_index    = (unsigned char*) malloc(POST_MAX_HEIGHT * POST_MAX_WIDTH * sizeof(unsigned char));
   // ref_softmax  = (float *) malloc(POST_MAX_HEIGHT * POST_MAX_WIDTH * MAX_NUM_OF_CLASSES * sizeof(float));
   // hls_softmax  = (float *) malloc(POST_MAX_HEIGHT * POST_MAX_WIDTH * MAX_NUM_OF_CLASSES * sizeof(float));
-	
+
   /* **************************************************************************************** */
   // to reduce TB simulation time you can decrease the image size at runtime
   //  width  = POST_MAX_WIDTH/8;
@@ -382,7 +382,7 @@ int POST_tb_main(int argc, char **argv)
   width  = POST_MAX_WIDTH;
   height = POST_MAX_HEIGHT;
   assert(width%8 == 0 && "width needs to be multiple of 8 for the implementation to be correct for the 28 classes output!");
-  
+
 
   /* **************************************************************************************** */
   fprintf(stderr,"\nDPU Post-Processing on image size of W=%4d H=%4d and %2d classes\n", width, height, MAX_NUM_OF_CLASSES);
@@ -400,17 +400,19 @@ int POST_tb_main(int argc, char **argv)
   fprintf(stderr,"Loaded input data file  %s of size %4d %4d\n", tempbuf1, POST_MAX_HEIGHT, POST_MAX_WIDTH);
   fprintf(stderr, "TIME to load bin inp file: "); int res2 = system("date");
 
-  
-  /* **************************************************************************************** */
-  /* **************************************************************************************** */
-  
-  //prepare the scaling factor by creating a power of 2 number
-  float scaling_factor = PrepareScalingFactor(POSTPR_SCALE);
-  PrepareExpLUT(scaling_factor);
 
-  fprintf(stderr, "REF design with scaling factor %f\n", scaling_factor);
+  /* **************************************************************************************** */
+  /* **************************************************************************************** */
+
+  // no more needed
+  ////prepare the scaling factor by creating a power of 2 number
+  //float scaling_factor = PrepareScalingFactor(POSTPR_SCALE);
+  //PrepareExpLUT(scaling_factor);
+  // load scaling factors
+
+  fprintf(stderr, "REF design with output_fixpos %d\n", output_fixpos);
   ref_dpupostproc(inp_data, //ref_softmax,
-		  ref_max, ref_index, scaling_factor, height, width);
+		  ref_max, ref_index, output_fixpos, height, width);
   fprintf(stderr, "TIME to run REF postproc : ");  int res3 = system("date");
 
 
@@ -431,11 +433,11 @@ int POST_tb_main(int argc, char **argv)
 
   fprintf(stderr,"HLS DUT\n");
   // with debug  hls_dpupostproc(inp_data, hls_softmax, hls_max, hls_index, scaling_factor, height, width); // DUT: Design Under Test
-  hls_dpupostproc(inp_data, hls_max, hls_index,scaling_factor,  height, width); // DUT: Design Under Test
+  hls_dpupostproc(inp_data, hls_max, hls_index, output_fixpos, height, width); // DUT: Design Under Test
   fprintf(stderr, "TIME to run HLS DUT      : ");   int res5 = system("date");
 
   fprintf(stderr,"HLS DUT M_AXI\n");
-  hls_dpupostproc_m_axi(inp_data_m_axi, hls_max, hls_index, 0, height, width); // DUT: Design Under Test
+  hls_dpupostproc_m_axi(inp_data_m_axi, hls_max, hls_index, output_fixpos, height, width); // DUT: Design Under Test
   fprintf(stderr, "TIME to run HLS DUT M_AXI: ");   int res5_m_axi = system("date");
 
   fprintf(stderr,"writing HLS files\n");
@@ -448,10 +450,10 @@ int POST_tb_main(int argc, char **argv)
   //Write_Bin_File_as_float(tempbuf1, MAX_WIDTH*MAX_HEIGHT*MAX_NUM_OF_CLASSES, hls_softmax);
   fprintf(stderr, "TIME to write binary HLS : "); int res6 = system("date");
 
-  
+
   /* **************************************************************************************** */
   /* **************************************************************************************** */
-  
+
   // self checking test bench
   fprintf(stderr, "HLS Checking results: REF vs. HLS\n");
   float total_max_error   = check_output_max(ref_max, hls_max, height, width);
@@ -473,7 +475,7 @@ int POST_tb_main(int argc, char **argv)
     fprintf(stderr, "TEST SUCCESSFULL!\n");
     ret_res = 0;
   }
-  
+
 
   /* **************************************************************************************** */
   // free memory
@@ -483,10 +485,10 @@ int POST_tb_main(int argc, char **argv)
   free(ref_max); 	 free(hls_max);
   //free(ref_softmax); free(hls_softmax);
   free(ref_index);   free(hls_index);
-  
+
   fprintf(stderr, "DPU Post-Proc END\n");
   return ret_res;
-  
+
 }
 
 #endif // ARM_HOST

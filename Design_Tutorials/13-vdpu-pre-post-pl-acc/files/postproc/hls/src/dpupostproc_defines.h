@@ -1,13 +1,13 @@
 /*************************************************************************************
-Vendor:			Xilinx 
+Vendor:			Xilinx
 Associated Filename:	dpupostproc_defines.h
 Purpose:		header file with all the project defines
-Revision History:	5 Aug 2021
-author:			daniele.bagni@xilinx.com herver@xilinx.com    
+Revision History:	23 July 2021
+author:			daniele.bagni@xilinx.com herver@xilinx.com
 
 **************************************************************************************
 
-Copyright 2020 Xilinx Inc.
+Copyright two_k_Screenshot_from_2021 Xilinx Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -46,7 +46,9 @@ const int BITS_PER_CLASS = 8;
 
 
 //post processing scaling factor
-#define POSTPR_SCALE   (-2) // 2^{-2} = 0.25f
+#define POSTPR_FIXPOS  2
+#define POSTPR_SCALE   (-POSTPR_FIXPOS) // 2^{-2} = 0.25f
+
 
 // amount of classes or objects
 #define     NUM_OF_CLASSES  12 //my tutorial case
@@ -62,7 +64,7 @@ const int CLASSES_PER_INPUT_WORD = POST_M_AXI_BITWIDTH/BITS_PER_CLASS; // 256/8=
 const int bitwidths_dont_fit[MAX_NUM_OF_CLASSES*BITS_PER_CLASS<=POST_M_AXI_BITWIDTH?1:-1]={0};
 
 
-// map the segmented classes in colored RGB images 
+// map the segmented classes in colored RGB images
 const unsigned char colorB[19] = {128, 232, 70, 156, 153, 153,  30,   0,  35, 152, 180,  60,   0, 142, 70, 100, 100, 230,  32};
 const unsigned char colorG[19] = { 64,  35, 70, 102, 153, 153, 170, 220, 142, 251, 130,  20,   0,   0,  0,  60,  80,   0,  11};
 const unsigned char colorR[19] = {128, 244, 70, 102, 190, 153, 250, 220, 107, 152,  70, 220, 255,   0,  0,   0,   0,   0, 119};
@@ -114,8 +116,7 @@ void  PrepareExpLUT(float scale_factor);
 void ref_dpupostproc(signed char *inp_data,
 		     //float *out_softmax,
 		     unsigned char *out_max, unsigned char *out_index,
-		     float scale_fact, unsigned short int height, unsigned short int width);
-
+		     int output_fixpos, unsigned short int height, unsigned short int width);
 
 
 #ifndef ARM_HOST
@@ -127,15 +128,16 @@ void ref_dpupostproc(signed char *inp_data,
 typedef hls::vector<char,CLASSES_PER_INPUT_WORD> m_axi_input_word;
 typedef hls::vector<ap_int<BITS_PER_CLASS>,MAX_NUM_OF_CLASSES> soft_max_input_t;
 
-void hls_dpupostproc(signed char inp_data[POST_hls_MAXSZ], //float out_softmax[hls_IMGSZ],
-		unsigned char out_max[POST_hls_IMGSZ], unsigned char out_index[POST_hls_IMGSZ],
-		     float scale_fact, unsigned short int height, unsigned short int width);
 
+
+void hls_dpupostproc(signed char inp_data[POST_hls_MAXSZ],
+		unsigned char out_max[POST_hls_IMGSZ], unsigned char out_index[POST_hls_IMGSZ],
+		int output_fixpos, unsigned short int height, unsigned short int width);
 
 extern "C"
 void hls_dpupostproc_m_axi(m_axi_input_word *inp_data,
         unsigned char out_max[POST_hls_IMGSZ], unsigned char out_index[POST_hls_IMGSZ],
-		float scale_fact, unsigned short int height, unsigned short int width);
+             int output_fixpos, unsigned short int height, unsigned short int width);
 
 
 #else //Host application

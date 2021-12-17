@@ -7,7 +7,7 @@ authors:		daniele.bagni@xilinx.com
 
 **************************************************************************************
 
-Copyright 2020 Xilinx Inc.
+Copyright 2021 Xilinx Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,18 +27,20 @@ limitations under the License.
 #ifdef ARM_HOST
 
 void arm_ref_dpupreproc(unsigned char *R, unsigned char *G, unsigned char *B,
-		signed char *out_rgb_img, float norm_fact, float shift_fact, float scale_fact,
+		signed char *out_rgb_img, float means[3], float scales[3], int dpu_fixpos,
 		unsigned short int height, unsigned short int width)
 {
 
 	unsigned short int rows = height;
 	unsigned short int cols = width;
 
-	float norm = 1.0f / norm_fact;
-	float gain = scale_fact;
+    // set the correct gain factor depending on the fixpos value	from the DPU input tensor
+    float integ_dpu_scales[8] = {1.0, 2.0, 4.00, 8.000, 16.0000, 32.00000, 64.000000, 128.0000000};
+    float fract_dpu_scales[8] = {1.0, 0.5, 0.25, 0.125,  0.0625,  0.03125,  0.015625,   0.0078125};
+    float gain = (dpu_fixpos>0) ? integ_dpu_scales[dpu_fixpos] : fract_dpu_scales[dpu_fixpos];
 
-	printf("%s: Setting norm=%f shift=%f scale=%f\n", __func__, norm_fact,
-			shift_fact, scale_fact);
+	printf("%s: Setting norm=%f shift=%f scale_fixpos=%d\n", __func__, scales[0],
+	       means[0], dpu_fixpos);
 
 	int k = 0;
 	for (int r = 0; r < rows; r++) {
@@ -47,9 +49,12 @@ void arm_ref_dpupreproc(unsigned char *R, unsigned char *G, unsigned char *B,
 			unsigned char uG = G[r * PRE_MAX_WIDTH + c];
 			unsigned char uR = R[r * PRE_MAX_WIDTH + c];
 			// normalize
-			float tmp_R = ((float) uR) * norm - shift_fact;
-			float tmp_G = ((float) uG) * norm - shift_fact;
-			float tmp_B = ((float) uB) * norm - shift_fact;
+			float tmp_R = ((float) uR) - means[0];
+			float tmp_G = ((float) uG) - means[1];
+			float tmp_B = ((float) uB) - means[2];
+			tmp_R = tmp_R * scales[0];
+			tmp_G = tmp_G * scales[1];
+			tmp_B = tmp_B * scales[2];
 			//rescale
 			float final_R = gain * tmp_R;
 			float final_G = gain * tmp_G;
@@ -104,13 +109,18 @@ void format_ref_img(unsigned char *R, unsigned char *G, unsigned char *B,
 /* **************************************************************************************************** */
 /* **************************************************************************************************** */
 
-
 void ref_dpupreproc(uRGB_t *inp_img, iRGB_t *out_img,
-		    float norm_fact, float shift_fact, float scale_fact,
+		    float means[3], float scales[3], int dpu_fixpos,
 		    unsigned short int height, unsigned short int width) {
 
   unsigned short int rows = height;
   unsigned short int cols = width;
+
+  // set the correct gain factor depending on the fixpos value	from the DPU input tensor
+  float integ_dpu_scales[8] = {1.0, 2.0, 4.00, 8.000, 16.0000, 32.00000, 64.000000, 128.0000000};
+  float fract_dpu_scales[8] = {1.0, 0.5, 0.25, 0.125,  0.0625,  0.03125,  0.015625,   0.0078125};
+  float gain = (dpu_fixpos>0) ? integ_dpu_scales[dpu_fixpos] : fract_dpu_scales[dpu_fixpos];
+
 
   // copy the input image into the input array (RGB)
   // save reference output data in a text file
@@ -128,22 +138,23 @@ void ref_dpupreproc(uRGB_t *inp_img, iRGB_t *out_img,
   if ((fp6 = fopen("./data_pre/ref_ch3.txt", "w")) == NULL)
     printf("Error opening ref_ch3.txt");
 
-  float norm = 1.0f / norm_fact;
-  float gain = scale_fact;
 
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < cols; c++) {
       uRGB_t rgb_pix = inp_img[r * PRE_MAX_WIDTH + c];
-      unsigned char B = rgb_pix.B;
-      unsigned char G = rgb_pix.G;
-      unsigned char R = rgb_pix.R;
-      fprintf(fp1, "%18.14f  ", R);
-      fprintf(fp2, "%18.14f  ", G);
-      fprintf(fp3, "%18.14f  ", B);
+      unsigned char uB = rgb_pix.B;
+      unsigned char uG = rgb_pix.G;
+      unsigned char uR = rgb_pix.R;
+      fprintf(fp1, "%18.14f  ", uR);
+      fprintf(fp2, "%18.14f  ", uG);
+      fprintf(fp3, "%18.14f  ", uB);
       // normalize
-      float tmp_R = ((float) R) * norm - shift_fact;
-      float tmp_G = ((float) G) * norm - shift_fact;
-      float tmp_B = ((float) B) * norm - shift_fact;
+      float tmp_R = ((float) uR) - means[0];
+      float tmp_G = ((float) uG) - means[1];
+      float tmp_B = ((float) uB) - means[2];
+      tmp_R = tmp_R * scales[0];
+      tmp_G = tmp_G * scales[1];
+      tmp_B = tmp_B * scales[2];
       //rescale
       float final_R = gain * tmp_R;
       float final_G = gain * tmp_G;
@@ -160,7 +171,7 @@ void ref_dpupreproc(uRGB_t *inp_img, iRGB_t *out_img,
       i_rgb_pix.R = (int) final_R;
       i_rgb_pix.G = (int) final_G;
       i_rgb_pix.B = (int) final_B;
-		    
+
       fprintf(fp4, "%18.14f  ", (float) i_rgb_pix.R);
       fprintf(fp5, "%18.14f  ", (float) i_rgb_pix.G);
       fprintf(fp6, "%18.14f  ", (float) i_rgb_pix.B);
