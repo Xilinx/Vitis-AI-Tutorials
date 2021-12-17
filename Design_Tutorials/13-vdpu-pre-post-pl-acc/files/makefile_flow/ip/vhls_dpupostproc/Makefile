@@ -1,0 +1,39 @@
+#
+# Copyright 2021 Xilinx, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+### Makefile for creating dpupostproc kernel
+#PLATFORM_CUSTOM ?= vck190_dpu_pcie
+#BASE_PFM		    ?=./platform/${PLATFORM_CUSTOM}/${PLATFORM_CUSTOM}.xpfm
+#XPFM 			      :=../../${BASE_PFM}
+#KERNEL			    := vadd
+#GHE_REPO		    := ../../../../ghe_daniele/VDPU-PRE-POST-PL-ACC/files
+
+.PHONY: clean all
+
+all: compile
+
+prep:
+	#rm ./src/*
+	#cp $(GHE_REPO)/postproc/vitis_hls/src/* ./src/.
+	#cp $(GHE_REPO)/postproc/vitis_hls/hls_script.tcl .
+
+compile:
+	vitis_hls -f hls_script.tcl
+
+clean:
+	rm -f *.log *.xo
+	rm -rf ./vhls_dpupostproc_prj/solution_hls_dpupostproc_m_axi/impl/ip/.Xil/*
+	rm -rf HLS vhls_dpupostproc_prj

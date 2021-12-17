@@ -7,7 +7,7 @@ authors:		daniele.bagni@xilinx.com, herve.ratigner@xilinx.com
 
 **************************************************************************************
 
- Copyright 2020 Xilinx Inc.
+ Copyright 2021 Xilinx Inc.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ void Read_Bin_File_of_Schar(char *filename, int dim, char *buffer)
 
 #ifndef ARM_HOST
 
-void format_input_data(unsigned char *R, unsigned char *G, unsigned char *B,
+void format_input_data(unsigned char *R, unsigned char *G, unsigned char *B,  unsigned char *RGB, 
 		       uRGB_t *rgb_data, uPix3_t *hls_data, unsigned short int height,
 		       unsigned short int width) {
 
@@ -63,7 +63,7 @@ void format_input_data(unsigned char *R, unsigned char *G, unsigned char *B,
   int col = width;
   uRGB_t rgb_pix;
   uPix3_t triple_pix;
-	
+
 
   for (row = 0; row < height; row++) {
     for (col = 0; col < width; col++) {
@@ -83,6 +83,16 @@ void format_input_data(unsigned char *R, unsigned char *G, unsigned char *B,
       triple_pix.range(3*BITS_PER_INP_PIXEL - 1, 2*BITS_PER_INP_PIXEL) = in_R;
       //std::cout << std::hex << triple_pix << std::endl;
       hls_data[row * PRE_MAX_WIDTH + col] = triple_pix;
+
+      int index = row*width+col;
+
+      unsigned char b_temp = in_B;
+      unsigned char g_temp = in_G;
+      unsigned char r_temp = in_R;
+
+      RGB[3*index+0] = b_temp;
+      RGB[3*index+1] = g_temp;
+      RGB[3*index+2] = r_temp;
     }
   }
 
@@ -246,11 +256,16 @@ float check_output_data_hls(m_axi_output_word *hls_data, iRGB_t *ref_data,
 }
 
 
-void RGB_to_hlsvector(unsigned char RGB[PRE_MAX_HEIGHT*PRE_MAX_WIDTH], m_axi_input_word hlsvector[PRE_MAX_HEIGHT*PRE_MAX_WIDTH*3/VECTORIZATION_FACTOR])
+void RGB_to_hlsvector(unsigned char *RGB, m_axi_input_word *hlsvector)
 {
-  for (int index = 0; index < PRE_MAX_HEIGHT*PRE_MAX_WIDTH*3; index++) {
-    //        if(index<10*3) printf(" pixel[%d] RGB[%d] = %d \n", index/3, index%3, RGB[index]);
-    hlsvector[index/VECTORIZATION_FACTOR][index%VECTORIZATION_FACTOR]=RGB[index];
+	m_axi_input_word tmp_word;
+
+	for (int index = 0; index < PRE_MAX_HEIGHT*PRE_MAX_WIDTH*3; index++) {
+    //        if(index<10*3) printf(" pixel[%d] RGB[%d] = %d \n",
+	//	index/VECTORIZATION_FACTOR, index%VECTORIZATION_FACTOR, RGB[index]);
+
+	tmp_word [index%VECTORIZATION_FACTOR] = RGB[index];
+    hlsvector[index/VECTORIZATION_FACTOR] = tmp_word;
   }
 }
 
@@ -258,7 +273,7 @@ void RGB_to_hlsvector(unsigned char RGB[PRE_MAX_HEIGHT*PRE_MAX_WIDTH], m_axi_inp
 /* **************************************************************************************** */
 /* **************************************************************************************** */
 
-int PRE_tb_main(int argc, char **argv)
+int PRE_tb_main(int argc, char **argv, float pre_means[3], float pre_scales[3], int dpu_fixpos)
 {
 
   unsigned short int x, y, width, height;
@@ -284,14 +299,18 @@ int PRE_tb_main(int argc, char **argv)
   G = (unsigned char*) malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(unsigned char));
   B = (unsigned char*) malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(unsigned char));
   RGB=(unsigned char*) malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(unsigned char) * 3);
-  hls_RGB_in =(m_axi_input_word *)malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(unsigned char) * 3/VECTORIZATION_FACTOR);
-  hls_RGB_out=(m_axi_output_word*)malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(unsigned char) * 3/VECTORIZATION_FACTOR);
-
   ref_inp_img = (uRGB_t *) malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(uRGB_t));
   hls_inp_img = (uPix3_t*) malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(uPix3_t));
   ref_out_img = (iRGB_t *) malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(iRGB_t));
   hls_out_img = ( Dat3_t*) malloc(PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof( Dat3_t));
 
+  hls_RGB_in =(m_axi_input_word *)malloc(4*PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(unsigned char) * 3/VECTORIZATION_FACTOR);
+  hls_RGB_out=(m_axi_output_word*)malloc(4*PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(unsigned char) * 3/VECTORIZATION_FACTOR);
+
+  memset(R   , 0, PRE_MAX_HEIGHT * PRE_MAX_WIDTH);
+  memset(G   , 0, PRE_MAX_HEIGHT * PRE_MAX_WIDTH);
+  memset(B   , 0, PRE_MAX_HEIGHT * PRE_MAX_WIDTH);
+  memset(RGB , 0, PRE_MAX_HEIGHT * PRE_MAX_WIDTH*3);
   memset(ref_inp_img, 0, PRE_MAX_HEIGHT * PRE_MAX_WIDTH);
   memset(hls_inp_img, 0, PRE_MAX_HEIGHT * PRE_MAX_WIDTH);
   memset(ref_out_img, 0, PRE_MAX_HEIGHT * PRE_MAX_WIDTH);
@@ -306,16 +325,18 @@ int PRE_tb_main(int argc, char **argv)
   //Get image data
   sprintf(tempbuf1, "%s.bmp", PRE_INPUT_IMAGE);
   // Fill a frame with data
-  int read_tmp = BMP_Read(tempbuf1, PRE_MAX_HEIGHT, PRE_MAX_WIDTH, R, G, B, RGB);
+  //  int read_tmp = BMP_Read(tempbuf1, PRE_MAX_HEIGHT, PRE_MAX_WIDTH, R, G, B, RGB);
+    int read_tmp = BMP_Read(tempbuf1, PRE_MAX_HEIGHT, PRE_MAX_WIDTH, R, G, B);
   if (read_tmp != 0) {
     printf("%s Loading image failed\n", tempbuf1);
     exit(1);
   }
-  printf("Loaded image file %s of size height %4d width %4d\n", tempbuf1, height, width);
+  printf("Loaded image file %s of size height %4d width %4d\n", tempbuf1, PRE_MAX_HEIGHT, PRE_MAX_WIDTH);
 
-  format_input_data(R, G, B, ref_inp_img, hls_inp_img, height, width);
+  format_input_data(R, G, B, RGB, ref_inp_img, hls_inp_img, PRE_MAX_HEIGHT, PRE_MAX_WIDTH);
+
   RGB_to_hlsvector(RGB,hls_RGB_in);
-  float total_error = check_input_data(hls_inp_img, ref_inp_img, height, width);
+  float total_error = check_input_data(hls_inp_img, ref_inp_img, PRE_MAX_HEIGHT, PRE_MAX_WIDTH);
   printf("check on input data: error=%f\n", total_error);
 
   //zero padding, if needed
@@ -345,19 +366,21 @@ int PRE_tb_main(int argc, char **argv)
   /* **************************************************************************************** */
   /* **************************************************************************************** */
 
-  float scale_fact = SCALE_FACT;
-  float norm_fact  = NORM_FACT;
-  float shift_fact = SHIFT_FACT;
-
 
   printf("REF design\n");
-  ref_dpupreproc(ref_inp_img, ref_out_img, norm_fact, shift_fact, scale_fact, height, width);
+  ref_dpupreproc(ref_inp_img, ref_out_img,
+		  pre_means, pre_scales, dpu_fixpos,
+		  height, width);
 
   printf("HLS DUT\n");
-  hls_dpupreproc(hls_inp_img, hls_out_img, norm_fact, shift_fact, scale_fact, height, width); // DUT: Design Under Test
-    
+  hls_dpupreproc(hls_inp_img, hls_out_img,
+		  pre_means[0],pre_means[1],pre_means[2], pre_scales[0],pre_scales[1],pre_scales[2],dpu_fixpos,
+		  height, width); // DUT: Design Under Test
+
   printf("HLS HW-centric\n");
-  hls_dpupreproc_m_axi(hls_RGB_in, hls_RGB_out, norm_fact, shift_fact, scale_fact, height, width); // DUT: Design Under Test
+  hls_dpupreproc_m_axi(hls_RGB_in, hls_RGB_out,
+		  pre_means[0],pre_means[1],pre_means[2], pre_scales[0],pre_scales[1],pre_scales[2],dpu_fixpos,
+		  height, width); // DUT: Design Under Test
 
   /* **************************************************************************************** */
   /* **************************************************************************************** */
@@ -379,7 +402,7 @@ int PRE_tb_main(int argc, char **argv)
     printf("TEST SUCCESSFUL!\n");
     ret_res = 0;
   }
-	
+
 #ifdef DEBUG_TRANSPARENT //work in transparent mode for debug
   {
 
@@ -404,14 +427,18 @@ int PRE_tb_main(int argc, char **argv)
 
   /* **************************************************************************************** */
   // free memory
+  free(tempbuf1);  //free(tempbuf2);
   free(R);
   free(G);
   free(B);
-  free(tempbuf1);  //free(tempbuf2);
-  free(hls_inp_img);
+  free(RGB);
   free(ref_inp_img);
-  free(hls_out_img);
+  free(hls_inp_img);
   free(ref_out_img);
+  free(hls_out_img);
+  free(hls_RGB_in);
+  free(hls_RGB_out);
+
   printf("DPU Pre-Proc END\n");
 
   return ret_res;

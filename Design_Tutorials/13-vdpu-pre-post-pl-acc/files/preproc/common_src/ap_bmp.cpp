@@ -1,11 +1,11 @@
 /*******************************************************************************
-Vendor: Xilinx 
+Vendor: Xilinx
 Associated Filename: ap_bmp.cpp
-Purpose: BMP image reader and writer for Vivado HLS   
+Purpose: BMP image reader and writer for Vivado HLS
 Revision History: February 13, 2012 - initial release
-                                                
+
 *******************************************************************************
-©Copyright 2020 Xilinx Inc.
+©Copyright 2021 Xilinx Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -135,7 +135,7 @@ BMPImage *BMP_CreateBlank(void)
     if(image_header) free(image_header);
     return NULL;
   }
-  
+
   data = (unsigned char *) malloc(MAX_COLS*MAX_ROWS*3);
   if(!data){
     printf("ERROR: Allocate image temp space\n");
@@ -144,7 +144,7 @@ BMPImage *BMP_CreateBlank(void)
     if(bitmap) free(bitmap);
     return NULL;
   }
-  
+
   bitmap->file_header = file_header;
   bitmap->image_header = image_header;
   bitmap->data = data;
@@ -178,8 +178,8 @@ void BMP_Delete(BMPImage *bitmap)
 
 
 //Read the image
-//int BMP_Read(char *file, int row, int col, unsigned char *R, unsigned char *G, unsigned char *B){
-int BMP_Read(char *file, int row, int col, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char *RGB)
+int BMP_Read(char *file, int row, int col, unsigned char *R, unsigned char *G, unsigned char *B)
+//int BMP_Read(char *file, int row, int col, unsigned char *R, unsigned char *G, unsigned char *B, unsigned char *RGB)
 {
   BMPHeader *file_header = NULL;
   BMPImageHeader *image_header = NULL;
@@ -226,7 +226,7 @@ int BMP_Read(char *file, int row, int col, unsigned char *R, unsigned char *G, u
     if(image_header) free(image_header);
     return 1;
   }
-  
+
   //Allocate memory for the image pixels
   image_data = (unsigned char *)malloc(image_header->Height * image_header->Width * 3);
   if(!image_data){
@@ -237,7 +237,7 @@ int BMP_Read(char *file, int row, int col, unsigned char *R, unsigned char *G, u
   }
 
   int img_data_read;
-  
+
   img_data_read = BMP_Read_Image(bmp_file,image_data,(image_header->Height*image_header->Width*3));
   if(img_data_read){
     printf("ERROR: Can't read the image data\n");
@@ -272,15 +272,10 @@ int BMP_Read(char *file, int row, int col, unsigned char *R, unsigned char *G, u
       unsigned char r_temp, b_temp, g_temp;
       unsigned int index = (row-1-i)*col+j;
 
-      b_temp = *tmp++;     RGB[3*index+0] = b_temp;
-      g_temp = *tmp++;     RGB[3*index+1] = g_temp;
-      r_temp = *tmp++;     RGB[3*index+2] = r_temp;
+      b_temp = *tmp++;     //RGB[3*index+0] = b_temp;
+      g_temp = *tmp++;     //RGB[3*index+1] = g_temp;
+      r_temp = *tmp++;     //RGB[3*index+2] = r_temp;
 
-      //      printf("R %d G %d B %d\n",r_temp,b_temp,g_temp);
-
-//      R[(row-1-i)*col+j] = r_temp;
-//      G[(row-1-i)*col+j] = g_temp;
-//      B[(row-1-i)*col+j] = b_temp;
       R[index] = r_temp;
       G[index] = g_temp;
       B[index] = b_temp;
@@ -308,7 +303,7 @@ int BMP_Write(char *file, int row, int col, unsigned char *R, unsigned char *G, 
     printf("ERROR: Can't create image for output file\n");
     return 1;
   }
-  
+
   bitmap->file_header->FileType = 19778;
   bitmap->file_header->FileSize = 0;
   bitmap->file_header->Reserved1 = 0;
@@ -328,13 +323,13 @@ int BMP_Write(char *file, int row, int col, unsigned char *R, unsigned char *G, 
   bitmap->image_header->ColorsImportant = 0;
 
   data = bitmap->data;
-  
+
   //Store the image, bitmaps are stores upside down
   int i, j;
   for(i = 0; i < row; i++){
     for(j=0; j < col; j++){
       unsigned char r_temp, g_temp, b_temp;
-      
+
       r_temp = R[(row-1-i)*col+j];
       g_temp = G[(row-1-i)*col+j];
       b_temp = B[(row-1-i)*col+j];
@@ -379,4 +374,3 @@ int BMP_Write(char *file, int row, int col, unsigned char *R, unsigned char *G, 
 
   return 0;
 }
-  

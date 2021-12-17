@@ -7,7 +7,7 @@
 
  **************************************************************************************
 
- Copyright 2020 Xilinx Inc.
+ Copyright 2021 Xilinx Inc.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -60,7 +60,8 @@ float check_input_data(signed char *inp1, signed char *inp2, unsigned short int 
 
 void char_to_hlsvector(signed char input[POST_hls_MAXSZ], m_axi_input_word hlsvector[POST_hls_MAXSZWORDS]);
 
-int POST_tb_main(int argc, char **argv);
+int POST_tb_main(int argc, char **argv,   int output_fixpos);
+
 
 #endif // ARM_HOST
 #endif

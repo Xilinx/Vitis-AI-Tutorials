@@ -98,7 +98,7 @@ void PRE_Start(  char* PRE_xclbinFilename)
   kernel_pre = xrtPLKernelOpen(PRE_device, PRE_xclbin_uuid,"hls_dpupreproc_m_axi");
 
   size_t size_in_bytes = PRE_MAX_HEIGHT * PRE_MAX_WIDTH * sizeof(unsigned char) * 3;
-  printf("size_in_byte=%d\n", size_in_bytes);
+  printf("size_in_byte=%ld\n", size_in_bytes);
 
   PRE_range.start("Setup", "Create Buffers");
   //create a buffer for the input image
@@ -106,13 +106,13 @@ void PRE_Start(  char* PRE_xclbinFilename)
   PRE_in_bomapped = reinterpret_cast<uint32_t*>(xrtBOMap(img_inp));
   memset(PRE_in_bomapped, 0x0, size_in_bytes);
   printf("Input  memory virtual  addr 0x%px\n", PRE_in_bomapped);
-  printf("Input  memory physical addr 0x%px\n", xrtBOAddress(img_inp));
+  printf("Input  memory physical addr 0x%px\n", (void*) xrtBOAddress(img_inp));
   //create a buffer for the output image
   img_out = xrtBOAlloc(PRE_device, size_in_bytes, 0, 0);
   PRE_out_bomapped = reinterpret_cast<uint32_t*>(xrtBOMap(img_out));
   memset(PRE_out_bomapped, 0x00000000, size_in_bytes);
   printf("Output memory virtual  addr 0x%px\n", PRE_out_bomapped);
-  printf("Output memory physical addr 0x%px\n", xrtBOAddress(img_out));
+  printf("Output memory physical addr 0x%px\n", (void*) xrtBOAddress(img_out));
   PRE_range.end();
   PRE_events.mark("Setup done, Buffers created");
 }
@@ -120,12 +120,10 @@ void PRE_Start(  char* PRE_xclbinFilename)
 /* **************************************************************************************************** */
 /* **************************************************************************************************** */
 
-int PRE_main(char* PRE_xclbinFilename)
+int PRE_main(char* PRE_xclbinFilename, float pre_means[3], float pre_scales[3], int dpu_input_fixpos)
 {
 
-  int i, index;
-
-  int row, col;
+  int index, row, col;
 
   
   /* **************************************************************************************** */
@@ -147,9 +145,6 @@ int PRE_main(char* PRE_xclbinFilename)
   
   PRE_range.start("Arguments", "Setting up arguments");
   //set parameters
-  float scale_fact = SCALE_FACT;
-  float norm_fact  = NORM_FACT;
-  float shift_fact = SHIFT_FACT;
   unsigned short int width = PRE_MAX_WIDTH;
   unsigned short int height = PRE_MAX_HEIGHT;
   PRE_range.end();
@@ -181,10 +176,13 @@ int PRE_main(char* PRE_xclbinFilename)
   // Execute the kernel
 
   PRE_range.start("Kernel execution", "run kernel preproc");
-  xrtURStart(0, "kernel execution", "kernel execution");
+  //xrtURStart(0, "kernel execution", "kernel execution"); DB
   // Execute
   kernel_pre_rhdl = xrtKernelRun(kernel_pre, img_inp, img_out,
-					      norm_fact, shift_fact, scale_fact, height, width);
+			pre_means[0], pre_means[1], pre_means[2],
+			pre_scales[0],pre_scales[1],pre_scales[2],
+			dpu_input_fixpos,
+			height, width);
   auto state = xrtRunWait(kernel_pre_rhdl); //wait for the kernel to finish
   xrtUREnd(0);
   PRE_range.end();
@@ -195,7 +193,9 @@ int PRE_main(char* PRE_xclbinFilename)
 
   PRE_range.start("Ref function", "calling reference function");
   // call reference function
-  arm_ref_dpupreproc(R, G, B, ref_rgb_img, norm_fact, shift_fact, scale_fact, height, width);
+  arm_ref_dpupreproc(R, G, B, ref_rgb_img,
+		  pre_means, pre_scales, dpu_input_fixpos,
+		  height, width);
   //write out the reference bmp file re-using the same R G B buffers
   format_ref_img(R, G, B, ref_rgb_img, height, width);
   sprintf(tempbuf1, "%s_ref.bmp", PRE_INPUT_IMAGE); //construct the file name
@@ -310,7 +310,19 @@ int main(int argc, char* argv[])
 	char* PRE_xclbinFilename = argv[1];
 	std::cout << "PRE_xclbinFilename " << PRE_xclbinFilename << std::endl;
 
-	int PRE_ret = PRE_main(PRE_xclbinFilename);
+	//float pre_means[3]  = {PRE_MEANS[0],   PRE_MEANS[1],  PRE_MEANS[2]};
+	float pre_means[3]  = { 0.0f,   0.0f, 0.0f };
+	//float pre_scales[3] = {PRE_SCALES[0], PRE_SCALES[1], PRE_SCALES[2]};
+	float pre_scales[3] = {1.0f, 1.0f, 1.0f};	
+	// this parameter in the real life must be taken by the ARM CPU from the DPU xmodel subgraph
+	// I put it here just to say that it must come from the external world
+	//int dpu_fixpos = PRE_FIXPOS;
+	int dpu_fixpos = 0; 
+
+
+	int PRE_ret = PRE_main(PRE_xclbinFilename,
+			       pre_means, pre_scales, dpu_fixpos);
+
 	return PRE_ret;
 
 }

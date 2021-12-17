@@ -7,7 +7,7 @@ authors:		daniele.bagni@xilinx.com
 
 **************************************************************************************
 
- Copyright 2020 Xilinx Inc.
+ Copyright 20201Xilinx Inc.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -52,7 +52,8 @@ float check_output_data_hls(m_axi_output_word *hls_data, iRGB_t *ref_data,
 void RGB_to_hlsvector(unsigned char RGB[PRE_MAX_HEIGHT*PRE_MAX_WIDTH], m_axi_input_word hlsvector[PRE_MAX_HEIGHT*PRE_MAX_WIDTH*3/VECTORIZATION_FACTOR]);
 
 
-int PRE_tb_main(int argc, char **argv);
+int PRE_tb_main(int argc, char **argv, float pre_means[3], float pre_scales[3], int dpu_input_fixpos);
+
 
 #endif //#ifndef ARM_HOST
 

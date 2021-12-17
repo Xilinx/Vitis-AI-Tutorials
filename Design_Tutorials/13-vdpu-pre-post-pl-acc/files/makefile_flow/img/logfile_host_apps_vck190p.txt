@@ -1,0 +1,174 @@
+#/*******************************************************************************
+#
+# Copyright 2021 Xilinx Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#    http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#*******************************************************************************/
+
+
+
+
+RUN STANDALONE PL PREPROC
+
+PRE_xclbinFilename /mnt/sd-mmcblk0p1/dpu.xclbin
+PRE XCLBIN UUID 0x0xffffc0776048x
+size_in_byte=4792320
+Input  memory virtual  addr 0x0xffff7e4a7000x
+Input  memory physical addr 0x0x40100000x
+Output memory virtual  addr 0x0xffff7e015000x
+Output memory physical addr 0x0x40600000x
+Input image ./data_pre/testing_0_1920x832.bmp just read
+arm_ref_dpupreproc: Setting norm=1.000000 shift=0.000000 scale_fixpos=0
+Writing reference image ./data_pre/testing_0_1920x832_ref.bmp
+final row  : 832
+final col  : 5760
+final index: 1597439
+total error: 0
+R error: 0
+G error: 0
+B error: 0
+Writing output image ./data_pre/testing_0_1920x832_out.bmp
+Preproc done
+
+RUN STANDALONE PL POSTPROC
+
+POST_xclbinFilename /mnt/sd-mmcblk0p1/dpu.xclbin
+XCLBIN UUID 0x0xffffdf1a4a60x
+ INPUT size_in_byte=11182080
+OUTPUT size_in_byte=399360
+Input   memory virtual  addr 0x0xffff7fe41000x
+Input   memory physical addr 0x0x40100000x
+Output1 memory virtual  addr 0x0xffff7fddf000x
+Output1 memory physical addr 0x0x40080000x
+Output2 memory virtual  addr 0x0xffff7fd7d000x
+Output2 memory physical addr 0x0x40c00000x
+PL PostProc done
+
+RUN KERNELS CHAIN OF PRE + DPU + POST
+
+
+./pre2post ./model/fcn8.xmodel ./data_pre2post/dataset1/img_test/ 1 1 1
+
+
+outSize       4792320
+inpSize       4792320
+outW          960
+outH          416
+outS          4
+inpW          1920
+inpH          832
+inp fixpos    6
+inp fix scale 64
+out fixpos    2
+out fix scale 4
+num classes   12
+batchSize     3
+
+[average calibration high resolution clock] 0.13225us
+
+ max num of images to read 3
+number of images per thread: 3
+
+
+XCLBIN UUID 0x0xfffffcc3a720x
+XCLBIN UUID 0x0xfffffcc3a720x
+PreProc: input       memory virtual  addr 0xffff5d5b3000
+preProc: input       memory physical addr 0x6e800000
+PreProc: output      memory virtual  addr 0xffff5d121000
+PreProc: output      memory physical addr 0x6ed00000
+PreProc:  size_inp_bytes=4792320
+PostProc: size_inp_bytes=11182080
+PostProc: size_out_bytes= 399360
+PostProc: input      memory virtual  addr 0xffff5c677000
+PostProc: input      memory physical addr 0x6f200000
+PostProc: idx output memory virtual  addr 0xffffb6be6000
+PostProc: idx output memory physical addr 0x40580000
+PostProc: max output memory virtual  addr 0xffffb6b84000
+PostProc: max output memory physical addr 0x42980000
+
+PL Accelerators initialized
+
+scale factor: 0.0078125 dpu fix scale: 64 real scale: 0.5
+num_of_images: 3
+reading testing_23.png [1920 x 832]
+reading testing_33.png [1920 x 832]
+reading testing_13.png [1920 x 832]
+
+
+
+
+[READ  Time ] 320039us
+[READ  FPS  ] 9.37387
+
+
+
+
+[SW PREPROC  Time ] 987062us
+[SW PREPROC  FPS  ] 3.03932
+
+
+
+
+[HW PREPROC  Time ] 81028us
+[HW PREPROC  FPS  ] 37.0242
+
+
+now checking preprocessing results: HW vs. SW
+
+PRE TOTAL ERROR=0.000000
+DPU Processing
+INSIDE THE DPU
+outSize  4792320
+ inSize  4792320
+outW     960
+outH     416
+inpW     1920
+inpH     832
+# class  12
+batchSize 3
+
+
+[DPU tot Time ] 58561.5us
+[DPU avg FPS  ] 51.2282
+
+
+
+ DOING POST PROCESSING
+
+
+
+[HW POSTPROC Time ] 38029.8us
+[HW_POSTPROC FPS  ] 78.8856
+
+
+now checking postprocessing results: HW vs. SW
+
+POST TOTAL ERROR=0.000000
+
+Image : testing_23.png
+
+Image : testing_33.png
+
+Image : testing_13.png
+[E2E Time ] 177619us
+[E2E FPS  ] 16.8901
+
+
+deleting imagesList  memory
+deleting imageInputs memory
+deleting ref_imgInputs mem
+deleting FCResult    memory
+deleting idx buffers memory
+deleting max buffer  memory
+deleting hwPre       memory
+deleting hwPost      memory
+END OF PROGRAM
