@@ -65,6 +65,12 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  </tr>
  <tr>
   <td align="center">
+    <a href="./Design_Tutorials/07-yolov4-tutorial/README.md">Vitis AI YOLOv4</a>
+  </td>
+  <td>Learn how to train, evaluate, convert, quantize, compile, and deploy YOLOv4 on Xilinx devices using Vitis AI.</td>
+  </tr>
+ <tr>
+  <td align="center">
    <a href="./Design_Tutorials/08-tf2_flow/README.md">TensorFlow2 and Vitis AI design flow</a>
  </td>
  <td>Learn about the TF2 flow for Vitis AI. In this tutorial, you'll be trained on TF2, including conversion of a dataset into TFRecords, optimization with a plug-in, and compiling and execution on a Xilinx ZCU102 board or Xilinx Alveo U50 Data Center Accelerator card.</td>
