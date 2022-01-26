@@ -1,0 +1,9 @@
+.vscode
+.empty
+.keep
+__pycache__/
+data/
+build_np/
+build_pr/
+*.zip
+trained_model/

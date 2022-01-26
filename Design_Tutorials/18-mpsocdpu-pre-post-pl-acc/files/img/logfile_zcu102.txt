@@ -1,0 +1,222 @@
+#/*******************************************************************************
+#
+# Copyright 2021 Xilinx Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#    http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#*******************************************************************************/
+
+PREPARING ENVIRONMENTAL VARIABLES
+
+total 116900
+-rwxrwxr-x 1 root users 28181640 Jan  1  2015 BOOT.BIN
+-rwxrwxr-x 1 root users 21582336 Jan  1  2015 Image
+drwxrwxr-x 5 root users      512 Jan  1  2015 app
+-rwxrwxr-x 1 root users     2594 Jan  1  2015 boot.scr
+drwxrwxr-x 2 root users     1024 Sep 28 10:03 data_post
+drwxrwxr-x 2 root users      512 Sep 28 10:03 data_pre
+drwxrwxr-x 3 root users     2048 Sep 28 10:14 data_pre2dpu2post
+-rwxrwxr-x 1 root users 26594522 Jan  1  2015 dpu.xclbin
+-rwxrwxr-x 1 root users   112600 Jan  1  2015 host_postproc_xrt
+-rwxrwxr-x 1 root users  1645240 Sep 28 10:13 host_pre2dpu2post_xrt
+-rwxrwxr-x 1 root users   150544 Jan  1  2015 host_preproc_xrt
+-rwxrwxr-x 1 root users      106 Jan  1  2015 init.sh
+-rwxrwxr-x 1 root users     6587 Sep 28 10:14 logfile_zcu102.txt
+drwxrwxr-x 2 root users      512 Jan  1  2015 model
+-rwxrwxr-x 1 root users       28 Jan  1  2015 platform_desc.txt
+-rwxrwxr-x 1 root users     2061 Sep 28 10:05 run_all_on_target.sh
+-rwxrwxr-x 1 root users    40937 Jan  1  2015 system.dtb
+-rwxrwxr-x 1 root users 41375744 Sep 28 10:15 target.tar
+-rwxrwxr-x 1 root users     1346 Sep 28 10:13 user_events.csv
+-rwxrwxr-x 1 root users      322 Sep 28 10:13 xclbin.run_summary
+
+RUN STANDALONE PL PREPROC
+
+PRE_xclbinFilename dpu.xclbin
+PRE XCLBIN UUID 0x0xffffccaf5258x
+size_in_byte=150528
+Input  memory virtual  addr 0x0xffff9d3ec000x
+Input  memory physical addr 0x0x1dd80000x
+Output memory virtual  addr 0x0xffff9d3c7000x
+Output memory physical addr 0x0x1ddc0000x
+Input image ./data_pre/inp_000.bmp just read
+arm_ref_dpupreproc: Setting norm=1.000000 shift=0.000000 scale_fixpos=0
+Writing reference image ./data_pre/inp_000_ref.bmp
+final row  : 224
+final col  : 672
+final index: 50175
+total error: 0
+R error: 0
+G error: 0
+B error: 0
+Writing output image ./data_pre/inp_000_out.bmp
+Preproc done
+
+RUN STANDALONE PL POSTPROC
+
+POST_xclbinFilename dpu.xclbin
+Loaded input data file  ./data_post/post_int8_din.bin
+REF design with DPU output fixpos 2
+writing REF files
+HLS Checking results: REF vs. HLS
+error in max   value: 0.000000
+error in index value: 0.000000
+writing HLS Kernel output generated files
+HLS Test done
+TEST SUCCESSFULL!
+XCLBIN UUID 0x0xffffff789b10x
+ INPUT size_in_byte=602112
+OUTPUT size_in_byte=50176
+Input   memory virtual  addr 0x0xffff7e764000x
+Input   memory physical addr 0x0x1e200000x
+Output1 memory virtual  addr 0x0xffff7e757000x
+Output1 memory physical addr 0x0x1dd70000x
+Output2 memory virtual  addr 0x0xffff7e74a000x
+Output2 memory physical addr 0x0x1dd80000x
+PL PostProc done
+
+RUN CHAIN OF PRE+DPU+POST
+
+
+./host_pre2dpu2post_xrt ./model/zcu102_unet2.xmodel ./data_pre2dpu2post/dataset1/img_test/ 1 1 1
+
+WARNING: Logging before InitGoogleLogging() is written to STDERR
+I0928 13:20:55.997784   917 main_mt.cpp:328] create running for subgraph: subgraph_concatenate/concat
+
+outSize       602112
+inpSize       150528
+outW          224
+outH          224
+outS          2
+inpW          224
+inpH          224
+inp fixpos    6
+inp fix scale 64
+out fixpos    1
+out fix scale 2
+num classes   12
+batchSize     1
+
+[average calibration high resolution clock] 0.08785us
+
+ max num of images to read 3
+number of images per thread: 3
+
+
+Opening Device
+HW: device_             0x0xaaaae549ebb0x
+HW: xclbin_Filename     /media/sd-mmcblk0p1/dpu.xclbin
+HW_PRE: hw_pre kernel
+HW_POST: hw_post kernel
+PreProc: input       memory virtual  addr 0xffff9223b000
+preProc: input       memory physical addr 0x1e1c0000
+PreProc: output      memory virtual  addr 0xffff92216000
+PreProc: output      memory physical addr 0x1e2c0000
+PreProc:  size_inp_bytes= 150528
+PostProc: size_inp_bytes= 602112
+PostProc: size_out_bytes=  50176
+PostProc: input      memory virtual  addr 0xffff92183000
+PostProc: input      memory physical addr 0x25d00000
+PostProc: idx output memory virtual  addr 0xffff92176000
+PostProc: idx output memory physical addr 0x1dd70000
+PostProc: max output memory virtual  addr 0xffff92169000
+PostProc: max output memory physical addr 0x1ddb0000
+
+PL Accelerators initialized
+
+scale factor: 0.0078125 dpu fix scale: 64 real scale: 0.5
+num_of_images: 3
+reading testing_0.png [224 x 224]
+reading testing_35.png [224 x 224]
+reading testing_43.png [224 x 224]
+
+
+
+
+[READ  Time ] 30926.6us
+[READ  FPS  ] 97.0038
+
+
+
+
+[SW PREPROC  Time ] 67960.2us
+[SW PREPROC  FPS  ] 44.1435
+
+
+
+
+[HW PREPROC  Time ] 4445.29us
+[HW PREPROC  FPS  ] 674.872
+
+
+now checking preprocessing results: HW vs. SW
+
+PRE TOTAL ERROR=0.000000
+DPU Processing
+INSIDE THE DPU
+outSize  602112
+ inSize  150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 1
+
+
+[DPU tot Time ] 244570us
+[DPU avg FPS  ] 12.2664
+
+
+
+ DOING POST PROCESSING
+
+
+
+[HW POSTPROC Time ] 6102.51us
+[HW_POSTPROC FPS  ] 491.601
+
+
+writing binary file with POST input data
+writing binary file with POST index output data
+now checking postprocessing results: HW vs. SW
+
+POST TOTAL ERROR=0.000000
+
+Image : testing_0.png
+
+Image : testing_35.png
+
+Image : testing_43.png
+[E2E Time ] 255118us
+[E2E FPS  ] 11.7593
+
+
+deleting imagesList  memory
+deleting imageInputs memory
+deleting ref_imgInputs mem
+deleting FCResult    memory
+deleting idx buffers memory
+deleting max buffer  memory
+deleting hwPre
+~HW_PRE: HW_PRE closing kernel_rhdl_ = 0x0xaaaae515f5c0x
+~HW_PRE: HW_PRE closing kernel_      = 0x0xaaaae5291990x
+~HW_PRE: xrtBOFree (img_inp_)
+~HW_PRE: xrtBOFree (img_out_)
+deleting hwPost
+~HW_POST: HW_POST closing kernel_rhdl_ = 0x0xaaaae52825e0x
+~HW_POST: HW_POST closing kernel_      = 0x0xaaaae5158f80x
+~HW_POST: xrtBOFree (input_)
+~HW_POST: xrtBOFree (idx_out_)
+~HW_POST: xrtBOFree (max_out_)
+deleting hw
+~HW: xclbin_ = 0x0xaaaae51e6b50x
+END OF PROGRAM
