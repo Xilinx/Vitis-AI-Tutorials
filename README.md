@@ -63,6 +63,12 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  </td>
  <td>Train the FCN8 and UNET Convolutional Neural Networks (CNNs) for Semantic Segmentation in Keras adopting a small custom dataset, quantize the floating point weights files to an 8-bit fixed point representation, and then deploy them on the Xilinx ZCU102 board using Vitis AI.</td>
  </tr>
+  <tr>
+ <td align="center">
+   <a href="./Design_Tutorials/07-yolov4-tutorial/readme.md">Vitis AI YOLOv4</a>
+ </td>
+ <td>Learn how to train, evaluate, convert, quantize, compile, and deploy YOLOv4 on Xilinx devices using Vitis AI.</td>
+ </tr>
  <tr>
   <td align="center">
    <a href="./Design_Tutorials/08-tf2_flow/README.md">TensorFlow2 and Vitis AI design flow</a>
@@ -125,7 +131,27 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  <td>Introduces the the Vitis AI Profiler tool flow and will illustrates how to profile an example from the Vitis AI runtime (VART).
 </td>
  </tr>
-</table>
+ <tr>
+  <td align="center">
+   <a href="./Design_Tutorials/17-PyTorch-CityScapes-Pruning/README.md">PyTorch CityScapes Pruning</a>
+ </td>
+ <td>Provides a starting point and demonstration of the PyTorch pruning capabilities for segmentation models.
+</td>
+ </tr>
+ <tr>
+  <td align="center">
+   <a href="./Design_Tutorials/18-mpsocdpu-pre-post-pl-acc/README.md">Pre- and Post-processing Accelerators for Semantic Segmentation with Unet CNN on MPSoC DPU</a>
+ </td>
+ <td>A complete example of how using the <a href="https://github.com/Xilinx/Vitis-AI/tree/master/demo/Whole-App-Acceleration">WAA</a> flow targeting the MPSoC ZCU102 board.
+</td>
+ </tr>
+ <tr>
+  <td align="center">
+   <a href="./Design_Tutorials/19-tf1_keras_optimizer/README.md">TensorFlow1 AI Optimizer example using Keras</a>
+ </td>
+ <td> use Xilinx's AI Optimizer for TensorFlow1 to prune a MobileNetV2 CNN by 50% whilst maintaining the original floating-point accuracy.
+</td>
+ </tr></table>
 
 
 ### Feature Tutorials
