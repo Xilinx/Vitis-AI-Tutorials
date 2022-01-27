@@ -66,15 +66,15 @@ K.set_learning_phase(0)
 
 # load weights & architecture into new model
 if model_name=="fcn8ups" :
-        weights= "fcn8ups/ep200_trained_fcn8ups_224x224.hdf5"
+        weights= f"fcn8ups/ep{cfg.EPOCHS}_trained_fcn8ups_224x224.hdf5"
 elif model_name=="fcn8" :
-        weights= "fcn8/ep200_trained_fcn8_224x224.hdf5"
+        weights= f"fcn8/ep{cfg.EPOCHS}_trained_fcn8_224x224.hdf5"
 elif model_name=="unet1" :
-        weights= "unet/ep200_trained_unet_model1_224x224.hdf5"
+        weights= f"unet/ep{cfg.EPOCHS}_trained_unet_model1_224x224.hdf5"
 elif model_name=="unet2" :
-        weights= "unet/ep200_trained_unet_model2_224x224.hdf5"
+        weights= f"unet/ep{cfg.EPOCHS}_trained_unet_model2_224x224.hdf5"
 else: # elif model_name=="unet3" :
-        weights= "unet/ep200_trained_unet_model3_224x224.hdf5"
+        weights= f"unet/ep{cfg.EPOCHS}_trained_unet_model3_224x224.hdf5"
 
 print("model name = ", model_name)
 filename = os.path.join(WEIGHTS_DIR,weights)
