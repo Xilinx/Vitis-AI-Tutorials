@@ -8,7 +8,7 @@
 </table>
 
 
-This tutorial is divided in 3 sections.
+This tutorial is divided into 3 sections.
 * [**Section 1**](./01-Workflows) :
   + An overview of Vitis and Vitis-AI Workflows
     * See how Vitis unifies software, acceleration, and ML development under a single development platform.
