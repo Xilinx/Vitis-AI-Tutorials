@@ -1,6 +1,6 @@
 # Vitis and Vitis-AI Workflow
 
-The Vitis unified software platform enables the development of embedded software and accelerated applications on heterogeneous Xilinx platforms including FPGAs, SoCs, and Versal ACAPs. It provides a unified programming model for accelerating Edge, Cloud, and Hybrid computing applications.
+The Vitis &trade unified software platform enables the development of embedded software and accelerated applications on heterogeneous Xilinx platforms including FPGAs, SoCs, and Versal ACAPs. It provides a unified programming model for accelerating Edge, Cloud, and Hybrid computing applications.
 
 ## Layered Vitis Software Platform Workflow
 
@@ -35,7 +35,7 @@ Vitis AI includes following key components:
 
 When using Vitis AI, there are three steps in general which are shown in the following diagram, including:
 
-- Model development - train models or get models from Vitis AI model zoo, use Vitis AI optimizer (optional), quantizer and compiler to convert float models into DPU instruction files 
+- Model development - train models or get models from Vitis AI model zoo, use Vitis AI optimizer (optional), quantizer and compiler to convert float models into DPU instruction files
 - HW development - use Vitis tool to integrate DPU IP and other kernels with platform and generate board boot files
 - SW development - implement model deployment codes using VART or Vitis AI library, finish application level SW development and generate executable running on board
 
@@ -63,11 +63,11 @@ Here is a diagram of the functional blocks involved for application on ARM to co
 
 ## Workflow in this Tutorial
 
-This tutorial will guide you from high level to low level in step-by-step manner. 
+This tutorial will guide you from high level to low level in step-by-step manner.
 
 We'll start from development environment setup in Section 2.
 
-Section 3 Module 1-3 introduces the Vitis-AI demo setup. Module 4 guides you through the CIFAR10 Classification example using Vitis AI and TensorFlow. Module 5 explains how to switch to other networks. All above are on the "Evaluation Flow" level for Data Scientists for Vitis-AI workflow. 
+Section 3 Module 1-3 introduces the Vitis-AI demo setup. Module 4 guides you through the CIFAR10 Classification example using Vitis AI and TensorFlow. Module 5 explains how to switch to other networks. All above are on the "Evaluation Flow" level for Data Scientists for Vitis-AI workflow.
 
 Section 3 Module 6 introduces how to use Vitis Libraries to speed up pre/post processing for machine learning applications. It brings performance optimization in system level. It's a step in "Development Flow" in the scope of Vitis workflow.
 
