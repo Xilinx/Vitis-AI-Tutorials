@@ -1,5 +1,5 @@
 ﻿<!--
-Copyright 2021 Xilinx Inc.
+Copyright 2021-2023 Xilinx Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,9 +29,9 @@ Author: Daniele Bagni, Xilinx Inc
 
 ### Current status
 
-1. Tested with Vitis AI 1.3.2 (with [April 2021 Patch](https://github.com/Xilinx/Vitis-AI/blob/master/docs/quick-start/install/Vitis%20AI%201.3.2%20April%202021%20Patch.md)) on an Ubuntu 16.04.7 Desktop PC.
+1. Tested with Vitis AI&trade; 1.3.2 (with [April 2021 Patch](https://github.com/Xilinx/Vitis-AI/blob/master/docs/quick-start/install/Vitis%20AI%201.3.2%20April%202021%20Patch.md)) on an Ubuntu 16.04.7 Desktop PC.
 
-2. Tested in hardware on ZCU102 and ZCU104 boards respectively with  ``xilinx-zcu102-dpu-v2020.2-v1.3.1.img.gz`` and ``xilinx-zcu104-dpu-v2020.2-v1.3.1.img.gz`` sd cards.
+2. Tested in hardware on ZCU102 and ZCU104 boards respectively with  ``xilinx-zcu102-dpu-v2020.2-v1.3.1.img.gz`` and ``xilinx-zcu104-dpu-v2020.2-v1.3.1.img.gz`` SD cards.
 
 3. Tested in hardware with Depth-Wise Convolution enabled on XVDPU TRD with VCK190 ES1 in Vitis 2020.2 environment.
 
@@ -47,23 +47,22 @@ In particular, most of the python code of this tutorial comes from  [Mark Harvey
 
 # 1 Introduction
 
-In this Deep Learning (DL) tutorial, you will learn how to deploy a CNN on
-the Xilinx&reg; [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html) board using Vitis&trade; AI, which is a set of
+In this Deep Learning (DL) tutorial, you will learn how to deploy a convolutional neural network (CNN) on
+the Xilinx&reg; [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html) board using Vitis AI, which is a set of
 optimized IP, tools libraries, models and example designs valid for AI inference on both Xilinx edge devices
-and [Alveo](https://www.xilinx.com/products/boards-and-kits/alveo.html) cards.
+and [Alveo]&trade;(https://www.xilinx.com/products/boards-and-kits/alveo.html) cards.
 
-The Vitis AI deployment process requires to quantize the floating point CNN model into INT8 (8-bit) fixed point and then compile the application and run it on the
-embedded system composed by the Deep Processor Unit (DPU) and the ARM CPU of the target board.
-In particular the VCK190 board applies the DPUCVDX8G IP soft core.
+The Vitis AI deployment process requires quantizing the floating-point CNN model into INT8 (8-bit) fixed point and then compiling the application and running it on the embedded system composed by the Deep Processor Unit (DPU) and the ARM CPU of the target board. In particular, the VCK190 board applies the DPUCVDX8G IP soft core.
 
-The CNN of this example has some layers not yet supported by the DPU, therefore the Vitis AI compiler has to split the CNN into subgraphs and the user has to manually partition such subgraphs among the ARM CPU and the DPU tasks. This tutorial aims to illustrate the procedure to create and test the target board application with such CPU/DPU subgraphs partitioning.
+The CNN of this example has some layers not yet supported by the DPU. Therefore, the Vitis AI compiler has to split the CNN into subgraphs, and the user has to manually partition such subgraphs among the ARM CPU and the DPU tasks. This tutorial illustrates the procedure to create and test the target board application with such CPU/DPU subgraphs partitioning.
 
-The training is done using the PyTorch virtual environment inside  Vitis AI, in order to correctly classify two similar objects - ``automobile`` and ``truck`` - taken from the [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html)  dataset, a collection of 32x32x3 RGB images with ten different classes.
+The training is done using the PyTorch virtual environment inside  Vitis AI to classify two similar objects - ``automobile`` and ``truck`` correctly - taken from the [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html)  dataset, a collection of 32x32x3 RGB images with ten different classes.
 
 This repository is organized in the following folders:
-- [doc](files/doc): it  contains the figures of this README.md file;
-- [build](files/build): it holds the outputs produced at any step of the Vitis AI flow, there is also the pre-trained CNN floating point model, named ``cnn_float.pt``, and placed in the subfolder [data](files/build/data), in case you want to skip the training process to save time;
-- [application](files/application):  the application to be launched on the target board.
+- [Doc](files/doc): contains the figures of this README.md file.
+- [Build](files/build): holds the outputs produced at any step of the Vitis AI flow. The pre-trained CNN floating-point model, named ``cnn_float.pt``, is placed in the subfolder.
+- [Data](files/build/data) if you want to skip the training process to save time.
+- [Application](files/application): the application to be launched on the target board.
 
 
 
@@ -73,28 +72,28 @@ This repository is organized in the following folders:
 
 - The entire repository of [Vitis AI stack release 1.3.2](https://github.com/Xilinx/Vitis-AI) from [www.github.com/Xilinx](https://www.github.com/Xilinx).
 
--  Accurate reading of [Vitis AI User Guide UG1414 v1.3](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_3/ug1414-vitis-ai.pdf). In particular:
+-  Accurate reading of *[Vitis AI User Guide UG1414 v1.3]*(https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_3/ug1414-vitis-ai.pdf). In particular:
 
-  1. "Vitis AI Overview" in Chapter 1 with DPU naming and guidelines to download the tools container available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags) and the Runtime Package for edge (MPSoC) devices.
-  2. "Installation and Setup" instructions of Chapter 2 for both host and target, it is recommended you build a GPU-based docker image.
-  3. "Quantizing the Model" in Chapter 4 and "Compiling the Model" in Chapter 5.
-  4. "Programming with VART" APIs in Chapter 6.
+  1. *Vitis AI Overview* in Chapter 1 with DPU naming and guidelines to download the tools container available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags) and the Runtime Package for edge (MPSoC) devices.
+  2. *Installation and Setup* instructions in Chapter 2 for both host and target; it is recommended to build a GPU-based docker image.
+  3. *Quantizing the Model* in Chapter 4 and *Compiling the Model* in Chapter 5.
+  4. *Programming with VART* APIs in Chapter 6.
 
 
-- The [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html) evaluation board with its image file, which contains a pre-built working design for the VCK190 with the DPUCVDX8G, renamed shortly as "XVDPU" in the following of this document.
+- The [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html) evaluation board with its image file, which contains a pre-built working design for the VCK190 with the DPUCVDX8G (XVDPU), referred to as XVDPU in the rest of this document.
 
-- Alternatively to VCK190, you can also use the [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html) with its [image file](https://www.xilinx.com/bin/public/openDownload?filename=xilinx-zcu102-dpu-v2020.2-r1.3.0.2.0.img.gz), which contains a pre-built working design for the ZCU102 with the DPUCZDX8G (renamed shortly as "DPUv2"), or the [ZCU104](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu104-g.html) with its [image file](https://www.xilinx.com/bin/public/openDownload?filename=xilinx-zcu104-dpu-v2020.2-r1.3.0.2.0.img.gz).
+- Alternatively, for VCK190, you can use [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html) with its [image file](https://www.xilinx.com/bin/public/openDownload?filename=xilinx-zcu102-dpu-v2020.2-r1.3.0.2.0.img.gz), which contains a pre-built working design for the ZCU102 with the DPUCZDX8G (renamed shortly as "DPUv2"), or the [ZCU104](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu104-g.html) with its [image file](https://www.xilinx.com/bin/public/openDownload?filename=xilinx-zcu104-dpu-v2020.2-r1.3.0.2.0.img.gz).
 
-- (Optional) Either [MATLAB](https://uk.mathworks.com/products/matlab.html) or [GNU Octave](https://www.gnu.org/software/octave/index) just to launch the only ``*.m`` script in this repository.
+- (Optional) Either [MATLAB](https://uk.mathworks.com/products/matlab.html) or [GNU Octave](https://www.gnu.org/software/octave/index) to launch the ``*.m`` script in this repository.
 
-- (Optional) [Visual Studio Code](https://code.visualstudio.com) (shortly VSC), for SSH remote debugging the application on the target board from the host PC.
+- (Optional) [Visual Studio Code](https://code.visualstudio.com) (VS Code), for SSH remote debugging the application on the target board from the host PC.
 
 - Familiarity with Deep Learning principles.
 
 
 ### Dos-to-Unix Conversion
 
-In case you might get some strange errors during the execution of the scripts, you have to pre-process -just once- all the``*.sh`` shell and the python ``*.py`` scripts with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility.
+If you run into errors during the execution of the scripts, you have to pre-process -just once- all the``*.sh`` shell and the python ``*.py`` scripts with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility.
 In that case run the following commands from your Ubuntu host PC (out of the Vitis AI docker images):
 ```bash
 sudo apt-get install dos2unix
@@ -106,8 +105,8 @@ done
 
 ### Working Directory
 
-In the following of this document it is assumed you have installed Vitis AI 1.3.2 somewhere in your file system and this will be your working directory ``<VAI_DIR>``, for example in my case ``<VAI_DIR>`` is set to
-``~/ML/Vitis-AI.1.3.2``.  You have also created a folder named ``tutorials`` under such ``<VAI_DIR>`` and you have copied this tutorial there and renamed it ``VAI-SUBGRAPHS``:
+This document assumes you have installed Vitis AI 1.3.2 in your file system and it is  your working directory ``<VAI_DIR>``. For example in this tutorial ``<VAI_DIR>`` is set to
+``~/ML/Vitis-AI.1.3.2``. It also assumes you have created a folder named ``tutorials`` under ``<VAI_DIR>`` and you have copied this tutorial there and renamed it ``VAI-SUBGRAPHS``:
 
 ```text
 Vitis-AI-1.3.2   # your VAI_DIR
@@ -136,12 +135,12 @@ Vitis-AI-1.3.2   # your VAI_DIR
                ├── doc
 ```  
 
-Note that for your comfort the reference log files for each step of the flow are placed in the [ref_log](files/build/ref_log) folder.  
+**Note:** The reference log files for each step of the flow are placed in the [ref_log](files/build/ref_log) folder for easy easy access.  
 
 
 # 3 The Docker Tools Image
 
-You have to know few things about [Docker](https://docs.docker.com/) in order to run the Vitis AI smoothly on your host environment.
+You need the following information on [Docker](https://docs.docker.com/) to run  Vitis AI smoothly on your host environment:
 
 ## 3.1 Installing Docker Client/Server
 
@@ -159,7 +158,7 @@ sudo docker run hello-world
 docker version
 ```
 
-Once done, in my case, I could see the following:
+Here is an example of what appears on completing the step:
 ```
 Client: Docker Engine - Community
  Version:           20.10.5
@@ -195,17 +194,17 @@ Server: Docker Engine - Community
 
 Download the [Vitis AI 1.3.2](https://github.com/Xilinx/Vitis-AI/tree/v1.3.2) and execute the [docker_build_gpu.sh](https://github.com/Xilinx/Vitis-AI/blob/v1.3.2/setup/docker/docker_build_gpu.sh) script.
 
-Once done that, to list the currently available docker images run:
+To list the currently available docker images run:
 ```bash
 docker images # to list the current docker images available in the host pc
 ```
-and you should see something like in the following text:
+and you will see text similar to the following:
 ```text
 REPOSITORY            TAG                               IMAGE ID       CREATED         SIZE
 xilinx/vitis-ai-gpu   latest                            7623d3de1f4d   6 hours ago     27.9GB
 ```
 
-Note that docker does not have an automatic garbage collection system as of now. You can use this command to do a manual garbage collection:
+**Note:** The docker does not have an automatic garbage collection system as of now. You can use this command to do a manual garbage collection:
 ```
 docker rmi -f $(docker images -f "dangling=true" -q)
 ```
@@ -233,7 +232,7 @@ conda install xnnc-1.3.2-py36_48.tar.bz2
 #conda install xnnc-1.3.2-py37_48.tar.bz2 # good only for python 3.7
 ```
 
-This tutorial requires also some packages that were not included in the original Vitis AI tools container.
+This tutorial also requires some packages that were not included in the original Vitis AI tools container.
 Following the previous commands, here are the further commands to include such packages:
 ```bash
 pip install torchsummary
@@ -242,12 +241,12 @@ exit # to exit from root
 conda activate vitis-ai-pytorch # as normal user, enter into Vitis AI TF (anaconda-based) virtual environment
 ```
 
-Note that if you exit from the current Docker Vitis AI tools image you will lose all the installed packages, so to save all changes in a new docker image open a new terminal and run the following commands:
+**Note:** If you exit from the current Docker Vitis AI tools image, you will lose all the installed packages. To save the changes in a new docker image, open a new terminal and run the following commands:
 
 ```bash
 sudo docker ps -l # To get the Docker CONTAINER ID
 ```
-you will see the following text (the container ID might have a different number):
+The following text (the container ID might have a different number) appears:
 
 ```text
 CONTAINER ID        IMAGE                        COMMAND                CREATED             STATUS              NAMES
@@ -272,17 +271,14 @@ cd /workspace/tutorials/
 cd VAI-SUBGRAPHS/files #your working directory
 ```
 
-Note that the container maps the shared folder ``/workspace`` with the file system of the Host PC from where you launch the above command, which is ``<VAI_DIR>`` in your case.
-This shared folder enables you to transfer files from the Host PC to the docker container and vice versa.
+**Note:** The container maps the shared folder ``/workspace`` with the file system of the host pc from where you launch the above command, which is ``<VAI_DIR>`` in your case.
+This shared folder enables you to transfer files from the host pc to the docker container and vice versa.
 
-The docker container does not have any graphic editor, so it is recommended that you work with two terminals and you point to the same folder, in one terminal you use the docker container commands and in the other terminal you open any graphic editor you like.
-
-
-
+The docker container does not have any graphic editor, so it is recommended that you work with two terminals pointing  to the same folder. In one terminal, you use the docker container commands, and in the other terminal, you open any graphic editor you prefer.
 
 # 4 DPU and CPU SubGraphs of the CNN
 
-The CNN model pytorch description is placed in the file [common.py](files/common.py), there are nine layers:
+The CNN model PyTorch description is placed in the  [common.py](files/common.py) file. There are nine layers:
 
 ```
         Layer (type)               Output Shape         Param #
@@ -301,9 +297,9 @@ Total params: 18,090
 Trainable params: 18,090
 ```
 
-The three [activation](https://medium.com/@omkar.nallagoni/activation-functions-with-derivative-and-python-code-sigmoid-vs-tanh-vs-relu-44d23915c1f4) layers - ``Tanh-2`` ``Sigmoid-5`` and ``Sigmoid-9`` -  are not supported by the DPU and therefore they need to be implemented into the ARM CPU either in Python or in C++ code, whereas all the remaining layers can run directly on the DPU soft core.
+The three [activation](https://medium.com/@omkar.nallagoni/activation-functions-with-derivative-and-python-code-sigmoid-vs-tanh-vs-relu-44d23915c1f4) layers - ``Tanh-2`` ``Sigmoid-5`` and ``Sigmoid-9`` -  are not supported by the DPU. Therefore, they need to be implemented into the ARM CPU either in Python or C++ code. In contrast, all the remaining layers can run directly on the DPU softcore.
 
-The whole flow, from training to quantization and compilation with Vitis AI can be launched with the command:
+Use the following command to launch the whole flow, from training to quantization and compilation with Vitis AI:
 
 ```shell
 source ./run_all.sh
@@ -340,7 +336,7 @@ Accuracy train: 86.02(%)
 Accuracy val  : 84.65(%)
 ```
 
-The related reference log files for each step of the flow are placed in the [ref_log](files/build/ref_log) folder.  In particular the ``compile.log`` file reports seven subgraphs of which three running on the DPU as illustrated in the following text fragment:
+The [ref_log](files/build/ref_log) folder contains the related reference log files for each step of the flow.  In particular, the ``compile.log`` file reports seven subgraphs, of which three run on the DPU as illustrated in the following text fragment:
 
 ```text
 [UNILOG][INFO] Total device subgraph number 7, DPU subgraph number 3
@@ -360,10 +356,10 @@ The same information more or less can be found also in the text file [cnn_int8_s
 
 # 5 Target Application
 
-The python application running on the target board is in the [main_subgraphs.py](files/application/main_subgraphs.py) file, such application mirrors what illustrated in the  [cnn_int8_xmodel.png](files/doc/images/cnn_int8_xmodel.png) block diagram of the DPU/CPU subgraphs (or alternatively in [cnn_int8_subgraph_tree.txt](files/doc/images/cnn_int8_subgraph_tree.txt)),
-in particular for what concerns the names of input and output tensors.
+The python application running on the target board is in the [main_subgraphs.py](files/application/main_subgraphs.py) file. The application mirrors what is illustrated in the  [cnn_int8_xmodel.png](files/doc/images/cnn_int8_xmodel.png) block diagram of the DPU/CPU subgraphs (or, alternatively in [cnn_int8_subgraph_tree.txt](files/doc/images/cnn_int8_subgraph_tree.txt)),
+especially for the names of input and output tensors.
 
-Once identified the 3 DPU subgraphs that follow the input layer and its related subgraph in the ``app()`` subroutine, you assign each of them to a DPU Runner and launch all of them,  as shown in the following fragment of code:
+Once identified the 3 DPU subgraphs that follow the input layer and its related subgraph in the ``app()`` subroutine, assign each of them to a DPU Runner and launch all of them,  as shown in the following fragment of code:
 ```python
 ...
 dpu_1 = vart.Runner.create_runner(dpu_subgraph1, "run")
@@ -373,7 +369,7 @@ dpu_5 = vart.Runner.create_runner(dpu_subgraph5, "run")
 runDPU(dpu_1, dpu_3, dpu_5, img)
 ```
 
-Note that in the ``runDPU()`` subroutine you have to execute them asynchronously via the ``execute_async()`` function, as illustrated in the following code:
+**Note**: In the ``runDPU()`` subroutine, you need to execute them asynchronously using the ``execute_async()`` function, as shown in the following code:
 ```python
 ...
 # run DPU
@@ -402,14 +398,14 @@ inp6 = out5.copy()    # for cache coherency
 out6 = Sigmoid2(inp6) # CPU task
 ```
 
-For example line 15 of [cnn_int8_subgraph_tree.txt](files/doc/images/cnn_int8_subgraph_tree.txt) file contains the input and output tensors of the first DPU subgraph ``subgraph_CNN__CNN_Conv2d_conv1__18``, which are named respectively ``CNN__input_0_fix`` and ``CNN__CNN_Conv2d_conv1__18_fix``.
-The same happens for line 20 related to the second subgraph ``subgraph_CNN__CNN_Conv2d_conv2__35`` with input ``CNN__CNN_Tanh_act1__19_fix`` and output ``CNN__CNN_Conv2d_conv2__35_fix`` tensors and for line 26 related to the third subgraph ``subgraph_CNN__CNN_Linear_fc1__48`` with input ``CNN__CNN_Sigmoid_act2__36_fix`` and output ``CNN__CNN_Linear_fc1__48_fix`` tensors.
+For example line 15 of [cnn_int8_subgraph_tree.txt](files/doc/images/cnn_int8_subgraph_tree.txt) file contains the input and output tensors of the first DPU subgraph ``subgraph_CNN__CNN_Conv2d_conv1__18``, which are named ``CNN__input_0_fix`` and ``CNN__CNN_Conv2d_conv1__18_fix``respectively.
+The same applies for line 20 related to the second subgraph ``subgraph_CNN__CNN_Conv2d_conv2__35`` with input ``CNN__CNN_Tanh_act1__19_fix`` and output ``CNN__CNN_Conv2d_conv2__35_fix`` tensors and for line 26 related to the third subgraph ``subgraph_CNN__CNN_Linear_fc1__48`` with input ``CNN__CNN_Sigmoid_act2__36_fix`` and output ``CNN__CNN_Linear_fc1__48_fix`` tensors.
 
-The  subgraphs running on the ARM CPU are: ``Tanh()``, ``Sigmoid1()`` and ``Sigmoid2()``.  The last two routines are the same, but they were renamed differently to make easier the debug process.
+The  subgraphs running on the ARM CPU are: ``Tanh()``, ``Sigmoid1()``, and ``Sigmoid2()``.  The last two routines are the same, but they were renamed differently to simplify the debugging process.
 
-The output of each DPU subgraph is copied as input tensor to the next CPU subgraph. Be very careful with the names of the tensors, there must be no mismatches at all.
+The output of each DPU subgraph is copied as input tensor to the next CPU subgraph. **Caution: Ensure there are not mismatches in the names of the tensors.   
 
-Note that the size of the output buffers was set accordingly to [cnn_int8_subgraph_tree.txt](files/doc/images/cnn_int8_subgraph_tree.txt) as illustrated in the following code fragment:
+**Note:** The size of the output buffers was set in accordance to [cnn_int8_subgraph_tree.txt](files/doc/images/cnn_int8_subgraph_tree.txt), as shown in the following code block:
 
 ```python
 inputTensor_1  = dpu_1.get_input_tensors()
@@ -425,17 +421,17 @@ out5 = np.zeros([1, 32        ], dtype='float32')
 ...
 ```
 
-If you set the output format for ``float32``, you do not need to convert from ``int8`` to ``float32``, because ``VART`` APIs will do it automatically. But if you write:
+If you set the output format for ``float32`` you do not need to convert from ``int8`` to ``float32``, because ``VART`` APIs do it automatically. However, if you write:
 
 ```python
 out1 = np.zeros([1, 32, 32, 16], dtype=‘int8’)
 ```
-as opposed to:
+instead of:
 
 ```python
 out1 = np.zeros([1, 32, 32, 16], dtype='float32')
 ```
-then you would need to manually convert the data from ``int8`` to ``float32`` with code similar to this one:
+you need to manually convert the data from ``int8`` to ``float32`` with code similar to this one:
 
 ```python
 fix_points = [ -1 * t.get_attr('fix_point') for t in dpu_1.get_output_tensors() ]
@@ -453,13 +449,14 @@ print(o1_cvrt)
 
 # 6 Functional Debug
 
-To check the correct functional behavior of the CPU/DPU subgraphs partitioning, first you have to set in the python code the following variable:
+To check the correct functional behavior of the CPU/DPU subgraphs partitioning, first you have to set the following variable in the python code:
 ```python
 DEBUG = True
 ```
-which will enable the launch of ``DEBUG_runDPU()`` routine, second I recommend the following procedure (which I have applied with only one input test picture):
+which enables the launch of ``DEBUG_runDPU()`` routine. Second, I recommend the following procedure (which I have applied with only one input test picture):
 
-1. Copy with ``scp`` utility the ``target.tar`` archive from the host to the target board, then launch the application on the target board and collect the ``*.bin.npy`` output intermediate results. Store the results on a tar archive and copy it back from the target to the host PC in the ``build/target/application`` subfolder. You can launch the application using either VSC GUI (see [Appendix A1](#a1-ssh-debug-with-visual-studio-code)) or the following command lines:
+1. Copy  the ``target.tar`` archive from the host to the target board with ``scp`` utility, and then launch the application on the target board and collect the ``*.bin.npy`` output intermediate results.
+2. Store the results on a tar archive and copy it back from the target to the host PC in the ``build/target/application`` subfolder. You can launch the application using either VSC GUI (see [Appendix A1](#a1-ssh-debug-with-visual-studio-code)) or the following command lines:
   ```shell
   # from host PC assuming target board IP address would be 192.168.1.40)
   cd /workspace/tutorials/VAI-SUBGRAPHS/files/ # your working directory
@@ -475,14 +472,14 @@ which will enable the launch of ``DEBUG_runDPU()`` routine, second I recommend t
   scp root@192.168.1.40:~/target/application/*.log ../../log # copy log file
   ```
 
-2. From the host, launch the command (for your comfort it is already included in the script ``prepare_target.sh``):
+2. From the host, launch the command (It is already included in the script ``prepare_target.sh`` for easy access):
   ```shell
   cd /workspace/tutorials/VAI-SUBGRAPHS/files/ # your working directory
   python -c "import common; dbg_model=common.RUN_CNN_DEBUG('./build/target/application/test')" \
       2>&1 | tee ./build/log/functional_debug1_on_host.log
   mv *.bin.npy ./build/target/application/
   ```
-  and collect the ``ref_*.bin.npy``  reference intermediate results (to be compared later against the respective ones computed on the target).
+  and collect the ``ref_*.bin.npy``  reference intermediate results. Use these to compare against the respective ones computed on the target.
 
 3. Launch the ``run_debug.py`` script on the host to generate the ``*.csv`` files that can be read also in MATLAB or GNU Octave (or also MS Excel):
   ```shell
@@ -491,14 +488,14 @@ which will enable the launch of ``DEBUG_runDPU()`` routine, second I recommend t
   python3 run_debug.py 2>&1 | tee ../../log/functional_debug2_on_host.log
   ```
 
-4. Launch the script ``run_debug.m`` either directly from [MATLAB](https://uk.mathworks.com/products/matlab.html) or [GNU Octave](https://www.gnu.org/software/octave/index)) GUIs. This script computes the differences between reference host results and actual target results (from ``*.csv`` files) and plot them on the next Figures from 3 to 15.
+4. Launch the script ``run_debug.m`` either directly from [MATLAB](https://uk.mathworks.com/products/matlab.html) or [GNU Octave](https://www.gnu.org/software/octave/index)) GUIs. This script computes the differences between reference host results and actual target results (from ``*.csv`` files) and plot them, as shown in from Figures 3 to 15.
 
 
-For step 1 I have found [Visual Studio Code](https://code.visualstudio.com) very useful, as illustrated in the screenshot of Figure 2:
+[Visual Studio Code](https://code.visualstudio.com) is useful for step 1, as shown in Figure 2:
 
 ![figure2](files/doc/images/vsc_ssh_dbg.png)
 
-*Figure 2: SSH remote debugging with VSC.*
+*Figure 2: SSH Remote Debugging with VS Code.*
 
 
 ## 6.1 Inspect Tensors with XIR APIs
@@ -520,7 +517,7 @@ if DEBUG:
     print(" inputTensor5\n", inputTensor_3)
     print("outputTensor5\n", outputTensor_3)
 ```
-will show the following outputs:
+shows the following outputs:
 
 ```text
 inputTensor1={name: 'CNN__input_0_fix', shape: [1, 32, 32, 3], type: 'xint8', attrs: {'ddr_addr': 112, 'fix_point': 6, 'location': 1, 'round_mode': 'DPU_ROUND', 'bit_width': 8, 'if_signed': True, 'reg_id': 2}}
@@ -539,80 +536,80 @@ outputTensor5={name: 'CNN__CNN_Linear_fc1__48_fix', shape: [1, 32], type: 'xint8
 
 ## 6.2 Check Numerical Results
 
-Figures 3 to 15 illustrate the small numerical differences between the results computed by the CNN model running on the host PC in floating point (files named ``ref_*.csv``) and the results computed by the DPU/CPU  partitioning on the target board (same ``*.csv`` file names without the prefix ``ref_``).  Since this last one computation is a mix of floating point (ARM CPU) and fixed point (DPU), the difference is really small and as expected.
+Figures 3 to 15 illustrate the minor numerical differences between the results computed by the CNN model running on the host PC in floating point (files named ``ref_*.csv``) and the results from the the DPU/CPU  partitioning on the target board (same ``*.csv`` file names without the prefix ``ref_``).  Since the last  computation is a mix of floating point (ARM CPU) and fixed point (DPU), the difference is minimal and as expected.
 
-In conclusion there is a very good match in the numerical results and so you can state that the target application works correctly as expected.
+In conclusion, there is a strong match in the numerical results concluding that the target application works as expected.
 
-Note that although the [run_debug.m](files/application/run_debug.m) script checks the differences between few I/O tensors at every layer, the [run_debug.py](files/application/run_debug.py) computes the absolute differences for all the I/O tensors and then it computes also the sum of such absolute differences (SAD), normalized to the size of the 2D or 3D tensor. The SAD values are always very small, as expected.
+**Note:** Although the [run_debug.m](files/application/run_debug.m) script checks the differences between a few I/O tensors at every layer, the [run_debug.py](files/application/run_debug.py) computes the absolute differences for all the I/O tensors, and then also computes the sum of such absolute differences (SAD), normalized to the size of the 2D or 3D tensor. The SAD values are always tiny, as expected.
 
 ![figure3](files/doc/images/fig1.png)
 
-*Figure 3:  tensor 0 in input to Tanh layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 3:  Tensor 0 in Input to Tanh layer, Float32 (black) Int8 (green), and their Difference (red)*
 
 ![figure4](files/doc/images/fig2.png)
 
-*Figure 4:  tensor 7 in input to Tanh layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 4: Tensor 7 in Input to Tanh layer, Float32 (black) Int8 (green), and their Difference (red)*
 
 ![figure5](files/doc/images/fig3.png)
 
-*Figure 5:  tensor 15 in input to Tanh layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 5: Tensor 15 in Input to Tanh layer, Float32 (black) Int8 (green), and their Difference (red)*
 
 ![figure6](files/doc/images/fig4.png)
 
-*Figure 6:  tensor 0 output from Tanh layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 6: Tensor 0 Output from Tanh layer, Float32 (black) Int8 (green), and their Difference (red)*
 
 
 ![figure7](files/doc/images/fig5.png)
 
-*Figure 7:  tensor 7 output from Tanh layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 7:  Tensor 7 Output from Tanh layer, Float32 (black) Int8 (green), and their Difference (red)*
 
 ![figure8](files/doc/images/fig6.png)
 
-*Figure 8:  tensor 15 output from Tanh layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 8:  Tensor 15 Output from Tanh layer, Float32 (black), Int8 (green), and their Difference (red)*
 
 ![figure9](files/doc/images/fig7.png)
 
-*Figure 9:  tensor 0 in input to first Sigmoid layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 9:  Tensor 0 in Input to First Sigmoid layer, Float32 (black), int8 (green), and their Difference (red)*
 
 ![figure10](files/doc/images/fig8.png)
 
-*Figure 10:  tensor 7 in input to first Sigmoid layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 10:  Tensor 7 in Input to First Sigmoid Layer, Float32 (black), Int8 (green), and their Difference (red)*
 
 ![figure11](files/doc/images/fig9.png)
 
-*Figure 11:  tensor 0 output from first Sigmoid layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 11:  Tensor 0 Output from First Sigmoid Layer, Float32 (black), Int8 (green), and their Difference (red)*
 
 ![figure12](files/doc/images/fig10.png)
 
-*Figure 12:  tensor 7 output from first Sigmoid layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 12:  Tensor 7 output from First Sigmoid Layer, Float32 (black), Int8 (green), and their Difference (red)*
 
 
 ![figure13](files/doc/images/fig11.png)
 
-*Figure 13:  input tensor to second Sigmoid layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 13:  Input Tensor to Second Sigmoid layer, Float32 (black), Int8 (green), and their difference (red)*
 
 
 ![figure14](files/doc/images/fig12.png)
 
-*Figure 14:  tensor output from second Sigmoid layer, float32 (black) int8 (green) and their difference (red)*
+*Figure 14:  Tensor Output from Second Sigmoid Layer, Float32 (black), Int8 (green), and their Difference (red)*
 
 
 # 7 Run Predictions
 
 ## 7.1 ZCU102
 
-To run predictions on the target board, you have to set in the python code the following variable:
+To run predictions on the target board, you have to set the following variable in the python code:
 ```python
 DEBUG = False
 ```
-which will enable the launch of ``runDPU()`` routine, then you can launch the application using either VSC GUI (see [Appendix A1](#a1-ssh-debug-with-visual-studio-code)) or the following command lines:
+It enables the launch of the ``runDPU()`` routine, and then you can launch the application using VS Code GUI (see [Appendix A1](#a1-ssh-debug-with-visual-studio-code)) or the following command lines:
 
 ```shell
   # from ZCU102 target board
   cd ./target/application/
   python3 main_subgraphs.py --model CNN_int_zcu102.xmodel
 ```
-and you should see something like this:
+You should see something like this:
 
 ```text
 Command line options:
@@ -631,7 +628,7 @@ Correct:  1552  Wrong:  448  Accuracy:  0.776
 
 ## 7.2 ZCU104
 
-Similarly to the ZCU102 case, you have to execute the following command lines on ZCU104 board:
+Similar to the ZCU102 case, you have to execute the following command lines on ZCU104 board:
 
 ```shell
   # from ZCU104 target board
@@ -639,7 +636,7 @@ Similarly to the ZCU102 case, you have to execute the following command lines on
   python3 main_subgraphs.py --model CNN_int_zcu104.xmodel
 ```
 
-and you should see something like this:
+You should see something like this:
 
 ```text
 Command line options:
@@ -659,16 +656,16 @@ Correct:  1552  Wrong:  448  Accuracy:  0.776
 
 ## 7.3 VCK190 ES1
 
-The sd card was generated with Depth-Wise Convolution enabled on [Versal DPU TRD](https://www.xilinx.com/member/versal-ml-ea.html#versal-dpu-trd) with VCK190 ES1 in Vitis 2020.2 environment (you need to be registered at the Versal ML Early Access Lounge), using architecture ``DPUCVDX8G_ISA0_B8192C32B3_DW``; you might need to edit manually the ``/opt/vitis_ai/compiler/arc/DPUCVDX8G/VCK190/arch.json`` file
-of your Vitis AI conda environment to enable it, as in the following:
+The SD card was generated with Depth-Wise Convolution enabled on [Versal DPU TRD](https://www.xilinx.com/member/versal-ml-ea.html#versal-dpu-trd) with VCK190 ES1 in Vitis 2020.2 environment (you need to be registered at the Versal ML Early Access Lounge), using the ``DPUCVDX8G_ISA0_B8192C32B3_DW``architecture. You might need to edit the ``/opt/vitis_ai/compiler/arc/DPUCVDX8G/VCK190/arch.json`` file manually
+on your Vitis AI Conda environment to enable it:
 ```
 {
       "target": "DPUCVDX8G_ISA0_B8192C32B3_DW"
 }
 ```
-then the file was renamed as ``arch_dw.json`` and used accordingly in the ``compile.sh`` script.
+The file is renamed as ``arch_dw.json`` and used accordingly in the ``compile.sh`` script.
 
-Similarly to the ZCU102 case, you have to execute the following command lines on VCK190 board:
+Similar to the ZCU102 case, you need to execute the following command lines on VCK190 board:
 
 ```shell
   # from ZCU104 target board
@@ -676,7 +673,7 @@ Similarly to the ZCU102 case, you have to execute the following command lines on
   python3 main_subgraphs.py --model CNN_int_vck190_dw.xmodel
 ```
 
-and you should see something like this:
+You should see something like this:
 
 ```text
 Command line options:
@@ -712,9 +709,9 @@ Turn on your target board, assuming its IP address be ``192.168.1.40`` for examp
 Remote SSH: Connect Current Window to Host...
 ```
 
-so that you can run [remote SSH debugging on a file hosted on the target board](https://code.visualstudio.com/blogs/2019/05/02/remote-development), as Figure A1 illustrates.
+so that you can run [remote SSH debugging on a file hosted on the target board](https://code.visualstudio.com/blogs/2019/05/02/remote-development), as shown in Figure A1.
 
-You can then open the folder ``/home/root/target/application`` as shown in Figure A2:
+You can then open the ``/home/root/target/application`` folder as shown in Figure A2:
 
 
 ![figureA1a](files/doc/images/vsc_F1.png)
@@ -723,9 +720,9 @@ You can then open the folder ``/home/root/target/application`` as shown in Figur
 
 ![figureA1c](files/doc/images/vsc_F1_tris.png)
 
-*Figure A1: Setting Visual Studio Code for remote SSH debugging.*
+*Figure A1: Setting Visual Studio Code for Remote SSH Debugging.*
 
 
 ![figureA2](files/doc/images/open_folder.png)
 
-*Figure A2: Opening a folder from target board with SVC SSH debugging.*
+*Figure A2: Opening a Folder from Target Board with SVC SSH Debugging.*
