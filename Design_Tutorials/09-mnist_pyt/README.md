@@ -1,12 +1,12 @@
 <!--
-Copyright 2020 Xilinx Inc.
- 
+Copyright 2020-2022 Xilinx Inc.
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
- 
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,22 +21,22 @@ Author: Mark Harvey, Xilinx Inc
   </td>
  </tr>
  <tr>
- <td align="center"><h1>PyTorch flow for Vitis AI</h1>
+ <td align="center"><h1>PyTorch Flow for Vitis AI</h1>
  </td>
  </tr>
 </table>
 
 ### Current Status
 
-+ Tested on ZCU102, Alveo U50
-+ Tools used: PyTorch 1.4 & Vitis AI 1.4
++ Tested on ZCU102, Alveo&trade; U50
++ Tools used: PyTorch 1.4 & Vitis AI&trade; 1.4
 + Dataset: MNIST handwritten digits
 + Network: Custom CNN
 
 
 ## Introduction
 
-This tutorial introduces the user to the Vitis AI TensorFlow design process and will illustrate how to go from a python description of the network model to running a compiled model on a Xilinx evaluation board.
+This tutorial introduces the user to the Vitis AI TensorFlow design process and describes how to go from a python description of the network model to running a compiled model on a Xilinx&reg; evaluation board.
 
 The application code in this example design is written in Python and uses the VART runtime.
 
@@ -45,9 +45,9 @@ We will run the following steps:
 + Training and evaluation of a small custom convolutional neural network using PyTorch 1.4
 + Quantization and evaluation of the floating-point model.
 + Compilation of the quantized model to create the .xmodel files ready for execution on the DPU accelerator IP.
-+ Download and run the application on the ZCU102 and Alveo U50 evaluation boards.
++ Downloading and running the application on the ZCU102 and Alveo U50 evaluation boards.
 
-This tutorial assumes the user is familiar with Python3, PyTorch and has some knowledge of machine learning principles.
+This tutorial assumes you are familiar with Python3, PyTorch and have some knowledge of machine learning principles.
 
 ![Flow](files/img/flow.png "Basic flow")
 
@@ -55,14 +55,14 @@ This tutorial assumes the user is familiar with Python3, PyTorch and has some kn
 
 ## The MNIST dataset
 
-The MNIST handwritten digits dataset is a publicly available dataset that contains a total of 70k 8bit grayscale images each of which are 28pixels x 28pixels. The complete dataset of 70k images is normally divided into 60k images for training and 10k images for validation. The dataset is considered to be the 'hello world' of machine learning and makes a simple introduction to learn the complete Xilinx Vitis-AI flow. 
+The MNIST handwritten digits dataset is a publicly available dataset that contains a total of 70 thousand 8bit grayscale images each of which are 28x28 pixels. The complete dataset of 70 thousand images is normally divided into 60 thousand images for training and 10 thousand images for validation. The dataset is considered to be the 'hello world' of machine learning and makes a simple introduction to learn the complete Xilinx Vitis AI flow.
 
 ![mnist](./files/img/mnist.png "Example MNIST images")
 
 
 ## The Convolutional Neural Network
 
-The convolutional neural network in this design has deliberately been kept as simple as possible and consists of just four layers of 2D convolution interspersed with batch normalization and ReLU activation. The network is described in the common.py python script.
+The convolutional neural network in this design has deliberately been kept as simple as possible and consists of just four layers of 2D convolution interspersed with batch normalization and ReLU activation. The network is described in the `common.py` python script.
 
 ![cnn](./files/img/cnn.png?raw=true "Custom CNN")
 
@@ -71,9 +71,9 @@ The convolutional neural network in this design has deliberately been kept as si
 
 The host machine has several requirements that need to be met before we begin. You will need:
 
-  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
+  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed. For more information, see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
 
-  + The host machine will require Docker to be installed and the Vitis-AI CPU or GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
+  + The host machine will require Docker to be installed and the Vitis-AI CPU or GPU docker image to be built. For more information, see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
 
   + A GPU card suitable for training is recommended, but the training in this tutorial is quite simple and a CPU can be used.
 
@@ -92,8 +92,8 @@ For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1
     + Download the repository as a ZIP file to the host machine, and then unzip the archive.
     + From a terminal, use the `git clone` command.
 
-2. Open a linux terminal, `cd` to the repository folder, and then `cd` to the `files` folder.
-   
+2. Open a Linux terminal, `cd` to `repository`> `files` folder.
+
 3. Start the Vitis AI GPU docker:
 
      ```shell
@@ -108,37 +108,37 @@ For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1
 
      ```shell
      ==========================================
-     
+
      __      ___ _   _                   _____
      \ \    / (_) | (_)            /\   |_   _|
       \ \  / / _| |_ _ ___ ______ /  \    | |
        \ \/ / | | __| / __|______/ /\ \   | |
         \  /  | | |_| \__ \     / ____ \ _| |_
          \/   |_|\__|_|___/    /_/    \_\_____|
-     
+
      ==========================================
-     
-     Docker Image Version:  latest 
+
+     Docker Image Version:  latest
      Build Date: 2021-08-04
      VAI_ROOT: /opt/vitis_ai
-     
+
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-tensorflow 
+          conda activate vitis-ai-tensorflow
      For Caffe Workflows do:
-          conda activate vitis-ai-caffe 
+          conda activate vitis-ai-caffe
      For Neptune Workflows do:
-          conda activate vitis-ai-neptune 
+          conda activate vitis-ai-neptune
      For PyTorch Workflows do:
-          conda activate vitis-ai-pytorch 
+          conda activate vitis-ai-pytorch
      For TensorFlow 2.3 Workflows do:
-          conda activate vitis-ai-tensorflow2 
+          conda activate vitis-ai-tensorflow2
      For Darknet Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_darknet 
+          conda activate vitis-ai-optimizer_darknet
      For TensorFlow 1.15 Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_caffe 
+          conda activate vitis-ai-optimizer_caffe
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-optimizer_tensorflow 
-     Vitis-AI /workspace > 
+          conda activate vitis-ai-optimizer_tensorflow
+     Vitis-AI /workspace >
      ```
 
 >:bulb: *If you get a "Permission Denied" error when starting the docker container, it is almost certainly because the docker_run.sh script is not set to be executable. You can fix this by running the following command:*
@@ -153,7 +153,7 @@ Activate the PyTorch python virtual environment with `conda activate vitis-ai-py
 
 ```shell
 Vitis-AI /workspace > conda activate vitis-ai-pytorch
-(vitis-ai-pytorch) Vitis-AI /workspace > 
+(vitis-ai-pytorch) Vitis-AI /workspace >
 ```
 
 *The remainder of this README describes each single step to implement the tutorial, however a shell script called run_all.sh is provided which will run the complete flow:*
@@ -162,9 +162,9 @@ Vitis-AI /workspace > conda activate vitis-ai-pytorch
 (vitis-ai-pytorch) Vitis-AI /workspace > source run_all.sh
 ```
 
-## Step 0 - Training
+## Step 1 - Training
 
-To run step 0:
+To run step 1:
 
 ```shell
 (vitis-ai-pytorch) Vitis-AI /workspace > export BUILD=./build
@@ -194,9 +194,9 @@ The complete list of command line arguments of `train.py` are as follows:
 |--learnrate|0.001|Initial learning rate for optimizer|
 
 
-## Step 1 - Quantization
+## Step 2 - Quantization
 
-To run step 1:
+To run step 2:
 
 ```shell
 (vitis-ai-pytorch) Vitis-AI /workspace > python -u quantize.py -d ${BUILD} --quant_mode calib 2>&1 | tee ${LOG}/quant_calib.log
@@ -215,7 +215,7 @@ The complete list of command line arguments of `quantize.py` are as follows:
 |--quant_mode|'calib'|Quantization script mode: 'calib' - quantize, 'test - evaluate quantized model|
 |--batchsize|100|Batchsize used in evaluation - adjust for memory capacity of your GPU(s)|
 
-# Step 2 - Compiling for the target
+# Step 2 - Compiling for the Target
 
 To run step 2, execute the `compile.sh` shell script with one of the target boards as a command line argument, for example:
 
@@ -225,7 +225,7 @@ To run step 2, execute the `compile.sh` shell script with one of the target boar
 The `compile.sh` shell script will compile the quantized model and create an .xmodel file which contains the instructions and data to be executed by the DPU. The script also supports `zcu104`, `vck190` and `u50` as command line arguments to target the Zynq ZCU104, Versal VCK190 and Alveo U50. The compiled xmodel will be written to the ./build/compiled_model folder and named CNN_<board_name>.xmodel.
 
 
-## Step 3 - Running the application on the target
+## Step 3 - Running the Application on the Target
 
 To prepare the images, xmodel and application code for copying to the selected target, run the following command:
 
@@ -260,11 +260,11 @@ The entire `target_zcu102` folder will be copied to the ZCU102. Copy it to the /
 
 1. Direct copy to SD Card:
 
-  + If the host machine has an SD card slot, insert the flashed SD card and when it is recognised you will see two volumes, BOOT and ROOTFS. Navigate into the ROOTFS and then into the /home folder.  Make the ./root folder writeable by issuing the command ``sudo chmod -R 777 root`` and then copy the entire `target_zcu102` folder from the host machine into the /home/root folder of the SD card.
+  + If the host machine has an SD card slot, insert the flashed SD card and when it is recognized you will see two volumes, BOOT and ROOTFS. Navigate into the ROOTFS and then into the /home folder.  Make the ./root folder writeable using the ``sudo chmod -R 777 root`` command and then copy the entire `target_zcu102` folder from the host machine into the `/home/root` folder of the SD card.
 
   + Unmount both the BOOT and ROOTFS volumes from the host machine and then eject the SD Card from the host machine.
 
-2. With scp command:
+2. With the `scp` command:
 
   + If the target evaluation board is connected to the same network as the host machine, the `target_zcu102` folder can be copied using scp.
 
@@ -315,7 +315,7 @@ Correct:9877, Wrong:123, Accuracy:0.9877
 
 ### Alveo U50
 
-Note that the U50 will need to have been flashed with the correct deployment shell - this should have been done in the 'Preparing the host machine and target boards' section above.
+**Note:** The U50 should be flashed with the correct deployment shell, and this should have been done in the 'Preparing the host machine and target boards' section above.
 
 The following steps should be run from inside the Vitis-AI Docker container:
 
@@ -346,7 +346,7 @@ Starting 1 threads...
 -------------------------------
 Throughput=14362.58 fps, total frames = 10000, time=0.6963 seconds
 Correct:9877, Wrong:123, Accuracy:0.9877
-------------------------------- 
+-------------------------------
 ```
 
 Perfromance can be slightly increased by increasing the number fo threads:
@@ -364,7 +364,7 @@ Starting 6 threads...
 -------------------------------
 Throughput=16602.34 fps, total frames = 10000, time=0.6023 seconds
 Correct:9877, Wrong:123, Accuracy:0.9877
-------------------------------- 
+-------------------------------
 ```
 
 
@@ -373,8 +373,8 @@ Correct:9877, Wrong:123, Accuracy:0.9877
 
 + [Vitis AI Optimizer User Guide (UG1333)](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_2/ug1333-ai-optimizer.pdf)
 
-+ [Vitis AI User Guide (UG1414)](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_2/ug1414-vitis-ai.pdf) 
++ [Vitis AI User Guide (UG1414)](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_2/ug1414-vitis-ai.pdf)
 
 
 </hr>
-<p class="sphinxhide" align="center"><sup>Copyright&copy; 2020-2021 Xilinx</sup></p>
+<p class="sphinxhide" align="center"><sup>Copyright&copy; 2020-2022 Xilinx</sup></p>

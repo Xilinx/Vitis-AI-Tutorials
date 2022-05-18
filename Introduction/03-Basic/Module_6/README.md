@@ -1,15 +1,15 @@
-# 3.6 Usb Camera Input and Multi-Threads base on Vitis AI Library
+# 3.6 USB Camera Input and Multi-Threads Base on Vitis AI Library
 
-***Note***:The programs in Module_6 are compiled in cross compile environment. Assumed that you have set up the cross compile environment, for the detail you could refer to [Module3](../Module_3/README.md).
+**Note**:The programs in Module 6 are compiled in cross-compile environment. THis tutorial assumes that you have set up the cross compile environment. For more details, see [Module3](../Module_3/README.md).
 
 Some system level functions:
-- working with DRM on ZynqMP
+- Working with DRM on Zynq&reg; MPSoC
     -Using the DRM to display
 
 - V4L2 initialization and control
     - Streaming video capture from V4L2, such as USB camera.
 
-The directory structure and brief explanations as below:
+The directory structure looks as follows:
 ```bash
 ├── app
 │   ├── images
@@ -31,7 +31,7 @@ The directory structure and brief explanations as below:
 │   │   ├── mythread.cpp
 │   │   └── sortthread.cpp
 │   └── test
-│       └── usb_input_multi_threads_refinedet.cpp 
+│       └── usb_input_multi_threads_refinedet.cpp
 ├── myV4L2
 │   ├── CMakeLists.txt
 │   ├── include
@@ -56,13 +56,13 @@ The directory structure and brief explanations as below:
 
 ```
 ## Program Prerequisites
-This design targets the ZCU104 Vitis platform. You can refer to the [quick start](https://github.com/Xilinx/Vitis-AI/tree/master/demo/Vitis-AI-Library#quick-start-for-edge) guide to learn how to prepare the development environment.
+This design targets the ZCU104 Vitis&trade; platform. You can refer to the [quick start](https://github.com/Xilinx/Vitis-AI/tree/master/demo/Vitis-AI-Library#quick-start-for-edge) guide to learn how to prepare the development environment.
 
 
 ## Setting Up the cross-compile environment and Build app.
 ---
 
-- After cloning the project, use the following commands to compile the applications. Regard the sdk path to be ${SDK_PATH}.
+- After cloning the project, use the following commands to compile the applications. Consider the SDK path as ${SDK_PATH}.
 
 
 ```
@@ -70,26 +70,26 @@ source ${SDK_PATH}/environment-setup-aarch64-xilinx-linux
 cd ${Section_3-Basic}/Module_6/
 sh build_app.sh
 ```
-Copy the executable file to board.
+Copy the executable file to the board.
 
 ```
 scp ${Section_3-Basic}/Module_6/test/usb_input_multi_threads_refinedet_drm root@$[IP_OF_BOARD]:/home/root
 scp ${Section_3-Basic}/Module_6/install/libmy_v4l2s.so root@$[IP_OF_BOARD]:/usr/lib
 ```
-Running zynqmp_dpu_optimize.sh on board to optimize the board setting.
+Running `zynqmp_dpu_optimize.sh` on board to optimize the board setting.
 ```
 #cd ~/dpu_sw_optimize/zynqmp/
 #./zynqmp_dpu_optimize.sh
 ```
 The script runs automatically after the board boots up with the official image
-- Test the libmy_v4l2s.so library to see if it works properly with the test example. When the test example works, you will notice that two JPEG files are generated in your execution directory.
+- Test the `libmy_v4l2s.so` library to see if it works properly with the test example. When the test example works, you notice that two JPEG files are generated in your execution directory.
 ```
 ./test_v4l2
 ```
 
 
 - Run the application.
- Before you run, it's needed to stop the weston service to use drm display mode for the application.
+ Before you run, you need to stop the Weston service to use the DRM display mode for the application.
 ```
   ./usb_input_multi_threads_refinedet_drm refinedet_pruned_0_8 0 -t 3
 ```
@@ -103,4 +103,4 @@ The script runs automatically after the board boots up with the official image
 
 
 Learn More about the work pipeline:[work_pipeline](app/README.md)
-<p align="center"><sup>Copyright&copy; 2020 Xilinx</sup></p>
+Copyright&copy; 2022 Xilinx

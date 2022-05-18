@@ -1,5 +1,5 @@
 <!--
-Copyright 2021 Xilinx Inc.
+Copyright 2021-2022 Xilinx Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ Authors: Daniele Bagni, Peter Schillinger, Herve Ratigner, Kay Migge, Xilinx Inc
 
 1. Embedded system designed with Vitis 2021.1 environment (``Xilinx_Unified_2021.1_0610_2318.tar.gz`` archive).
 
-2. Unet CNN model deployed with Vitis AI >= 1.4.
+2. UNet CNN model deployed with Vitis AI >= 1.4.
 
 3. Tested in hardware on ZCU102 board.
 
@@ -41,20 +41,18 @@ Authors: Daniele Bagni, Peter Schillinger, Herve Ratigner, Kay Migge, Xilinx Inc
 
 02 December 2021
 
+## 1. Introduction
 
+This repository contains the Pre- and Post-processing kernels to be used in Machine Learning (ML) jointly with the Deep learning Processor Unit (DPU) to accelerate the tasks in Programmable Logic (PL). These tasks will be otherwise executed by the ARM host CPU of the FPGA target device. Off-loading those two tasks from the ARM CPU improves the overall system performance in terms of frames-per-second (fps).
 
-## 1 Introduction
+The two accelerators were tested using data from the Semantic Segmentation UNet CNN of this tutorial:
+[VAI-KERAS-UNET-SEMSEG](https://github.com/Xilinx/Vitis-AI-Tutorials/blob/master/Design_Tutorials/05-Keras_FCN8_UNET_segmentation/README.md), but they are general enough to be used or easily adapted with few changes also to other Deep Learning applications, such as Object Detection or Image Classification. Their design is done with Vitis High Level Synthesis (HLS) within the Vitis suite. The application running on the host ARM&reg; CPU applies XRT APIs.
 
-This repository contains the **Pre- and Post-processing** kernels to be used in Machine Learning (**ML**) jointly to the Deep learning Processor Unit (shortly **DPU**) to accelerate in the Programmable Logic (shortly **PL**)  the same tasks that otherwise would be executed by the ARM host CPU of the FPGA target device. Off-loading those two tasks from the ARM CPU improves the overall system performance in terms of frames-per-second (**fps**).
+This tutorial can also be seen as a complete example of how to use the [WAA](https://github.com/Xilinx/Vitis-AI/tree/master/demo/Whole-App-Acceleration) flow targeting the MPSoC ZCU102 board.
 
-The two accelerators were tested using data coming from the Semantic Segmentation Unet CNN of this tutorial:
-[VAI-KERAS-UNET-SEMSEG](https://github.com/Xilinx/Vitis-AI-Tutorials/blob/master/Design_Tutorials/05-Keras_FCN8_UNET_segmentation/README.md), but they are general enough to be used or easily adapted with few changes also to other Deep Learning applications, such as Object Detection or Image Classification. Their design is done with **Vitis High Level Synthesis** (shortly **HLS** in the following of this document) within the Vitis suite. The application running on the host ARM CPU applies **XRT APIs**.
+You are supposed to name this tutorial repository ``MPSOCDPU-PRE-POST-PLACC`` and place it into a certain working directory ``$WRK_DIR``. For example, in this tutorial we used ``export WRK_DIR=/media/danieleb/DATA/``.
 
-This tutorial can also be seen as a complete example of how using the [WAA](https://github.com/Xilinx/Vitis-AI/tree/master/demo/Whole-App-Acceleration) flow targeting the MPSoC ZCU102 board.
-
-In the following of this document, you are supposed to have named this tutorial repository ``MPSOCDPU-PRE-POST-PLACC`` and placed it into a certain working directory ``$WRK_DIR`` (for example, in our case we used: ``export WRK_DIR=/media/danieleb/DATA/``.
-
-There are three major commands that basically run all what is explained in Sections 2 and 3.1, 3.2:
+There are three major commands that run all that is explained in Sections 2 and 3.1, 3.2:
 
   ```shell
   cd $WRK_DIR
@@ -69,17 +67,13 @@ There are three major commands that basically run all what is explained in Secti
   make all  
   ```
 
+**Imporant:** All the tasks in this tutorial were done on an Ubuntu 18.04 desktop with Vitis 2021.1. It was never tried on a Windows OS PC.
 
 
-## 1.1 WARNING
+## 1.2 Dos-to-Unix Conversion
 
-Everything shown in this project was done on an Ubuntu 18.04 Desktop with related Vitis 2021.1. This project was never tried on a Windows OS PC.
-
-
-## 1.3 Dos-to-Unix Conversion
-
-In case you might get some strange errors during the execution of the scripts, you have to pre-process -just once- all the``*.sh``, ``*.cpp``, ``*.h`` files with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility.
-In that case run the following commands from your Ubuntu host PC (out of the Vitis AI docker images):
+If you run into unexpected errors during the execution of the scripts, you have to pre-process all the``*.sh``, ``*.cpp``, ``*.h`` files with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility for once.
+In that case, run the following commands from your Ubuntu host PC (out of the Vitis AI docker images):
 ```bash
 #sudo apt-get install dos2unix
 cd <WRK_DIR> #your working directory
@@ -89,11 +83,11 @@ for file in $(find . -name "*.h"  ); do dos2unix ${file}; done
 for file in $(find . -name "*.c*" ); do dos2unix ${file}; done
 ```
 
-## 1.4 Setup
+## 1.3 Setup
 
-### 1.4.1 Downloads
+### 1.3.1 Downloads
 
-As described in https://github.com/Xilinx/Vitis-AI/blob/master/dsa/DPU-TRD/prj/Vitis/README.md download (or git clone) the following components anywhere into an accessible location in your files system:  
+As described in https://github.com/Xilinx/Vitis-AI/blob/master/dsa/DPU-TRD/prj/Vitis/README.md, download (or git clone) the following components anywhere into an accessible location in your file system:  
 
 - ZCU102 base platform 2021.1 (about ~30 MB size) from https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/embedded-platforms.html
   ```
@@ -107,13 +101,13 @@ As described in https://github.com/Xilinx/Vitis-AI/blob/master/dsa/DPU-TRD/prj/V
   ```
   For example, we have placed both archives in this folder ``$WRK_DIR/MPSOCDPU-PRE-POST-PL-ACC/dpu_trd/``.
 
-- clone somewhere in your files system the Vitis-AI (1.4.1) github repository https://github.com/Xilinx/Vitis-AI with the command:
+- Clone the Vitis-AI (1.4.1) GitHub repository https://github.com/Xilinx/Vitis-AI with this command:
   ```shell  
   git clone https://github.com/Xilinx/Vitis-AI.git  
   ```
-  For example we have placed it in the folder ``$WRK_DIR/Vitis-AI-1.4.1``.
+  For example, we have placed it in the  ``$WRK_DIR/Vitis-AI-1.4.1`` folder.
 
-### 1.4.2 Installing the sdk
+### 1.3.2 Installing the SDK
 
 Decompress ``xilinx-zynqmp-common-v2021.1.tar.gz``  and extract its ``sysroot``:
 ```shell
@@ -122,19 +116,18 @@ tar -xvf ~/Downloads/xilinx-zynqmp-common-v2021.1.tar.gz -C .
 sudo ./sdk.sh -y -d /tools/Xilinx/sdk -p
 ```
 
-Note that we used a short-length name for the destination folder, as ``/tools/Xilinx/sdk``, in order to not incur in the following error message:
+**Note**: This tutorials uses a short-length name for the destination folder, as ``/tools/Xilinx/sdk``, to avoid the following error:
 ```
 File "./tmp/xilinx-zynqmp-common-v2021.1/sdk/relocate_sdk.py", line 82, in change_interpreter
  p_filesz, p_memsz, p_align = struct.unpack(ph_fmt, ph_hdr)
  struct.error: unpack requires a string argument of length 56
 ```
+### 1.3.3 Environmental Variables
 
-### 1.4.3 Environmental Variables
+Beside Vivado&trade; and Vitis environment for 2021.1, the variables below have to be set up according to where you have placed them.
+The [set_env_before_make.sh](files/sh_scripts/set_proj_env .sh) script contains a template to be adapted by the user.
 
-Beside Vivado and Vitis environment for 2021.1, the variables below have to be set according to where you have placed them.
-The script [set_env_before_make.sh](files/sh_scripts/set_proj_env .sh) contains a template to be adapted by the user.
-
-The following lines illustrate our desktop settings:
+The following lines show the desktop settings:
 
 ```shell
 # set the Vitis/Vivado 2021.1 release
@@ -159,7 +152,7 @@ export SDX_PLATFORM=${VITIS_PLATFORM_PATH}
 
 ### 1.4.4 Input Images
 
-The input images can taken from the dataset adopted into the [VAI-KERAS-UNET-SEMSEG](https://github.com/Xilinx/Vitis-AI-Tutorials/blob/master/Design_Tutorials/05-Keras_FCN8_UNET_segmentation/README.md).
+The input images can taken from the dataset adopted into [VAI-KERAS-UNET-SEMSEG](https://github.com/Xilinx/Vitis-AI-Tutorials/blob/master/Design_Tutorials/05-Keras_FCN8_UNET_segmentation/README.md).
 
 Alternatively, you can extract [some images from video frames](https://www.raymond.cc/blog/extract-video-frames-to-images-using-vlc-media-player/) taken by Vitis AI [vitis_ai_runtime_r1.4.0_image_video.tar.gz](https://www.xilinx.com/bin/public/openDownload?filename=vitis_ai_runtime_r1.4.0_image_video.tar.gz) video files of the [Step3: Run the Vitis AI Examples](https://github.com/Xilinx/Vitis-AI/blob/master/setup/mpsoc/VART/README.md#step2-setup-the-target) with the  following command:
 ```shell
@@ -168,10 +161,10 @@ vlc ${HOME}/Videos/segmentation/video/traffic.webm  --video-filter=scene \
  --scene-path=${HOME}/Videos vlc://quit
 ```
 
-Another possible way is to get some input pictures from the  [vitis_ai_library_r1.4.0_images.tar.gz](https://www.xilinx.com/bin/public/openDownload?filename=vitis_ai_library_r1.4.0_images.tar.gz) archive file of
+Another possible way is to get some input pictures from the  [vitis_ai_library_r1.4.0_images.tar.gz](https://www.xilinx.com/bin/public/openDownload?filename=vitis_ai_library_r1.4.0_images.tar.gz) archive file in
 [Vitis AI Library examples](https://github.com/Xilinx/Vitis-AI/blob/master/tools/Vitis-AI-Library/README.md#running-vitis-ai-library-examples-for-u50u50lvu280vck5000).
 
-In all cases, be sure to resize all the images to 224x224x3 resolution with python code similar to this:
+In all cases, ensure to resize all the images to 224x224x3 resolution with python code similar to this:
 ```python
 import cv2
 inp_img = cv2.imread("scene_00001.png")
@@ -182,16 +175,12 @@ cv2.imwrite("scene_00001_224x224.png", out_img)
 
 # 2 Design Flow with HLS
 
-For each accelerator there are two project folders named [hls](files/preproc/hls) and [vitis](files/preproc/vitis), respectively with the source files adopted in the standalone HLS design and in the final Vitis system design. Note that the files are the same among the two subfolders, the only difference being that the [vitis](files/preproc/vitis) folder requires also the ARM host code with XRT APIs, which is not needed  
-by the [vitis_hls](files/preproc/vitis_hls) folder. Therefore, the file [dpupreproc_defines.h](files/preproc/vitis/kernels/dpupreproc_defines.h) must have the line ``#define ARM_HOST`` commented when used in the kernels subproject, but it must have such line not commented when used in the host code, as shown in the [dpupreproc_defines.h](files/preproc/vitis/host/dpupreproc_defines.h) (this is the only difference between these two files that have the same name and are placed in different folders).
+For each accelerator, there are two project folders named [hls](files/preproc/hls) and [vitis](files/preproc/vitis), respectively, with the source files adopted in the standalone HLS design and the final Vitis system design. Note that the files are the same among the two subfolders, except the [vitis](files/preproc/vitis) folder also requires the ARM host code with XRT APIs, which is not needed
+by the vitis_hls folder. Therefore, the [dpupreproc_defines.h](files/preproc/vitis/kernels/dpupreproc_defines.h) file must have the line #define ARM_HOST commented when used in the kernels subproject, but it must have such line not commented when used in the host code, as shown in [dpupreproc_defines.h](files/preproc/vitis/host/dpupreproc_defines.h). This is the only difference between these two files that have the same name and are placed in different folders.
 
-The same concept is valid also for the post-processing kernel and its related folders [hls](files/postproc/hls) and [vitis](files/postproc/vitis), respectively for the source files adopted in the standalone HLS design and in the final Vitis system design.
+The same concept is also valid for the post-processing kernel and its related folders [hls](files/postproc/hls) and [vitis](files/postproc/vitis), respectively, for the source files adopted in the standalone HLS design and the final Vitis system design.
 
-
-
-## WARNING
-
-In order to avoid proliferation of files with the same name, we used soft-links for the files that are in common between either the standalone HLS or the Vitis project.
+**Important**: To avoid proliferation of files with the same name, we used softlinks for the common files between the standalone HLS and the Vitis project.
 Run the following command before reading the rest of this document:
 
 ```shell
@@ -204,12 +193,9 @@ bash -x ./sh_scripts/prepare_files.sh
 
 ## 2.1 Pre-processing Kernel
 
-
 ### 2.1.1 Kernel Functionality
 
-In ML, the preprocessing job has to change the statistics on the data to be used for training the CNN in order to facilitate such training.
-There many ways to do that preprocessing, the most popular methods are the following two explained with Python code fragments, respectively the "Caffe" and "TensorFlow" mode
-(this is my terminology to explain with simple words):
+In ML, the preprocessing job has to change the statistics on the data used for training the CNN to facilitate such training. There are many ways to do preprocessing. The most popular methods are the *Caffe* and *TensorFlow* modes, respective, explained with Python code fragments below:
 
 ```python
 . . .
@@ -242,41 +228,41 @@ def preprocess_one_image_fn(image_path, pre_fix_scale, width, height):
     return image
 ```
 
-From one hand, in Caffe normally the input image R G B pixels are manipulated by subtracting the R G B mean values (``MEANS``) of all the training dataset images and so the output data is of type ``signed char`` (in C/C++) or ``int8`` (python numpy), with a possible range from -128 to +127, being 8-bit.
-From another hand,  in TensorFlow normally the pixels are manipulated by normalizing them in the interval from -1.0 to 1.0.
+Usually, in Caffe, the input image R G B pixels are manipulated by subtracting the R G B mean values (``MEANS``) of all the training dataset images. So, the output data is the ``signed char`` type (in C/C++) or ``int8`` (python NumPY), with a possible range from -128 to +127, being 8-bit.
+On the other hand,  in TensorFlow, the pixels are manipulated by normalizing them in the interval from -1.0 to 1.0 typically.
 
-During the CNN training phase the pre-processing works on floating point data, but in real life the DPU works with ``int8`` after quantization with [Vitis AI tools](https://github.com/Xilinx/Vitis-AI/tree/master/tools/Vitis-AI-Quantizer) and so in the application running on the target device in real time, you have to scale the data with the ``pre_fix_scale`` parameter that comes from a query to the DPU before starting the ML prediction (inference) task itself, with Python code similar to this:
+During the CNN training phase, the pre-processing works on floating-point data, but in real life, the DPU works with ``int8`` after quantization with [Vitis AI tools](https://github.com/Xilinx/Vitis-AI/tree/master/tools/Vitis-AI-Quantizer). So, in the application running on the target device in real time, you have to scale the data with the ``pre_fix_scale`` parameter that comes from a query to the DPU before starting the ML prediction (inference) task itself, with Python code similar to this:
 
 ```python
 input_fixpos = all_dpu_runners[0].get_input_tensors()[0].get_attr("fix_point")
 pre_fix_scale = 2**input_fixpos
 ```
 
-In conclusion, before starting its job,  the image pre-processing module requires 6 floating point input parameters:
+In conclusion, before starting its job,  the image pre-processing module requires six floating-point input parameters:
 ```
 float MEANS[3];
 float SCALES[3];
 ```
-and the scaling factor that could be either
+The scaling factor could be either
 ``float pre_fix_scale;``
-or alternatively
+or
 ``int input_fixpos;``
-this last one being a value from 1 to 7 because it represents the exponent ``i`` of a power of ``2,`` that is ``2^i``.    
+The last can be a value from 1 to 7 because it represents the exponent ``i`` of a power of ``2,`` that is ``2^i``.    
 
-In the HLS TestBench (TB) all those parameters are fixed in the [dpupreproc_defines.h](files/preproc/hls/src/dpupreproc_defines.h) file, to test the functionality of the core.
+In the HLS TestBench (TB), all those parameters are fixed in the [dpupreproc_defines.h](files/preproc/hls/src/dpupreproc_defines.h) file, to test the core funcationality.
 
-The input images used in the self-checking TB was taken from the test dataset of the
+The input images used in the self-checking TB are taken from the test dataset of the
 [VAI-KERAS-UNET-SEMSEG](https://github.com/Xilinx/Vitis-AI-Tutorials/blob/master/Design_Tutorials/05-Keras_FCN8_UNET_segmentation/README.md) tutorial.
 
 ### 2.1.2 HLS Design
 
-After having setup the Vitis environment, just launch the command
+After setting up the Vitis environment, enter the following command
 ```shell
 cd MPSOCDPU-PRE-POST-PLACC/files # you are supposed to be here
 cd preproc/hls
 vitis_hls -f hls_script.tcl
 ```
-and the whole HLS flow will run in its steps: CSIM, SYN, coSIM and IMP. See the related screenshots of Figures 1, 2, 3 and 4.
+The whole HLS flow will run in its steps: CSIM, SYN, coSIM, and IMP. For reference, see the related screenshots of Figures 1, 2, 3 and 4.
 
 
 ![figure1](files/img/pre_hls_csim.png)
@@ -297,17 +283,17 @@ and the whole HLS flow will run in its steps: CSIM, SYN, coSIM and IMP. See the 
 *Figure 4. Pre-processing IMP step with Vitis HLS*
 
 
-Note that the file [dpupreproc_defines.h](files/preproc/hls/src/dpupreproc_defines.h) must have the line ``#define ARM_HOST`` commented.
+**Note:** The [dpupreproc_defines.h](files/preproc/hls/src/dpupreproc_defines.h) file must have the  ``#define ARM_HOST`` line commented.
 
-As you see from figure 4, after Place-And-Route, the accelerator consumes the following resources: 5073 LUT, 8555 FF, 2 BRAM and 33 DSP from the  MPSoC ZU9 device  with a minimum clock period of 2.43ns, which corresponds to  410MHz maximum clock frequency.
+As you can see from figure 4, after Place-And-Route, the accelerator consumes the following resources: 5073 LUT, 8555 FF, 2 BRAM, and 33 DSP from the  MPSoC ZU9 device  with a minimum clock period of 2.43ns, which corresponds to  410MHz maximum clock frequency.
 
-Figure 3 reports the cycle accurate simulation (coSIM step), considering the amount of clock cycles to process the whole image before sending it back to DDR memory, the latency of this kernel is  given by 37853 (cycles) x 2.43ns (clock period) = 0.092ms.
+Figure 3 shows the cycle accurate simulation (coSIM step). Considering the amount of clock cycles to process the whole image before sending it back to DDR memory, the latency of this kernel is  given by 37853 (cycles) x 2.43ns (clock period) = 0.092ms.
 
 Even assuming a longer clock period of 5ns (corresponding to 200MHz clock frequency) the latency would become 0.189ms.
 
-Note that this latency is the time to process the entire frame (224x224x3) of pixels because this is the way Vitis HLS works if you want to do a functional cycle accurate simulation (acknowledged as "coSIM") of the accelerator. But in itself this core has a real latency of few dozens of clock cycles. Such effective latency could be exploited either by using AXI4 Streaming interfaces (which are not accepted by the DPU core, which is unable to work in a streaming mode) instead of full MAXI4 interfaces or by adding a ping-pong buffer of few image lines among the Pre-processing accelerator and the external DDR memory.  
-
-
+**Note:** This latency is the time to process the entire frame (224x224x3) of pixels because this is the way Vitis HLS works if you want to do a functional cycle-accurate simulation (acknowledged as "coSIM") of the accelerator. But the core has a real latency of a few dozens of clock cycles in itself. Such effective latency could be exploited either by:
+- Using AXI4 Streaming interfaces (which are not accepted by the DPU core because it cannot work in a streaming mode) instead of full MAXI4 interfaces or,
+- Adding a ping-pong buffer of a few image lines among the Pre-processing accelerator and the external DDR memory.  
 
 
 ## 2.2 Post-processing Kernel
@@ -315,11 +301,11 @@ Note that this latency is the time to process the entire frame (224x224x3) of pi
 
 ### 2.2.1 Kernel Functionality
 
-In ML, the post-processing job has to present the "features map" generated by the CNN in a form that can be understood by human beings; in case of Semantic Segmentation this require to understand which pixel of the image belongs to which class.
+In ML, the post-processing job has to present the "features map" generated by the CNN in a human-readable form. In the case of Semantic Segmentation, this requires understanding which pixel of the image belongs to which class.
 
-In this application case there are 12 classes per each pixel, so the output tensor generated by the DPU is a 3D volume with the same horizontal and vertical size of the input images -that is 224 and 224 respectively- and 12 channels.
+There are 12 classes per pixel in this application case, so the output tensor generated by the DPU is a 3D volume with the same horizontal and vertical size of the input images: 224 and 224, respectively, and 12 channels.
 
-For each set of 12 values related to one pixel, the post-processing task computes first the Softmax classifier and then search for its maximum value and related index: the index of this max value represent the object class (coded with a number from 0 to 11) with the highest probability to be predicted by the CNN. This can be illustrated by looking at the C/C++ code of the file [dpupostproc_ref.cpp](files/postproc/common_src/dpupostproc_ref.cpp):
+For each set of 12 values related to one pixel, the post-processing task computes the Softmax classifier first and then searches for its maximum value and related index. The index of this max value represents the object class (coded with a number from 0 to 11) with the highest probability to be predicted by the CNN. For more details, see the C/C++ code of the  [dpupostproc_ref.cpp](files/postproc/common_src/dpupostproc_ref.cpp):
 
 ```text
 void ref_SoftMax(signed char  *inp_data, float *out_data, float post_scale_factor, unsigned char size)
@@ -382,24 +368,24 @@ void ref_dpupostproc(signed char *inp_data, unsigned char *out_max,
 }
 ```
 
-As already done for the pre-processing, also in this case there is the need to scale the data generated by the DPU before inputting them into the SoftMax classifier and this is done with the ``post_scale_factor`` parameter that comes from a query to the DPU at run time, with Python code similar to this:
+As with pre-processing, in this case, there is the need to scale the data generated by the DPU before inputting them into the SoftMax classifier. It is done with the ``post_scale_factor`` parameter that comes from a query to the DPU at run time, with Python code similar to this:
 
 ```python
 output_fixpos = outputTensors[0].get_attr("fix_point")
 post_scale_fact = 1 / (2**output_fixpos)
 ```
 
-Note that ``output_fixpos`` is value from 1 to 7 because it represents the exponent ``i`` of a power of ``2,`` that is ``2^i``.    
+**Note:** The ``output_fixpos`` is value from 1 to 7 because it represents the exponent ``i`` of a power of ``2,`` that is ``2^i``.    
 
-The SoftMax function is computed by a Look Up Table (LUT), since there are 7 possible ``output_fixpos`` values the file [luts.h](files/postproc/common_src/luts.h) contains basically 7 different LUTs, one for each value.
+The SoftMax function is computed by a Look Up Table (LUT) because there are seven possible ``output_fixpos`` values. The  [luts.h](files/postproc/common_src/luts.h) file contains 7 different LUTs, one for each value.
 
-In the HLS TB this parameter is fixed in the [dpupostproc_defines.h](files/postproc/vitis/kernels/dpupostproc_defines.h) file, to test the functionality of the core.
+In the HLS TB this parameter is fixed in the [dpupostproc_defines.h](files/postproc/vitis/kernels/dpupostproc_defines.h) file to test the functionality of the core.
 
 
 ### 2.2.2 HLS Design
 
 
-After having setup the Vitis environment, just launch the command
+After setting up the Vitis environment, enter this command:
 ```shell
 cd MPSOCDPU-PRE-POST-PLACC/files # you are supposed to be here
 cd postproc/hls
@@ -427,19 +413,21 @@ See the related screenshots of Figures 5, 6, 7 and 8.
 *Figure 8. Post-processing IMP step with Vitis HLS*
 
 
-Note that the file [dpupostproc_defines.h](files/postproc/hls/src/dpupostproc_defines.h) must have the line ``#define ARM_HOST`` commented.
+**Note:** The [dpupostproc_defines.h](files/postproc/hls/src/dpupostproc_defines.h) file must have the line ``#define ARM_HOST`` commented.
 
-As you see from Figure 8, after Place-And-Route, the accelerator consumes the following resources: 11613 LUT, 15417 FF, 30 BRAM and 62 DSP from the  MPSoC ZU9 device  with a minimum clock period of 2.565, which corresponds to  389MHz maximum clock frequency.
+As you see from Figure 8, after Place-And-Route, the accelerator consumes the following resources: 11613 LUT, 15417 FF, 30 BRAM, and 62 DSP from the  MPSoC ZU9 device  with a minimum clock period of 2.565, which corresponds to  389MHz maximum clock frequency.
 
-Figure 7 reports the cycle accurate simulation (coSIM step), considering the amount of clock cycles to process the whole image before sending it back to DDR memory, the latency of this kernel is  given by 216719 (cycles) x 2.565ns (clock period) = 0.55ms.
+Figure 7 shows the cycle accurate simulation (coSIM step). Considering the amount of clock cycles to process the whole image before sending it back to DDR memory, the latency of this kernel is  given by 216719 (cycles) x 2.565ns (clock period) = 0.55ms.
 
 Even assuming a longer clock period of 5ns (corresponding to 200MHz clock frequency) the latency would become 1.08ms.
 
-Note that this latency is the time to process the entire frame (224x224x12) of data because this is the way Vitis HLS works if you want to do a functional cycle accurate simulation (acknowledged as "coSIM") of the accelerator. But in itself this core has a real latency of few dozens of clock cycles. Such effective latency could be exploited either by using AXI4 Streaming interfaces (which are not accepted by the DPU core, which is unable to work in a streaming mode) instead of full MAXI4 interfaces or by adding a ping-pong buffer of few image lines among the Post-processing accelerator and the external DDR memory.  
+**Note:** This latency is the time to process the entire frame (224x224x12) of data because it is the way Vitis HLS works if you want to do a functional cycle accurate simulation (acknowledged as "coSIM") of the accelerator. But the core has a real latency of few dozens of clock cycles in itself. Such effective latency could be exploited either by:
+- Using AXI4 Streaming interfaces (which are not accepted by the DPU core because it cannot work in a streaming mode) instead of full MAXI4 interfaces or
+- By adding a ping-pong buffer of few image lines among the Post-processing accelerator and the external DDR memory
 
 
 
-# 3 Makefile-based Design Flow
+# 3 Makefile-Based Design Flow
 
 When adding also the DPU software application to the PL pre- and post-processing accelerators, you have to use the Vitis flow based on the usage of ``Makefiles``.
 
@@ -448,7 +436,7 @@ When adding also the DPU software application to the PL pre- and post-processing
 
 Assuming you have properly setup the Vitis environment, the complete software application with the cascade of the three kernels (punlink       ./postproc/vitis/kernels/lut_exp.h
 re-processing, DPU, post-processing)
-can be compiled with the Vitis Makefile-based flow, by launching the following commands in the [Makefile](files/makefile_flow/host_apps/Makefile) from the [host_apps](files/makefile_flow/host_apps):
+can be compiled with the Vitis Makefile-based flow by launching the following commands in the [Makefile](files/makefile_flow/host_apps/Makefile) from the [host_apps](files/makefile_flow/host_apps):
 
 ```shell
 cd $WRK_DIR/MPSOCDPU-PRE-POST-PLACC/files # you are supposed to be here
@@ -460,16 +448,16 @@ These commands will compile the host applications with a Makefile flow for the s
 the standalone post-processing (``postproc`` folder, the application is named ``host_postproc_xrt``) and the cascade of "preprocessing -> DPU -> postprocessing" (``pre2dpu2post`` folder, the application is named ``pre2dpu2post``).
 
 
-## 3.2 Compile the Whole Embedded HW/SW System
+## 3.2 Compile the Whole Embedded Hardware/Software System
 
-The following command will create the entire embedded system (it requires some hours, depending on computer you are using):
+The following command will create the entire embedded system (Depending on computer you are using, it might require up to a few hours):
 
 ```shell
 cd $WRK_DIR/MPSOCDPU-PRE-POST-PLACC/files/dpu_trd # you are supposed to be here
 make all
 ```
 
-The ``sd_card.img`` image file to boot the ZCU102 board srom SD-card will be produced in the ``$WRK_DIR/MPSOCDPU-PRE-POST-PLACC/files/dpu_trd/prj/Vitis/binary_container_1/`` folder.
+The ``sd_card.img`` image file to boot the ZCU102 board from SD-card will be produced in the ``$WRK_DIR/MPSOCDPU-PRE-POST-PLACC/files/dpu_trd/prj/Vitis/binary_container_1/`` folder.
 You have to use an utility like ``Wind32DiskImager`` (on a Windows-OS PC) to burn such file on the SD card media.   
 
 You should find all the necessary application files directly on the FAT-32 (BOOT) partition of the SD card.
@@ -485,7 +473,7 @@ cd /mnt/sd-mmcblk0p1
 ls -l
 ```
 
-you should see the following files:
+You should see the following files:
 
 ```text
 -rwxrwxr-x 1 root users 28181640 BOOT.BIN
@@ -504,7 +492,7 @@ drwxrwxr-x 3 root users      512 data_pre2dpu2post
 -rwxrwxr-x 1 root users    40937 system.dtb
 ```
 
-Alternatively, in case of changes to the ``host_apps`` running on the ARM CPU, you can create an archive and copy it on your ZCU102 target board with
+Alternatively, in case of changes to the ``host_apps`` running on the ARM CPU, you can create an archive and copy it on your ZCU102 target board with the
 ``scp`` utility (assuming your board has a certain IP address ``ZCU102_IP_ADDRESS``):
 
 ```shell
@@ -525,26 +513,22 @@ cd host_apps
 bash -x ./run_all_on_target.sh | tee logfile_host_apps_zcu102.txt
 ```
 
-You should see something like what reported in the [logfile_host_apps_zcu102.txt](files/img/ logfile_host_apps_zcu102.txt) file.
+You should see something like what is mentioned in the [logfile_host_apps_zcu102.txt](files/img/ logfile_host_apps_zcu102.txt) file.
 
 Each host application generates an output that perfectly matches the reference:
-- the standalone ``preproc`` PL kernel generates the  ``inp_000_out.bmp``  image that is bit-a-bit equal to the ``inp_000_ref.bmp``  image produced by the software task running on the ARM CPU as reference;
+- The standalone ``preproc`` PL kernel generates the  ``inp_000_out.bmp``  image that is bit-a-bit equal to the ``inp_000_ref.bmp``  image produced by the software task running on the ARM&trade; CPU as reference
 
-- the standalone ``postproc`` PL kernel generates the  ``pl_hls_index.bin``  binary file that is bit-a-bit equal to the ``arm_ref_index.bin``  binary file produced by the software task running on the ARM CPU as reference;
+- The standalone ``postproc`` PL kernel generates the  ``pl_hls_index.bin``  binary file that is bit-a-bit equal to the ``arm_ref_index.bin``  binary file produced by the software task running on the ARM CPU as reference
 
-- the processing chain ``pre2dpu2post`` composed by the cascade of ``preproc`` ``dpu`` and ``postproc`` kernels produces the outputs of Figures 9 and 10 and the output files ``post_uint8_out_idx.bin`` (PL pre-precessing, DPU and PL post-processing kernels) and ``post_uint8_ref_idx.bin`` (DPU and ARM sw post-processing task) perfectly match each other.
+- The processing chain ``pre2dpu2post`` composed by the cascade of ``preproc`` ``dpu``, and ``postproc`` kernels produces the outputs of Figures 9 and 10 and the output files ``post_uint8_out_idx.bin`` (PL pre-precessing, DPU , and PL post-processing kernels) and ``post_uint8_ref_idx.bin`` (DPU and ARM sw post-processing task) perfectly match each other.
 
 ![figure9](files/img/hw_preproc_out_000.png)
 
-*Figure 9. Pre-processing output data, represented  as an image.*
+*Figure 9. Pre-processing output data represented  as an image.*
 
 ![figure10](files/img/hw_out_000.png)
 
-*Figure 10. Post-processing output data, represented  as an image. On the left the input image, on the right the output segmented image.*
-
-
-
-
+*Figure 10. Post-processing output data represented  as an image. On the left is the input image, and on the right is the output segmented image.*
 
 
 <hr/>

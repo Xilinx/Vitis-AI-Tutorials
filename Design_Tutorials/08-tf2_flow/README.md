@@ -1,12 +1,12 @@
 ﻿<!--
-Copyright 2020 Xilinx Inc.
- 
+Copyright 2020-2022 Xilinx Inc.
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
- 
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,9 +29,9 @@ Author: Mark Harvey, Xilinx Inc
 This tutorial shows you how to compile and run the same identical design and application code on a number of different Xilinx cards. The virtually seamless transition between Edge and Cloud is made possible by the Vitis&trade; AI RunTime (VART) which is common to all target platforms and its unified APIs.
 
 
-### Current status
+### Current Status
 
-+ Tested on ZCU102, Alveo U50
++ Tested on ZCU102, Alveo&trade; U50
 + Tools used: TensorFlow2.3 & Vitis AI 1.4
 
 
@@ -64,9 +64,9 @@ The 25000 images are all resized to 200 x 250 pixels and then divided into one o
 
 ## The Convolutional Neural Network
 
-The customcnn.py script uses the Keras Functional API to describe the simple CNN. It is a fully convolutional network and has no fully connected or dense layers. There are also no pooling layers — data reduction is achieved by using convolutional layers that have strides greater than one.
+The `customcnn.py` script uses the Keras Functional API to describe the simple CNN. It is a fully convolutional network and has no fully connected or dense layers. There are also no pooling layers — data reduction is achieved by using convolutional layers that have strides greater than one.
 
-The CNN has deliberately been kept simple (so the expected prediction accuracy will not be much higher than approximately 95%. To reduce overfitting, batch normalization, dropout and L2 kernel regularization have been used.
+The CNN has deliberately been kept simple (so the expected prediction accuracy will not be much higher than approximately 95%. To reduce overfitting, batch normalization, dropout, and L2 kernel regularization have been used.
 
 ![Custom CNN architecture](files/img/fig2.png)
 
@@ -79,9 +79,9 @@ The number of skip blocks and the number of filters used in each one is set by t
 
 The host machine has several requirements that need to be met before we begin. You will need:
 
-  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
+  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed. For more informaton, see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
 
-  + The host machine will require Docker to be installed and the Vitis-AI CPU or GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
+  + The host machine will require Docker to be installed and the Vitis-AI CPU or GPU docker image to be built. For more information, see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
 
   + A GPU card suitable for training.
 
@@ -89,10 +89,10 @@ The host machine has several requirements that need to be met before we begin. Y
 
   + For the Alveo U50, follow the [Setup Alveo Accelerator Card](https://github.com/Xilinx/Vitis-AI/tree/master/setup/alveo) instructions.
 
- 
+
 For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_4/zmw1606771874842.html)).
 
-This tutorial assumes the user is familiar with Python3, TensorFlow and has some knowledge of machine learning principles.
+This tutorial assumes you are familiar with Python3, TensorFlow, and have some knowledge of machine learning principles.
 
 
 
@@ -113,8 +113,8 @@ This tutorial assumes the user is familiar with Python3, TensorFlow and has some
 
     There is a set of unlabelled images which were part of the original Kaggle dogs-vs-cats challenge, but we will not use it in this tutorial. Only the 25000 images that are contained in the `train.zip` archive will be used.
 
-3. Open a linux terminal, `cd` to the repository folder, and then `cd` to the `files` folder.
-   
+3. Open a Linux terminal, `cd` to the `repository`>`files` folder.
+
 4. Start the Vitis AI GPU docker:
 
      ```shell
@@ -125,18 +125,18 @@ This tutorial assumes the user is familiar with Python3, TensorFlow and has some
      ./docker_run.sh xilinx/vitis-ai-gpu:latest
      ```
 
-  The docker container will start and after accepting the license agreement, you should see something like this in the terminal:
+  The docker container starts and after accepting the license agreement, you should see something like this in the terminal:
 
      ```shell
      ==========================================
-     
+
      __      ___ _   _                   _____
      \ \    / (_) | (_)            /\   |_   _|
       \ \  / / _| |_ _ ___ ______ /  \    | |
        \ \/ / | | __| / __|______/ /\ \   | |
         \  /  | | |_| \__ \     / ____ \ _| |_
          \/   |_|\__|_|___/    /_/    \_\_____|
-     
+
      ==========================================
 
      Docker Image Version:  1.4.776
@@ -144,24 +144,24 @@ This tutorial assumes the user is familiar with Python3, TensorFlow and has some
      VAI_ROOT: /opt/vitis_ai
 
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-tensorflow 
+          conda activate vitis-ai-tensorflow
      For Caffe Workflows do:
-          conda activate vitis-ai-caffe 
+          conda activate vitis-ai-caffe
      For Neptune Workflows do:
-          conda activate vitis-ai-neptune 
+          conda activate vitis-ai-neptune
      For PyTorch Workflows do:
-          conda activate vitis-ai-pytorch 
+          conda activate vitis-ai-pytorch
      For TensorFlow 2.3 Workflows do:
-          conda activate vitis-ai-tensorflow2 
+          conda activate vitis-ai-tensorflow2
      For Darknet Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_darknet 
+          conda activate vitis-ai-optimizer_darknet
      For Caffe Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_caffe 
+          conda activate vitis-ai-optimizer_caffe
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-optimizer_tensorflow 
+          conda activate vitis-ai-optimizer_tensorflow
      For LSTM Workflows do:
-          conda activate vitis-ai-lstm 
-     Vitis-AI /workspace > 
+          conda activate vitis-ai-lstm
+     Vitis-AI /workspace >
      ```
 
 >:bulb: *If you get a "Permission Denied" error when starting the docker container, it is almost certainly because the docker_run.sh script is not set to be executable. You can fix this by running the following command:*
@@ -176,7 +176,7 @@ Activate the Tensorflow2 python virtual environment with `conda activate vitis-a
 
 ```shell
 Vitis-AI /workspace > conda activate vitis-ai-tensorflow2
-(vitis-ai-tensorflow2) Vitis-AI /workspace > 
+(vitis-ai-tensorflow2) Vitis-AI /workspace >
 ```
 
 *The remainder of this README describes each single step to implement the tutorial, however a shell script called run_all.sh is provided which will run the complete flow:*
@@ -185,9 +185,9 @@ Vitis-AI /workspace > conda activate vitis-ai-tensorflow2
 (vitis-ai-tensorflow2) Vitis-AI /workspace > source run_all.sh
 ```
 
-## Step 0 - Converting the dataset images to TFRecords
+## Step 1 - Converting the Dataset Images to TFRecords
 
-To run step 0:
+To run step 1:
 
 ```shell
 (vitis-ai-tensorflow2) Vitis-AI /workspace > python -u images_to_tfrec.py 2>&1 | tee tfrec.log
@@ -237,9 +237,9 @@ The number of image/label pairs in each .tfrecord file is defined by the `--img_
 
 
 
-## Step 1 - Training
+## Step 2 - Training
 
-To run step 1:
+To run step 2:
 
 ```shell
 (vitis-ai-tensorflow2) Vitis-AI /workspace > python -u train.py 2>&1 | tee train.log
@@ -266,7 +266,7 @@ def input_fn_trn(tfrec_dir,batchsize,height,width):
 ```
 
 
-The validation phase uses the `input_fn_test` function which will make a dataset from all TFRecord files which match the glob pattern test_*.tfrecord. Note how there is no augmentation, only resizing and normalization and the dataset does not repeat:
+The validation phase uses the `input_fn_test` function that will make a dataset from all TFRecord files which match the glob pattern test_*.tfrecord. Note how there is no augmentation, only resizing and normalization and the dataset does not repeat:
 
 
 ```python
@@ -299,9 +299,9 @@ The complete list of command line arguments of `train.py` are as follows:
 |--tboard|tb_logs|Folder where TensorBoard logs will be written|
 
 
-## Step 2 - Quantization
+## Step 3 - Quantization
 
-To run step 2:
+To run step 3:
 
 ```shell
 (vitis-ai-tensorflow2) Vitis-AI /workspace > python -u quantize.py --evaluate 2>&1 | tee quantize.log
@@ -319,7 +319,7 @@ The `quantize.py` script will do the following:
 + If the `--evaluate` command line argument is included, then the `quantize.py` script will evaluate the accuracy of the quantized model using the same test dataset that was used for validation during training.
 
 
-## Step 3 - Compiling for the target
+## Step 4 - Compiling for the Target
 
 To run step 3, run the `source compile.sh` with one of the target boards as a command line argument, for example:
 
@@ -330,9 +330,9 @@ To run step 3, run the `source compile.sh` with one of the target boards as a co
 The script also supports `zcu104`,`vck190` and `u50`, as a command line arguments to target other boards. The `compile.sh` shell script will compile the quantized model and create an .xmodel file which contains the instructions and data to be executed by the DPU.
 
 
-## Step 4 - Running the application on the target
+## Step 5 - Running the Application on the Target
 
-To prepare the images, xmodel and application code for copying to the selected target, run the following command:
+To prepare the images, XMODEL and application code for copying to the selected target, run the following command:
 
 ```shell
 (vitis-ai-tensorflow2) Vitis-AI /workspace > python -u target.py -m compiled_zcu102/customcnn.xmodel -t target_zcu102 2>&1 | tee target_zcu102.log
@@ -356,7 +356,7 @@ The entire `target_zcu102` folder should be copied to the ZCU102. Copy it to the
 
   + Unmount both the BOOT and ROOTFS volumes from the host machine and then eject the SD Card from the host machine.
 
-2. With scp command:
+2. With the `scp` command:
 
   + If the target evaluation board is connected to the same network as the host machine, the `target_zcu102` folder can be copied using scp.
 
@@ -420,11 +420,11 @@ To prepare the images, xmodel and application code for copying to the selected t
 (vitis-ai-tensorflow2) Vitis-AI /workspace > python -u target.py -m compiled_u50/customcnn.xmodel -t target_u50 2>&1 | tee target_u50.log
 ```
 
-Note that the U50 will need to have been flashed with the correct deployment shell - this should have been done in the 'Preparing the host machine and target boards' section above.
+**Note:** U50 should be flashed with the correct deployment shell, which should have been done in the 'Preparing the host machine and target boards' section above.
 
 The following steps should be run from inside the Vitis-AI Docker container:
 
-  + Ensure that Vitis-AI's TensorFlow2 conda environment is enabled (if not, the run `conda activate vitis-ai-tensorflow2`).
+  + Ensure that Vitis-AI's TensorFlow2 Conda environment is enabled (if not, the run `conda activate vitis-ai-tensorflow2`).
 
   + Run `source setup.sh DPUCAHX8H` which sets environment variables to point to the correct overlay for the U50. The complete steps to run are as follows:
 
@@ -451,7 +451,7 @@ Starting 1 threads...
 Throughput=1322.94 fps, total frames = 1000, time=0.7559 seconds
 Post-processing 1000 images..
 Correct:960, Wrong:40, Accuracy:0.9600
------------------------------------- 
+------------------------------------
 ```
 
 As with the ZCU102, the performance can be increased by using more threads:
@@ -470,8 +470,8 @@ Starting 6 threads...
 Throughput=2442.85 fps, total frames = 1000, time=0.4094 seconds
 Post-processing 1000 images..
 Correct:960, Wrong:40, Accuracy:0.9600
------------------------------------- 
+------------------------------------
 ```
 
 </hr>
-<p class="sphinxhide" align="center"><sup>Copyright&copy; 2020-2021 Xilinx</sup></p>
+<p class="sphinxhide" align="center"><sup>Copyright&copy; 2020-2022 Xilinx</sup></p>

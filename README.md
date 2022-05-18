@@ -173,13 +173,7 @@ These tutorials illustrate end-to-end design concepts or workflows using Vitis A
  <td align="center"><a href="./Feature_Tutorials/04-tensorflow-ai-optimizer/README.md">TensorFlow AI Optimizer Example Using Low-level Coding Style</a></td>
  <td>Use AI Optimizer for TensorFlow to prune an AlexNet CNN by 80% while maintaining the original accuracy.</td>
  </tr>
- <tr>
-  <td align="center">
-   <a href="./Feature_Tutorials/05-tf1_keras_optimizer/README.md">TensorFlow1 AI Optimizer example using Keras</a>
- </td>
- <td>Use Xilinx's AI Optimizer for TensorFlow1 to prune a MobileNetV2 CNN by 50% whilst maintaining the original floating-point accuracy.
-</td>
- </tr>  </table>
+  </table>
 
 
 </hr>
