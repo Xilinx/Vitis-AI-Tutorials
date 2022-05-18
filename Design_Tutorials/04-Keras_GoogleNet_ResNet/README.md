@@ -28,51 +28,51 @@ Author: Daniele Bagni, Xilinx Inc
 
 ### Current status
 
-1. Tested with Tensorflow 1.15 within Vitis AI 1.4 on an Ubuntu 18.04.5 Desktop PC.
+1. Tested with Tensorflow 1.15 within Vitis AI&trade; 1.4 on an Ubuntu 18.04.5 Desktop PC
 
-2. Tested in hardware on ZCU102 and ZCU104 boards,  respectively with  ``xilinx-zcu102-dpu-v2021.1-v1.4.0.img.gz`` and ``xilinx-zcu104-dpu-v2021.1-v1.4.0.img.gz`` sd cards.
+2. Tested in hardware on ZCU102 and ZCU104 boards,  with  ``xilinx-zcu102-dpu-v2021.1-v1.4.0.img.gz`` and ``xilinx-zcu104-dpu-v2021.1-v1.4.0.img.gz`` SD cards respecitively
 
-3. Tested in hardware on VCK190 ES1 board with  ``xilinx-vck190-dpu-v2020.2-v1.4.0.img.gz`` sd card.
+3. Tested in hardware on VCK190 ES1 board with  ``xilinx-vck190-dpu-v2020.2-v1.4.0.img.gz`` sd card
 
 #### Date:  4 October 2021
 
 
 # 1 Introduction
 
-In this Deep Learning (DL) tutorial, you will quantize in fixed point some custom Convolutional Neural Networks (CNNs) and deploy them on the Xilinx&reg; [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html), [ZCU104](https://www.xilinx.com/products/boards-and-kits/zcu104.html) and [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html) boards using Vitis AI, which is a set of optimized IP, tools libraries, models and example designs valid for AI inference on both Xilinx edge devices and Alveo cards (see the [Vitis AI Product Page](https://developer.xilinx.com/en/get-started/ai.html) for more information).
+In this Deep Learning (DL) tutorial, you will quantize in fixed point some custom Convolutional Neural Networks (CNNs) and deploy them on the Xilinx&reg; [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html), [ZCU104](https://www.xilinx.com/products/boards-and-kits/zcu104.html) and [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html) boards using Vitis AI. Vitis AI is a set of optimized IP, tools libraries, models, and example designs valid for AI inference on both Xilinx edge devices and Alveo&trade; cards (see the [Vitis AI Product Page](https://developer.xilinx.com/en/get-started/ai.html) for more information).
 
 This tutorial deals with:
-- four custom CNNs, from the simplest ``LeNet`` and ``miniVggNet`` to the intermediate ``miniGoogleNet`` and the more complex ``miniResNet``, as described in the [custom_cnn.py](files/code/custom_cnn.py) file;
-- two different datasets, ``Fashion-MNIST`` and ``CIFAR-10``, each one with 10 classes of objects.
+- Four custom CNNs, from the simplest ``LeNet`` and ``miniVggNet`` to the intermediate ``miniGoogleNet`` and the more complex ``miniResNet``, as described in the [custom_cnn.py](files/code/custom_cnn.py) file.
+- Two different datasets, ``Fashion-MNIST`` and ``CIFAR-10``, each one with ten classes of objects.
 
-Once the selected CNN has been correctly trained in Keras, the [HDF5](https://www.hdfgroup.org/solutions/hdf5/) file of weights is converted into a TF checkpoint and inference graph file, such floating point frozen graph is then quantized by the Vitis AI Quantizer that creates an 8-bit (INT8) fixed point graph from which the Vitis AI Compiler generates the ``xmodel`` file of micro instructions for the Deep Processor Unit (DPU) of the Vitis AI platform. The final C++ application is executed at run time on the ZCU102 target board, which is the default one adopted in this tutorial (all the flow works transparently also for ZCU104 and VCK190 boards). The top-1 accuracy of the predictions computed at run time is measured and compared with the simulation results.
+Once the selected CNN has been correctly trained in Keras, the [HDF5](https://www.hdfgroup.org/solutions/hdf5/) file of weights is converted into a TF checkpoint and inference graph file. Such floating-point frozen graph is then quantized by the Vitis AI Quantizer, creating an 8-bit (INT8) fixed-point graph from which the Vitis AI Compiler generates the ``xmodel`` file of microinstructions for the Deep Processor Unit (DPU) of the Vitis AI platform. The final C++ application is executed at run time on the ZCU102 target board, the default one adopted in this tutorial (all the flow works transparently and for ZCU104 and VCK190 boards). The top-1 accuracy of the predictions computed at run-time is measured and compared with the simulation results.
 
 # 2 Prerequisites
 
   - Ubuntu 18.04.5 host PC and Tensorflow 1.15 within Vitis AI 1.4.
 
-  - The entire repository of [Vitis AI stack release 1.4](https://github.com/Xilinx/Vitis-AI) from [www.github.com/Xilinx](https://www.github.com/Xilinx).
+  - The entire repository of [Vitis AI stack release 1.4](https://github.com/Xilinx/Vitis-AI) from [www.github.com/Xilinx](https://www.github.com/Xilinx)
 
   -  Accurate reading of [Vitis AI User Guide UG1414 v1.4](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_4/ug1414-vitis-ai.pdf). In particular:
 
-    1. "Vitis AI Overview" in Chapter 1 with DPU naming and guidelines to download the tools container available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags) and the Runtime Package for edge (MPSoC) devices.
-    2. "Installation and Setup" instructions of Chapter 2 for both host and target;
-    3. "Quantizing the Model" in Chapter 3 and "Compiling the Model" in Chapter 4.
-    4. "Programming with VART" APIs in Chapter 5.
-    5. "Setting Up the Target" board as described in [Vitis-AI/demo/VART](https://github.com/Xilinx/Vitis-AI/blob/master/demo/VART/README.md).  
+    1. *Vitis AI Overview* in Chapter 1 with DPU naming and guidelines to download the tools container available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags) and the Runtime Package for edge (MPSoC) devices.
+    2. *Installation and Setup* instructions of Chapter 2 for both host and target
+    3. *Quantizing the Model* in Chapter 3 and *Compiling the Model* in Chapter 4
+    4. *Programming with VART* APIs in Chapter 5.
+    5. *Setting Up the Target* board as described in [Vitis-AI/demo/VART](https://github.com/Xilinx/Vitis-AI/blob/master/demo/VART/README.md).  
 
   - A Vitis AI target board such as either:
-    - [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html), or
-    - [ZCU104](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu104-g.html), or
-    - [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html).
+    - [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html)
+    - [ZCU104](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu104-g.html)
+    - [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html)
 
-  - Familiarity with Deep Learning principles.
+  - Familiarity with Deep Learning principles
 
 
 ### Dos-to-Unix Conversion
 
-In case you might get some strange errors during the execution of the scripts, you have to pre-process -just once- all the``*.sh`` shell and the python ``*.py`` scripts with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility.
-In that case run the following commands from your Ubuntu host PC (out of the Vitis AI docker images):
+If you run into unexpected errors during the execution of the scripts, pre-process  all the``*.sh`` shell and the python ``*.py`` scripts with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility just once.
+In that case, run the following commands from your Ubuntu host PC (out of the Vitis AI docker images):
 ```bash
 sudo apt-get install dos2unix
 cd <WRK_DIR> #your working directory
@@ -83,8 +83,8 @@ done
 
 ## Working Directory
 
-In the following of this document it is assumed you have installed Vitis AI 1.4 somewhere in your file system and this will be your working directory ``<WRK_DIR>``, for example in my case ``<WRK_DIR>`` is set to
-``~/ML/VAI1.4``.  You have also created a folder named ``tutorials`` under such ``<WRK_DIR>`` and you have copied this tutorial there and renamed it ``VAI-KERAS-CUSTOM-GOOGLENET-RESNET``:
+This tutorial assumes you have installed Vitis AI 1.4 in your file system, and the installation location is your working directory ``<WRK_DIR>``. For example, in this tutorial ``<WRK_DIR>`` is set to
+``~/ML/VAI1.4``.  You have also created a folder named ``tutorials`` under such ``<WRK_DIR>``, and you have copied this tutorial there and renamed it ``VAI-KERAS-CUSTOM-GOOGLENET-RESNET``:
 
 ```text
 VAI1.4   # your WRK_DIR
@@ -119,9 +119,9 @@ VAI1.4   # your WRK_DIR
 
 
 
-# 3 Before starting with Vitis AI 1.4
+# 3 Before Starting with Vitis AI 1.4
 
-You have to know few things about [Docker](https://docs.docker.com/) in order to run the Vitis AI smoothly on your host environment.
+You need to know the following few things about [Docker](https://docs.docker.com/) to run the Vitis AI smoothly on your host environment.
 
 ## 3.1 Installing Docker Client/Server
 
@@ -139,7 +139,7 @@ sudo docker run hello-world
 docker versionconda activate vitis-ai-tensorflow
 ```
 
-Once done, in my case, I could see the following:
+A prompt similar to the following appears:
 ```
 Client: Docker Engin Syntax | Description |
 | --- | ----------- |
@@ -178,17 +178,17 @@ Server: Docker Engine - Community
 
 Download the [Vitis AI 1.4](https://github.com/Xilinx/Vitis-AI) and execute the [docker_build_gpu.sh](https://github.com/Xilinx/Vitis-AI/tree/master/setup/docker/docker_build_gpu.sh) script.
 
-Once done that, to list the currently available docker images run:
+To list the currently available docker images, run:
 ```bash
 docker images # to list the current docker images available in the host pc
 ```
-and you should see something like in the following text:
+You will see a prompt similar to the following:
 ```text
 REPOSITORY            TAG                               IMAGE ID       CREATED         SIZE
 xilinx/vitis-ai-gpu   latest                            7623d3de1f4d   6 hours ago     27.9GB
 ```
 
-Note that docker does not have an automatic garbage collection system as of now. You can use this command to do a manual garbage collection:
+**Note:** The docker does not have an automatic garbage collection system as of now. You can use this command to do a manual garbage collection:
 ```
 docker rmi -f $(docker images -f "dangling=true" -q)
 ```
@@ -206,42 +206,45 @@ cd /workspace/tutorials/
 cd VAI-KERAS-CUSTOM-GOOGLENET-RESNET/files #your working directory
 ```
 
-Note that the container maps the shared folder ``/workspace`` with the file system of the Host PC from where you launch the above command, which is ``<WRK_DIR>`` in your case.
+**Note:** The container maps the shared folder ``/workspace`` with the file system of the Host PC from where you launch the above command, which is ``<WRK_DIR>``.
 This shared folder enables you to transfer files from the Host PC to the docker container and vice versa.
 
-The docker container does not have any graphic editor, so it is recommended that you work with two terminals and you point to the same folder, in one terminal you use the docker container commands and in the other terminal you open any graphic editor you like.
+The docker container does not have any graphic editor, so it is recommended that you work with two terminals and you point to the same folder. In one terminal, use the docker container commands, and in the other terminal, open any graphic editor you like.
 
 
 # 4 The Main Flow
 
-The main flow is composed of seven major steps. The first five steps are executed from the tools container on the host PC by launching the script [run_all.sh](files/run_all.sh), which contains several functions. The sixth and seventh step can be executed directly on the target board.
-Here is an overview of each step.
+The main flow is composed of seven major steps. The first five steps are executed from the tools container on the host PC by launching the script [run_all.sh](files/run_all.sh), which contains several functions. The sixth and seventh steps can be executed directly on the target board.
 
 
-1. Organize the data into folders, such as ``train`` for training, ``val`` for validation during the training phase, ``test`` for testing during the inference/prediction phase, and ``cal`` for calibration during the quantization phase, for each dataset. See [Organize the Data](#41-organize-the-data) for more information.
+1. Organize the data into folders, such as ``train`` for training, ``val`` for validation during the training phase, ``test`` for testing during the inference/prediction phase, and ``cal`` for calibration during the quantization phase, for each dataset. For more information, see [Organize the Data](#41-organize-the-data).
 
-2. Train the CNNs in Keras and generate the HDF5 weights model. See [Train the CNN](#42-train-the-cnn) for more information.
+2. Train the CNNs in Keras and generate the HDF5 weights model. For more information, see [Train the CNN](#42-train-the-cnn).
 
-3. Convert into TF checkpoints and inference graphs. See [Create TF Inference Graphs from Keras Models](#43-create-tf-inference-graphs-from-keras-models) for more information.
+3. Convert to TF checkpoints and inference graphs. For more information, see [Create TF Inference Graphs from Keras Models](#43-create-tf-inference-graphs-from-keras-models).
 
-4. Freeze the TF graphs to evaluate the CNN prediction accuracy as the reference starting point. See [Freeze the TF Graphs](#44-freeze-the-tf-graphs) for more information.
+4. Freeze the TF graphs to evaluate the CNN prediction accuracy as the reference starting point. For more information, see [Freeze the TF Graphs](#44-freeze-the-tf-graphs).
 
-5. Quantize from 32-bit floating point to 8-bit fixed point and evaluate the prediction accuracy of the quantized CNN. See [Quantize the Frozen Graphs](#45-quantize-the-frozen-graphs) for more information.
+5. Quantize from 32-bit floating point to 8-bit fixed point and evaluate the prediction accuracy of the quantized CNN. For more information, see [Quantize the Frozen Graphs](#45-quantize-the-frozen-graphs).
 
-6. Run the compiler to generate the ``xmodel`` file for the target board From the quantized ``pb`` file. See [Compile the Quantized Models](#46-compile-the-quantized-models) for more information.
+6. Run the compiler to generate the ``XMODEL`` file for the target board from the quantized ``PB`` file. For more information, see [Compile the Quantized Models](#46-compile-the-quantized-models).
 
-7. Use either VART C++ or Python APIs to write the hybrid application for the ARM CPU, then compile it.  The application is called "hybrid" because the ARM CPU is executing some software routines while the DPU hardware accelerator is running the FC, CONV, ReLU, and BN layers of the CNN that were coded in the ``xmodel``file. Assuming you have archived the ``target_zcu102`` folder and transferred the related ``target_zcu102.tar`` archive from the host to the target board with ``scp`` utility, now you can run the hybrid application. See [Build and Run on the ZCU102 Target Board](#47-build-and-run-on-the-zcu102-target-board) for more information.
+7. Use either VART C++ or Python APIs to write the hybrid application for the ARM CPU, then compile it.  The application is called hybrid because the ARM CPU is executing some software routines while the DPU hardware accelerator is running the FC, CONV, ReLU, and BN layers of the CNN that were coded in the ``XMODEL``file. Assuming you have archived the ``target_zcu102`` folder and transferred the related ``target_zcu102.tar`` archive from the host to the target board with ``scp`` utility, you can run the hybrid application. See [Build and Run on the ZCU102 Target Board](#47-build-and-run-on-the-zcu102-target-board) for more information.
 
-All explanations in the following sections are based only on the CIFAR-10 dataset; the commands for the  Fashion-MNIST dataset are very similar: just replace the sub-string "cifar10" with "fmnist".
+All explanations in the following sections are based only on the CIFAR-10 dataset. The commands for the  Fashion-MNIST dataset are similar:  replace the sub-string "cifar10" with "fmnist".
 
-Step 2, training, is the longest process and requires GPU support. In order to save storage space in this repository and at the same time to allow you to skip the training process itself, you can follow the flow by launching the script ``run_miniVggNet.sh`` (instead of ``run_all.sh``) which works on the available ``miniVggNet`` floating point model (trained only with CIFAR-10 dataset).
+Step 2, training, is the longest process and requires GPU support. To save storage space in this repository and simultaneously allow you to skip the training process, you can follow the flow by launching the script ``run_miniVggNet.sh`` (instead of ``run_all.sh``), which works on the available ``miniVggNet`` floating-point model (trained only with CIFAR-10 dataset).
 
 
 ## 4.1 Organize the Data
 
-As Deep Learning deals with image data, you have to organize your data in appropriate folders and apply some pre-processing to adapt the images to  the hardware features of the Vitis AI Platform. The first lines of script [run_all.sh](files/run_all.sh) call other python scripts to create the sub-folders ``train``, ``val``, ``test``, and ``cal`` that are located in the ``dataset/fashion-mnist`` and ``dataset/cifar10`` directories and to fill them with 50000 images for training, 5000 images for validation, 5000 images for testing (taken from the 10000 images of the original test dataset) and 1000 images for the calibration process (copied from the training images).
+As Deep Learning deals with image data, you have to organize your data in appropriate folders and apply some pre-processing to adapt the images to  the hardware features of the Vitis AI Platform. The first lines of script [run_all.sh](files/run_all.sh) call other python scripts to create the sub-folders ``train``, ``val``, ``test``, and ``cal`` that are located in the ``dataset/fashion-mnist`` and ``dataset/cifar10`` directories and to fill them with:
+- 50000 images for training
+- 5000 images for validation
+- 5000 images for testing (taken from the 10000 images of the original test dataset)
+- 1000 images for the calibration process (copied from the training images).
 
-All the images are 32x32x3 in dimensions so that they are compatible with the two different datasets.
+All the images are 32x32x3 in dimensions to be compatible with the two different datasets.
 
 
 ### 4.1.1 Fashion MNIST
@@ -254,7 +257,7 @@ Usually, the size of the images is 28x28x1 (gray-level), but in this case they h
 
 ### 4.1.2 CIFAR-10
 
-The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset is composed of 10 classes of objects to be classified. It contains 60000 labeled RGB images that are 32x32 in size and thus, this dataset is more challenging than the MNIST and Fashion-MNIST datasets. The CIFAR-10 dataset was developed for the paper [Learning Multiple Layers of Features from Tiny Images](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf).
+The [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset is composed of ten classes of objects to be classified. It contains 60000 labeled RGB images that are 32x32 in size, making this dataset is more challenging than the MNIST and Fashion-MNIST datasets. The CIFAR-10 dataset was developed for the paper [Learning Multiple Layers of Features from Tiny Images](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf).
 
 ## 4.2 Train the CNN
 
@@ -271,7 +274,6 @@ x_train = x_train *2
 x_test  = x_test  -0.5
 x_test  = x_test  *2
 ```
-
 
 ### 4.2.1 LeNet
 
@@ -294,7 +296,7 @@ The model scheme of `miniVggNet` has 2,170,986 parameters as shown in the follow
 
 `miniGoogleNet` is a customization of the original `GoogleNet` CNN. It is suitable for the smaller Fashion-MNIST dataset, instead of the larger ImageNet-based ILSVRC.
 
-For more information on ``miniGoogleNet``, read the "Practitioner Bundle" of the [Deep Learning for CV with Python](https://www.pyimagesearch.com/deep-learning-computer-vision-python-book/) books by Dr. Adrian Rosebrock.
+For more information on ``miniGoogleNet``, read the *Practitioner Bundle* of the [Deep Learning for CV with Python](https://www.pyimagesearch.com/deep-learning-computer-vision-python-book/) books by Dr. Adrian Rosebrock.
 
 The model scheme of ```miniGoogleNet``` has 1,656,250 parameters, as shown in the following figure:
 
@@ -313,13 +315,11 @@ The model scheme of ```miniResNet``` has  886,102 parameters, as shown in the fo
 
 
 ## 4.3 Create TF Inference Graphs from Keras Models
-
 The function ``2_cifar10_Keras2TF()`` gets the computation graph of the TF backend representing the Keras model which includes the forward pass and training related operations.
 
 The output files of this process, ``infer_graph.pb`` and ``float_model.chkpt.*``, will be stored in the folder ``tf_chkpts``. For example, in the case of ``miniVggNet``,  the TF input and output names that will be needed for [Freeze the TF Graphs](#freeze-the-tf-graphs) are named ``conv2d_1_input`` and ``activation_6/Softmax`` respectively.
 
 ## 4.4 Freeze the TF Graphs
-
 The inference graph created in [Create TF Inference Graphs from Keras Models](#create-tf-inference-graphs-from-keras-models) is first converted to a [GraphDef protocol buffer](https://www.tensorflow.org/guide/extend/model_files), then cleaned so that the subgraphs that are not necessary to compute the requested outputs, such as the training operations, can be removed. This process is called "freezing the graph".
 
 The routines  ``3a_cifar10_freeze()`` and ``3b_cifar10_evaluate_frozen_graph()`` generate the frozen graph and use it to evaluate the accuracy of the CNN by making predictions on the images in the `test` folder.
@@ -338,13 +338,10 @@ print(model.outputs)
 ```
 
 ## 4.5 Quantize the Frozen Graphs
-
 The routines ``4a_cifar10_quant()`` and ``4b_cifar10_evaluate_quantized_graph()``
 generate the quantized graph and use it to evaluate the accuracy of the CNN by making predictions on the images in the `test` folder.
 
-
 ## 4.6 Compile the Quantized Models
-
 The ``5_cifar10_vai_compile_zcu102()`` routine generates the ``xmodel`` file for the embedded system composed by the ARM CPU and the DPU accelerator in the ZCU102 board.
 
 This file has to be loaded at run time from the C++ (or Python) application directly on the target board OS environment. For example, in case of ``LeNet`` for Fashion-MNIST, the ``xmodel`` file is named ``LeNet.xmodel``. A similar nomenclature is applied for the other CNNs.
@@ -357,7 +354,6 @@ conv2d_2_convolution(0) : 32*32*3
 Output Node(s)      (H*W*C)
 dense_2_MatMul(0) : 1*1*10
 ```
-
 ## 4.7 Build and Run on ZCU102 Target Board
 
 You can compile the application directly on the SD card once the target board is turned on. In fact this is what the script ``run_all_cifar10_target.sh`` indeed does, once you will launch it from the target board.  
@@ -373,8 +369,6 @@ Assuming you have transferred the ``target_zcu102.tar`` archive from the host to
   cd target_zcu102
   bash ./run_all_cifar10_target.sh
   ```
-
-
 ### 4.7.1 The C++ Application with VART APIs
 
 The C++ code for image classification [main.cc](files/target_zcu102/code/src/main.cc) is independent of the CNN type, thanks to the abstraction done by the VART APIs; it was derived from the [Vitis AI resnet50 VART demo](https://github.com/Xilinx/Vitis-AI/blob/master/demo/VART/resnet50/src/main.cc).
@@ -402,7 +396,6 @@ A mismatch at this level would prevent the computation of the correct prediction
 
 ### 4.7.2 Running the four CNNs   
 
-
 Turn on your target board and establish a serial communication with a ``putty`` terminal from Ubuntu or with a ``TeraTerm`` terminal from your Windows host PC.
 
 Ensure that you have an Ethernet point-to-point cable connection with the correct IP addresses to enable ``ssh`` communication in order to quickly transfer files to the target board with ``scp`` from Ubuntu or ``pscp.exe`` from Windows host PC. For example, you can set the IP addresses of the target board to be ``192.168.1.100`` while the host PC is  ``192.168.1.101`` as shown in the following figure:
@@ -422,29 +415,28 @@ bash -x ./run_all_fmnist_target.sh
 bash -x ./run_all_cifar10_target.sh
 ```
 
-With this command, the ``fmnist_test.tar`` file with the 5000 test images will be uncompressed.
+With this command, the ``fmnist_test.tar`` file with the 5000 test images is uncompressed.
 The single-thread application based on VART C++ APIs is built with the ``build_app.sh`` script and finally launched for each CNN, the effective top-5 classification accuracy is checked by a python script like [check_runtime_top5_fmnist.py](files/target_zcu102/code/src/check_runtime_top5_fmnist.py).
 
 Another script like [fps_fmnist.sh](files/target_zcu102/code/fps_fmnist.sh) launches the multi-thread application based on VART Python APIs to measure the effective fps.
-
 
 
 # 5 Summary
 
 The following [Excel table](files/doc/summary_results.xlsx) summarizes the CNN features for each dataset and for each network in terms of:
 
-- elapsed CPU time for the training process
-- number of CNN parameters and number of epochs for the training processed
+- Elapsed CPU time for the training process
+- Number of CNN parameters and number of epochs for the training processed
 - TensorFlow output node names
-- top-1 accuracies estimated for the TF frozen graph and the quantized graph
-- top-1 accuracies measured on ZCU102 at run time execution
-- frames per second (fps) -measured on ZCU102 at run time execution- including reading the images with OpenCV function from ARM CPU (while in the real life case these images will be stored into DDR memory and so their access time should be negligible as seen from the DPU IP core).
+- Top-1 accuracies estimated for the TF frozen graph and the quantized graph
+- Top-1 accuracies measured on ZCU102 at run time execution
+- Frames per second (fps) measured on ZCU102 at run time execution, including reading the images with OpenCV function from ARM CPU (while in the real-life case these images are stored in DDR memory, and so their access time should be negligible as seen from the DPU IP core).
 
 ![figure](files/doc/images/summary_results.png)
 
-Note that in the case of CIFAR-10 dataset, being more sophisticated than the Fashion-MNIST, the top-1 accuracies of the four CNNs are quite different with ``miniResNet`` being the most accurate.
+**Note:** In the case of CIFAR-10 dataset, being more sophisticated than the Fashion-MNIST, the top-1 accuracies of the four CNNs are quite different with ``miniResNet`` being the most accurate.
 
-To save storage space, the folder [target_zcu102](files/target_zcu102) contains only the ``xmodel`` files for the CIFAR10 dataset, being more challenging and interesting than the Fashion-MNIST dataset.
+To save storage space, the folder [target_zcu102](files/target_zcu102) contains only the ``XMODEL`` files for the CIFAR10 dataset, being more challenging and interesting than the Fashion-MNIST dataset.
 
 
 # 6 References

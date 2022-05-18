@@ -1,12 +1,12 @@
 <!--
-Copyright 2021 Xilinx Inc.
- 
+Copyright 2021-2022 Xilinx Inc.
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
- 
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,27 +21,27 @@ Author: Mark Harvey, Xilinx Inc
    </td>
  </tr>
  <tr>
-   <td align="center"><h1>Denoising Variational Autoencoder with TensorFlow2 and Vitis-AI</h1>
+   <td align="center"><h1>Denoising Variational Autoencoder with TensorFlow2 and Vitis AI</h1>
    </td>
   </tr>
 </table>
 
 ## Current Status
 
-+ Tested on ZCU102 with Vitis-AI 1.4
++ Tested on ZCU102 with Vitis AI&trade; 1.4
 
 
 # Introduction
 
-The Xilinx DPU can accelerate the execution of many different types of operations and layers that are commonly found in convolutional neural networks but occasionally we need to execute models that have fully custom layers. One such layer is the sampling function of a convolutional variational autoencoder. The DPU can accelerate the convolutional encoder and decoder but not the statistical sampling layer - this must be executed in software on a CPU. This tutorial will use the variational autoencoder as an example of how to approach this situation.
+The Xilinx&reg; DPU can accelerate the execution of many different types of operations and layers that are commonly found in convolutional neural networks(CNNs) but occasionally we need to execute models that have fully custom layers. One such layer is the sampling function of a convolutional variational autoencoder. The DPU can accelerate the convolutional encoder and decoder but not the statistical sampling layer. This must be executed in software on a CPU. This tutorial will use the variational autoencoder as an example of how to approach this situation.
 
 # The Variational Autoencoder
 
-An autoencoder is an artificial neural network that learns how to efficiently compress and encode data to a lower dimensionality and also how to reconstruct the data back from the reduced encoded representation to something that is as close as possible to the original input. This is a form of representation learning.
-An autoencoder consists of three main parts, the encoder, the decoder and between them a ‘bottleneck’ or ‘latent space’ which is the encoded version of the input.
-The encoder and decoder can be made up from MLPs, CNNs or LSTMs - in this tutorial we will use a CNN based encoder and decoder.
-A variational autoencoder maps the input to a latent space which is a  normal distribution. We pass the mean and standard deviation of the learned distribution to the decoder. 
- 
+An autoencoder is an artificial neural network that learns how to efficiently compress and encode data to a lower dimensionality and reconstruct the data back from the reduced encoded representation to something as close as possible to the original input. It is a form of representation learning.
+An autoencoder consists of three main parts, the encoder, the decoder, and between them a ‘bottleneck’ or ‘latent space’, which is the encoded version of the input.
+The encoder and decoder can be made up of MLPs, CNNs, or LSTMs. This tutorial uses a CNN-based encoder and decoder.
+A variational autoencoder maps the input to a latent space which is a  normal distribution. We pass the mean and standard deviation of the learned distribution to the decoder.
+
 <p align="center">
  <br><br>
  <img src="img/fig1.png" width="100%" height="100%">
@@ -66,36 +66,36 @@ class Sampling(layers.Layer):
       return encoder_mu + tf.exp(0.5 * encoder_log_variance) * epsilon
 ```
 
-# Before you begin
+# Before you Begin
 
 The host machine has several requirements that need to be met before we begin. You will need:
 
-  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis-AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
+  + An x86 host machine with a supported OS and either the CPU or GPU versions of the Vitis AI docker installed - see [System Requirements](https://github.com/Xilinx/Vitis-AI/blob/master/docs/learn/system_requirements.md).
 
-  + The host machine will require Docker to be installed and the Vitis-AI CPU or GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
+  + The host machine will require Docker to be installed and the Vitis AI CPU or GPU docker image to be built - see [Getting Started](https://github.com/Xilinx/Vitis-AI#getting-started).
 
-  + A GPU card suitable for training is recommended, but the training in this tutorial is quite simple and a CPU can be used.
+  + A GPU card suitable for training is recommended, but the training in this tutorial is quite simple that can be done using a CPU.
 
   + If you plan to use the ZCU102 evaluation board, it should be prepared with the board image as per the [Step2: Setup the Target](https://github.com/Xilinx/Vitis-AI/tree/master/setup/mpsoc/VART#step2-setup-the-target) instructions. Hints on how to connect the various cables to the ZCU102 are also available [here](https://www.xilinx.com/html_docs/vitis_ai/1_4/installation.html#yjf1570690235238).
 
-  + For the Alveo U50, follow the [Setup Alveo Accelerator Card](https://github.com/Xilinx/Vitis-AI/tree/master/setup/alveo) instructions.
+  + For the Alveo&trade; U50, follow the [Setup Alveo Accelerator Card](https://github.com/Xilinx/Vitis-AI/tree/master/setup/alveo) instructions.
 
- 
+
 For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1414](https://www.xilinx.com/html_docs/vitis_ai/1_4/zmw1606771874842.html)).
 
-This tutorial assumes the user is familiar with Python3, TensorFlow and has some knowledge of machine learning principles.
+This tutorial assumes you are familiar with Python3, TensorFlow, and have some knowledge of machine learning principles.
 
 
 
-# Setting up the workspace
+# Setting up the Workspace
 
 1. Copy this repository by doing either of the following:
 
     + Download the repository as a ZIP file to the host machine, and then unzip the archive.
     + From a terminal, use the `git clone` command.
 
-2. Open a linux terminal, `cd` to <path_to_autoencoder_design>/files folder.
-   
+2. Open a Linux terminal, `cd` to `<path_to_autoencoder_design>/files` folder.
+
 4. Start either the Vitis AI GPU or CPU docker (we recommend using the GPU docker if possible):
 
      ```shell
@@ -104,7 +104,7 @@ This tutorial assumes the user is familiar with Python3, TensorFlow and has some
 
      # to start GPU docker container
      ./docker_run.sh xilinx/vitis-ai-gpu:latest
-     
+
      # ..or if you wish to use CPU docker container
      ./docker_run.sh xilinx/vitis-ai-cpu:latest
      ```
@@ -113,14 +113,14 @@ This tutorial assumes the user is familiar with Python3, TensorFlow and has some
 
      ```shell
      ==========================================
-     
+
      __      ___ _   _                   _____
      \ \    / (_) | (_)            /\   |_   _|
       \ \  / / _| |_ _ ___ ______ /  \    | |
        \ \/ / | | __| / __|______/ /\ \   | |
         \  /  | | |_| \__ \     / ____ \ _| |_
          \/   |_|\__|_|___/    /_/    \_\_____|
-     
+
      ==========================================
 
      Docker Image Version:  1.4.776
@@ -128,24 +128,24 @@ This tutorial assumes the user is familiar with Python3, TensorFlow and has some
      VAI_ROOT: /opt/vitis_ai
 
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-tensorflow 
+          conda activate vitis-ai-tensorflow
      For Caffe Workflows do:
-          conda activate vitis-ai-caffe 
+          conda activate vitis-ai-caffe
      For Neptune Workflows do:
-          conda activate vitis-ai-neptune 
+          conda activate vitis-ai-neptune
      For PyTorch Workflows do:
-          conda activate vitis-ai-pytorch 
+          conda activate vitis-ai-pytorch
      For TensorFlow 2.3 Workflows do:
-          conda activate vitis-ai-tensorflow2 
+          conda activate vitis-ai-tensorflow2
      For Darknet Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_darknet 
+          conda activate vitis-ai-optimizer_darknet
      For Caffe Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_caffe 
+          conda activate vitis-ai-optimizer_caffe
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-optimizer_tensorflow 
+          conda activate vitis-ai-optimizer_tensorflow
      For LSTM Workflows do:
-          conda activate vitis-ai-lstm 
-     Vitis-AI /workspace > 
+          conda activate vitis-ai-lstm
+     Vitis-AI /workspace >
      ```
 
 >:bulb: *If you get a "Permission Denied" error when starting the docker container, it is almost certainly because the docker_run.sh script is not set to be executable. You can fix this by running the following command:*
@@ -160,21 +160,21 @@ Activate the Tensorflow2 python virtual environment with `conda activate vitis-a
 
 ```shell
 Vitis-AI /workspace > conda activate vitis-ai-tensorflow2
-(vitis-ai-tensorflow2) Vitis-AI /workspace > 
+(vitis-ai-tensorflow2) Vitis-AI /workspace >
 ```
 
 
-# Implementing the design
+# Implementing the Design
 
-The remainder of this README describes each single step to implement the tutorial - each command needs to be run from within the Vitis-AI Docker container which was started in the previous section.
+The remainder of this README describes the steps to implement the tutorial. Each command needs to be run from within the Vitis AI Docker container which was started in the previous section.
 
-A shell script called run_all.sh is also provided - this contains all the commands needed to run the complete flow:
+A shell script called `run_all.sh` is also provided. It contains all the commands needed to run the complete flow:
 
 ```shell
 source run_all.sh
 ```
 
-## Step 0 - Training and evaluation of the floating-point model
+## Step 1 - Training and Evaluation of the Floating-Point model
 
 To run the training and evaluation of the floating-point model:
 
@@ -182,14 +182,14 @@ To run the training and evaluation of the floating-point model:
 python -u train.py -p 2>&1 | tee build/logs/train.log
 ```
 
-We will use the MNIST dataset as a simple example of image denoising. The dataset download and preprocessing is done by the mnist_download() function defined in utils.py. The training and test data is downloaded using the built-in download function of the tf.keras API:
+Use the MNIST dataset as a simple example of image denoising. The dataset download and preprocessing is done by the mnist_download() function defined in utils.py. The training and test data is downloaded using the built-in download function of the tf.keras API:
 
 ```python
 def mnist_download():
   (x_train, _), (x_test, _) = mnist.load_data()
 ```
 
-..and then we scale the pixel data from range 0:255 to range 0:1 by dividing by 255. We add the channel dimension to each image (they are downloaded as (28,28) and we require them to be (28,28,1) ). Then the random noise is added to create a noisy training set and a noisy test set:
+Scale the pixel data from range 0:255 to range 0:1 by dividing by 255. We add the channel dimension to each image (they are downloaded as (28,28) and we require them to be (28,28,1) ). Then the random noise is added to create a noisy training set and a noisy test set:
 
 
 ```python
@@ -207,7 +207,7 @@ x_test_noisy = np.clip(x_test + noise, 0, 1)
 return x_train, x_test, x_train_noisy, x_test_noisy
 ```
 
-In train.py, we create the training and test datasets:
+In `train.py`, we create the training and test datasets:
 
 ```python
 x_train, x_test, x_train_noisy, x_test_noisy = mnist_download()
@@ -216,9 +216,9 @@ test_dataset = input_fn((x_test_noisy,x_test), batchsize, False)
 predict_dataset = input_fn((x_test_noisy), batchsize, False)
 ```
 
-Note how the train and test datasets are composed of noisy images which will be the input to the variational autoencoder model and clean images whic are the ground truths - the autoencoder will learn how to generate clean images from noisy ones. 
+Note how the train and test datasets are composed of noisy images which will be the input to the variational autoencoder model and clean images whic are the ground truths. The autoencoder learns how to generate clean images from the noisy ones.
 
-During training, we use a loss function which quantifies the difference between the learned distribution and a standard normal distribution using Kullback-Liebler divergence (KL divergence).  The second component of the loss function is a reconstruction loss - often mean-squared error (MSE) or cross-entropy is used here. The total loss is the sum of KL divergence and reconstruction loss. 
+During training, we use a loss function that quantifies the difference between the learned distribution and a standard normal distribution using Kullback-Liebler divergence (KL divergence). The second component of the loss function is a reconstruction loss, often mean-squared error (MSE) or cross-entropy is used here. The total loss is the sum of KL divergence and reconstruction loss.
 
 The trained checkpoint will be saved at the end of each epoch if the mean squared error improves. At the end of training, we can optionally make a set of predictions using the test dataset. To make the predictions, we first reload the best checkpoint, including the custom layer:
 
@@ -229,7 +229,7 @@ model.compile(loss=lambda y_true,y_predict: loss_func(y_true,y_predict,encoder_m
 predictions = model.predict(predict_dataset, verbose=1)
 ```
 
-..the predictions are returned as numpy arrays, so we can then save the predictions and inputs as PNG images: 
+The predictions are returned as numpy arrays, so we can then save the predictions and inputs as PNG images:
 ```python
 for i in range(20):
   cv2.imwrite(pred_dir+'/pred_'+str(i)+'.png', predictions[i] * 255.0)
@@ -248,7 +248,7 @@ Here are some samples so that they can be directly compared:
 </p>
 
 
-## Step 1 - Generation and evaluation of the quantized model
+## Step 2 - Generating and Evaluating the Quantized model
 
 To run the generation of the quantized model:
 
@@ -256,9 +256,9 @@ To run the generation of the quantized model:
 python -u quantize.py -p 2>&1 | tee build/logs/quant.log
 ```
 
-The Xilinx DPU family of ML accelerators execute models and networks that have their parameters in integer format so we must convert the trained, floating-point checkpoint into a fixed-point integer checkpoint - this process is known as quantization.
+The Xilinx DPU family of ML accelerators execute models and networks that have their parameters in integer format so we must convert the trained, floating-point checkpoint into a fixed-point integer checkpoint. This process is known as quantization.
 
-The quantize.py script loads the trained floating-point checkpoint, creates a quantizer object and then a quantized model:
+The `quantize.py` script loads the trained floating-point checkpoint, creates a quantizer object, and then a quantized model:
 
 ```python
 with custom_object_scope({'Sampling': Sampling}):
@@ -275,7 +275,7 @@ The quantized model is saved and will be the input to the compiler phase:
 quantized_model.save(quant_model)
 ```
 
-If the appropriate command line option is provided, quantize.py will run a number of predictions using the quantized model and save the results as image files:
+If the appropriate command line option is provided, `quantize.py` will run a number of predictions using the quantized model and save the results as image files:
 
 ```python
 if (predict):
@@ -291,9 +291,9 @@ if (predict):
 ```
 
 
-## Step 2 - Compile the quantized model
+## Step 3  Compile the Quantized Model
 
-To run compile the quantized model in xmodel format run the source compile.sh with one of the target boards as a command line argument, for example:
+To run compile the quantized model in XMODEL format, run the source `compile.sh` with one of the target boards as a command line argument. For example:
 
 ```shell
 source compile.sh zcu102
@@ -301,18 +301,18 @@ source compile.sh u50
 source compile.sh vck190
 ```
 
-The compile.sh shell script will compile the quantized model and create an .xmodel file which contains the instructions and data to be executed by the DPU.
+The `compile.sh` shell script will compile the quantized model and create an .xmodel file which contains the instructions and data to be executed by the DPU.
 
 
-## Step 3 - Determine the subgraphs of the compiled model
+## Step 4  Determine the Subgraphs of the Compiled Model
 
-If we look at the compiler report log (./logs/compile_<target>.log) we can see one line that indicates how the compiled model has been divided into subgraphs:
+Looking at the compiler report log (./logs/compile_<target>.log), you can see one line that indicates how the compiled model has been divided into subgraphs:
 
 ```shell
 [UNILOG][INFO] Total device subgraph number 6, DPU subgraph number 2
 ```
 
-..so we can tell from this line that our compiled xmodel contains a total of six subgraphs of which two are DPU subgraphs (and hence executed on the DPU accelerator). The other four subgraphs are either CPU subgraphs or User subgraphs.
+This lines tells that our compiled XMODEL contains a total of six subgraphs of which two are DPU subgraphs (and hence executed on the DPU accelerator). The other four subgraphs are either CPU subgraphs or User subgraphs.
 
 To establish how the different subgraphs are connected together, we can generate a PNG image of the subgraphs using the following command:
 
@@ -331,9 +331,9 @@ When you open the PNG file, you will see numerous colored boxes with connection 
  <br><br>
 </p>
 
- ..in this case, we have a single input called 'quant_input_3' with shape (1, 28, 28, 1). The shape is in NHWC format. This tensor input corresponds to the encoder input.
+ In this case, we have a single input called 'quant_input_3' with shape (1, 28, 28, 1). The shape is in NHWC format. This tensor input corresponds to the encoder input.
 
- The 'quant_input_3' tensor feeds into another subgraph called 'subgraph_quant_conv2d' that contains only boxes with blue outlines - these will be executed on the DPU and hence 'subgraph_quant_conv2d' is a DPU subgraph. There are two output tensors 'quant_dense_1_fix' and 'quant_dense_fix' which correspond to the 'encoder_log_variance' and 'encoder_mu' outputs from the encoder block.
+ The 'quant_input_3' tensor feeds into another subgraph called 'subgraph_quant_conv2d' that contains only boxes with blue outlines. These will be executed on the DPU and hence 'subgraph_quant_conv2d' is a DPU subgraph. There are two output tensors 'quant_dense_1_fix' and 'quant_dense_fix' which correspond to the 'encoder_log_variance' and 'encoder_mu' outputs from the encoder block.
 
  'quant_dense_1_fix' and 'quant_dense_fix' feed into another subgraph called 'subgraph_quant_dense_1_fix_opt_mode8_elemmul'. This subgraph contains boxes with red outlines and hence is a CPU subgraph. This subgraph implements the custom sampling layer:
 
@@ -346,7 +346,7 @@ When you open the PNG file, you will see numerous colored boxes with connection 
 </p>
 
 
-The next subgraph is 'subgraph_quant_conv2d_transpose' containing blue boxes indicating a DPU subgraph - this is our decoder.
+The next subgraph is 'subgraph_quant_conv2d_transpose' containing blue boxes indicating a DPU subgraph. This is the decoder.
 
 The final subgraph, 'subgraph_activation_8' is another CPU subgraph and contains the sigmoid activation function.
 
@@ -361,23 +361,23 @@ The complete compiled architecture can be summarized like this:
 </p>
 
 
-## Step 4 - Create the Python application code
+## Step 5 - Create the Python Application Code
 
 Our application code must do the following things:
 
-  + Pre-process the images as done in training (i.e scale the pixel values to range 0:1)
-  + For each DPU subgraph..
+  + Pre-process the images as done in training (scale the pixel values to range 0:1)
+  + For each DPU subgraph:
     + Create a DPU runner
-  + For each CPU subgraph..
+  + For each CPU subgraph:
     + Provide code that will be executed by the CPU tom implement the CPU sbugraph functions
-  + Create one or more Python threads that execute the DPU and CPU subgraphs in the correct sequence. In each thread we must also..
-    + initialize an input buffer for each input tensor of each DPU subgraph
-    + initialize an output buffer for each output tensor of each DPU subgraph
-    
+  + Create one or more Python threads that execute the DPU and CPU subgraphs in the correct sequence. In each thread we must also:
+    + Initialize an input buffer for each input tensor of each DPU subgraph
+    + Initialize an output buffer for each output tensor of each DPU subgraph
 
-The application code is contained in the application/app_mt.py Python script. Let's look in detail at each of these steps...
 
-### Image pre-processing
+The application code is contained in the application/app_mt.py Python script. Let's look in detail at each of these steps.
+
+### Image Pre-Processing
 
 Each image will need to be pre-processed in exactly the same way that was done during training and quantization. The images are read as grayscale format and hence have shape (28,28). We need to add the channel dimension so that they have shape (28,28,1) before scaling each pixel to the range 0, 1.0.
 
@@ -398,18 +398,18 @@ for i in range(runTotal):
   img.append(preprocess_fn(path))
 ```
 
-### DPU runners
+### DPU Runners
 
 In this tutorial, we have two DPU subgraphs which correspond to the encoder and decoder sections of our variational autoencoder.
 
-In the main application function (`app`) we first load the .xmodel file (which was generated by the quantize and compile tools of Vitis-AI) and then get a topographically sorted list of DPU subgraphs:
+In the main application function (`app`) we first load the XMODEL file (which was generated by the quantize and compile tools of Vitis-AI) and then get a topographically sorted list of DPU subgraphs:
 
 ```python
 g = xir.Graph.deserialize(model)
 subgraphs = get_child_subgraph_dpu(g)
 ```
 
-Then we create a DPU runner for each DPU subgraph. Because the list of DPU subgraphs (the `subgraphs` variable in the above code snippet) is topographically sorted, we know that `subgraphs[0]` is the encoder and  `subgraphs[1]` is the decoder:
+Then, we create a DPU runner for each DPU subgraph. Because the list of DPU subgraphs (the `subgraphs` variable in the above code snippet) is topographically sorted, we know that `subgraphs[0]` is the encoder and  `subgraphs[1]` is the decoder:
 
 
 ```python
@@ -419,9 +419,9 @@ for i in range(threads):
                            vart.Runner.create_runner(subgraphs[1], "run")]  )
 ```
 
-### Code for CPU subgraphs
+### Code for CPU Subgraphs
 
-We have two CPU subgraphs - one for the custom sampling layer..
+We have two CPU subgraphs, one for the custom sampling layer.
 
 ```python
 def sampling_layer(encoder_mu, encoder_log_variance):
@@ -435,7 +435,7 @@ def sampling_layer(encoder_mu, encoder_log_variance):
   return sample
 ```
 
- and one for the final sigmoid activation:
+ The other one for the final sigmoid activation:
 
 
 ```python
@@ -454,7 +454,7 @@ def sigmoid(x):
 
 ### Threads
 
-The function called by each thread (`runThread`) will set up input buffers and output buffers for each of the two DPU runners ans also establish the batchsize for 
+The function called by each thread (`runThread`) will set up input buffers and output buffers for each of the two DPU runners and also establish the batchsize for
 
 ```python
 '''
@@ -471,7 +471,7 @@ Set up decoder DPU runner buffers
 decoder_dict, decoder_inbuffer, decoder_outbuffer = init_dpu_runner(decoder_dpu_runner)
 ```
 
-Then for each batch of pre-processed images, it will run the encoder DPU runner, the code for the sampling layer CPU subgraph, the decoder DPU runner and finally the code for the sigmoid CPU subgraph. The predicted images are written into a global list called `predictions_buffer`.
+For each batch of pre-processed images, it will run the encoder DPU runner, the code for the sampling layer CPU subgraph, the decoder DPU runner and finally the code for the sigmoid CPU subgraph. The predicted images are written into a global list called `predictions_buffer`.
 
 
 Once all the threads have completed execution, `predictions_buffer` will contain a list of predicted image outputs in numpy array format. The final step is to convert them into PNG image files and write them into a folder:
@@ -491,9 +491,9 @@ print('Predicted images saved to','./'+pred_dir)
 ```
 
 
-## Step 5 - Make the target folder for use on target board
+## Step 6 - Make the Target Folder for use on Target Board
 
-To prepare the images, xmodel and application code for copying to the selected target, run any or all of the following commands:
+To prepare the images, XMODEL and application code for copying to the selected target, run any or all of the following commands:
 
 ```shell
 python -u make_target.py -m build/compiled_model_zcu102/autoenc.xmodel -td build/target_zcu102 2>&1 | tee build/logs/target_zcu102.log
@@ -508,7 +508,7 @@ The `make_target.py` script will do the following:
 + Copy the compiled model to the target folder.
 + Copy the Python application code to the target folder.
 
-## Step 6 - Run the application on the target
+## Step 7 - Run the Application on the Target
 
 ### ZCU102
 
@@ -516,11 +516,11 @@ The entire `target_zcu102` folder will be copied to the ZCU102's SDcard. Copy it
 
 1. Direct copy to SD Card:
 
-  + If the host machine has an SD card slot, insert the flashed SD card and when it is recognised you will see two volumes, BOOT and ROOTFS. Navigate into the ROOTFS and then into the /home folder.  Make the ./root folder writeable by issuing the command ``sudo chmod -R 777 root`` and then copy the entire `target_zcu102` folder from the host machine into the /home/root folder of the SD card.
+  + If the host machine has an SD card slot, insert the flashed SD card and when it is recognized you will see two volumes, BOOT and ROOTFS. Navigate into the ROOTFS and then into the /home folder.  Make the ./root folder writeable using the ``sudo chmod -R 777 root`` command. Copy the entire `target_zcu102` folder from the host machine into the /home/root folder of the SD card.
 
   + Unmount both the BOOT and ROOTFS volumes from the host machine and then eject the SD Card from the host machine.
 
-2. With scp command:
+2. With the `scp` command:
 
   + If the target evaluation board is connected to the same network as the host machine, the `target_zcu102` folder can be copied using scp.
 
@@ -529,7 +529,8 @@ The entire `target_zcu102` folder will be copied to the ZCU102's SDcard. Copy it
   + If the password is asked for, insert 'root'.
 
 
-With the `target_zcu102` folder copied to the SD Card and the evaluation board booted, you can issue the command for launching the application - note that this done on the target evaluation board, not the host machine, so it requires a connection to the board such as a serial connection to the UART or an SSH connection via Ethernet.
+With the `target_zcu102` folder copied to the SD Card and the evaluation board booted, you can issue the command for launching the application.
+**Note:** This done on the target evaluation board and not the host machine. So, it requires a connection to the board such as a serial connection to the UART or an SSH connection through Ethernet.
 
 The application can be started by navigating into the `target_zcu102` folder on the evaluation board and then issuing the command ``python3 app_mt.py``. The application will start and after a few seconds will show the throughput in frames/sec, like this:
 
@@ -619,4 +620,3 @@ Predicted images saved to ./predictions
 |--num_images or -n|2000|Number of images to create|
 |--app_dir or -a|application|Full path of application code folder|
 |--model or -m|compiled_model/autoenc.xmodel|Full path of compiled model|
-

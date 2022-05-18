@@ -1,5 +1,5 @@
 <!--
-Copyright 2021 Xilinx Inc.
+Copyright 2021-2022 Xilinx Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ Author: Daniele Bagni, Xilinx Inc
 </div>
 
 
-### Current status
+### Current Status
 
 1. Tested with Tensorflow 1.15 within Vitis AI 1.4 on an Ubuntu 18.04.5 Desktop PC.
 
@@ -42,7 +42,7 @@ Author: Daniele Bagni, Xilinx Inc
 
 In this Deep Learning (DL) tutorial, you will train the [FCN8](http://deeplearning.net/tutorial/fcn_2D_segm.html) and [UNET](https://towardsdatascience.com/understanding-semantic-segmentation-with-unet-6be4f42d4b47) Convolutional Neural Networks (CNNs) for Semantic Segmentation in Keras adopting a small custom dataset, then you will quantize the floating point weights files to an 8-bit fixed point  representation to finally deploy them on the Xilinx&reg; target board using Vitis&trade; AI, which is a set of optimized IP, tools libraries, models and example designs valid for AI inference on both Xilinx edge devices and Alveo cards (see the [Vitis AI Product Page](https://developer.xilinx.com/en/get-started/ai.html) for more information).
 
-Once the selected CNN has been correctly trained in Keras, the [HDF5](https://www.hdfgroup.org/solutions/hdf5/) file of weights is converted into a TF checkpoint and inference graph file, such floating point frozen graph is then quantized by the Vitis AI Quantizer that creates an 8-bit INT8 fixed point graph from which the Vitis AI Compiler generates the ``xmodel`` file of micro instructions for the Deep Processor Unit (DPU) of the Vitis AI platform. The final application is executed at run time - via Python APIs - on the target board to make predictions that can be compared against the simulation reference results.
+Once the selected CNN has been correctly trained in Keras, the [HDF5](https://www.hdfgroup.org/solutions/hdf5/) file of weights is converted into a TF checkpoint and inference graph file, such floating point frozen graph is then quantized by the Vitis AI Quantizer that creates an 8-bit INT8 fixed point graph from which the Vitis AI Compiler generates the ``XMODEL`` file of micro instructions for the Deep Processor Unit (DPU) of the Vitis AI platform. The final application is executed at run time - via Python APIs - on the target board to make predictions that can be compared against the simulation reference results.
 
 
 # 2 Prerequisites
