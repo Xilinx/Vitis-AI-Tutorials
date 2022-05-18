@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2022 Xilinx, Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<launch>
+	<!-- Static TF transforms -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="map_to_world" args="0.0 0.0 0.0 0.0 0.0 0.0 map world" />
+
+	<!-- Launch Camera node (optional based on command line - if not, expects you to play a .bag file) -->
+	<group if="$(eval arg('omit_sensor') == 0)">
+		<node pkg="cv_camera" type="cv_camera_node" name="cam" output="screen" />
+		<param name="/cam/image_width" value="640" />
+		<param name="/cam/image_height" value="480" />
+	</group>
+
+	<!-- Launch Camera processing node -->
+	<node pkg="cam_detection" type="cam_detection" name="cam_detection" output="screen" />
+	
+	<!-- Launch ml task FPS display node -->
+	<group ns="fps_cam">
+		<remap from="/fps" to="/cam_fps" />
+		<remap from="/fps_marker" to="/cam_fps_marker" />
+		<include file="$(find display_fps)/launch/display_fps.launch" />
+	</group>
+</launch>
