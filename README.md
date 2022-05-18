@@ -27,7 +27,7 @@
     <td align="center">2.0</td>
     <td>Start from card installation and go through a step-by-step workflow to run the first Vitis AI sample on a VCK5000 card.</td>
   </tr>
-  <tr>https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/VCK190_CUSTOM_LAMBDA_OP
+  <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/VCK190_CUSTOM_LAMBDA_OP/">VCK190 Custom Lambda Operator</a></td>
     <td align="center">2.0</td>
     <td>The general concept behind the custom operator flow is to make Vitis AI and the DPU more extensible—both for supporting custom layers as well as framework layers that are currently unsupported in the toolchain. The custom operator flow enables you to define layers which are unsupported, and ultimately deploy those layers either on the CPU or an accelerator.</td>
