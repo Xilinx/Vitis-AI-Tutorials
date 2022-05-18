@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="2">
+	<name>lidar_detection</name>
+	<version>0.0.0</version>
+	<description>Object detection using Velodyne VLP32C Lidar visualized with Rvi</description>
+	<license>Apache-2.0</license>
+	<maintainer email="bwiec@xilinx.com">Brian Wiec</maintainer>
+	<buildtool_depend>catkin</buildtool_depend>
+	<depend>roscpp</depend>
+	<depend>pcl_ros</depend>
+	<depend>cv_bridge</depend>
+</package>

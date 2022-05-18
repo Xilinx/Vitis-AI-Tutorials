@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+ Copyright 2022 Xilinx, Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<launch>
+	<!-- Static TF transforms -->
+	<node pkg="tf2_ros" type="static_transform_publisher" name="map_to_velodyne" args="0.0 0.0 0.0 0.0 0.0 0.0 map velodyne" />
+	
+	<!-- Launch Sensor nodes (optional based on command line - if not, expects you to play a .bag file) -->
+	<group if="$(eval arg('omit_sensor') == 0)">
+		<!-- Launch Camera node -->
+		<node pkg="cv_camera" type="cv_camera_node" name="cam" output="screen"/>
+		<param name="/cam/image_width" value="640" />
+		<param name="/cam/image_height" value="480" />
+		
+		<!-- Launch Lidar node -->
+		<include file="$(find velodyne_pointcloud)/launch/VLP-32C_points.launch"/>
+	</group>
+
+	<!-- Launch Lidar processing node -->
+	<node pkg="lidar_and_cam_detection" type="lidar_and_cam_detection" name="lidar_and_cam_detection" output="screen" />
+	
+	<!-- Launch ml task FPS display nodes -->
+	<group ns="fps_lidar">
+		<remap from="/fps" to="/lidar_fps" />
+		<remap from="/fps_marker" to="/lidar_fps_marker" />
+		<include file="$(find display_fps)/launch/display_fps.launch" />
+	</group>
+	
+	<group ns="fps_cam">
+		<remap from="/fps" to="/cam_fps" />
+		<remap from="/fps_marker" to="/cam_fps_marker" />
+		<include file="$(find display_fps)/launch/display_fps.launch" />
+		<param name="y_position" value="6.0" />
+	</group>
+</launch>

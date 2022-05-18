@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<package format="2">
+	<name>display_fps</name>
+	<version>0.0.0</version>
+	<description>Node to receive a float value and publish it for display as text in Rviz</description>
+	<license>Apache-2.0</license>
+	<maintainer email="bwiec@xilinx.com">Brian Wiec</maintainer>
+	<buildtool_depend>catkin</buildtool_depend>
+	<depend>roscpp</depend>
+</package>

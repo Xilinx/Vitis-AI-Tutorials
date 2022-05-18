@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<package format="2">
+	<name>show_lidar_cam</name>
+	<version>0.0.0</version>
+	<description>Show Velodyne VLP32C Lidar and camera on /dev/video0 using Rviz</description>
+	<license>Apache-2.0</license>
+	<maintainer email="bwiec@xilinx.com">Brian Wiec</maintainer>
+	<buildtool_depend>catkin</buildtool_depend>
+</package>
