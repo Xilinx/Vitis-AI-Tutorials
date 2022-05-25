@@ -1,12 +1,12 @@
 <!--
-Copyright 2020 Xilinx Inc.
+Copyright 2020-2022 Xilinx Inc.
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
- 
+
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -123,7 +123,7 @@ export XILINXD_LICENSE_FILE=AI_OPTIMIZER.lic
 ```
 
 4. Open a linux terminal, `cd` to the repository folder, and then `cd` to the `files` folder.
-   
+
 5. Start the Vitis AI GPU docker:
 
      ```shell
@@ -138,37 +138,37 @@ export XILINXD_LICENSE_FILE=AI_OPTIMIZER.lic
 
      ```shell
      ==========================================
-     
+
      __      ___ _   _                   _____
      \ \    / (_) | (_)            /\   |_   _|
       \ \  / / _| |_ _ ___ ______ /  \    | |
        \ \/ / | | __| / __|______/ /\ \   | |
         \  /  | | |_| \__ \     / ____ \ _| |_
          \/   |_|\__|_|___/    /_/    \_\_____|
-     
+
      ==========================================
-     
-     Docker Image Version:  latest 
+
+     Docker Image Version:  latest
      Build Date: 2021-08-04
      VAI_ROOT: /opt/vitis_ai
-     
+
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-tensorflow 
+          conda activate vitis-ai-tensorflow
      For Caffe Workflows do:
-          conda activate vitis-ai-caffe 
+          conda activate vitis-ai-caffe
      For Neptune Workflows do:
-          conda activate vitis-ai-neptune 
+          conda activate vitis-ai-neptune
      For PyTorch Workflows do:
-          conda activate vitis-ai-pytorch 
+          conda activate vitis-ai-pytorch
      For TensorFlow 2.3 Workflows do:
-          conda activate vitis-ai-tensorflow2 
+          conda activate vitis-ai-tensorflow2
      For Darknet Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_darknet 
+          conda activate vitis-ai-optimizer_darknet
      For TensorFlow 1.15 Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_caffe 
+          conda activate vitis-ai-optimizer_caffe
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-optimizer_tensorflow 
-     Vitis-AI /workspace > 
+          conda activate vitis-ai-optimizer_tensorflow
+     Vitis-AI /workspace >
      ```
 
 >:bulb: If you get a "Permission Denied" error when starting the docker container, it is almost certainly because the docker_run.sh script is not set to be executable. You can fix this by running the following command:
@@ -300,7 +300,7 @@ An inference graph is required for the pruning. The `export_inf_graph.py` Python
 network = alexnet(net_in=input_tensor,classes=2,drop_rate=0.0,is_training=False)
 ```
 
-**Note**: This inference graph is not the same as a frozen graph because it does not contain any values. 
+**Note**: This inference graph is not the same as a frozen graph because it does not contain any values.
 
 The `export_inf_graph.py` Python script has the following arguments.
 
@@ -408,7 +408,7 @@ The compile scripts are written into a folder called ``files/build_pr/compile_<b
 For the ZCU10, run ``source 12_make_target_zcu102.sh``.
 For the Alveo U50, run ``source 12_make_target_u50.sh``.
 
-This final step will copy all the required files for running on the chosen target board board into the `files/build_pr/target_<board_name>` folder. 
+This final step will copy all the required files for running on the chosen target board board into the `files/build_pr/target_<board_name>` folder.
 
 
 ### ZCU102
@@ -437,7 +437,7 @@ The application can be started on the ZCU102 by navigating into the `target_zcu1
 
 
 ```shell
-root@xilinx-zcu102-2020_2:~/target_zcu102# python3 app_mt.py -m model_dir/alexnet_pr.xmodel 
+root@xilinx-zcu102-2020_2:~/target_zcu102# python3 app_mt.py -m model_dir/alexnet_pr.xmodel
 -----------------------------------------------
 Command line options:
  --image_dir :  images
@@ -546,7 +546,7 @@ FPS: 2959.87, total frames: 2500, total time: 0.845 seconds
 
 + [Vitis AI Optimizer User Guide (UG1333)](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_3/ug1333-ai-optimizer.pdf)
 
-+ [Vitis AI User Guide (UG1414)](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_3/ug1414-vitis-ai.pdf) 
++ [Vitis AI User Guide (UG1414)](https://www.xilinx.com/support/documentation/sw_manuals/vitis_ai/1_3/ug1414-vitis-ai.pdf)
 
 + [Kaggle Dogs-vs-Cats dataset](https://www.kaggle.com/c/dogs-vs-cats)
 
@@ -554,4 +554,3 @@ FPS: 2959.87, total frames: 2500, total time: 0.845 seconds
 
 </hr>
 <p align="center"><sup>Copyright&copy; 2020 Xilinx</sup></p>
-
