@@ -22,6 +22,11 @@
   </tr>
 </thead>
 <tbody>
+ <tr>
+    <td><a href="https://gitenterprise.xilinx.com/swm/Vitis-AI-Tutorials/tree/2.5/Tutorials/Kaggle_ImageNet/">Using the Kaggle ImageNet Subset for Training Neural Networks</a></td>
+    <td align="center">2.5</td>
+    <td>Demonstrates how to use the Kaggle ImageNet Subset for training neural networks for developers and enthusiasts with a non-edu domain who are unable to obtain the ImageNet dataset directly.</td>
+  </tr>
   <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/Vitis-AI-on-VCK5000-ES-Board/">Vitis AI on VCK5000 Card</a></td>
     <td align="center">2.0</td>
