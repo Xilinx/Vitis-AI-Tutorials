@@ -23,9 +23,14 @@
 </thead>
 <tbody>
  <tr>
-    <td><a href=https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/Kaggle_ImageNet/>Using the Kaggle ImageNet Subset for Training Neural Networks</a></td>
+    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/Kaggle_ImageNet/">Using the Kaggle ImageNet Subset for Training Neural Networks</a></td>
     <td align="center">2.5</td>
     <td>Demonstrates how to use the Kaggle ImageNet Subset for training neural networks for developers and enthusiasts with a non-edu domain who are unable to obtain the ImageNet dataset directly.</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/caffe_cats_vs_dogs/README.md">Quantization and Pruning of AlexNet CNN trained in Caffe with Cats-vs-Dogs dataset</a></td>
+    <td align="center">2.0</td>
+    <td>Train, prune, and quantize a modified version of the AlexNet convolutional neural network (CNN) with the Kaggle Dogs vs. Cats dataset in order to deploy it on the Xilinx® ZCU102 board.</td>
   </tr>
   <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/Vitis-AI-on-VCK5000-ES-Board/">Vitis AI on VCK5000 Card</a></td>
@@ -46,11 +51,6 @@
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/1.4/Introduction/README.md">Introduction to Vitis AI</a></td>
     <td align="center">1.4</td>
     <td>This tutorial puts in practice the concepts of FPGA acceleration of Machine Learning and illustrates how to<br> quickly get started deploying both pre-optimized and customized ML models on Xilinx devices.</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/1.4/Design_Tutorials/01-caffe_cats_vs_dogs/README.md">Quantization and Pruning of AlexNet CNN trained in Caffe with Cats-vs-Dogs dataset</a></td>
-    <td align="center">1.4</td>
-    <td>Train, prune, and quantize a modified version of the AlexNet convolutional neural network (CNN) with the Kaggle Dogs vs. Cats dataset in order to deploy it on the Xilinx® ZCU102 board.</td>
   </tr>
   <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/1.4/Design_Tutorials/02-MNIST_classification_tf/README.md">MNIST Classification using Vitis AI and TensorFlow</a></td>
