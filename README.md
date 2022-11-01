@@ -24,6 +24,19 @@
     <td align="center">2.5</td>
     <td>Demonstrates how to use the Kaggle ImageNet Subset for training neural networks for developers and enthusiasts with a non-edu domain who are unable to obtain the ImageNet dataset directly.</td>
   </tr>
+  <tr>
+ 
+  <td> <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/Keras_GoogleNet_ResNet/README.md">Deep Learning with Custom GoogleNet and ResNet in Keras and Xilinx Vitis AI</a></td>
+ <td align="center">2.5</td>
+ <td>Quantize in fixed point some custom CNNs and deploy them on the Xilinx ZCU102 board, using Keras and the Xilinx7Vitis AI tool chain based on TensorFlow (TF).</td>
+ </tr>
+ <tr>
+ <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/pytorch-subgraphs/README.md">Partitioning Vitis AI SubGraphs on CPU/DPU</a></td>
+ <td align="center">2.5</td>
+ <td>Learn how to deploy a CNN on the Xilinx <a href="https://www.xilinx.com/products/boards-and-kits/vck190.html">VCK190</a> board using Vitis AI.</td>
+ </tr>
+
+
 </tbody>
 </table>
 
