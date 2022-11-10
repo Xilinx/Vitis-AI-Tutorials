@@ -28,6 +28,11 @@
     <td>Demonstrates how to use the Kaggle ImageNet Subset for training neural networks for developers and enthusiasts with a non-edu domain who are unable to obtain the ImageNet dataset directly.</td>
   </tr>
   <tr>
+    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/Vitis-AI-Vivado-TRD/">Leveraging the Vitis AI DPU in the Vivado Workflow</a></td>
+    <td align="center">2.0</td>
+    <td>Shows you how to build the Vitis AI Targeted Reference Design (TRD) using the Vivado flow and walks you through the steps required to build a PetaLinux image from the ZCU102 BSP that is provided in the TRD archive.</td>
+  </tr>
+  <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/caffe_cats_vs_dogs/README.md">Quantization and Pruning of AlexNet CNN trained in Caffe with Cats-vs-Dogs dataset</a></td>
     <td align="center">2.0</td>
     <td>Train, prune, and quantize a modified version of the AlexNet convolutional neural network (CNN) with the Kaggle Dogs vs. Cats dataset in order to deploy it on the Xilinx® ZCU102 board.</td>
