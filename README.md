@@ -39,6 +39,11 @@
     <td align="center">2.0</td>
     <td>Shows you how to install Ubuntu on the KV260 then build ROS, bring in multiple sensors, and deploy FPGA-accelerated neural network to process the data before displaying the data using RViz. All of this is possible without ever using FPGA tools!</td>
   </tr>
+  <tr>
+    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/Vitis-AI-Vivado-TRD/">Leveraging the Vitis AI DPU in the Vivado Workflow</a></td>
+    <td align="center">2.0</td>
+    <td>SShows you how to build the Vitis AI Targeted Reference Design (TRD) using the Vivado flow and walks you through the steps required to build a PetaLinux image from the ZCU102 BSP that is provided in the TRD archive.</td>
+  </tr>
 </tbody>
 </table>
 
