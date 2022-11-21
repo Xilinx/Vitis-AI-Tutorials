@@ -1,0 +1,285 @@
+'''
+ Copyright 2021 Xilinx Inc.
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+     http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+'''
+
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/analyze_subgraphs.sh
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/clean_all.sh
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/compile.sh
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/patch_for_vai2.0/install_patch.sh
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/prepare_target.sh
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/run_all.sh
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/application/main_subgraphs.py
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/application/run_debug.py
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/build/quantized_model/CNN.py
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/build/target/application/main_subgraphs.py
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/build/target/application/run_debug.py
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/common.py
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/quantize.py
+/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/train.py
+
+-----------------------------------------
+CLEANING FOLDERS.
+-----------------------------------------
+rm: cannot remove './build/data/*.tar.gz': No such file or directory
+Collecting torchsummary
+  Downloading torchsummary-1.5.1-py3-none-any.whl (2.8 kB)
+Installing collected packages: torchsummary
+Successfully installed torchsummary-1.5.1
+
+-----------------------------------------
+RUN TRAINING.
+-----------------------------------------
+Files already downloaded and verified
+Files already downloaded and verified
+
+
+PyTorch version :  1.10.1
+3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:53)
+[GCC 9.4.0]
+
+
+ Command line options:
+--batchsize    :  64
+--learnrate    :  0.01
+--epochs       :  300
+--namemodel    :  cnn_float.pt
+
+
+Training on cuda device.
+2022-06-20 12:00:54.906613 Epoch   1, Training loss 0.699991
+2022-06-20 12:01:01.281817 Epoch  10, Training loss 0.693163
+2022-06-20 12:01:07.860680 Epoch  20, Training loss 0.692528
+2022-06-20 12:01:14.860822 Epoch  30, Training loss 0.690903
+2022-06-20 12:01:21.988590 Epoch  40, Training loss 0.685817
+2022-06-20 12:01:29.096358 Epoch  50, Training loss 0.668901
+2022-06-20 12:01:36.195330 Epoch  60, Training loss 0.636593
+2022-06-20 12:01:43.357379 Epoch  70, Training loss 0.618881
+2022-06-20 12:01:50.479534 Epoch  80, Training loss 0.609023
+2022-06-20 12:01:57.637911 Epoch  90, Training loss 0.602013
+2022-06-20 12:02:04.774620 Epoch 100, Training loss 0.597949
+2022-06-20 12:02:11.826265 Epoch 110, Training loss 0.592634
+2022-06-20 12:02:18.945619 Epoch 120, Training loss 0.587834
+2022-06-20 12:02:26.097989 Epoch 130, Training loss 0.582588
+2022-06-20 12:02:33.076854 Epoch 140, Training loss 0.576213
+2022-06-20 12:02:40.235099 Epoch 150, Training loss 0.569672
+2022-06-20 12:02:47.365982 Epoch 160, Training loss 0.560441
+2022-06-20 12:02:54.481182 Epoch 170, Training loss 0.549770
+2022-06-20 12:03:01.630252 Epoch 180, Training loss 0.534804
+2022-06-20 12:03:04.089172 Epoch 190, Training loss 0.517666
+2022-06-20 12:03:06.512200 Epoch 200, Training loss 0.492459
+2022-06-20 12:03:08.921568 Epoch 210, Training loss 0.461648
+2022-06-20 12:03:11.325186 Epoch 220, Training loss 0.431451
+2022-06-20 12:03:13.723713 Epoch 230, Training loss 0.408303
+2022-06-20 12:03:16.122653 Epoch 240, Training loss 0.400504
+2022-06-20 12:03:18.522146 Epoch 250, Training loss 0.383176
+2022-06-20 12:03:20.921110 Epoch 260, Training loss 0.373730
+2022-06-20 12:03:23.321051 Epoch 270, Training loss 0.356083
+2022-06-20 12:03:25.723352 Epoch 280, Training loss 0.356126
+2022-06-20 12:03:28.125077 Epoch 290, Training loss 0.345961
+2022-06-20 12:03:30.528722 Epoch 300, Training loss 0.338264
+
+
+Elapsed time for training (s):  156.59708
+
+
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1           [-1, 16, 32, 32]             448
+              Tanh-2           [-1, 16, 32, 32]               0
+         MaxPool2d-3           [-1, 16, 16, 16]               0
+            Conv2d-4            [-1, 8, 16, 16]           1,160
+           Sigmoid-5            [-1, 8, 16, 16]               0
+         MaxPool2d-6              [-1, 8, 8, 8]               0
+            Linear-7                   [-1, 32]          16,416
+           Sigmoid-8                   [-1, 32]               0
+            Linear-9                    [-1, 2]              66
+================================================================
+Total params: 18,090
+Trainable params: 18,090
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.01
+Forward/backward pass size (MB): 0.32
+Params size (MB): 0.07
+Estimated Total Size (MB): 0.40
+----------------------------------------------------------------
+Trained model written to  ./build/data/cnn_float.pt
+Accuracy train: 86.62(%)
+Accuracy val  : 85.20(%)
+
+-----------------------------------------
+RUN QUANTIZATION.
+-----------------------------------------
+
+[0;32m[VAIQ_NOTE]: Loading NNDCT kernels...[0m
+Files already downloaded and verified
+Files already downloaded and verified
+
+
+PyTorch version :  1.10.1
+3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:53)
+[GCC 9.4.0]
+
+
+ Command line options:
+--_model_name  :  cnn_float.pt
+--quant_mode   :  calib
+--batchsize    :  100
+--quant_model  :  build/quantized_model
+
+
+You have 1 CUDA devices available
+ Device 0 :  Quadro P6000
+Selecting device 0..
+
+[0;32m[VAIQ_NOTE]: Quant config file is empty, use default quant configuration[0m
+
+[0;32m[VAIQ_NOTE]: Quantization calibration process start up...[0m
+
+[0;32m[VAIQ_NOTE]: =>Quant Module is in 'cuda'.[0m
+
+[0;32m[VAIQ_NOTE]: =>Parsing CNN...[0m
+
+[0;32m[VAIQ_NOTE]: Start to trace model...[0m
+
+[0;32m[VAIQ_NOTE]: Finish tracing.[0m
+
+[0;32m[VAIQ_NOTE]: Processing ops...[0m
+                                                  | 0/12 [00:00<?, ?it/s]                                                  | 0/12 [00:00<?, ?it/s, OpInfo: name = input_0, type = Param]████▏                                             | 1/12 [00:00<00:00, 8355.19it/s, OpInfo: name = CNN/Conv2d[conv1]/201, type = _convolution]████████▎                                         | 2/12 [00:00<00:00, 2674.09it/s, OpInfo: name = CNN/Tanh[act1]/202, type = tanh]████████████▌                                     | 3/12 [00:00<00:00, 2691.53it/s, OpInfo: name = CNN/MaxPool2d[pool1]/input.3, type = max_pool2d]████████████████▋                                 | 4/12 [00:00<00:00, 2542.77it/s, OpInfo: name = CNN/Conv2d[conv2]/235, type = _convolution]     ███████████████▊                             | 5/12 [00:00<00:00, 2619.48it/s, OpInfo: name = CNN/Sigmoid[act2]/236, type = sigmoid]     ████████████████████                         | 6/12 [00:00<00:00, 2677.50it/s, OpInfo: name = CNN/MaxPool2d[pool2]/250, type = max_pool2d]█████████████████████████████▏                    | 7/12 [00:00<00:00, 2815.24it/s, OpInfo: name = CNN/input.5, type = view]                   ██████████████▎                | 8/12 [00:00<00:00, 2621.85it/s, OpInfo: name = CNN/Linear[fc1]/255, type = linear]█████████████████████████████████████▌            | 9/12 [00:00<00:00, 2572.49it/s, OpInfo: name = CNN/Sigmoid[act3]/input, type = sigmoid]█████████████████████████████████████████▋        | 10/12 [00:00<00:00, 2707.92it/s, OpInfo: name = CNN/Linear[fc2]/257, type = linear]    █████████████████████████████████████████▊    | 11/12 [00:00<00:00, 2814.97it/s, OpInfo: name = return_0, type = Return]           ███████████████████████████████████████| 12/12 [00:00<00:00, 2971.00it/s, OpInfo: name = return_0, type = Return]
+
+[0;32m[VAIQ_NOTE]: =>Doing weights equalization...[0m
+
+[0;32m[VAIQ_NOTE]: =>Quantizable module is generated.(build/quantized_model/CNN.py)[0m
+
+[0;32m[VAIQ_NOTE]: =>Get module with quantization.[0m
+Accuracy train: 86.52(%)
+Accuracy val  : 85.10(%)
+
+[0;32m[VAIQ_NOTE]: =>Exporting quant config.(build/quantized_model/quant_info.json)[0m
+
+[0;32m[VAIQ_NOTE]: Loading NNDCT kernels...[0m
+Files already downloaded and verified
+Files already downloaded and verified
+
+
+PyTorch version :  1.10.1
+3.7.12 | packaged by conda-forge | (default, Oct 26 2021, 06:08:53)
+[GCC 9.4.0]
+
+
+ Command line options:
+--_model_name  :  cnn_float.pt
+--quant_mode   :  test
+--batchsize    :  100
+--quant_model  :  build/quantized_model
+
+
+You have 1 CUDA devices available
+ Device 0 :  Quadro P6000
+Selecting device 0..
+
+[0;32m[VAIQ_NOTE]: Quant config file is empty, use default quant configuration[0m
+
+[0;32m[VAIQ_NOTE]: Quantization test process start up...[0m
+
+[0;32m[VAIQ_NOTE]: =>Quant Module is in 'cuda'.[0m
+
+[0;32m[VAIQ_NOTE]: =>Parsing CNN...[0m
+
+[0;32m[VAIQ_NOTE]: Start to trace model...[0m
+
+[0;32m[VAIQ_NOTE]: Finish tracing.[0m
+
+[0;32m[VAIQ_NOTE]: Processing ops...[0m
+                                                  | 0/12 [00:00<?, ?it/s]                                                  | 0/12 [00:00<?, ?it/s, OpInfo: name = input_0, type = Param]████▏                                             | 1/12 [00:00<00:00, 8224.13it/s, OpInfo: name = CNN/Conv2d[conv1]/201, type = _convolution]████████▎                                         | 2/12 [00:00<00:00, 2558.28it/s, OpInfo: name = CNN/Tanh[act1]/202, type = tanh]████████████▌                                     | 3/12 [00:00<00:00, 2548.70it/s, OpInfo: name = CNN/MaxPool2d[pool1]/input.3, type = max_pool2d]████████████████▋                                 | 4/12 [00:00<00:00, 2395.72it/s, OpInfo: name = CNN/Conv2d[conv2]/235, type = _convolution]     ███████████████▊                             | 5/12 [00:00<00:00, 2462.60it/s, OpInfo: name = CNN/Sigmoid[act2]/236, type = sigmoid]     ████████████████████                         | 6/12 [00:00<00:00, 2507.81it/s, OpInfo: name = CNN/MaxPool2d[pool2]/250, type = max_pool2d]█████████████████████████████▏                    | 7/12 [00:00<00:00, 2631.78it/s, OpInfo: name = CNN/input.5, type = view]                   ██████████████▎                | 8/12 [00:00<00:00, 2487.54it/s, OpInfo: name = CNN/Linear[fc1]/255, type = linear]█████████████████████████████████████▌            | 9/12 [00:00<00:00, 2445.82it/s, OpInfo: name = CNN/Sigmoid[act3]/input, type = sigmoid]█████████████████████████████████████████▋        | 10/12 [00:00<00:00, 2580.32it/s, OpInfo: name = CNN/Linear[fc2]/257, type = linear]    █████████████████████████████████████████▊    | 11/12 [00:00<00:00, 2688.03it/s, OpInfo: name = return_0, type = Return]           ███████████████████████████████████████| 12/12 [00:00<00:00, 2839.91it/s, OpInfo: name = return_0, type = Return]
+
+[0;32m[VAIQ_NOTE]: =>Doing weights equalization...[0m
+
+[0;32m[VAIQ_NOTE]: =>Quantizable module is generated.(build/quantized_model/CNN.py)[0m
+
+[0;32m[VAIQ_NOTE]: =>Get module with quantization.[0m
+Accuracy train: 86.61(%)
+Accuracy val  : 85.15(%)
+
+[0;32m[VAIQ_NOTE]: =>Converting to xmodel ...[0m
+
+[0;32m[VAIQ_NOTE]: =>Successfully convert 'CNN' to xmodel.(build/quantized_model/CNN_int.xmodel)[0m
+-----------------------------------------
+COMPILING MODEL FOR ZCU102..
+-----------------------------------------
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA1_B4096
+[UNILOG][INFO] Graph name: CNN, with op num: 41
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 9, DPU subgraph number 4
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/./build/compiled_model/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/./build/compiled_model/CNN_int_zcu102.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 6b528babcc773728db0e718b39efe452, and has been saved to "/workspace/VAI2.5/tutorials/VAI-SUBGRAPHS/files/./build/compiled_model/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+-----------------------------------------
+MODEL COMPILED
+-----------------------------------------
+
+-----------------------------------------
+PREPARE TARGET FOLDER.
+-----------------------------------------
+Files already downloaded and verified
+Files already downloaded and verified
+
+ generated  2000  validation images
+Files already downloaded and verified
+Files already downloaded and verified
+Training on cpu device.
+./build/target/application/test/img.png
+CNN_DEBUG(
+  (conv1): Conv2d(3, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (act1): Tanh()
+  (pool1): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (conv2): Conv2d(16, 8, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (act2): Sigmoid()
+  (pool2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (fc1): Linear(in_features=512, out_features=32, bias=True)
+  (act3): Sigmoid()
+  (fc2): Linear(in_features=32, out_features=2, bias=True)
+)
+fc2 weights = ...
+[[ 0.19606486   -0.5238573    -0.032044664  -0.0022796367  0.6666295
+  -0.75687706    0.34298295   -0.7774648     0.55739254    0.60501236
+  -0.9370751     0.67950857   -0.8989071     0.38275582   -0.34245464
+   0.35428908    0.07630856    0.41995096    0.5538444    -0.5001178
+  -0.16767487    0.116366416  -0.5738746     0.18422109    0.51737636
+   0.5242402    -0.6382266     0.45317164   -0.79533273   -0.12893856
+   0.27852273   -0.4868968   ]
+ [-0.06879284    0.43430433   -0.010995288   0.17579655   -0.62792385
+   0.80269474   -0.38727784    0.63716626   -0.4733625    -0.49089986
+   0.922281     -0.6542243     0.92016876   -0.41317993    0.37939882
+  -0.4556586    -0.2643073    -0.32356882   -0.47285667    0.57669544
+   0.31232718    0.18994382    0.40648273    0.12227019   -0.6627523
+  -0.500012      0.5565181    -0.5807047     0.86151177   -0.16096371
+  -0.25349438    0.6860991   ]]
+fc2 bias    =  [-0.16564299  0.1741785 ]
+TANH inp shape  torch.Size([1, 16, 32, 32])
+TANH out shape  torch.Size([1, 16, 32, 32])
+SIGM1 inp shape  torch.Size([1, 8, 16, 16])
+SIGM1 out shape  torch.Size([1, 8, 16, 16])
+SIGM2 inp shape  torch.Size([1, 32])
+SIGM2 out shape  torch.Size([1, 32])
+CNN out shape  torch.Size([1, 2])
+
+-----------------------------------------
+ANALYZE SUBGRAPHS.
+-----------------------------------------
