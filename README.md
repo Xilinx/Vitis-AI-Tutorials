@@ -7,12 +7,6 @@
  </tr>
 </table>
 
-
-
-
-
-
-
 <table>
 <thead>
   <tr>
@@ -22,15 +16,36 @@
   </tr>
 </thead>
 <tbody>
- <tr>
+  <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/Kaggle_ImageNet/">Using the Kaggle ImageNet Subset for Training Neural Networks</a></td>
     <td align="center">2.5</td>
     <td>Demonstrates how to use the Kaggle ImageNet Subset for training neural networks for developers and enthusiasts with a non-edu domain who are unable to obtain the ImageNet dataset directly.</td>
   </tr>
   <tr>
-    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/Vitis-AI-Vivado-TRD/">Leveraging the Vitis AI DPU in the Vivado Workflow</a></td>
+  <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/Keras_GoogleNet_ResNet/">Deep Learning with Custom GoogleNet and ResNet in Keras and Xilinx Vitis AI</a></td>
+ <td align="center">2.5</td>
+ <td>Quantize in fixed point some custom CNNs and deploy them on the Xilinx ZCU102 board, using Keras and the Xilinx7Vitis AI tool chain based on TensorFlow (TF).</td>
+ </tr>
+ <tr>
+ <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/pytorch-subgraphs/">Partitioning Vitis AI SubGraphs on CPU/DPU</a></td>
+ <td align="center">2.5</td>
+ <td>Learn how to deploy a CNN on the Xilinx <a href="https://www.xilinx.com/products/boards-and-kits/vck190.html">VCK190</a> board using Vitis AI.</td>
+ </tr>
+<tr>
+    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/Keras_FCN8_UNET_segmentation">FCN8 and UNET Semantic Segmentation with Keras and Xilinx Vitis AI</a></td>
+    <td align="center">2.5</td>
+    <td>Train the FCN8 and UNET Convolutional Neural Networks (CNNs) for Semantic Segmentation in Keras adopting a small custom dataset, quantize the floating point weights files to an 8-bit fixed point representation, and then deploy them on the Xilinx ZCU102 board using Vitis AI.</td>
+  </tr>
+  <tr>
+    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.5/Tutorials/RFModulation_Recognition/">RF Modulation Recognition with Vitis AI</a></td>
+    <td align="center">2.5</td>
+    <td>Discusses using Deep Neural Networks to perform automatic modulation recognition so that the receiver may be able to detect and demodulate the signal without this explicit knowledge of the modulation type and encoding method.</td>
+  </tr>
+  
+ <tr>
+    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/Vitis-AI-Vivado-TRD/README.md">Leveraging the Vitis™ AI DPU in the Vivado® Workflow</a></td>
     <td align="center">2.0</td>
-    <td>Shows you how to build the Vitis AI Targeted Reference Design (TRD) using the Vivado flow and walks you through the steps required to build a PetaLinux image from the ZCU102 BSP that is provided in the TRD archive.</td>
+    <td>Build the Vitis AI Targeted Reference Design (TRD) using the Vivado flow and learn how to build a PetaLinux image from the ZCU102 BSP that is provided in the TRD archive.</td>
   </tr>
   <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/2.0/Tutorials/caffe_cats_vs_dogs/README.md">Quantization and Pruning of AlexNet CNN trained in Caffe with Cats-vs-Dogs dataset</a></td>
@@ -67,16 +82,7 @@
     <td align="center">1.4</td>
     <td>Learn about the Vitis AI TensorFlow design process and how to go from a Python description of the network model to running a compiled model on the Xilinx DPU accelerator.</td>
   </tr>
-  <tr>
-    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/1.4/Design_Tutorials/04-Keras_GoogleNet_ResNet/README.md">Deep Learning with Custom GoogleNet and ResNet in Keras and Xilinx Vitis AI</a></td>
-    <td align="center">1.4</td>
-    <td>Quantize in fixed point some custom CNNs and deploy them on the Xilinx ZCU102 board, using Keras and the Xilinx7Vitis AI tool chain based on TensorFlow (TF).</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/1.4/Design_Tutorials/05-Keras_FCN8_UNET_segmentation/README.md">FCN8 and UNET Semantic Segmentation with Keras and Xilinx Vitis AI</a></td>
-    <td align="center">1.4</td>
-    <td>Train the FCN8 and UNET Convolutional Neural Networks (CNNs) for Semantic Segmentation in Keras adopting a small custom dataset, quantize the floating point weights files to an 8-bit fixed point representation, and then deploy them on the Xilinx ZCU102 board using Vitis AI.</td>
-  </tr>
+   
   <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/1.3/Design_Tutorials/06-densenetx_DPUv3">Using DenseNetX on the Xilinx Alveo U50 Accelerator Card</a></td>
     <td align="center">1.3</td>
@@ -142,12 +148,7 @@
     <td align="center">1.4</td>
     <td>A complete example of how using the <a href="https://github.com/Xilinx/Vitis-AI/tree/master/demo/Whole-App-Acceleration">WAA</a> flow targeting the MPSoC ZCU102 board.</td>
   </tr>
-  <tr>
-    <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/1.4/Feature_Tutorials/pytorch-subgraphs/README.md">Partitioning Vitis AI SubGraphs on CPU/DPU</a></td>
-    <td align="center">1.4</td>
-    <td>Learn how to split subgraphs between DPU and CPU when there are some layers not yet supported by the DPU.</td>
-  </tr>
-  <tr>
+    <tr>
     <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/1.4/Feature_Tutorials/tf2_quant_fine_tune/README.md">Fine-Tuning TensorFlow2 quantized model</a></td>
     <td align="center">1.4</td>
     <td>Learn how to implement the Vitis-AI quantization fine-tuning for TensorFlow2.3.</td>
@@ -183,5 +184,5 @@
 
 
 </hr>
-<p class="sphinxhide" align="center"><sup>Copyright&copy; 2020-2022 Xilinx</sup></p>
+<p class="sphinxhide" align="center"><sup>Copyright&copy; 2022 Xilinx</sup></p>
 
