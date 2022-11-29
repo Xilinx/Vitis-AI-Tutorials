@@ -1,0 +1,2643 @@
+/**
+
+* © Copyright (C) 2016-2020 Xilinx, Inc
+*
+* Licensed under the Apache License, Version 2.0 (the "License"). You may
+* not use this file except in compliance with the License. A copy of the
+* License is located at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations
+* under the License.
+*/
+
+
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/open_pb_graph_in_tensorBoard.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/run_all.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/run_fcn8.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/run_fcn8ups.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/run_unet.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_vck190/code/build_app.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_vck190/code/build_get_dpu_fps.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_vck190/code/run_cnn_fps.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_vck190/run_all_target.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_vck190/target_zcu102/code/build_app.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_vck190/target_zcu102/code/build_get_dpu_fps.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_vck190/target_zcu102/code/run_cnn_fps.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_vck190/target_zcu102/run_all_target.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_zcu104/code/build_app.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_zcu104/code/build_get_dpu_fps.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_zcu104/code/run_cnn_fps.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_zcu104/run_all_target.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_zcu104/target_zcu102/code/build_app.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_zcu104/target_zcu102/code/build_get_dpu_fps.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_zcu104/target_zcu102/code/run_cnn_fps.sh
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/target_zcu104/target_zcu102/run_all_target.sh
+rm: cannot remove 'target_zcu102/fcn8/model/*.xmodel': No such file or directory
+rm: cannot remove 'target_zcu102/fcn8/model/*.json': No such file or directory
+Requirement already satisfied: seaborn in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (0.11.2)
+Requirement already satisfied: numpy>=1.15 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.16.4)
+Requirement already satisfied: pandas>=0.23 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.1.3)
+Requirement already satisfied: matplotlib>=2.2 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (3.3.2)
+Requirement already satisfied: scipy>=1.0 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.5.1)
+Requirement already satisfied: certifi>=2020.06.20 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (2021.5.30)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.3 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (3.0.7)
+Requirement already satisfied: pillow>=6.2.0 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (8.4.0)
+Requirement already satisfied: python-dateutil>=2.1 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (2.8.2)
+Requirement already satisfied: cycler>=0.10 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (0.11.0)
+Requirement already satisfied: kiwisolver>=1.0.1 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (1.3.1)
+Requirement already satisfied: pytz>=2017.2 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from pandas>=0.23->seaborn) (2021.3)
+Requirement already satisfied: six>=1.5 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from python-dateutil>=2.1->matplotlib>=2.2->seaborn) (1.16.0)
+cp: cannot stat 'target_zcu102': No such file or directory
+cp: cannot stat 'target_zcu102': No such file or directory
+
+##################################################################################
+A) CLEAN PREVIOUS DIRECTORIES
+ ##################################################################################
+
+
+##################################################################################
+Step1: CREATE DATA AND FOLDERS
+##################################################################################
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+
+
+python 3.6.15 | packaged by conda-forge | (default, Dec  3 2021, 18:49:41)
+[GCC 9.4.0]
+keras version 2.2.4-tf
+tensorflow version 1.15.2
+channels_last
+
+
+
+
+written 311 training images
+written 104 calibr.  images
+written  56 valid.   images
+written 101 test     images
+current dir is
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+
+##################################################################################
+Step2a: FCN8 TRAINING
+##################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+UPSCALE =  False
+EPOCHS =  200
+Model: "model_1"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+input_1 (InputLayer)            [(None, 224, 224, 3) 0
+__________________________________________________________________________________________________
+block1_conv1 (Conv2D)           (None, 224, 224, 64) 1792        input_1[0][0]
+__________________________________________________________________________________________________
+block1_conv2 (Conv2D)           (None, 224, 224, 64) 36928       block1_conv1[0][0]
+__________________________________________________________________________________________________
+block1_pool (MaxPooling2D)      (None, 112, 112, 64) 0           block1_conv2[0][0]
+__________________________________________________________________________________________________
+block2_conv1 (Conv2D)           (None, 112, 112, 128 73856       block1_pool[0][0]
+__________________________________________________________________________________________________
+block2_conv2 (Conv2D)           (None, 112, 112, 128 147584      block2_conv1[0][0]
+__________________________________________________________________________________________________
+block2_pool (MaxPooling2D)      (None, 56, 56, 128)  0           block2_conv2[0][0]
+__________________________________________________________________________________________________
+block3_conv1 (Conv2D)           (None, 56, 56, 256)  295168      block2_pool[0][0]
+__________________________________________________________________________________________________
+block3_conv2 (Conv2D)           (None, 56, 56, 256)  590080      block3_conv1[0][0]
+__________________________________________________________________________________________________
+block3_conv3 (Conv2D)           (None, 56, 56, 256)  590080      block3_conv2[0][0]
+__________________________________________________________________________________________________
+block3_pool (MaxPooling2D)      (None, 28, 28, 256)  0           block3_conv3[0][0]
+__________________________________________________________________________________________________
+block4_conv1 (Conv2D)           (None, 28, 28, 512)  1180160     block3_pool[0][0]
+__________________________________________________________________________________________________
+block4_conv2 (Conv2D)           (None, 28, 28, 512)  2359808     block4_conv1[0][0]
+__________________________________________________________________________________________________
+block4_conv3 (Conv2D)           (None, 28, 28, 512)  2359808     block4_conv2[0][0]
+__________________________________________________________________________________________________
+block4_pool (MaxPooling2D)      (None, 14, 14, 512)  0           block4_conv3[0][0]
+__________________________________________________________________________________________________
+block5_conv1 (Conv2D)           (None, 14, 14, 512)  2359808     block4_pool[0][0]
+__________________________________________________________________________________________________
+block5_conv2 (Conv2D)           (None, 14, 14, 512)  2359808     block5_conv1[0][0]
+__________________________________________________________________________________________________
+block5_conv3 (Conv2D)           (None, 14, 14, 512)  2359808     block5_conv2[0][0]
+__________________________________________________________________________________________________
+block5_pool (MaxPooling2D)      (None, 7, 7, 512)    0           block5_conv3[0][0]
+__________________________________________________________________________________________________
+conv6 (Conv2D)                  (None, 7, 7, 512)    12845568    block5_pool[0][0]
+__________________________________________________________________________________________________
+pool4_11 (Conv2D)               (None, 14, 14, 12)   6156        block4_pool[0][0]
+__________________________________________________________________________________________________
+conv7 (Conv2D)                  (None, 7, 7, 512)    262656      conv6[0][0]
+__________________________________________________________________________________________________
+conv2d_transpose_1 (Conv2DTrans (None, 28, 28, 12)   576         pool4_11[0][0]
+__________________________________________________________________________________________________
+pool3_11 (Conv2D)               (None, 28, 28, 12)   3084        block3_pool[0][0]
+__________________________________________________________________________________________________
+conv2d_transpose (Conv2DTranspo (None, 28, 28, 12)   98304       conv7[0][0]
+__________________________________________________________________________________________________
+add_layer (Add)                 (None, 28, 28, 12)   0           conv2d_transpose_1[0][0]
+                                                                 pool3_11[0][0]
+                                                                 conv2d_transpose[0][0]
+__________________________________________________________________________________________________
+conv2d_transpose_2 (Conv2DTrans (None, 224, 224, 12) 9216        add_layer[0][0]
+__________________________________________________________________________________________________
+activation (Activation)         (None, 224, 224, 12) 0           conv2d_transpose_2[0][0]
+==================================================================================================
+Total params: 27,940,248
+Trainable params: 27,940,248
+Non-trainable params: 0
+__________________________________________________________________________________________________
+(311, 224, 224, 3) (311, 224, 224, 12)
+(56, 224, 224, 3) (56, 224, 224, 12)
+Train on 311 samples, validate on 56 samples
+Epoch 1/200
+311/311 - 10s - loss: 2.6331 - acc: 0.0890 - val_loss: 2.4843 - val_acc: 0.0984
+Epoch 2/200
+311/311 - 5s - loss: 2.4800 - acc: 0.1114 - val_loss: 2.4688 - val_acc: 0.1294
+Epoch 3/200
+311/311 - 5s - loss: 2.4475 - acc: 0.1470 - val_loss: 2.3870 - val_acc: 0.1894
+Epoch 4/200
+311/311 - 5s - loss: 2.3197 - acc: 0.2332 - val_loss: 2.3623 - val_acc: 0.2600
+Epoch 5/200
+311/311 - 5s - loss: 2.0699 - acc: 0.3365 - val_loss: 1.9660 - val_acc: 0.3691
+Epoch 6/200
+311/311 - 5s - loss: 1.9221 - acc: 0.3625 - val_loss: 1.8561 - val_acc: 0.3712
+Epoch 7/200
+311/311 - 5s - loss: 1.8951 - acc: 0.3655 - val_loss: 1.8247 - val_acc: 0.3853
+Epoch 8/200
+311/311 - 5s - loss: 1.8223 - acc: 0.3751 - val_loss: 1.7685 - val_acc: 0.3935
+Epoch 9/200
+311/311 - 5s - loss: 1.7757 - acc: 0.3869 - val_loss: 1.7332 - val_acc: 0.4175
+Epoch 10/200
+311/311 - 5s - loss: 1.7218 - acc: 0.4113 - val_loss: 1.6459 - val_acc: 0.4522
+Epoch 11/200
+311/311 - 5s - loss: 1.6377 - acc: 0.4534 - val_loss: 1.5381 - val_acc: 0.5148
+Epoch 12/200
+311/311 - 5s - loss: 1.5467 - acc: 0.4947 - val_loss: 1.3846 - val_acc: 0.5604
+Epoch 13/200
+311/311 - 5s - loss: 1.4277 - acc: 0.5300 - val_loss: 1.2770 - val_acc: 0.5972
+Epoch 14/200
+311/311 - 5s - loss: 1.2941 - acc: 0.6041 - val_loss: 1.1650 - val_acc: 0.6696
+Epoch 15/200
+311/311 - 5s - loss: 1.2514 - acc: 0.6345 - val_loss: 1.1269 - val_acc: 0.6847
+Epoch 16/200
+311/311 - 5s - loss: 1.1198 - acc: 0.6648 - val_loss: 1.0340 - val_acc: 0.6960
+Epoch 17/200
+311/311 - 5s - loss: 1.0766 - acc: 0.6707 - val_loss: 1.0908 - val_acc: 0.6850
+Epoch 18/200
+311/311 - 5s - loss: 1.0438 - acc: 0.6754 - val_loss: 0.9884 - val_acc: 0.7022
+Epoch 19/200
+311/311 - 5s - loss: 1.0054 - acc: 0.6844 - val_loss: 0.9584 - val_acc: 0.7134
+Epoch 20/200
+311/311 - 5s - loss: 1.0165 - acc: 0.6867 - val_loss: 1.0404 - val_acc: 0.7054
+Epoch 21/200
+311/311 - 5s - loss: 0.9736 - acc: 0.6959 - val_loss: 0.9234 - val_acc: 0.7241
+Epoch 22/200
+311/311 - 5s - loss: 0.9354 - acc: 0.7146 - val_loss: 0.8955 - val_acc: 0.7347
+Epoch 23/200
+311/311 - 5s - loss: 0.9168 - acc: 0.7221 - val_loss: 0.8766 - val_acc: 0.7400
+Epoch 24/200
+311/311 - 5s - loss: 0.8864 - acc: 0.7334 - val_loss: 0.8600 - val_acc: 0.7485
+Epoch 25/200
+311/311 - 5s - loss: 0.8635 - acc: 0.7438 - val_loss: 0.8436 - val_acc: 0.7501
+Epoch 26/200
+311/311 - 5s - loss: 0.8524 - acc: 0.7451 - val_loss: 0.8269 - val_acc: 0.7553
+Epoch 27/200
+311/311 - 5s - loss: 0.8474 - acc: 0.7478 - val_loss: 0.8199 - val_acc: 0.7582
+Epoch 28/200
+311/311 - 5s - loss: 0.8257 - acc: 0.7515 - val_loss: 0.8035 - val_acc: 0.7604
+Epoch 29/200
+311/311 - 5s - loss: 0.8074 - acc: 0.7562 - val_loss: 0.8034 - val_acc: 0.7584
+Epoch 30/200
+311/311 - 5s - loss: 0.8088 - acc: 0.7532 - val_loss: 0.7878 - val_acc: 0.7650
+Epoch 31/200
+311/311 - 5s - loss: 0.7885 - acc: 0.7614 - val_loss: 0.7807 - val_acc: 0.7671
+Epoch 32/200
+311/311 - 5s - loss: 0.7741 - acc: 0.7656 - val_loss: 0.7827 - val_acc: 0.7657
+Epoch 33/200
+311/311 - 5s - loss: 0.7703 - acc: 0.7665 - val_loss: 0.7532 - val_acc: 0.7746
+Epoch 34/200
+311/311 - 5s - loss: 0.7595 - acc: 0.7695 - val_loss: 0.7421 - val_acc: 0.7786
+Epoch 35/200
+311/311 - 5s - loss: 0.7455 - acc: 0.7752 - val_loss: 0.7332 - val_acc: 0.7807
+Epoch 36/200
+311/311 - 5s - loss: 0.7628 - acc: 0.7713 - val_loss: 0.7428 - val_acc: 0.7808
+Epoch 37/200
+311/311 - 5s - loss: 0.7320 - acc: 0.7816 - val_loss: 0.7439 - val_acc: 0.7783
+Epoch 38/200
+311/311 - 5s - loss: 0.7229 - acc: 0.7848 - val_loss: 0.7081 - val_acc: 0.7917
+Epoch 39/200
+311/311 - 5s - loss: 0.7140 - acc: 0.7884 - val_loss: 0.7097 - val_acc: 0.7923
+Epoch 40/200
+311/311 - 5s - loss: 0.7178 - acc: 0.7877 - val_loss: 0.7221 - val_acc: 0.7874
+Epoch 41/200
+311/311 - 5s - loss: 0.7033 - acc: 0.7918 - val_loss: 0.6900 - val_acc: 0.7986
+Epoch 42/200
+311/311 - 5s - loss: 0.6930 - acc: 0.7957 - val_loss: 0.6907 - val_acc: 0.7984
+Epoch 43/200
+311/311 - 5s - loss: 0.7033 - acc: 0.7936 - val_loss: 0.7027 - val_acc: 0.7920
+Epoch 44/200
+311/311 - 5s - loss: 0.6868 - acc: 0.7984 - val_loss: 0.6737 - val_acc: 0.8031
+Epoch 45/200
+311/311 - 5s - loss: 0.6746 - acc: 0.8032 - val_loss: 0.6678 - val_acc: 0.8070
+Epoch 46/200
+311/311 - 5s - loss: 0.6742 - acc: 0.8031 - val_loss: 0.6863 - val_acc: 0.7994
+Epoch 47/200
+311/311 - 5s - loss: 0.6830 - acc: 0.8011 - val_loss: 0.6714 - val_acc: 0.8051
+Epoch 48/200
+311/311 - 5s - loss: 0.6665 - acc: 0.8062 - val_loss: 0.6550 - val_acc: 0.8112
+Epoch 49/200
+311/311 - 5s - loss: 0.6532 - acc: 0.8117 - val_loss: 0.6718 - val_acc: 0.8048
+Epoch 50/200
+311/311 - 5s - loss: 0.6761 - acc: 0.8033 - val_loss: 0.6478 - val_acc: 0.8143
+Epoch 51/200
+311/311 - 5s - loss: 0.6497 - acc: 0.8126 - val_loss: 0.6486 - val_acc: 0.8127
+Epoch 52/200
+311/311 - 5s - loss: 0.6647 - acc: 0.8069 - val_loss: 0.6416 - val_acc: 0.8149
+Epoch 53/200
+311/311 - 5s - loss: 0.6377 - acc: 0.8172 - val_loss: 0.6378 - val_acc: 0.8164
+Epoch 54/200
+311/311 - 5s - loss: 0.6374 - acc: 0.8170 - val_loss: 0.6350 - val_acc: 0.8173
+Epoch 55/200
+311/311 - 5s - loss: 0.6288 - acc: 0.8195 - val_loss: 0.6288 - val_acc: 0.8210
+Epoch 56/200
+311/311 - 5s - loss: 0.6305 - acc: 0.8196 - val_loss: 0.6204 - val_acc: 0.8223
+Epoch 57/200
+311/311 - 5s - loss: 0.6235 - acc: 0.8213 - val_loss: 0.6580 - val_acc: 0.8078
+Epoch 58/200
+311/311 - 5s - loss: 0.6295 - acc: 0.8199 - val_loss: 0.6200 - val_acc: 0.8224
+Epoch 59/200
+311/311 - 5s - loss: 0.6182 - acc: 0.8232 - val_loss: 0.6129 - val_acc: 0.8245
+Epoch 60/200
+311/311 - 5s - loss: 0.6183 - acc: 0.8226 - val_loss: 0.6070 - val_acc: 0.8258
+Epoch 61/200
+311/311 - 5s - loss: 0.6085 - acc: 0.8258 - val_loss: 0.6118 - val_acc: 0.8236
+Epoch 62/200
+311/311 - 5s - loss: 0.6015 - acc: 0.8282 - val_loss: 0.6039 - val_acc: 0.8259
+Epoch 63/200
+311/311 - 5s - loss: 0.6243 - acc: 0.8193 - val_loss: 0.6123 - val_acc: 0.8248
+Epoch 64/200
+311/311 - 5s - loss: 0.6164 - acc: 0.8231 - val_loss: 0.6005 - val_acc: 0.8268
+Epoch 65/200
+311/311 - 5s - loss: 0.5960 - acc: 0.8297 - val_loss: 0.6060 - val_acc: 0.8242
+Epoch 66/200
+311/311 - 5s - loss: 0.5961 - acc: 0.8295 - val_loss: 0.6032 - val_acc: 0.8266
+Epoch 67/200
+311/311 - 5s - loss: 0.5920 - acc: 0.8307 - val_loss: 0.5908 - val_acc: 0.8310
+Epoch 68/200
+311/311 - 5s - loss: 0.6003 - acc: 0.8284 - val_loss: 0.6257 - val_acc: 0.8157
+Epoch 69/200
+311/311 - 5s - loss: 0.5913 - acc: 0.8309 - val_loss: 0.5888 - val_acc: 0.8319
+Epoch 70/200
+311/311 - 5s - loss: 0.5854 - acc: 0.8326 - val_loss: 0.5908 - val_acc: 0.8289
+Epoch 71/200
+311/311 - 5s - loss: 0.5825 - acc: 0.8331 - val_loss: 0.5880 - val_acc: 0.8303
+Epoch 72/200
+311/311 - 5s - loss: 0.5908 - acc: 0.8313 - val_loss: 0.5854 - val_acc: 0.8321
+Epoch 73/200
+311/311 - 5s - loss: 0.5798 - acc: 0.8339 - val_loss: 0.5840 - val_acc: 0.8306
+Epoch 74/200
+311/311 - 5s - loss: 0.5747 - acc: 0.8353 - val_loss: 0.5767 - val_acc: 0.8331
+Epoch 75/200
+311/311 - 5s - loss: 0.5747 - acc: 0.8351 - val_loss: 0.5819 - val_acc: 0.8317
+Epoch 76/200
+311/311 - 5s - loss: 0.5801 - acc: 0.8329 - val_loss: 0.5855 - val_acc: 0.8316
+Epoch 77/200
+311/311 - 5s - loss: 0.5873 - acc: 0.8319 - val_loss: 0.5721 - val_acc: 0.8348
+Epoch 78/200
+311/311 - 5s - loss: 0.5671 - acc: 0.8376 - val_loss: 0.5706 - val_acc: 0.8356
+Epoch 79/200
+311/311 - 5s - loss: 0.5635 - acc: 0.8386 - val_loss: 0.5728 - val_acc: 0.8334
+Epoch 80/200
+311/311 - 5s - loss: 0.5764 - acc: 0.8345 - val_loss: 0.5679 - val_acc: 0.8362
+Epoch 81/200
+311/311 - 5s - loss: 0.5647 - acc: 0.8378 - val_loss: 0.5661 - val_acc: 0.8368
+Epoch 82/200
+311/311 - 5s - loss: 0.5603 - acc: 0.8397 - val_loss: 0.5638 - val_acc: 0.8372
+Epoch 83/200
+311/311 - 5s - loss: 0.5595 - acc: 0.8398 - val_loss: 0.5712 - val_acc: 0.8346
+Epoch 84/200
+311/311 - 5s - loss: 0.5636 - acc: 0.8383 - val_loss: 0.5667 - val_acc: 0.8370
+Epoch 85/200
+311/311 - 5s - loss: 0.5596 - acc: 0.8395 - val_loss: 0.5622 - val_acc: 0.8371
+Epoch 86/200
+311/311 - 5s - loss: 0.5532 - acc: 0.8416 - val_loss: 0.5597 - val_acc: 0.8388
+Epoch 87/200
+311/311 - 5s - loss: 0.5585 - acc: 0.8396 - val_loss: 0.5614 - val_acc: 0.8368
+Epoch 88/200
+311/311 - 5s - loss: 0.5543 - acc: 0.8405 - val_loss: 0.5616 - val_acc: 0.8373
+Epoch 89/200
+311/311 - 5s - loss: 0.5508 - acc: 0.8421 - val_loss: 0.5567 - val_acc: 0.8383
+Epoch 90/200
+311/311 - 5s - loss: 0.5534 - acc: 0.8410 - val_loss: 0.6304 - val_acc: 0.8215
+Epoch 91/200
+311/311 - 5s - loss: 0.5558 - acc: 0.8403 - val_loss: 0.5609 - val_acc: 0.8386
+Epoch 92/200
+311/311 - 5s - loss: 0.5498 - acc: 0.8424 - val_loss: 0.5514 - val_acc: 0.8405
+Epoch 93/200
+311/311 - 5s - loss: 0.5442 - acc: 0.8440 - val_loss: 0.5535 - val_acc: 0.8393
+Epoch 94/200
+311/311 - 5s - loss: 0.5468 - acc: 0.8422 - val_loss: 0.5522 - val_acc: 0.8398
+Epoch 95/200
+311/311 - 5s - loss: 0.5469 - acc: 0.8427 - val_loss: 0.5491 - val_acc: 0.8410
+Epoch 96/200
+311/311 - 5s - loss: 0.5385 - acc: 0.8458 - val_loss: 0.5628 - val_acc: 0.8367
+Epoch 97/200
+311/311 - 5s - loss: 0.5403 - acc: 0.8452 - val_loss: 0.5491 - val_acc: 0.8417
+Epoch 98/200
+311/311 - 5s - loss: 0.5378 - acc: 0.8461 - val_loss: 0.5683 - val_acc: 0.8350
+Epoch 99/200
+311/311 - 5s - loss: 0.5384 - acc: 0.8454 - val_loss: 0.5735 - val_acc: 0.8338
+Epoch 100/200
+311/311 - 5s - loss: 0.5470 - acc: 0.8427 - val_loss: 0.5463 - val_acc: 0.8411
+Epoch 101/200
+311/311 - 5s - loss: 0.5331 - acc: 0.8474 - val_loss: 0.5459 - val_acc: 0.8420
+Epoch 102/200
+311/311 - 5s - loss: 0.5357 - acc: 0.8465 - val_loss: 0.5423 - val_acc: 0.8437
+Epoch 103/200
+311/311 - 5s - loss: 0.5305 - acc: 0.8480 - val_loss: 0.5424 - val_acc: 0.8428
+Epoch 104/200
+311/311 - 5s - loss: 0.5293 - acc: 0.8482 - val_loss: 0.5437 - val_acc: 0.8426
+Epoch 105/200
+311/311 - 5s - loss: 0.5288 - acc: 0.8483 - val_loss: 0.5419 - val_acc: 0.8445
+Epoch 106/200
+311/311 - 5s - loss: 0.5265 - acc: 0.8493 - val_loss: 0.5427 - val_acc: 0.8424
+Epoch 107/200
+311/311 - 5s - loss: 0.5349 - acc: 0.8464 - val_loss: 0.5394 - val_acc: 0.8434
+Epoch 108/200
+311/311 - 5s - loss: 0.5232 - acc: 0.8501 - val_loss: 0.5503 - val_acc: 0.8405
+Epoch 109/200
+311/311 - 5s - loss: 0.5236 - acc: 0.8500 - val_loss: 0.5443 - val_acc: 0.8412
+Epoch 110/200
+311/311 - 5s - loss: 0.5256 - acc: 0.8490 - val_loss: 0.5382 - val_acc: 0.8433
+Epoch 111/200
+311/311 - 5s - loss: 0.5248 - acc: 0.8495 - val_loss: 0.5733 - val_acc: 0.8335
+Epoch 112/200
+311/311 - 5s - loss: 0.5259 - acc: 0.8491 - val_loss: 0.5337 - val_acc: 0.8461
+Epoch 113/200
+311/311 - 5s - loss: 0.5184 - acc: 0.8514 - val_loss: 0.5364 - val_acc: 0.8436
+Epoch 114/200
+311/311 - 5s - loss: 0.5213 - acc: 0.8502 - val_loss: 0.5362 - val_acc: 0.8439
+Epoch 115/200
+311/311 - 5s - loss: 0.5188 - acc: 0.8510 - val_loss: 0.5295 - val_acc: 0.8465
+Epoch 116/200
+311/311 - 5s - loss: 0.5145 - acc: 0.8525 - val_loss: 0.5336 - val_acc: 0.8465
+Epoch 117/200
+311/311 - 5s - loss: 0.5222 - acc: 0.8505 - val_loss: 0.5362 - val_acc: 0.8439
+Epoch 118/200
+311/311 - 5s - loss: 0.5157 - acc: 0.8523 - val_loss: 0.5276 - val_acc: 0.8468
+Epoch 119/200
+311/311 - 5s - loss: 0.5139 - acc: 0.8529 - val_loss: 0.5256 - val_acc: 0.8477
+Epoch 120/200
+311/311 - 5s - loss: 0.5171 - acc: 0.8516 - val_loss: 0.5264 - val_acc: 0.8479
+Epoch 121/200
+311/311 - 5s - loss: 0.5150 - acc: 0.8523 - val_loss: 0.5248 - val_acc: 0.8477
+Epoch 122/200
+311/311 - 5s - loss: 0.5086 - acc: 0.8545 - val_loss: 0.5252 - val_acc: 0.8474
+Epoch 123/200
+311/311 - 5s - loss: 0.5070 - acc: 0.8547 - val_loss: 0.5262 - val_acc: 0.8468
+Epoch 124/200
+311/311 - 5s - loss: 0.5084 - acc: 0.8544 - val_loss: 0.5402 - val_acc: 0.8430
+Epoch 125/200
+311/311 - 5s - loss: 0.5256 - acc: 0.8489 - val_loss: 0.5258 - val_acc: 0.8467
+Epoch 126/200
+311/311 - 5s - loss: 0.5089 - acc: 0.8540 - val_loss: 0.5263 - val_acc: 0.8463
+Epoch 127/200
+311/311 - 5s - loss: 0.5059 - acc: 0.8554 - val_loss: 0.5231 - val_acc: 0.8484
+Epoch 128/200
+311/311 - 5s - loss: 0.5044 - acc: 0.8556 - val_loss: 0.5220 - val_acc: 0.8483
+Epoch 129/200
+311/311 - 5s - loss: 0.5061 - acc: 0.8549 - val_loss: 0.5280 - val_acc: 0.8468
+Epoch 130/200
+311/311 - 5s - loss: 0.5021 - acc: 0.8563 - val_loss: 0.5186 - val_acc: 0.8498
+Epoch 131/200
+311/311 - 5s - loss: 0.5018 - acc: 0.8564 - val_loss: 0.5189 - val_acc: 0.8495
+Epoch 132/200
+311/311 - 5s - loss: 0.5012 - acc: 0.8566 - val_loss: 0.5289 - val_acc: 0.8458
+Epoch 133/200
+311/311 - 5s - loss: 0.5053 - acc: 0.8548 - val_loss: 0.5172 - val_acc: 0.8502
+Epoch 134/200
+311/311 - 5s - loss: 0.5011 - acc: 0.8565 - val_loss: 0.5182 - val_acc: 0.8507
+Epoch 135/200
+311/311 - 5s - loss: 0.5004 - acc: 0.8570 - val_loss: 0.5232 - val_acc: 0.8482
+Epoch 136/200
+311/311 - 5s - loss: 0.4983 - acc: 0.8575 - val_loss: 0.5174 - val_acc: 0.8497
+Epoch 137/200
+311/311 - 5s - loss: 0.4981 - acc: 0.8577 - val_loss: 0.5160 - val_acc: 0.8501
+Epoch 138/200
+311/311 - 5s - loss: 0.4991 - acc: 0.8572 - val_loss: 0.5191 - val_acc: 0.8496
+Epoch 139/200
+311/311 - 5s - loss: 0.4965 - acc: 0.8582 - val_loss: 0.5150 - val_acc: 0.8509
+Epoch 140/200
+311/311 - 5s - loss: 0.4970 - acc: 0.8581 - val_loss: 0.5392 - val_acc: 0.8406
+Epoch 141/200
+311/311 - 5s - loss: 0.5052 - acc: 0.8548 - val_loss: 0.5133 - val_acc: 0.8514
+Epoch 142/200
+311/311 - 5s - loss: 0.4927 - acc: 0.8593 - val_loss: 0.5118 - val_acc: 0.8520
+Epoch 143/200
+311/311 - 5s - loss: 0.4929 - acc: 0.8592 - val_loss: 0.5217 - val_acc: 0.8487
+Epoch 144/200
+311/311 - 5s - loss: 0.4974 - acc: 0.8577 - val_loss: 0.5139 - val_acc: 0.8508
+Epoch 145/200
+311/311 - 5s - loss: 0.4908 - acc: 0.8600 - val_loss: 0.5161 - val_acc: 0.8516
+Epoch 146/200
+311/311 - 5s - loss: 0.4934 - acc: 0.8591 - val_loss: 0.5103 - val_acc: 0.8523
+Epoch 147/200
+311/311 - 5s - loss: 0.4895 - acc: 0.8604 - val_loss: 0.5098 - val_acc: 0.8521
+Epoch 148/200
+311/311 - 5s - loss: 0.4892 - acc: 0.8604 - val_loss: 0.5092 - val_acc: 0.8531
+Epoch 149/200
+311/311 - 5s - loss: 0.4923 - acc: 0.8596 - val_loss: 0.5157 - val_acc: 0.8505
+Epoch 150/200
+311/311 - 5s - loss: 0.4876 - acc: 0.8608 - val_loss: 0.5109 - val_acc: 0.8529
+Epoch 151/200
+311/311 - 5s - loss: 0.4890 - acc: 0.8607 - val_loss: 0.5076 - val_acc: 0.8541
+Epoch 152/200
+311/311 - 5s - loss: 0.4856 - acc: 0.8617 - val_loss: 0.5081 - val_acc: 0.8534
+Epoch 153/200
+311/311 - 5s - loss: 0.4852 - acc: 0.8620 - val_loss: 0.5066 - val_acc: 0.8539
+Epoch 154/200
+311/311 - 5s - loss: 0.4863 - acc: 0.8612 - val_loss: 0.5213 - val_acc: 0.8512
+Epoch 155/200
+311/311 - 5s - loss: 0.4891 - acc: 0.8606 - val_loss: 0.5091 - val_acc: 0.8538
+Epoch 156/200
+311/311 - 5s - loss: 0.4843 - acc: 0.8621 - val_loss: 0.5051 - val_acc: 0.8543
+Epoch 157/200
+311/311 - 5s - loss: 0.4832 - acc: 0.8628 - val_loss: 0.5059 - val_acc: 0.8536
+Epoch 158/200
+311/311 - 5s - loss: 0.4845 - acc: 0.8622 - val_loss: 0.5052 - val_acc: 0.8539
+Epoch 159/200
+311/311 - 5s - loss: 0.4811 - acc: 0.8633 - val_loss: 0.5042 - val_acc: 0.8545
+Epoch 160/200
+311/311 - 5s - loss: 0.4818 - acc: 0.8633 - val_loss: 0.5217 - val_acc: 0.8487
+Epoch 161/200
+311/311 - 5s - loss: 0.4849 - acc: 0.8619 - val_loss: 0.5069 - val_acc: 0.8531
+Epoch 162/200
+311/311 - 5s - loss: 0.4812 - acc: 0.8634 - val_loss: 0.5046 - val_acc: 0.8552
+Epoch 163/200
+311/311 - 5s - loss: 0.4810 - acc: 0.8634 - val_loss: 0.5016 - val_acc: 0.8559
+Epoch 164/200
+311/311 - 5s - loss: 0.4877 - acc: 0.8615 - val_loss: 0.5077 - val_acc: 0.8532
+Epoch 165/200
+311/311 - 5s - loss: 0.4790 - acc: 0.8640 - val_loss: 0.5027 - val_acc: 0.8554
+Epoch 166/200
+311/311 - 5s - loss: 0.4782 - acc: 0.8644 - val_loss: 0.5030 - val_acc: 0.8547
+Epoch 167/200
+311/311 - 5s - loss: 0.4776 - acc: 0.8646 - val_loss: 0.5115 - val_acc: 0.8539
+Epoch 168/200
+311/311 - 5s - loss: 0.4782 - acc: 0.8643 - val_loss: 0.5022 - val_acc: 0.8563
+Epoch 169/200
+311/311 - 5s - loss: 0.4768 - acc: 0.8649 - val_loss: 0.4993 - val_acc: 0.8563
+Epoch 170/200
+311/311 - 5s - loss: 0.4742 - acc: 0.8656 - val_loss: 0.4983 - val_acc: 0.8566
+Epoch 171/200
+311/311 - 5s - loss: 0.4743 - acc: 0.8656 - val_loss: 0.4979 - val_acc: 0.8566
+Epoch 172/200
+311/311 - 5s - loss: 0.4790 - acc: 0.8641 - val_loss: 0.5306 - val_acc: 0.8470
+Epoch 173/200
+311/311 - 5s - loss: 0.4814 - acc: 0.8630 - val_loss: 0.4983 - val_acc: 0.8566
+Epoch 174/200
+311/311 - 5s - loss: 0.4733 - acc: 0.8662 - val_loss: 0.4990 - val_acc: 0.8562
+Epoch 175/200
+311/311 - 5s - loss: 0.4722 - acc: 0.8664 - val_loss: 0.4981 - val_acc: 0.8566
+Epoch 176/200
+311/311 - 5s - loss: 0.4726 - acc: 0.8662 - val_loss: 0.5040 - val_acc: 0.8564
+Epoch 177/200
+311/311 - 5s - loss: 0.4753 - acc: 0.8654 - val_loss: 0.4953 - val_acc: 0.8582
+Epoch 178/200
+311/311 - 5s - loss: 0.4713 - acc: 0.8665 - val_loss: 0.5003 - val_acc: 0.8558
+Epoch 179/200
+311/311 - 5s - loss: 0.4698 - acc: 0.8673 - val_loss: 0.4983 - val_acc: 0.8561
+Epoch 180/200
+311/311 - 5s - loss: 0.4721 - acc: 0.8662 - val_loss: 0.4951 - val_acc: 0.8576
+Epoch 181/200
+311/311 - 5s - loss: 0.4700 - acc: 0.8672 - val_loss: 0.4986 - val_acc: 0.8565
+Epoch 182/200
+311/311 - 5s - loss: 0.4686 - acc: 0.8676 - val_loss: 0.5005 - val_acc: 0.8553
+Epoch 183/200
+311/311 - 5s - loss: 0.4692 - acc: 0.8674 - val_loss: 0.4968 - val_acc: 0.8566
+Epoch 184/200
+311/311 - 5s - loss: 0.4698 - acc: 0.8672 - val_loss: 0.4927 - val_acc: 0.8586
+Epoch 185/200
+311/311 - 5s - loss: 0.4665 - acc: 0.8683 - val_loss: 0.4932 - val_acc: 0.8580
+Epoch 186/200
+311/311 - 5s - loss: 0.4663 - acc: 0.8683 - val_loss: 0.4960 - val_acc: 0.8585
+Epoch 187/200
+311/311 - 5s - loss: 0.4705 - acc: 0.8671 - val_loss: 0.4927 - val_acc: 0.8589
+Epoch 188/200
+311/311 - 5s - loss: 0.4673 - acc: 0.8678 - val_loss: 0.4943 - val_acc: 0.8578
+Epoch 189/200
+311/311 - 5s - loss: 0.4654 - acc: 0.8686 - val_loss: 0.4999 - val_acc: 0.8565
+Epoch 190/200
+311/311 - 5s - loss: 0.4647 - acc: 0.8688 - val_loss: 0.4941 - val_acc: 0.8583
+Epoch 191/200
+311/311 - 5s - loss: 0.4635 - acc: 0.8694 - val_loss: 0.4900 - val_acc: 0.8593
+Epoch 192/200
+311/311 - 5s - loss: 0.4643 - acc: 0.8690 - val_loss: 0.4962 - val_acc: 0.8570
+Epoch 193/200
+311/311 - 5s - loss: 0.4640 - acc: 0.8691 - val_loss: 0.5001 - val_acc: 0.8561
+Epoch 194/200
+311/311 - 5s - loss: 0.4654 - acc: 0.8688 - val_loss: 0.4917 - val_acc: 0.8585
+Epoch 195/200
+311/311 - 5s - loss: 0.4624 - acc: 0.8696 - val_loss: 0.4899 - val_acc: 0.8597
+Epoch 196/200
+311/311 - 5s - loss: 0.4617 - acc: 0.8699 - val_loss: 0.4902 - val_acc: 0.8594
+Epoch 197/200
+311/311 - 5s - loss: 0.4607 - acc: 0.8702 - val_loss: 0.4879 - val_acc: 0.8608
+Epoch 198/200
+311/311 - 5s - loss: 0.4620 - acc: 0.8697 - val_loss: 0.4878 - val_acc: 0.8601
+Epoch 199/200
+311/311 - 5s - loss: 0.4605 - acc: 0.8701 - val_loss: 0.4907 - val_acc: 0.8591
+Epoch 200/200
+311/311 - 5s - loss: 0.4590 - acc: 0.8708 - val_loss: 0.4880 - val_acc: 0.8605
+
+
+Elapsed time for Keras training (s):  988.438959
+
+
+
+End of FCN8 training
+
+
+##################################################################################
+Step2b: FCN8 MAKING PREDICTIONS
+##################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling GlorotUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+
+
+validation data (X) (Y) shapes: (56, 224, 224, 3) (56, 224, 224, 12)
+testing    data (X) (Y) shapes (101, 224, 224, 3) (101, 224, 224, 12)
+
+
+
+now computing IoU over testing data set:
+class ( 0)          Sky: #TP= 430472, #FP=  25985, #FN=  25501, IoU=0.893
+class ( 1)         Wall: #TP=1070796, #FP=  83832, #FN= 233150, IoU=0.772
+class ( 2)         Pole: #TP=      0, #FP=    127, #FN=  36420, IoU=0.000
+class ( 3)         Road: #TP=1428953, #FP= 103674, #FN=  46066, IoU=0.905
+class ( 4)     Sidewalk: #TP= 369656, #FP=  81097, #FN=  78777, IoU=0.698
+class ( 5)   Vegetation: #TP= 792071, #FP= 121205, #FN=  34474, IoU=0.836
+class ( 6)         Sign: #TP=     42, #FP=   1387, #FN=  53350, IoU=0.001
+class ( 7)        Fence: #TP=  17046, #FP=  22164, #FN= 139357, IoU=0.095
+class ( 8)      vehicle: #TP=  79497, #FP= 185577, #FN=  14563, IoU=0.284
+class ( 9)   Pedestrian: #TP=   1766, #FP=   4866, #FN=  35099, IoU=0.042
+class (10)    Bicyclist: #TP=   2556, #FP=   1105, #FN= 108416, IoU=0.023
+class (11)  miscellanea: #TP=  42664, #FP= 201238, #FN=  27084, IoU=0.157
+_________________
+Mean IoU: 0.392
+
+now computing IoU over validation data set:
+class ( 0)          Sky: #TP= 403825, #FP=  41746, #FN=  19216, IoU=0.869
+class ( 1)         Wall: #TP= 685359, #FP= 116841, #FN=  48942, IoU=0.805
+class ( 2)         Pole: #TP=      6, #FP=     73, #FN=  31105, IoU=0.000
+class ( 3)         Road: #TP= 882390, #FP=  38305, #FN=  30328, IoU=0.928
+class ( 4)     Sidewalk: #TP=  72736, #FP=  30735, #FN=  39397, IoU=0.509
+class ( 5)   Vegetation: #TP= 169931, #FP=  59321, #FN=  41423, IoU=0.628
+class ( 6)         Sign: #TP=    480, #FP=    806, #FN=  44402, IoU=0.011
+class ( 7)        Fence: #TP=   5534, #FP=  10608, #FN=  27636, IoU=0.126
+class ( 8)      vehicle: #TP= 154083, #FP=  52652, #FN=  23379, IoU=0.670
+class ( 9)   Pedestrian: #TP=    398, #FP=   1643, #FN=  18231, IoU=0.020
+class (10)    Bicyclist: #TP=    118, #FP=    358, #FN=  15100, IoU=0.008
+class (11)  miscellanea: #TP=  43089, #FP=  38819, #FN=  52748, IoU=0.320
+_________________
+Mean IoU: 0.408
+
+#######################################################################################
+Step3: FCN8 KERAS to TENSORFLOW GRAPH CONVERSION
+#######################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling GlorotUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From Keras2TF.py:96: The name tf.keras.backend.get_session is deprecated. Please use tf.compat.v1.keras.backend.get_session instead.
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+model name =  fcn8
+
+ TF input node name:
+[<tf.Tensor 'input_1:0' shape=(?, 224, 224, 3) dtype=float32>]
+
+ TF output node name:
+[<tf.Tensor 'activation/truediv:0' shape=(?, 224, 224, 12) dtype=float32>]
+
+FINISHED CREATING TF FILES
+
+
+##############################################################################
+Step4a: FCN8 FREEZE TF GRAPHS
+##############################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+W0608 16:24:55.310958 140421902595904 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+2022-06-08 16:24:55.314243: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2022-06-08 16:24:55.353612: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2022-06-08 16:24:55.353820: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 16:24:55.354787: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2022-06-08 16:24:55.355762: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2022-06-08 16:24:55.356019: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2022-06-08 16:24:55.357297: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2022-06-08 16:24:55.358290: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2022-06-08 16:24:55.361204: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2022-06-08 16:24:55.362573: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2022-06-08 16:24:55.362889: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2022-06-08 16:24:55.386332: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2499950000 Hz
+2022-06-08 16:24:55.388487: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55a982a57f30 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2022-06-08 16:24:55.388507: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2022-06-08 16:24:55.459611: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55a982522170 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2022-06-08 16:24:55.459654: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Quadro P6000, Compute Capability 6.1
+2022-06-08 16:24:55.462107: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2022-06-08 16:24:55.462197: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 16:24:55.462226: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2022-06-08 16:24:55.462253: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2022-06-08 16:24:55.462279: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2022-06-08 16:24:55.462304: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2022-06-08 16:24:55.462330: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2022-06-08 16:24:55.462357: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2022-06-08 16:24:55.466548: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2022-06-08 16:24:55.466610: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 16:24:55.469859: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+2022-06-08 16:24:55.469881: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      0
+2022-06-08 16:24:55.469892: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 0:   N
+2022-06-08 16:24:55.473186: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22609 MB memory) -> physical GPU (device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1)
+INFO:tensorflow:Restoring parameters from ./build/tf_chkpts/fcn8/float_model.ckpt
+I0608 16:24:55.647049 140421902595904 saver.py:1284] Restoring parameters from ./build/tf_chkpts/fcn8/float_model.ckpt
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+W0608 16:24:56.680905 140421902595904 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+W0608 16:24:56.681319 140421902595904 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+INFO:tensorflow:Froze 37 variables.
+I0608 16:24:56.764595 140421902595904 graph_util_impl.py:334] Froze 37 variables.
+INFO:tensorflow:Converted 37 variables to const ops.
+I0608 16:24:56.994421 140421902595904 graph_util_impl.py:394] Converted 37 variables to const ops.
+Loaded meta graph file './build/tf_chkpts/fcn8/float_model.ckpt.meta
+
+##############################################################################
+Step4a: FCN8 INSPECT FROZEN GRAPH
+##############################################################################
+
+Op types used: 81 Const, 37 Identity, 17 BiasAdd, 17 Conv2D, 17 Relu, 9 StridedSlice, 8 AddV2, 6 Mul, 5 MaxPool, 3 Pack, 3 Shape, 3 Conv2DBackpropInput, 1 Max, 1 Placeholder, 1 RealDiv, 1 Exp, 1 Sub, 1 Sum
+
+Found 1 possible inputs: (name=input_1, type=float(1), shape=[?,224,224,3])
+Found 1 possible outputs: (name=activation/truediv, op=RealDiv)
+
+##############################################################################
+Step4b: FCN8 EVALUATING THE ORIGINAL GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 430472, #FP=  25985, #FN=  25501, IoU=0.893
+class ( 1)         Wall: #TP=1070795, #FP=  83832, #FN= 233151, IoU=0.772
+class ( 2)         Pole: #TP=      0, #FP=    127, #FN=  36420, IoU=0.000
+class ( 3)         Road: #TP=1428953, #FP= 103674, #FN=  46066, IoU=0.905
+class ( 4)     Sidewalk: #TP= 369656, #FP=  81097, #FN=  78777, IoU=0.698
+class ( 5)   Vegetation: #TP= 792071, #FP= 121205, #FN=  34474, IoU=0.836
+class ( 6)         Sign: #TP=     42, #FP=   1387, #FN=  53350, IoU=0.001
+class ( 7)        Fence: #TP=  17046, #FP=  22164, #FN= 139357, IoU=0.095
+class ( 8)      vehicle: #TP=  79497, #FP= 185577, #FN=  14563, IoU=0.284
+class ( 9)   Pedestrian: #TP=   1766, #FP=   4866, #FN=  35099, IoU=0.042
+class (10)    Bicyclist: #TP=   2556, #FP=   1105, #FN= 108416, IoU=0.023
+class (11)  miscellanea: #TP=  42664, #FP= 201239, #FN=  27084, IoU=0.157
+_________________
+Mean IoU: 0.392
+FINISHED!
+
+##########################################################################
+Step5a: FCN8 QUANTIZATION
+##########################################################################
+
+
+Vai_q_tensorflow v2.0.0 build for Tensorflow 1.15.2 git version
+heads/2.0-0-g17172992
+
+  0% (0 of 10) |                         | Elapsed Time: 0:00:00 ETA:  --:--:--
+ 10% (1 of 10) |##                       | Elapsed Time: 0:00:01 ETA:   0:00:11
+ 20% (2 of 10) |#####                    | Elapsed Time: 0:00:02 ETA:   0:00:09
+ 30% (3 of 10) |#######                  | Elapsed Time: 0:00:03 ETA:   0:00:08
+ 40% (4 of 10) |##########               | Elapsed Time: 0:00:04 ETA:   0:00:07
+ 50% (5 of 10) |############             | Elapsed Time: 0:00:06 ETA:   0:00:05
+ 60% (6 of 10) |###############          | Elapsed Time: 0:00:07 ETA:   0:00:04
+ 70% (7 of 10) |#################        | Elapsed Time: 0:00:08 ETA:   0:00:03
+ 80% (8 of 10) |####################     | Elapsed Time: 0:00:09 ETA:   0:00:02
+ 90% (9 of 10) |######################   | Elapsed Time: 0:00:10 ETA:   0:00:01
+100% (10 of 10) |########################| Elapsed Time: 0:00:11 Time:  0:00:11
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+script running on folder  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+CALIB DIR  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code/../build/dataset1/img_calib
+INFO: Checking Float Graph...
+INFO: Float Graph Check Done.
+INFO: Calibrating for 10 iterations...
+INFO: Calibration Done.
+********************* Quantization Summary *********************
+INFO: Output:
+  quantize_eval_model: .././build/quantize_results/fcn8/ quantize_eval_model.pb
+
+##############################################################################
+Step5b: FCN8 EVALUATE QUANTIZED GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 432940, #FP=  29017, #FN=  23033, IoU=0.893
+class ( 1)         Wall: #TP=1079285, #FP=  89783, #FN= 224661, IoU=0.774
+class ( 2)         Pole: #TP=      0, #FP=    125, #FN=  36420, IoU=0.000
+class ( 3)         Road: #TP=1432680, #FP= 116442, #FN=  42339, IoU=0.900
+class ( 4)     Sidewalk: #TP= 364663, #FP=  80349, #FN=  83770, IoU=0.690
+class ( 5)   Vegetation: #TP= 791064, #FP= 118422, #FN=  35481, IoU=0.837
+class ( 6)         Sign: #TP=     41, #FP=   1871, #FN=  53351, IoU=0.001
+class ( 7)        Fence: #TP=  17162, #FP=  21273, #FN= 139241, IoU=0.097
+class ( 8)      vehicle: #TP=  78930, #FP= 173545, #FN=  15130, IoU=0.295
+class ( 9)   Pedestrian: #TP=   1980, #FP=   5820, #FN=  34885, IoU=0.046
+class (10)    Bicyclist: #TP=   2689, #FP=   1235, #FN= 108283, IoU=0.024
+class (11)  miscellanea: #TP=  41062, #FP= 187398, #FN=  28686, IoU=0.160
+_________________
+Mean IoU: 0.393
+FINISHED!
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/fcn8/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/105 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 105/105 [00:00<00:00, 16733.23it/s]             
+[INFO] infer shape (NHWC)  :  0%|          | 0/189 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 54%|█████▍    | 103/189 [00:00<00:00, 1021.12it/s]              [INFO] infe  :100%|██████████| 189/189 [00:00<00:00, 1384.25it/s]              
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 428.98it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 477.55it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/78 [00:00<?, ?it/s][INFO] generate xmodel     : 73%|███████▎  | 57/78 [00:00<00:00, 552.57it/s]                 [INFO] ge :100%|██████████| 78/78 [00:00<00:00, 259.64it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA2_C32B3
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 152
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/fcn8.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is c5eb8054b86df6eba9b7ad189177d201, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8 MODEL FILE WITH Vitis AI for ZCU104
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/fcn8/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/105 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 105/105 [00:00<00:00, 16592.02it/s]             
+[INFO] infer shape (NHWC)  :  0%|          | 0/189 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 54%|█████▍    | 103/189 [00:00<00:00, 1024.69it/s]              [INFO] infe  :100%|██████████| 189/189 [00:00<00:00, 1388.17it/s]              
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 419.42it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 465.59it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/78 [00:00<?, ?it/s][INFO] generate xmodel     : 79%|███████▉  | 62/78 [00:00<00:00, 202.84it/s]                 [INFO] ge :100%|██████████| 78/78 [00:00<00:00, 251.39it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA0_B4096_MAX_BG2
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 152
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/fcn8.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is db07edeb9087733abe64efc5bad55295, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for ZCU102
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/fcn8/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/105 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 105/105 [00:00<00:00, 16975.10it/s]             
+[INFO] infer shape (NHWC)  :  0%|          | 0/189 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 54%|█████▍    | 103/189 [00:00<00:00, 1026.37it/s]              [INFO] infe  :100%|██████████| 189/189 [00:00<00:00, 1387.83it/s]              
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 411.76it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 469.99it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/78 [00:00<?, ?it/s][INFO] generate xmodel     : 79%|███████▉  | 62/78 [00:00<00:00, 88.44it/s]                  [INFO] g :100%|██████████| 78/78 [00:00<00:00, 110.56it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA0_B4096_MAX_BG2
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 152
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/fcn8.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is f2075ab446e1f827cbfa50f48e33dcfe, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+mv: cannot move './build/compile/fcn8/fcn8.xmodel' to './build/../target_zcu102/fcn8/model/': No such file or directory
+cp: cannot create regular file './build/../target_zcu102/fcn8/model/': No such file or directory
+cp: cannot create regular file './build/../target_zcu102/': Not a directory
+#####################################
+MAIN FCN8 FLOW COMPLETED
+#####################################
+
+##################################################################################
+A) CLEAN PREVIOUS DIRECTORIES
+##################################################################################
+
+current dir is
+/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+
+##################################################################################
+Step2a: FCN8UPS TRAINING
+##################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+UPSCALE =  True
+EPOCHS =  200
+Model: "model_1"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+input_1 (InputLayer)            [(None, 224, 224, 3) 0
+__________________________________________________________________________________________________
+block1_conv1 (Conv2D)           (None, 224, 224, 64) 1792        input_1[0][0]
+__________________________________________________________________________________________________
+block1_conv2 (Conv2D)           (None, 224, 224, 64) 36928       block1_conv1[0][0]
+__________________________________________________________________________________________________
+block1_pool (MaxPooling2D)      (None, 112, 112, 64) 0           block1_conv2[0][0]
+__________________________________________________________________________________________________
+block2_conv1 (Conv2D)           (None, 112, 112, 128 73856       block1_pool[0][0]
+__________________________________________________________________________________________________
+block2_conv2 (Conv2D)           (None, 112, 112, 128 147584      block2_conv1[0][0]
+__________________________________________________________________________________________________
+block2_pool (MaxPooling2D)      (None, 56, 56, 128)  0           block2_conv2[0][0]
+__________________________________________________________________________________________________
+block3_conv1 (Conv2D)           (None, 56, 56, 256)  295168      block2_pool[0][0]
+__________________________________________________________________________________________________
+block3_conv2 (Conv2D)           (None, 56, 56, 256)  590080      block3_conv1[0][0]
+__________________________________________________________________________________________________
+block3_conv3 (Conv2D)           (None, 56, 56, 256)  590080      block3_conv2[0][0]
+__________________________________________________________________________________________________
+block3_pool (MaxPooling2D)      (None, 28, 28, 256)  0           block3_conv3[0][0]
+__________________________________________________________________________________________________
+block4_conv1 (Conv2D)           (None, 28, 28, 512)  1180160     block3_pool[0][0]
+__________________________________________________________________________________________________
+block4_conv2 (Conv2D)           (None, 28, 28, 512)  2359808     block4_conv1[0][0]
+__________________________________________________________________________________________________
+block4_conv3 (Conv2D)           (None, 28, 28, 512)  2359808     block4_conv2[0][0]
+__________________________________________________________________________________________________
+block4_pool (MaxPooling2D)      (None, 14, 14, 512)  0           block4_conv3[0][0]
+__________________________________________________________________________________________________
+block5_conv1 (Conv2D)           (None, 14, 14, 512)  2359808     block4_pool[0][0]
+__________________________________________________________________________________________________
+block5_conv2 (Conv2D)           (None, 14, 14, 512)  2359808     block5_conv1[0][0]
+__________________________________________________________________________________________________
+block5_conv3 (Conv2D)           (None, 14, 14, 512)  2359808     block5_conv2[0][0]
+__________________________________________________________________________________________________
+block5_pool (MaxPooling2D)      (None, 7, 7, 512)    0           block5_conv3[0][0]
+__________________________________________________________________________________________________
+pool4_11 (Conv2D)               (None, 14, 14, 12)   6156        block4_pool[0][0]
+__________________________________________________________________________________________________
+conv7_4a (Conv2D)               (None, 7, 7, 12)     301068      block5_pool[0][0]
+__________________________________________________________________________________________________
+pool411_b (Conv2D)              (None, 14, 14, 12)   156         pool4_11[0][0]
+__________________________________________________________________________________________________
+conv7_4b (Conv2D)               (None, 7, 7, 12)     156         conv7_4a[0][0]
+__________________________________________________________________________________________________
+up_sampling2d_1 (UpSampling2D)  (None, 28, 28, 12)   0           pool411_b[0][0]
+__________________________________________________________________________________________________
+pool3_11 (Conv2D)               (None, 28, 28, 12)   3084        block3_pool[0][0]
+__________________________________________________________________________________________________
+up_sampling2d (UpSampling2D)    (None, 28, 28, 12)   0           conv7_4b[0][0]
+__________________________________________________________________________________________________
+add_layer (Add)                 (None, 28, 28, 12)   0           up_sampling2d_1[0][0]
+                                                                 pool3_11[0][0]
+                                                                 up_sampling2d[0][0]
+__________________________________________________________________________________________________
+conv2d_transpose (Conv2DTranspo (None, 224, 224, 12) 9216        add_layer[0][0]
+__________________________________________________________________________________________________
+activation (Activation)         (None, 224, 224, 12) 0           conv2d_transpose[0][0]
+==================================================================================================
+Total params: 15,034,524
+Trainable params: 15,034,524
+Non-trainable params: 0
+__________________________________________________________________________________________________
+(311, 224, 224, 3) (311, 224, 224, 12)
+(56, 224, 224, 3) (56, 224, 224, 12)
+Train on 311 samples, validate on 56 samples
+Epoch 1/200
+311/311 - 10s - loss: 2.6207 - acc: 0.1004 - val_loss: 2.4704 - val_acc: 0.1215
+Epoch 2/200
+311/311 - 5s - loss: 2.4443 - acc: 0.1488 - val_loss: 2.3746 - val_acc: 0.1893
+Epoch 3/200
+311/311 - 5s - loss: 2.3598 - acc: 0.1932 - val_loss: 2.1725 - val_acc: 0.3028
+Epoch 4/200
+311/311 - 5s - loss: 2.0128 - acc: 0.3749 - val_loss: 1.7528 - val_acc: 0.4425
+Epoch 5/200
+311/311 - 5s - loss: 1.6918 - acc: 0.4717 - val_loss: 1.5111 - val_acc: 0.5353
+Epoch 6/200
+311/311 - 5s - loss: 1.4597 - acc: 0.5220 - val_loss: 1.3733 - val_acc: 0.5254
+Epoch 7/200
+311/311 - 5s - loss: 1.3435 - acc: 0.5453 - val_loss: 1.2847 - val_acc: 0.5645
+Epoch 8/200
+311/311 - 5s - loss: 1.2978 - acc: 0.5801 - val_loss: 1.2280 - val_acc: 0.6446
+Epoch 9/200
+311/311 - 5s - loss: 1.2075 - acc: 0.6362 - val_loss: 1.1273 - val_acc: 0.6817
+Epoch 10/200
+311/311 - 5s - loss: 1.1217 - acc: 0.6599 - val_loss: 1.0652 - val_acc: 0.6922
+Epoch 11/200
+311/311 - 5s - loss: 1.0842 - acc: 0.6637 - val_loss: 1.0371 - val_acc: 0.6951
+Epoch 12/200
+311/311 - 5s - loss: 1.0619 - acc: 0.6682 - val_loss: 0.9959 - val_acc: 0.6992
+Epoch 13/200
+311/311 - 5s - loss: 1.0121 - acc: 0.6783 - val_loss: 1.0299 - val_acc: 0.6997
+Epoch 14/200
+311/311 - 5s - loss: 1.0095 - acc: 0.6771 - val_loss: 0.9534 - val_acc: 0.7132
+Epoch 15/200
+311/311 - 5s - loss: 0.9638 - acc: 0.6966 - val_loss: 0.9473 - val_acc: 0.7215
+Epoch 16/200
+311/311 - 5s - loss: 0.9423 - acc: 0.7073 - val_loss: 0.9395 - val_acc: 0.7194
+Epoch 17/200
+311/311 - 5s - loss: 0.9431 - acc: 0.7086 - val_loss: 0.8897 - val_acc: 0.7343
+Epoch 18/200
+311/311 - 5s - loss: 0.9113 - acc: 0.7206 - val_loss: 0.9115 - val_acc: 0.7324
+Epoch 19/200
+311/311 - 5s - loss: 0.8886 - acc: 0.7314 - val_loss: 0.9626 - val_acc: 0.6957
+Epoch 20/200
+311/311 - 5s - loss: 0.8978 - acc: 0.7234 - val_loss: 0.8480 - val_acc: 0.7431
+Epoch 21/200
+311/311 - 5s - loss: 0.9535 - acc: 0.6804 - val_loss: 0.9222 - val_acc: 0.7111
+Epoch 22/200
+311/311 - 5s - loss: 0.8862 - acc: 0.7249 - val_loss: 0.8469 - val_acc: 0.7475
+Epoch 23/200
+311/311 - 5s - loss: 0.8504 - acc: 0.7425 - val_loss: 0.8234 - val_acc: 0.7506
+Epoch 24/200
+311/311 - 5s - loss: 0.8340 - acc: 0.7475 - val_loss: 0.8224 - val_acc: 0.7489
+Epoch 25/200
+311/311 - 5s - loss: 0.8352 - acc: 0.7426 - val_loss: 0.8180 - val_acc: 0.7566
+Epoch 26/200
+311/311 - 5s - loss: 0.8189 - acc: 0.7502 - val_loss: 0.8089 - val_acc: 0.7569
+Epoch 27/200
+311/311 - 5s - loss: 0.7987 - acc: 0.7567 - val_loss: 0.7893 - val_acc: 0.7642
+Epoch 28/200
+311/311 - 5s - loss: 0.7969 - acc: 0.7565 - val_loss: 0.8288 - val_acc: 0.7493
+Epoch 29/200
+311/311 - 5s - loss: 0.7979 - acc: 0.7554 - val_loss: 0.7752 - val_acc: 0.7659
+Epoch 30/200
+311/311 - 5s - loss: 0.7704 - acc: 0.7662 - val_loss: 0.7824 - val_acc: 0.7665
+Epoch 31/200
+311/311 - 5s - loss: 0.7747 - acc: 0.7645 - val_loss: 0.7561 - val_acc: 0.7735
+Epoch 32/200
+311/311 - 5s - loss: 0.7594 - acc: 0.7696 - val_loss: 0.7918 - val_acc: 0.7582
+Epoch 33/200
+311/311 - 5s - loss: 0.7710 - acc: 0.7642 - val_loss: 0.7468 - val_acc: 0.7764
+Epoch 34/200
+311/311 - 5s - loss: 0.7460 - acc: 0.7752 - val_loss: 0.7488 - val_acc: 0.7800
+Epoch 35/200
+311/311 - 5s - loss: 0.7393 - acc: 0.7777 - val_loss: 0.7469 - val_acc: 0.7807
+Epoch 36/200
+311/311 - 5s - loss: 0.7467 - acc: 0.7746 - val_loss: 0.7314 - val_acc: 0.7832
+Epoch 37/200
+311/311 - 5s - loss: 0.7346 - acc: 0.7795 - val_loss: 0.7431 - val_acc: 0.7795
+Epoch 38/200
+311/311 - 5s - loss: 0.7311 - acc: 0.7812 - val_loss: 0.7524 - val_acc: 0.7764
+Epoch 39/200
+311/311 - 5s - loss: 0.7317 - acc: 0.7811 - val_loss: 0.7143 - val_acc: 0.7889
+Epoch 40/200
+311/311 - 5s - loss: 0.7069 - acc: 0.7903 - val_loss: 0.7035 - val_acc: 0.7957
+Epoch 41/200
+311/311 - 5s - loss: 0.7011 - acc: 0.7937 - val_loss: 0.7016 - val_acc: 0.7959
+Epoch 42/200
+311/311 - 5s - loss: 0.6955 - acc: 0.7963 - val_loss: 0.6968 - val_acc: 0.7977
+Epoch 43/200
+311/311 - 5s - loss: 0.6894 - acc: 0.7989 - val_loss: 0.6864 - val_acc: 0.8005
+Epoch 44/200
+311/311 - 5s - loss: 0.6850 - acc: 0.8000 - val_loss: 0.6808 - val_acc: 0.8030
+Epoch 45/200
+311/311 - 5s - loss: 0.6818 - acc: 0.8019 - val_loss: 0.6806 - val_acc: 0.8042
+Epoch 46/200
+311/311 - 5s - loss: 0.6737 - acc: 0.8048 - val_loss: 0.6777 - val_acc: 0.8064
+Epoch 47/200
+311/311 - 5s - loss: 0.6744 - acc: 0.8045 - val_loss: 0.6804 - val_acc: 0.8054
+Epoch 48/200
+311/311 - 5s - loss: 0.6687 - acc: 0.8072 - val_loss: 0.6839 - val_acc: 0.8026
+Epoch 49/200
+311/311 - 5s - loss: 0.6577 - acc: 0.8109 - val_loss: 0.6571 - val_acc: 0.8113
+Epoch 50/200
+311/311 - 5s - loss: 0.6484 - acc: 0.8139 - val_loss: 0.6560 - val_acc: 0.8115
+Epoch 51/200
+311/311 - 5s - loss: 0.6477 - acc: 0.8143 - val_loss: 0.6510 - val_acc: 0.8146
+Epoch 52/200
+311/311 - 5s - loss: 0.6446 - acc: 0.8155 - val_loss: 0.6436 - val_acc: 0.8156
+Epoch 53/200
+311/311 - 5s - loss: 0.6347 - acc: 0.8180 - val_loss: 0.6608 - val_acc: 0.8083
+Epoch 54/200
+311/311 - 5s - loss: 0.6328 - acc: 0.8185 - val_loss: 0.6541 - val_acc: 0.8107
+Epoch 55/200
+311/311 - 5s - loss: 0.6444 - acc: 0.8154 - val_loss: 0.6460 - val_acc: 0.8141
+Epoch 56/200
+311/311 - 5s - loss: 0.6259 - acc: 0.8208 - val_loss: 0.6331 - val_acc: 0.8175
+Epoch 57/200
+311/311 - 5s - loss: 0.6207 - acc: 0.8222 - val_loss: 0.6272 - val_acc: 0.8192
+Epoch 58/200
+311/311 - 5s - loss: 0.6190 - acc: 0.8232 - val_loss: 0.6285 - val_acc: 0.8202
+Epoch 59/200
+311/311 - 5s - loss: 0.6131 - acc: 0.8239 - val_loss: 0.6274 - val_acc: 0.8193
+Epoch 60/200
+311/311 - 5s - loss: 0.6132 - acc: 0.8246 - val_loss: 0.6750 - val_acc: 0.8107
+Epoch 61/200
+311/311 - 5s - loss: 0.6151 - acc: 0.8234 - val_loss: 0.6170 - val_acc: 0.8213
+Epoch 62/200
+311/311 - 5s - loss: 0.6021 - acc: 0.8277 - val_loss: 0.6212 - val_acc: 0.8196
+Epoch 63/200
+311/311 - 5s - loss: 0.6017 - acc: 0.8276 - val_loss: 0.6152 - val_acc: 0.8212
+Epoch 64/200
+311/311 - 5s - loss: 0.5982 - acc: 0.8285 - val_loss: 0.6111 - val_acc: 0.8226
+Epoch 65/200
+311/311 - 5s - loss: 0.5930 - acc: 0.8300 - val_loss: 0.6047 - val_acc: 0.8246
+Epoch 66/200
+311/311 - 5s - loss: 0.5918 - acc: 0.8300 - val_loss: 0.6165 - val_acc: 0.8211
+Epoch 67/200
+311/311 - 5s - loss: 0.5935 - acc: 0.8299 - val_loss: 0.6153 - val_acc: 0.8221
+Epoch 68/200
+311/311 - 5s - loss: 0.6108 - acc: 0.8245 - val_loss: 0.5992 - val_acc: 0.8268
+Epoch 69/200
+311/311 - 5s - loss: 0.5846 - acc: 0.8321 - val_loss: 0.5978 - val_acc: 0.8261
+Epoch 70/200
+311/311 - 5s - loss: 0.5804 - acc: 0.8335 - val_loss: 0.5987 - val_acc: 0.8257
+Epoch 71/200
+311/311 - 5s - loss: 0.5910 - acc: 0.8302 - val_loss: 0.6068 - val_acc: 0.8229
+Epoch 72/200
+311/311 - 5s - loss: 0.5788 - acc: 0.8341 - val_loss: 0.5889 - val_acc: 0.8294
+Epoch 73/200
+311/311 - 5s - loss: 0.5735 - acc: 0.8355 - val_loss: 0.5875 - val_acc: 0.8292
+Epoch 74/200
+311/311 - 5s - loss: 0.5728 - acc: 0.8358 - val_loss: 0.6027 - val_acc: 0.8273
+Epoch 75/200
+311/311 - 5s - loss: 0.5720 - acc: 0.8359 - val_loss: 0.5840 - val_acc: 0.8298
+Epoch 76/200
+311/311 - 5s - loss: 0.5719 - acc: 0.8355 - val_loss: 0.5811 - val_acc: 0.8319
+Epoch 77/200
+311/311 - 5s - loss: 0.5660 - acc: 0.8373 - val_loss: 0.5796 - val_acc: 0.8325
+Epoch 78/200
+311/311 - 5s - loss: 0.5639 - acc: 0.8385 - val_loss: 0.5794 - val_acc: 0.8316
+Epoch 79/200
+311/311 - 5s - loss: 0.5621 - acc: 0.8384 - val_loss: 0.5818 - val_acc: 0.8317
+Epoch 80/200
+311/311 - 5s - loss: 0.5743 - acc: 0.8341 - val_loss: 0.5731 - val_acc: 0.8334
+Epoch 81/200
+311/311 - 5s - loss: 0.5573 - acc: 0.8399 - val_loss: 0.5759 - val_acc: 0.8328
+Epoch 82/200
+311/311 - 5s - loss: 0.5549 - acc: 0.8410 - val_loss: 0.5890 - val_acc: 0.8290
+Epoch 83/200
+311/311 - 5s - loss: 0.5564 - acc: 0.8402 - val_loss: 0.5706 - val_acc: 0.8346
+Epoch 84/200
+311/311 - 5s - loss: 0.5583 - acc: 0.8398 - val_loss: 0.5681 - val_acc: 0.8348
+Epoch 85/200
+311/311 - 5s - loss: 0.5499 - acc: 0.8421 - val_loss: 0.5820 - val_acc: 0.8330
+Epoch 86/200
+311/311 - 5s - loss: 0.5555 - acc: 0.8407 - val_loss: 0.5687 - val_acc: 0.8361
+Epoch 87/200
+311/311 - 5s - loss: 0.5504 - acc: 0.8426 - val_loss: 0.5638 - val_acc: 0.8370
+Epoch 88/200
+311/311 - 5s - loss: 0.5441 - acc: 0.8444 - val_loss: 0.5640 - val_acc: 0.8367
+Epoch 89/200
+311/311 - 5s - loss: 0.5418 - acc: 0.8448 - val_loss: 0.5604 - val_acc: 0.8383
+Epoch 90/200
+311/311 - 5s - loss: 0.5428 - acc: 0.8446 - val_loss: 0.5831 - val_acc: 0.8306
+Epoch 91/200
+311/311 - 5s - loss: 0.5477 - acc: 0.8434 - val_loss: 0.5617 - val_acc: 0.8375
+Epoch 92/200
+311/311 - 5s - loss: 0.5377 - acc: 0.8462 - val_loss: 0.5566 - val_acc: 0.8400
+Epoch 93/200
+311/311 - 5s - loss: 0.5352 - acc: 0.8473 - val_loss: 0.5542 - val_acc: 0.8400
+Epoch 94/200
+311/311 - 5s - loss: 0.5327 - acc: 0.8475 - val_loss: 0.5555 - val_acc: 0.8408
+Epoch 95/200
+311/311 - 5s - loss: 0.5322 - acc: 0.8479 - val_loss: 0.5574 - val_acc: 0.8400
+Epoch 96/200
+311/311 - 5s - loss: 0.5329 - acc: 0.8475 - val_loss: 0.5596 - val_acc: 0.8384
+Epoch 97/200
+311/311 - 5s - loss: 0.5329 - acc: 0.8473 - val_loss: 0.5533 - val_acc: 0.8408
+Epoch 98/200
+311/311 - 5s - loss: 0.5315 - acc: 0.8481 - val_loss: 0.5725 - val_acc: 0.8342
+Epoch 99/200
+311/311 - 5s - loss: 0.5288 - acc: 0.8488 - val_loss: 0.5476 - val_acc: 0.8430
+Epoch 100/200
+311/311 - 5s - loss: 0.5281 - acc: 0.8493 - val_loss: 0.5584 - val_acc: 0.8387
+Epoch 101/200
+311/311 - 5s - loss: 0.5279 - acc: 0.8489 - val_loss: 0.5565 - val_acc: 0.8394
+Epoch 102/200
+311/311 - 5s - loss: 0.5260 - acc: 0.8490 - val_loss: 0.5500 - val_acc: 0.8422
+Epoch 103/200
+311/311 - 5s - loss: 0.5214 - acc: 0.8508 - val_loss: 0.5460 - val_acc: 0.8435
+Epoch 104/200
+311/311 - 5s - loss: 0.5181 - acc: 0.8521 - val_loss: 0.5462 - val_acc: 0.8445
+Epoch 105/200
+311/311 - 5s - loss: 0.5235 - acc: 0.8506 - val_loss: 0.5403 - val_acc: 0.8453
+Epoch 106/200
+311/311 - 5s - loss: 0.5155 - acc: 0.8528 - val_loss: 0.5422 - val_acc: 0.8452
+Epoch 107/200
+311/311 - 5s - loss: 0.5172 - acc: 0.8522 - val_loss: 0.5466 - val_acc: 0.8434
+Epoch 108/200
+311/311 - 5s - loss: 0.5146 - acc: 0.8530 - val_loss: 0.5404 - val_acc: 0.8447
+Epoch 109/200
+311/311 - 5s - loss: 0.5200 - acc: 0.8515 - val_loss: 0.5387 - val_acc: 0.8458
+Epoch 110/200
+311/311 - 5s - loss: 0.5135 - acc: 0.8534 - val_loss: 0.5414 - val_acc: 0.8458
+Epoch 111/200
+311/311 - 5s - loss: 0.5144 - acc: 0.8530 - val_loss: 0.5380 - val_acc: 0.8460
+Epoch 112/200
+311/311 - 5s - loss: 0.5098 - acc: 0.8546 - val_loss: 0.5349 - val_acc: 0.8473
+Epoch 113/200
+311/311 - 5s - loss: 0.5084 - acc: 0.8547 - val_loss: 0.5360 - val_acc: 0.8468
+Epoch 114/200
+311/311 - 5s - loss: 0.5103 - acc: 0.8543 - val_loss: 0.5422 - val_acc: 0.8436
+Epoch 115/200
+311/311 - 5s - loss: 0.5120 - acc: 0.8542 - val_loss: 0.5321 - val_acc: 0.8476
+Epoch 116/200
+311/311 - 5s - loss: 0.5063 - acc: 0.8552 - val_loss: 0.5374 - val_acc: 0.8465
+Epoch 117/200
+311/311 - 5s - loss: 0.5081 - acc: 0.8551 - val_loss: 0.5370 - val_acc: 0.8450
+Epoch 118/200
+311/311 - 5s - loss: 0.5058 - acc: 0.8552 - val_loss: 0.5305 - val_acc: 0.8481
+Epoch 119/200
+311/311 - 5s - loss: 0.5037 - acc: 0.8559 - val_loss: 0.5306 - val_acc: 0.8479
+Epoch 120/200
+311/311 - 5s - loss: 0.5013 - acc: 0.8569 - val_loss: 0.5290 - val_acc: 0.8484
+Epoch 121/200
+311/311 - 5s - loss: 0.5000 - acc: 0.8569 - val_loss: 0.5316 - val_acc: 0.8477
+Epoch 122/200
+311/311 - 5s - loss: 0.4993 - acc: 0.8574 - val_loss: 0.5345 - val_acc: 0.8472
+Epoch 123/200
+311/311 - 5s - loss: 0.5095 - acc: 0.8544 - val_loss: 0.5271 - val_acc: 0.8495
+Epoch 124/200
+311/311 - 5s - loss: 0.4971 - acc: 0.8581 - val_loss: 0.5300 - val_acc: 0.8477
+Epoch 125/200
+311/311 - 5s - loss: 0.4959 - acc: 0.8583 - val_loss: 0.5295 - val_acc: 0.8477
+Epoch 126/200
+311/311 - 5s - loss: 0.4995 - acc: 0.8570 - val_loss: 0.5272 - val_acc: 0.8489
+Epoch 127/200
+311/311 - 5s - loss: 0.4951 - acc: 0.8583 - val_loss: 0.5277 - val_acc: 0.8489
+Epoch 128/200
+311/311 - 5s - loss: 0.4931 - acc: 0.8593 - val_loss: 0.5252 - val_acc: 0.8499
+Epoch 129/200
+311/311 - 5s - loss: 0.4926 - acc: 0.8593 - val_loss: 0.5248 - val_acc: 0.8496
+Epoch 130/200
+311/311 - 5s - loss: 0.4933 - acc: 0.8591 - val_loss: 0.5245 - val_acc: 0.8502
+Epoch 131/200
+311/311 - 5s - loss: 0.4917 - acc: 0.8596 - val_loss: 0.5223 - val_acc: 0.8504
+Epoch 132/200
+311/311 - 5s - loss: 0.4947 - acc: 0.8587 - val_loss: 0.5219 - val_acc: 0.8500
+Epoch 133/200
+311/311 - 5s - loss: 0.4912 - acc: 0.8598 - val_loss: 0.5217 - val_acc: 0.8509
+Epoch 134/200
+311/311 - 5s - loss: 0.4889 - acc: 0.8604 - val_loss: 0.5240 - val_acc: 0.8496
+Epoch 135/200
+311/311 - 5s - loss: 0.4878 - acc: 0.8605 - val_loss: 0.5259 - val_acc: 0.8491
+Epoch 136/200
+311/311 - 5s - loss: 0.4869 - acc: 0.8608 - val_loss: 0.5220 - val_acc: 0.8502
+Epoch 137/200
+311/311 - 5s - loss: 0.4891 - acc: 0.8598 - val_loss: 0.5248 - val_acc: 0.8493
+Epoch 138/200
+311/311 - 5s - loss: 0.4872 - acc: 0.8606 - val_loss: 0.5236 - val_acc: 0.8497
+Epoch 139/200
+311/311 - 5s - loss: 0.4844 - acc: 0.8617 - val_loss: 0.5235 - val_acc: 0.8490
+Epoch 140/200
+311/311 - 5s - loss: 0.4841 - acc: 0.8617 - val_loss: 0.5281 - val_acc: 0.8482
+Epoch 141/200
+311/311 - 5s - loss: 0.4828 - acc: 0.8621 - val_loss: 0.5170 - val_acc: 0.8515
+Epoch 142/200
+311/311 - 5s - loss: 0.4823 - acc: 0.8621 - val_loss: 0.5244 - val_acc: 0.8487
+Epoch 143/200
+311/311 - 5s - loss: 0.4842 - acc: 0.8615 - val_loss: 0.5404 - val_acc: 0.8452
+Epoch 144/200
+311/311 - 5s - loss: 0.4871 - acc: 0.8604 - val_loss: 0.5182 - val_acc: 0.8513
+Epoch 145/200
+311/311 - 5s - loss: 0.4798 - acc: 0.8630 - val_loss: 0.5187 - val_acc: 0.8507
+Epoch 146/200
+311/311 - 5s - loss: 0.4787 - acc: 0.8632 - val_loss: 0.5149 - val_acc: 0.8527
+Epoch 147/200
+311/311 - 5s - loss: 0.4784 - acc: 0.8633 - val_loss: 0.5165 - val_acc: 0.8519
+Epoch 148/200
+311/311 - 5s - loss: 0.4775 - acc: 0.8635 - val_loss: 0.5243 - val_acc: 0.8494
+Epoch 149/200
+311/311 - 5s - loss: 0.4798 - acc: 0.8627 - val_loss: 0.5167 - val_acc: 0.8517
+Epoch 150/200
+311/311 - 5s - loss: 0.4787 - acc: 0.8633 - val_loss: 0.5141 - val_acc: 0.8521
+Epoch 151/200
+311/311 - 5s - loss: 0.4785 - acc: 0.8632 - val_loss: 0.5387 - val_acc: 0.8451
+Epoch 152/200
+311/311 - 5s - loss: 0.4795 - acc: 0.8629 - val_loss: 0.5120 - val_acc: 0.8531
+Epoch 153/200
+311/311 - 5s - loss: 0.4732 - acc: 0.8649 - val_loss: 0.5121 - val_acc: 0.8531
+Epoch 154/200
+311/311 - 5s - loss: 0.4741 - acc: 0.8645 - val_loss: 0.5117 - val_acc: 0.8532
+Epoch 155/200
+311/311 - 5s - loss: 0.4739 - acc: 0.8642 - val_loss: 0.5103 - val_acc: 0.8535
+Epoch 156/200
+311/311 - 5s - loss: 0.4711 - acc: 0.8655 - val_loss: 0.5101 - val_acc: 0.8535
+Epoch 157/200
+311/311 - 5s - loss: 0.4711 - acc: 0.8655 - val_loss: 0.5114 - val_acc: 0.8531
+Epoch 158/200
+311/311 - 5s - loss: 0.4710 - acc: 0.8657 - val_loss: 0.5120 - val_acc: 0.8535
+Epoch 159/200
+311/311 - 5s - loss: 0.4728 - acc: 0.8648 - val_loss: 0.5121 - val_acc: 0.8526
+Epoch 160/200
+311/311 - 5s - loss: 0.4706 - acc: 0.8655 - val_loss: 0.5090 - val_acc: 0.8534
+Epoch 161/200
+311/311 - 5s - loss: 0.4700 - acc: 0.8659 - val_loss: 0.5184 - val_acc: 0.8511
+Epoch 162/200
+311/311 - 5s - loss: 0.4751 - acc: 0.8640 - val_loss: 0.5209 - val_acc: 0.8506
+Epoch 163/200
+311/311 - 5s - loss: 0.4697 - acc: 0.8657 - val_loss: 0.5102 - val_acc: 0.8535
+Epoch 164/200
+311/311 - 5s - loss: 0.4685 - acc: 0.8662 - val_loss: 0.5075 - val_acc: 0.8538
+Epoch 165/200
+311/311 - 5s - loss: 0.4660 - acc: 0.8670 - val_loss: 0.5077 - val_acc: 0.8540
+Epoch 166/200
+311/311 - 5s - loss: 0.4670 - acc: 0.8667 - val_loss: 0.5265 - val_acc: 0.8490
+Epoch 167/200
+311/311 - 5s - loss: 0.4730 - acc: 0.8650 - val_loss: 0.5066 - val_acc: 0.8540
+Epoch 168/200
+311/311 - 5s - loss: 0.4646 - acc: 0.8676 - val_loss: 0.5080 - val_acc: 0.8537
+Epoch 169/200
+311/311 - 5s - loss: 0.4654 - acc: 0.8672 - val_loss: 0.5102 - val_acc: 0.8530
+Epoch 170/200
+311/311 - 5s - loss: 0.4634 - acc: 0.8677 - val_loss: 0.5060 - val_acc: 0.8545
+Epoch 171/200
+311/311 - 5s - loss: 0.4642 - acc: 0.8673 - val_loss: 0.5111 - val_acc: 0.8527
+Epoch 172/200
+311/311 - 5s - loss: 0.4648 - acc: 0.8670 - val_loss: 0.5041 - val_acc: 0.8552
+Epoch 173/200
+311/311 - 5s - loss: 0.4614 - acc: 0.8683 - val_loss: 0.5037 - val_acc: 0.8551
+Epoch 174/200
+311/311 - 5s - loss: 0.4623 - acc: 0.8681 - val_loss: 0.5113 - val_acc: 0.8529
+Epoch 175/200
+311/311 - 5s - loss: 0.4630 - acc: 0.8678 - val_loss: 0.5058 - val_acc: 0.8544
+Epoch 176/200
+311/311 - 5s - loss: 0.4626 - acc: 0.8680 - val_loss: 0.5151 - val_acc: 0.8513
+Epoch 177/200
+311/311 - 5s - loss: 0.4647 - acc: 0.8672 - val_loss: 0.5098 - val_acc: 0.8530
+Epoch 178/200
+311/311 - 5s - loss: 0.4630 - acc: 0.8679 - val_loss: 0.5019 - val_acc: 0.8555
+Epoch 179/200
+311/311 - 5s - loss: 0.4581 - acc: 0.8694 - val_loss: 0.5034 - val_acc: 0.8553
+Epoch 180/200
+311/311 - 5s - loss: 0.4577 - acc: 0.8696 - val_loss: 0.5083 - val_acc: 0.8529
+Epoch 181/200
+311/311 - 5s - loss: 0.4611 - acc: 0.8681 - val_loss: 0.5005 - val_acc: 0.8559
+Epoch 182/200
+311/311 - 5s - loss: 0.4572 - acc: 0.8696 - val_loss: 0.5035 - val_acc: 0.8555
+Epoch 183/200
+311/311 - 5s - loss: 0.4566 - acc: 0.8697 - val_loss: 0.5010 - val_acc: 0.8557
+Epoch 184/200
+311/311 - 5s - loss: 0.4562 - acc: 0.8698 - val_loss: 0.5010 - val_acc: 0.8555
+Epoch 185/200
+311/311 - 5s - loss: 0.4567 - acc: 0.8696 - val_loss: 0.5003 - val_acc: 0.8560
+Epoch 186/200
+311/311 - 5s - loss: 0.4543 - acc: 0.8705 - val_loss: 0.5012 - val_acc: 0.8558
+Epoch 187/200
+311/311 - 5s - loss: 0.4585 - acc: 0.8692 - val_loss: 0.5018 - val_acc: 0.8553
+Epoch 188/200
+311/311 - 5s - loss: 0.4548 - acc: 0.8702 - val_loss: 0.5011 - val_acc: 0.8553
+Epoch 189/200
+311/311 - 5s - loss: 0.4551 - acc: 0.8703 - val_loss: 0.5010 - val_acc: 0.8561
+Epoch 190/200
+311/311 - 5s - loss: 0.4531 - acc: 0.8708 - val_loss: 0.5010 - val_acc: 0.8560
+Epoch 191/200
+311/311 - 5s - loss: 0.4525 - acc: 0.8710 - val_loss: 0.5043 - val_acc: 0.8541
+Epoch 192/200
+311/311 - 5s - loss: 0.4559 - acc: 0.8697 - val_loss: 0.4996 - val_acc: 0.8558
+Epoch 193/200
+311/311 - 5s - loss: 0.4530 - acc: 0.8710 - val_loss: 0.5049 - val_acc: 0.8543
+Epoch 194/200
+311/311 - 5s - loss: 0.4527 - acc: 0.8711 - val_loss: 0.4979 - val_acc: 0.8563
+Epoch 195/200
+311/311 - 5s - loss: 0.4499 - acc: 0.8718 - val_loss: 0.4981 - val_acc: 0.8564
+Epoch 196/200
+311/311 - 5s - loss: 0.4496 - acc: 0.8719 - val_loss: 0.4965 - val_acc: 0.8569
+Epoch 197/200
+311/311 - 5s - loss: 0.4499 - acc: 0.8718 - val_loss: 0.4970 - val_acc: 0.8566
+Epoch 198/200
+311/311 - 5s - loss: 0.4508 - acc: 0.8714 - val_loss: 0.4999 - val_acc: 0.8553
+Epoch 199/200
+311/311 - 5s - loss: 0.4490 - acc: 0.8722 - val_loss: 0.5015 - val_acc: 0.8563
+Epoch 200/200
+311/311 - 5s - loss: 0.4479 - acc: 0.8725 - val_loss: 0.4952 - val_acc: 0.8571
+
+
+Elapsed time for Keras training (s):  945.551412
+
+
+
+End of FCN8 training
+
+
+##################################################################################
+Step2b: FCN8UPS MAKING PREDICTIONS
+##################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling GlorotUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+
+
+validation data (X) (Y) shapes: (56, 224, 224, 3) (56, 224, 224, 12)
+testing    data (X) (Y) shapes (101, 224, 224, 3) (101, 224, 224, 12)
+
+
+
+now computing IoU over testing data set:
+class ( 0)          Sky: #TP= 429798, #FP=  29767, #FN=  26175, IoU=0.885
+class ( 1)         Wall: #TP=1066628, #FP=  87839, #FN= 237318, IoU=0.766
+class ( 2)         Pole: #TP=      1, #FP=    120, #FN=  36419, IoU=0.000
+class ( 3)         Road: #TP=1417820, #FP= 108186, #FN=  57199, IoU=0.896
+class ( 4)     Sidewalk: #TP= 368615, #FP= 101339, #FN=  79818, IoU=0.670
+class ( 5)   Vegetation: #TP= 784602, #FP= 109046, #FN=  41943, IoU=0.839
+class ( 6)         Sign: #TP=      3, #FP=    394, #FN=  53389, IoU=0.000
+class ( 7)        Fence: #TP=  86960, #FP=  95151, #FN=  69443, IoU=0.346
+class ( 8)      vehicle: #TP=  72449, #FP= 136000, #FN=  21611, IoU=0.315
+class ( 9)   Pedestrian: #TP=     25, #FP=   2998, #FN=  36840, IoU=0.001
+class (10)    Bicyclist: #TP=      0, #FP=     45, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  18722, #FP= 151268, #FN=  51026, IoU=0.085
+_________________
+Mean IoU: 0.400
+
+now computing IoU over validation data set:
+class ( 0)          Sky: #TP= 402748, #FP=  40965, #FN=  20293, IoU=0.868
+class ( 1)         Wall: #TP= 678554, #FP= 116730, #FN=  55747, IoU=0.797
+class ( 2)         Pole: #TP=      6, #FP=     27, #FN=  31105, IoU=0.000
+class ( 3)         Road: #TP= 879572, #FP=  46955, #FN=  33146, IoU=0.917
+class ( 4)     Sidewalk: #TP=  68671, #FP=  34944, #FN=  43462, IoU=0.467
+class ( 5)   Vegetation: #TP= 172195, #FP=  71162, #FN=  39159, IoU=0.610
+class ( 6)         Sign: #TP=     20, #FP=     49, #FN=  44862, IoU=0.000
+class ( 7)        Fence: #TP=   7348, #FP=   2729, #FN=  25822, IoU=0.205
+class ( 8)      vehicle: #TP= 145344, #FP=  38798, #FN=  32118, IoU=0.672
+class ( 9)   Pedestrian: #TP=      7, #FP=    103, #FN=  18622, IoU=0.000
+class (10)    Bicyclist: #TP=      0, #FP=      0, #FN=  15218, IoU=0.000
+class (11)  miscellanea: #TP=  53935, #FP=  48994, #FN=  41902, IoU=0.372
+_________________
+Mean IoU: 0.409
+
+#######################################################################################
+Step3: FCN8UPS KERAS to TENSORFLOW GRAPH CONVERSION
+#######################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling GlorotUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From Keras2TF.py:96: The name tf.keras.backend.get_session is deprecated. Please use tf.compat.v1.keras.backend.get_session instead.
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+model name =  fcn8ups
+
+ TF input node name:
+[<tf.Tensor 'input_1:0' shape=(?, 224, 224, 3) dtype=float32>]
+
+ TF output node name:
+[<tf.Tensor 'activation/truediv:0' shape=(?, 224, 224, 12) dtype=float32>]
+
+FINISHED CREATING TF FILES
+
+
+##############################################################################
+Step4a: FCN8UPS FREEZE TF GRAPHS
+##############################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+W0608 16:42:33.820088 140623415424832 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+2022-06-08 16:42:33.823466: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2022-06-08 16:42:33.874351: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2022-06-08 16:42:33.874586: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 16:42:33.875849: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2022-06-08 16:42:33.877113: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2022-06-08 16:42:33.877421: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2022-06-08 16:42:33.878667: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2022-06-08 16:42:33.879596: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2022-06-08 16:42:33.882460: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2022-06-08 16:42:33.883819: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2022-06-08 16:42:33.884115: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2022-06-08 16:42:33.906212: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2499950000 Hz
+2022-06-08 16:42:33.908288: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55fe5d18f2c0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2022-06-08 16:42:33.908311: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2022-06-08 16:42:33.982902: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55fe5d675520 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2022-06-08 16:42:33.982960: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Quadro P6000, Compute Capability 6.1
+2022-06-08 16:42:33.985491: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2022-06-08 16:42:33.985594: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 16:42:33.985633: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2022-06-08 16:42:33.985665: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2022-06-08 16:42:33.985691: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2022-06-08 16:42:33.985727: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2022-06-08 16:42:33.985766: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2022-06-08 16:42:33.985804: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2022-06-08 16:42:33.989967: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2022-06-08 16:42:33.990055: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 16:42:33.993368: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+2022-06-08 16:42:33.993395: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      0
+2022-06-08 16:42:33.993412: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 0:   N
+2022-06-08 16:42:33.997785: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22620 MB memory) -> physical GPU (device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1)
+INFO:tensorflow:Restoring parameters from ./build/tf_chkpts/fcn8ups/float_model.ckpt
+I0608 16:42:34.172895 140623415424832 saver.py:1284] Restoring parameters from ./build/tf_chkpts/fcn8ups/float_model.ckpt
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+W0608 16:42:35.187793 140623415424832 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+W0608 16:42:35.188238 140623415424832 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+INFO:tensorflow:Froze 37 variables.
+I0608 16:42:35.267455 140623415424832 graph_util_impl.py:334] Froze 37 variables.
+INFO:tensorflow:Converted 37 variables to const ops.
+I0608 16:42:35.327434 140623415424832 graph_util_impl.py:394] Converted 37 variables to const ops.
+Loaded meta graph file './build/tf_chkpts/fcn8ups/float_model.ckpt.meta
+
+##############################################################################
+Step4a: FCN8UPS INSPECT FROZEN GRAPH
+##############################################################################
+
+Op types used: 61 Const, 37 Identity, 18 BiasAdd, 18 Conv2D, 18 Relu, 5 StridedSlice, 5 MaxPool, 4 Mul, 4 AddV2, 3 Shape, 2 ResizeNearestNeighbor, 1 Max, 1 Pack, 1 Placeholder, 1 RealDiv, 1 Exp, 1 Conv2DBackpropInput, 1 Sub, 1 Sum
+
+Found 1 possible inputs: (name=input_1, type=float(1), shape=[?,224,224,3])
+Found 1 possible outputs: (name=activation/truediv, op=RealDiv)
+
+##############################################################################
+Step4b: FCN8UPS EVALUATING THE ORIGINAL GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 429798, #FP=  29767, #FN=  26175, IoU=0.885
+class ( 1)         Wall: #TP=1066628, #FP=  87839, #FN= 237318, IoU=0.766
+class ( 2)         Pole: #TP=      1, #FP=    120, #FN=  36419, IoU=0.000
+class ( 3)         Road: #TP=1417820, #FP= 108186, #FN=  57199, IoU=0.896
+class ( 4)     Sidewalk: #TP= 368615, #FP= 101339, #FN=  79818, IoU=0.670
+class ( 5)   Vegetation: #TP= 784602, #FP= 109046, #FN=  41943, IoU=0.839
+class ( 6)         Sign: #TP=      3, #FP=    394, #FN=  53389, IoU=0.000
+class ( 7)        Fence: #TP=  86960, #FP=  95151, #FN=  69443, IoU=0.346
+class ( 8)      vehicle: #TP=  72449, #FP= 136000, #FN=  21611, IoU=0.315
+class ( 9)   Pedestrian: #TP=     25, #FP=   2998, #FN=  36840, IoU=0.001
+class (10)    Bicyclist: #TP=      0, #FP=     45, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  18722, #FP= 151268, #FN=  51026, IoU=0.085
+_________________
+Mean IoU: 0.400
+FINISHED!
+
+##########################################################################
+Step5a: FCN8UPS QUANTIZATION
+##########################################################################
+
+
+Vai_q_tensorflow v2.0.0 build for Tensorflow 1.15.2 git version
+heads/2.0-0-g17172992
+
+  0% (0 of 10) |                         | Elapsed Time: 0:00:00 ETA:  --:--:--
+ 10% (1 of 10) |##                       | Elapsed Time: 0:00:01 ETA:   0:00:10
+ 20% (2 of 10) |#####                    | Elapsed Time: 0:00:02 ETA:   0:00:08
+ 30% (3 of 10) |#######                  | Elapsed Time: 0:00:03 ETA:   0:00:07
+ 40% (4 of 10) |##########               | Elapsed Time: 0:00:04 ETA:   0:00:06
+ 50% (5 of 10) |############             | Elapsed Time: 0:00:05 ETA:   0:00:05
+ 60% (6 of 10) |###############          | Elapsed Time: 0:00:06 ETA:   0:00:04
+ 70% (7 of 10) |#################        | Elapsed Time: 0:00:07 ETA:   0:00:03
+ 80% (8 of 10) |####################     | Elapsed Time: 0:00:08 ETA:   0:00:02
+ 90% (9 of 10) |######################   | Elapsed Time: 0:00:09 ETA:   0:00:01
+100% (10 of 10) |########################| Elapsed Time: 0:00:11 Time:  0:00:11
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+script running on folder  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+CALIB DIR  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code/../build/dataset1/img_calib
+INFO: Checking Float Graph...
+INFO: Float Graph Check Done.
+INFO: Calibrating for 10 iterations...
+INFO: Calibration Done.
+********************* Quantization Summary *********************
+INFO: Output:
+  quantize_eval_model: .././build/quantize_results/fcn8ups/ quantize_eval_model.pb
+
+##############################################################################
+Step5b: FCN8UPS EVALUATE QUANTIZED GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 430250, #FP=  30370, #FN=  25723, IoU=0.885
+class ( 1)         Wall: #TP=1059956, #FP=  85064, #FN= 243990, IoU=0.763
+class ( 2)         Pole: #TP=      3, #FP=    141, #FN=  36417, IoU=0.000
+class ( 3)         Road: #TP=1420771, #FP= 112911, #FN=  54248, IoU=0.895
+class ( 4)     Sidewalk: #TP= 368934, #FP= 100499, #FN=  79499, IoU=0.672
+class ( 5)   Vegetation: #TP= 783039, #FP= 105317, #FN=  43506, IoU=0.840
+class ( 6)         Sign: #TP=      3, #FP=    394, #FN=  53389, IoU=0.000
+class ( 7)        Fence: #TP=  84612, #FP=  93704, #FN=  71791, IoU=0.338
+class ( 8)      vehicle: #TP=  71318, #FP= 123678, #FN=  22742, IoU=0.328
+class ( 9)   Pedestrian: #TP=     19, #FP=   2420, #FN=  36846, IoU=0.000
+class (10)    Bicyclist: #TP=      0, #FP=     35, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  21569, #FP= 172769, #FN=  48179, IoU=0.089
+_________________
+Mean IoU: 0.401
+FINISHED!
+
+##########################################################################
+COMPILE FCN8UPS XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8ups/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8ups_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/fcn8ups/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/96 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 96/96 [00:00<00:00, 18263.40it/s]               
+[INFO] infer shape (NHWC)  :  0%|          | 0/158 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 96%|█████████▌| 152/158 [00:00<00:00, 1513.11it/s]              [INFO] infe  :100%|██████████| 158/158 [00:00<00:00, 1390.28it/s]              
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 406.60it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 468.31it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/83 [00:00<?, ?it/s][INFO] generate xmodel     : 81%|████████  | 67/83 [00:00<00:00, 668.05it/s]                 [INFO] ge :100%|██████████| 83/83 [00:00<00:00, 808.71it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8ups_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA2_C32B3
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 157
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/fcn8ups.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 40bf36dc1d1afd0afae42432aaa482fe, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8UPS XMODEL FILE WITH Vitis AI for ZCU102
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8ups/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8ups_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/fcn8ups/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/96 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 96/96 [00:00<00:00, 18270.86it/s]               
+[INFO] infer shape (NHWC)  :  0%|          | 0/158 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 91%|█████████ | 143/158 [00:00<00:00, 1429.52it/s]              [INFO] infe  :100%|██████████| 158/158 [00:00<00:00, 1375.48it/s]              
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 419.57it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 453.06it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/83 [00:00<?, ?it/s][INFO] generate xmodel     : 71%|███████   | 59/83 [00:00<00:00, 572.71it/s]                 [INFO] ge :100%|██████████| 83/83 [00:00<00:00, 773.42it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8ups_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA0_B4096_MAX_BG2
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 157
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/fcn8ups.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 10ca4c7e5eba017d659b9d558fd753e8, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+mv: cannot move './build/compile/fcn8ups/fcn8ups.xmodel' to './build/../target_zcu102/fcn8ups/model/': No such file or directory
+cp: cannot create regular file './build/../target_zcu102/fcn8ups/model/': No such file or directory
+
+##########################################################################
+COMPILE FCN8UPS MODEL FILE WITH Vitis AI for ZCU104
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8ups/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8ups_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/fcn8ups/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/96 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 96/96 [00:00<00:00, 18518.75it/s]               
+[INFO] infer shape (NHWC)  :  0%|          | 0/158 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 96%|█████████▌| 152/158 [00:00<00:00, 1510.00it/s]              [INFO] infe  :100%|██████████| 158/158 [00:00<00:00, 1387.47it/s]              
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 411.80it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 471.83it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/83 [00:00<?, ?it/s][INFO] generate xmodel     : 75%|███████▍  | 62/83 [00:00<00:00, 619.90it/s]                 [INFO] ge :100%|██████████| 83/83 [00:00<00:00, 797.05it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8ups_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA0_B4096_MAX_BG2
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 157
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/fcn8ups.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is d89ef7471ee34d911cb9aee7d9945ff9, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/fcn8ups/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+#####################################
+MAIN FCN8UPS FLOW COMPLETED
+#####################################
+rm: cannot remove './build/tf_chkpts/unet1': No such file or directory
+rm: cannot remove './build/tf_chkpts/unet2': No such file or directory
+rm: cannot remove './build/tf_chkpts/unet3': No such file or directory
+rm: cannot remove './build/freeze/unet1': No such file or directory
+rm: cannot remove './build/freeze/unet2': No such file or directory
+rm: cannot remove './build/freeze/unet3': No such file or directory
+rm: cannot remove './build/quantize_results/unet1': No such file or directory
+rm: cannot remove './build/quantize_results/unet2': No such file or directory
+rm: cannot remove './build/quantize_results/unet3': No such file or directory
+rm: cannot remove './build/compile/unet1': No such file or directory
+rm: cannot remove './build/compile/unet2': No such file or directory
+rm: cannot remove './build/compile/unet3': No such file or directory
+
+##################################################################################
+Step2a: TRAINING
+##################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+UNET MODEL =  2
+Model: "model"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to
+==================================================================================================
+input_1 (InputLayer)            [(None, 224, 224, 3) 0
+__________________________________________________________________________________________________
+conv2d (Conv2D)                 (None, 224, 224, 64) 1792        input_1[0][0]
+__________________________________________________________________________________________________
+batch_normalization (BatchNorma (None, 224, 224, 64) 256         conv2d[0][0]
+__________________________________________________________________________________________________
+activation (Activation)         (None, 224, 224, 64) 0           batch_normalization[0][0]
+__________________________________________________________________________________________________
+conv2d_1 (Conv2D)               (None, 224, 224, 64) 36928       activation[0][0]
+__________________________________________________________________________________________________
+batch_normalization_1 (BatchNor (None, 224, 224, 64) 256         conv2d_1[0][0]
+__________________________________________________________________________________________________
+activation_1 (Activation)       (None, 224, 224, 64) 0           batch_normalization_1[0][0]
+__________________________________________________________________________________________________
+max_pooling2d (MaxPooling2D)    (None, 112, 112, 64) 0           activation_1[0][0]
+__________________________________________________________________________________________________
+dropout (Dropout)               (None, 112, 112, 64) 0           max_pooling2d[0][0]
+__________________________________________________________________________________________________
+conv2d_2 (Conv2D)               (None, 112, 112, 128 73856       dropout[0][0]
+__________________________________________________________________________________________________
+batch_normalization_2 (BatchNor (None, 112, 112, 128 512         conv2d_2[0][0]
+__________________________________________________________________________________________________
+activation_2 (Activation)       (None, 112, 112, 128 0           batch_normalization_2[0][0]
+__________________________________________________________________________________________________
+conv2d_3 (Conv2D)               (None, 112, 112, 128 147584      activation_2[0][0]
+__________________________________________________________________________________________________
+batch_normalization_3 (BatchNor (None, 112, 112, 128 512         conv2d_3[0][0]
+__________________________________________________________________________________________________
+activation_3 (Activation)       (None, 112, 112, 128 0           batch_normalization_3[0][0]
+__________________________________________________________________________________________________
+max_pooling2d_1 (MaxPooling2D)  (None, 56, 56, 128)  0           activation_3[0][0]
+__________________________________________________________________________________________________
+dropout_1 (Dropout)             (None, 56, 56, 128)  0           max_pooling2d_1[0][0]
+__________________________________________________________________________________________________
+conv2d_4 (Conv2D)               (None, 56, 56, 256)  295168      dropout_1[0][0]
+__________________________________________________________________________________________________
+batch_normalization_4 (BatchNor (None, 56, 56, 256)  1024        conv2d_4[0][0]
+__________________________________________________________________________________________________
+activation_4 (Activation)       (None, 56, 56, 256)  0           batch_normalization_4[0][0]
+__________________________________________________________________________________________________
+conv2d_5 (Conv2D)               (None, 56, 56, 256)  590080      activation_4[0][0]
+__________________________________________________________________________________________________
+batch_normalization_5 (BatchNor (None, 56, 56, 256)  1024        conv2d_5[0][0]
+__________________________________________________________________________________________________
+activation_5 (Activation)       (None, 56, 56, 256)  0           batch_normalization_5[0][0]
+__________________________________________________________________________________________________
+max_pooling2d_2 (MaxPooling2D)  (None, 28, 28, 256)  0           activation_5[0][0]
+__________________________________________________________________________________________________
+dropout_2 (Dropout)             (None, 28, 28, 256)  0           max_pooling2d_2[0][0]
+__________________________________________________________________________________________________
+conv2d_6 (Conv2D)               (None, 28, 28, 512)  1180160     dropout_2[0][0]
+__________________________________________________________________________________________________
+batch_normalization_6 (BatchNor (None, 28, 28, 512)  2048        conv2d_6[0][0]
+__________________________________________________________________________________________________
+activation_6 (Activation)       (None, 28, 28, 512)  0           batch_normalization_6[0][0]
+__________________________________________________________________________________________________
+conv2d_7 (Conv2D)               (None, 28, 28, 512)  2359808     activation_6[0][0]
+__________________________________________________________________________________________________
+batch_normalization_7 (BatchNor (None, 28, 28, 512)  2048        conv2d_7[0][0]
+__________________________________________________________________________________________________
+activation_7 (Activation)       (None, 28, 28, 512)  0           batch_normalization_7[0][0]
+__________________________________________________________________________________________________
+max_pooling2d_3 (MaxPooling2D)  (None, 14, 14, 512)  0           activation_7[0][0]
+__________________________________________________________________________________________________
+dropout_3 (Dropout)             (None, 14, 14, 512)  0           max_pooling2d_3[0][0]
+__________________________________________________________________________________________________
+conv2d_8 (Conv2D)               (None, 14, 14, 1024) 4719616     dropout_3[0][0]
+__________________________________________________________________________________________________
+batch_normalization_8 (BatchNor (None, 14, 14, 1024) 4096        conv2d_8[0][0]
+__________________________________________________________________________________________________
+activation_8 (Activation)       (None, 14, 14, 1024) 0           batch_normalization_8[0][0]
+__________________________________________________________________________________________________
+conv2d_9 (Conv2D)               (None, 14, 14, 1024) 9438208     activation_8[0][0]
+__________________________________________________________________________________________________
+batch_normalization_9 (BatchNor (None, 14, 14, 1024) 4096        conv2d_9[0][0]
+__________________________________________________________________________________________________
+activation_9 (Activation)       (None, 14, 14, 1024) 0           batch_normalization_9[0][0]
+__________________________________________________________________________________________________
+dropout_4 (Dropout)             (None, 14, 14, 1024) 0           activation_9[0][0]
+__________________________________________________________________________________________________
+up_sampling2d (UpSampling2D)    (None, 28, 28, 1024) 0           dropout_4[0][0]
+__________________________________________________________________________________________________
+conv2d_10 (Conv2D)              (None, 28, 28, 512)  2097664     up_sampling2d[0][0]
+__________________________________________________________________________________________________
+concatenate (Concatenate)       (None, 28, 28, 1024) 0           conv2d_10[0][0]
+                                                                 activation_7[0][0]
+__________________________________________________________________________________________________
+dropout_5 (Dropout)             (None, 28, 28, 1024) 0           concatenate[0][0]
+__________________________________________________________________________________________________
+conv2d_11 (Conv2D)              (None, 28, 28, 512)  4719104     dropout_5[0][0]
+__________________________________________________________________________________________________
+batch_normalization_10 (BatchNo (None, 28, 28, 512)  2048        conv2d_11[0][0]
+__________________________________________________________________________________________________
+activation_10 (Activation)      (None, 28, 28, 512)  0           batch_normalization_10[0][0]
+__________________________________________________________________________________________________
+conv2d_12 (Conv2D)              (None, 28, 28, 512)  2359808     activation_10[0][0]
+__________________________________________________________________________________________________
+batch_normalization_11 (BatchNo (None, 28, 28, 512)  2048        conv2d_12[0][0]
+__________________________________________________________________________________________________
+activation_11 (Activation)      (None, 28, 28, 512)  0           batch_normalization_11[0][0]
+__________________________________________________________________________________________________
+up_sampling2d_1 (UpSampling2D)  (None, 56, 56, 512)  0           activation_11[0][0]
+__________________________________________________________________________________________________
+conv2d_13 (Conv2D)              (None, 56, 56, 256)  524544      up_sampling2d_1[0][0]
+__________________________________________________________________________________________________
+concatenate_1 (Concatenate)     (None, 56, 56, 512)  0           conv2d_13[0][0]
+                                                                 activation_5[0][0]
+__________________________________________________________________________________________________
+dropout_6 (Dropout)             (None, 56, 56, 512)  0           concatenate_1[0][0]
+__________________________________________________________________________________________________
+conv2d_14 (Conv2D)              (None, 56, 56, 256)  1179904     dropout_6[0][0]
+__________________________________________________________________________________________________
+batch_normalization_12 (BatchNo (None, 56, 56, 256)  1024        conv2d_14[0][0]
+__________________________________________________________________________________________________
+activation_12 (Activation)      (None, 56, 56, 256)  0           batch_normalization_12[0][0]
+__________________________________________________________________________________________________
+conv2d_15 (Conv2D)              (None, 56, 56, 256)  590080      activation_12[0][0]
+__________________________________________________________________________________________________
+batch_normalization_13 (BatchNo (None, 56, 56, 256)  1024        conv2d_15[0][0]
+__________________________________________________________________________________________________
+activation_13 (Activation)      (None, 56, 56, 256)  0           batch_normalization_13[0][0]
+__________________________________________________________________________________________________
+up_sampling2d_2 (UpSampling2D)  (None, 112, 112, 256 0           activation_13[0][0]
+__________________________________________________________________________________________________
+conv2d_16 (Conv2D)              (None, 112, 112, 128 131200      up_sampling2d_2[0][0]
+__________________________________________________________________________________________________
+concatenate_2 (Concatenate)     (None, 112, 112, 256 0           conv2d_16[0][0]
+                                                                 activation_3[0][0]
+__________________________________________________________________________________________________
+dropout_7 (Dropout)             (None, 112, 112, 256 0           concatenate_2[0][0]
+__________________________________________________________________________________________________
+conv2d_17 (Conv2D)              (None, 112, 112, 128 295040      dropout_7[0][0]
+__________________________________________________________________________________________________
+batch_normalization_14 (BatchNo (None, 112, 112, 128 512         conv2d_17[0][0]
+__________________________________________________________________________________________________
+activation_14 (Activation)      (None, 112, 112, 128 0           batch_normalization_14[0][0]
+__________________________________________________________________________________________________
+conv2d_18 (Conv2D)              (None, 112, 112, 128 147584      activation_14[0][0]
+__________________________________________________________________________________________________
+batch_normalization_15 (BatchNo (None, 112, 112, 128 512         conv2d_18[0][0]
+__________________________________________________________________________________________________
+activation_15 (Activation)      (None, 112, 112, 128 0           batch_normalization_15[0][0]
+__________________________________________________________________________________________________
+up_sampling2d_3 (UpSampling2D)  (None, 224, 224, 128 0           activation_15[0][0]
+__________________________________________________________________________________________________
+conv2d_19 (Conv2D)              (None, 224, 224, 64) 32832       up_sampling2d_3[0][0]
+__________________________________________________________________________________________________
+concatenate_3 (Concatenate)     (None, 224, 224, 128 0           conv2d_19[0][0]
+                                                                 activation_1[0][0]
+__________________________________________________________________________________________________
+dropout_8 (Dropout)             (None, 224, 224, 128 0           concatenate_3[0][0]
+__________________________________________________________________________________________________
+conv2d_20 (Conv2D)              (None, 224, 224, 64) 73792       dropout_8[0][0]
+__________________________________________________________________________________________________
+batch_normalization_16 (BatchNo (None, 224, 224, 64) 256         conv2d_20[0][0]
+__________________________________________________________________________________________________
+activation_16 (Activation)      (None, 224, 224, 64) 0           batch_normalization_16[0][0]
+__________________________________________________________________________________________________
+conv2d_21 (Conv2D)              (None, 224, 224, 64) 36928       activation_16[0][0]
+__________________________________________________________________________________________________
+batch_normalization_17 (BatchNo (None, 224, 224, 64) 256         conv2d_21[0][0]
+__________________________________________________________________________________________________WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+
+activation_17 (Activation)      (None, 224, 224, 64) 0           batch_normalization_17[0][0]
+__________________________________________________________________________________________________
+conv2d_22 (Conv2D)              (None, 224, 224, 12) 6924        activation_17[0][0]
+==================================================================================================
+Total params: 31,062,156
+Trainable params: 31,050,380
+Non-trainable params: 11,776
+__________________________________________________________________________________________________
+(311, 224, 224, 3) (311, 224, 224, 12)
+(56, 224, 224, 3) (56, 224, 224, 12)
+Train on 311 samples, validate on 56 samples
+Epoch 1/200
+311/311 - 25s - loss: 2.5257 - acc: 0.4760 - val_loss: 2.2775 - val_acc: 0.2613
+Epoch 2/200
+311/311 - 13s - loss: 1.6054 - acc: 0.5453 - val_loss: 2.1426 - val_acc: 0.2613
+Epoch 3/200
+311/311 - 13s - loss: 1.5089 - acc: 0.5729 - val_loss: 2.1570 - val_acc: 0.2619
+Epoch 4/200
+311/311 - 13s - loss: 1.3904 - acc: 0.6114 - val_loss: 2.2393 - val_acc: 0.2656
+Epoch 5/200
+311/311 - 13s - loss: 1.2767 - acc: 0.6275 - val_loss: 2.2438 - val_acc: 0.2774
+Epoch 6/200
+311/311 - 13s - loss: 1.2088 - acc: 0.6430 - val_loss: 2.1734 - val_acc: 0.3050
+Epoch 7/200
+311/311 - 13s - loss: 1.1303 - acc: 0.6626 - val_loss: 2.0328 - val_acc: 0.3650
+Epoch 8/200
+311/311 - 13s - loss: 1.0863 - acc: 0.6709 - val_loss: 1.8763 - val_acc: 0.4373
+Epoch 9/200
+311/311 - 13s - loss: 1.0557 - acc: 0.6745 - val_loss: 1.8168 - val_acc: 0.4900
+Epoch 10/200
+311/311 - 13s - loss: 1.0145 - acc: 0.6790 - val_loss: 1.8780 - val_acc: 0.5455
+Epoch 11/200
+311/311 - 13s - loss: 0.9827 - acc: 0.6812 - val_loss: 1.5117 - val_acc: 0.5862
+Epoch 12/200
+311/311 - 13s - loss: 0.9641 - acc: 0.6827 - val_loss: 1.2714 - val_acc: 0.6435
+Epoch 13/200
+311/311 - 13s - loss: 1.0147 - acc: 0.6730 - val_loss: 1.2143 - val_acc: 0.6515
+Epoch 14/200
+311/311 - 13s - loss: 0.9633 - acc: 0.6816 - val_loss: 1.2277 - val_acc: 0.6771
+Epoch 15/200
+311/311 - 13s - loss: 0.9370 - acc: 0.6840 - val_loss: 1.3117 - val_acc: 0.6736
+Epoch 16/200
+311/311 - 13s - loss: 0.9110 - acc: 0.6868 - val_loss: 1.4105 - val_acc: 0.6694
+Epoch 17/200
+311/311 - 13s - loss: 0.8933 - acc: 0.6876 - val_loss: 1.6290 - val_acc: 0.6602
+Epoch 18/200
+311/311 - 13s - loss: 0.8963 - acc: 0.6887 - val_loss: 1.3926 - val_acc: 0.6704
+Epoch 19/200
+311/311 - 13s - loss: 0.8865 - acc: 0.6893 - val_loss: 1.4239 - val_acc: 0.6672
+Epoch 20/200
+311/311 - 13s - loss: 0.8712 - acc: 0.6910 - val_loss: 1.5038 - val_acc: 0.6617
+Epoch 21/200
+311/311 - 13s - loss: 0.8566 - acc: 0.6925 - val_loss: 1.4066 - val_acc: 0.6736
+Epoch 22/200
+311/311 - 13s - loss: 0.8496 - acc: 0.6978 - val_loss: 1.6592 - val_acc: 0.6593
+Epoch 23/200
+311/311 - 13s - loss: 0.8404 - acc: 0.7012 - val_loss: 1.4895 - val_acc: 0.6679
+Epoch 24/200
+311/311 - 13s - loss: 0.8247 - acc: 0.7078 - val_loss: 1.5006 - val_acc: 0.6722
+Epoch 25/200
+311/311 - 13s - loss: 0.8153 - acc: 0.7133 - val_loss: 1.3394 - val_acc: 0.6862
+Epoch 26/200
+311/311 - 13s - loss: 0.8130 - acc: 0.7215 - val_loss: 1.8248 - val_acc: 0.6638
+Epoch 27/200
+311/311 - 13s - loss: 0.8072 - acc: 0.7264 - val_loss: 1.6281 - val_acc: 0.6698
+Epoch 28/200
+311/311 - 13s - loss: 0.7898 - acc: 0.7338 - val_loss: 1.4379 - val_acc: 0.6809
+Epoch 29/200
+311/311 - 13s - loss: 0.7820 - acc: 0.7387 - val_loss: 1.2779 - val_acc: 0.6946
+Epoch 30/200
+311/311 - 13s - loss: 0.7782 - acc: 0.7421 - val_loss: 1.4456 - val_acc: 0.6798
+Epoch 31/200
+311/311 - 13s - loss: 0.7732 - acc: 0.7458 - val_loss: 1.5537 - val_acc: 0.6884
+Epoch 32/200
+311/311 - 13s - loss: 0.7646 - acc: 0.7473 - val_loss: 1.1511 - val_acc: 0.7196
+Epoch 33/200
+311/311 - 13s - loss: 0.8310 - acc: 0.7301 - val_loss: 1.2946 - val_acc: 0.6954
+Epoch 34/200
+311/311 - 13s - loss: 0.8220 - acc: 0.7300 - val_loss: 1.1274 - val_acc: 0.7156
+Epoch 35/200
+311/311 - 13s - loss: 0.7853 - acc: 0.7407 - val_loss: 1.4975 - val_acc: 0.7008
+Epoch 36/200
+311/311 - 13s - loss: 0.7609 - acc: 0.7467 - val_loss: 1.5889 - val_acc: 0.6939
+Epoch 37/200
+311/311 - 13s - loss: 0.7598 - acc: 0.7512 - val_loss: 1.3408 - val_acc: 0.7007
+Epoch 38/200
+311/311 - 13s - loss: 0.7426 - acc: 0.7583 - val_loss: 1.3113 - val_acc: 0.7150
+Epoch 39/200
+311/311 - 13s - loss: 0.7283 - acc: 0.7649 - val_loss: 1.0057 - val_acc: 0.7335
+Epoch 40/200
+311/311 - 13s - loss: 0.7089 - acc: 0.7720 - val_loss: 1.4985 - val_acc: 0.7025
+Epoch 41/200
+311/311 - 13s - loss: 0.7023 - acc: 0.7828 - val_loss: 1.0758 - val_acc: 0.7291
+Epoch 42/200
+311/311 - 13s - loss: 0.6907 - acc: 0.7954 - val_loss: 1.1550 - val_acc: 0.7260
+Epoch 43/200
+311/311 - 13s - loss: 0.6788 - acc: 0.8006 - val_loss: 1.0381 - val_acc: 0.7387
+Epoch 44/200
+311/311 - 13s - loss: 0.6702 - acc: 0.8070 - val_loss: 1.0470 - val_acc: 0.7417
+Epoch 45/200
+311/311 - 13s - loss: 0.6588 - acc: 0.8135 - val_loss: 1.2085 - val_acc: 0.7307
+Epoch 46/200
+311/311 - 13s - loss: 0.6473 - acc: 0.8186 - val_loss: 1.4784 - val_acc: 0.7112
+Epoch 47/200
+311/311 - 13s - loss: 0.6418 - acc: 0.8212 - val_loss: 1.4607 - val_acc: 0.7217
+Epoch 48/200
+311/311 - 13s - loss: 0.6501 - acc: 0.8175 - val_loss: 1.3642 - val_acc: 0.7231
+Epoch 49/200
+311/311 - 13s - loss: 0.6565 - acc: 0.8178 - val_loss: 0.9864 - val_acc: 0.7484
+Epoch 50/200
+311/311 - 13s - loss: 0.6426 - acc: 0.8227 - val_loss: 0.9869 - val_acc: 0.7489
+Epoch 51/200
+311/311 - 13s - loss: 0.6343 - acc: 0.8230 - val_loss: 0.9872 - val_acc: 0.7622
+Epoch 52/200
+311/311 - 13s - loss: 0.6287 - acc: 0.8268 - val_loss: 1.2574 - val_acc: 0.7360
+Epoch 53/200
+311/311 - 13s - loss: 0.6155 - acc: 0.8292 - val_loss: 0.9634 - val_acc: 0.7644
+Epoch 54/200
+311/311 - 13s - loss: 0.6175 - acc: 0.8301 - val_loss: 1.0385 - val_acc: 0.7565
+Epoch 55/200
+311/311 - 13s - loss: 0.8146 - acc: 0.7716 - val_loss: 1.2278 - val_acc: 0.5672
+Epoch 56/200
+311/311 - 13s - loss: 0.7199 - acc: 0.8033 - val_loss: 1.1705 - val_acc: 0.6245
+Epoch 57/200
+311/311 - 13s - loss: 0.6697 - acc: 0.8159 - val_loss: 0.9931 - val_acc: 0.7063
+Epoch 58/200
+311/311 - 13s - loss: 0.6454 - acc: 0.8229 - val_loss: 0.9062 - val_acc: 0.7484
+Epoch 59/200
+311/311 - 13s - loss: 0.6289 - acc: 0.8251 - val_loss: 0.8543 - val_acc: 0.7682
+Epoch 60/200
+311/311 - 13s - loss: 0.6090 - acc: 0.8294 - val_loss: 0.8361 - val_acc: 0.7768
+Epoch 61/200
+311/311 - 13s - loss: 0.5947 - acc: 0.8330 - val_loss: 0.9116 - val_acc: 0.7800
+Epoch 62/200
+311/311 - 13s - loss: 0.5974 - acc: 0.8347 - val_loss: 0.7723 - val_acc: 0.7908
+Epoch 63/200
+311/311 - 13s - loss: 0.5954 - acc: 0.8356 - val_loss: 1.0204 - val_acc: 0.7808
+Epoch 64/200
+311/311 - 13s - loss: 0.5935 - acc: 0.8345 - val_loss: 0.8023 - val_acc: 0.7997
+Epoch 65/200
+311/311 - 13s - loss: 0.5900 - acc: 0.8388 - val_loss: 1.1496 - val_acc: 0.7627
+Epoch 66/200
+311/311 - 13s - loss: 0.5713 - acc: 0.8408 - val_loss: 1.0437 - val_acc: 0.7662
+Epoch 67/200
+311/311 - 13s - loss: 0.5908 - acc: 0.8326 - val_loss: 0.8972 - val_acc: 0.7715
+Epoch 68/200
+311/311 - 13s - loss: 0.5738 - acc: 0.8375 - val_loss: 0.8659 - val_acc: 0.7777
+Epoch 69/200
+311/311 - 13s - loss: 0.5619 - acc: 0.8409 - val_loss: 0.9291 - val_acc: 0.7746
+Epoch 70/200
+311/311 - 13s - loss: 0.5530 - acc: 0.8443 - val_loss: 0.9414 - val_acc: 0.7922
+Epoch 71/200
+311/311 - 13s - loss: 0.5605 - acc: 0.8442 - val_loss: 0.8627 - val_acc: 0.7850
+Epoch 72/200
+311/311 - 13s - loss: 0.5559 - acc: 0.8450 - val_loss: 0.9001 - val_acc: 0.7899
+Epoch 73/200
+311/311 - 13s - loss: 0.5537 - acc: 0.8446 - val_loss: 0.7974 - val_acc: 0.7988
+Epoch 74/200
+311/311 - 13s - loss: 0.5611 - acc: 0.8433 - val_loss: 0.7328 - val_acc: 0.8035
+Epoch 75/200
+311/311 - 13s - loss: 0.5515 - acc: 0.8451 - val_loss: 0.8742 - val_acc: 0.7893
+Epoch 76/200
+311/311 - 13s - loss: 0.5429 - acc: 0.8447 - val_loss: 1.0042 - val_acc: 0.7897
+Epoch 77/200
+311/311 - 13s - loss: 0.5472 - acc: 0.8439 - val_loss: 0.8762 - val_acc: 0.7952
+Epoch 78/200
+311/311 - 13s - loss: 0.5328 - acc: 0.8481 - val_loss: 0.9363 - val_acc: 0.7913
+Epoch 79/200
+311/311 - 13s - loss: 0.5349 - acc: 0.8463 - val_loss: 0.9063 - val_acc: 0.7942
+Epoch 80/200
+311/311 - 13s - loss: 0.5244 - acc: 0.8508 - val_loss: 0.9225 - val_acc: 0.7848
+Epoch 81/200
+311/311 - 13s - loss: 0.5322 - acc: 0.8470 - val_loss: 0.9597 - val_acc: 0.7855
+Epoch 82/200
+311/311 - 13s - loss: 0.5348 - acc: 0.8458 - val_loss: 1.0084 - val_acc: 0.7810
+Epoch 83/200
+311/311 - 13s - loss: 0.5248 - acc: 0.8491 - val_loss: 1.0216 - val_acc: 0.7771
+Epoch 84/200
+311/311 - 13s - loss: 0.5133 - acc: 0.8525 - val_loss: 0.8794 - val_acc: 0.7957
+Epoch 85/200
+311/311 - 13s - loss: 0.5355 - acc: 0.8502 - val_loss: 0.9613 - val_acc: 0.7815
+Epoch 86/200
+311/311 - 13s - loss: 0.5923 - acc: 0.8333 - val_loss: 1.0807 - val_acc: 0.7803
+Epoch 87/200
+311/311 - 13s - loss: 0.5829 - acc: 0.8404 - val_loss: 1.0770 - val_acc: 0.7518
+Epoch 88/200
+311/311 - 13s - loss: 0.5717 - acc: 0.8443 - val_loss: 1.1452 - val_acc: 0.7597
+Epoch 89/200
+311/311 - 13s - loss: 0.5921 - acc: 0.8406 - val_loss: 0.8371 - val_acc: 0.7872
+Epoch 90/200
+311/311 - 13s - loss: 0.5777 - acc: 0.8466 - val_loss: 0.8256 - val_acc: 0.8086
+Epoch 91/200
+311/311 - 13s - loss: 0.5553 - acc: 0.8511 - val_loss: 0.8069 - val_acc: 0.8169
+Epoch 92/200
+311/311 - 13s - loss: 0.5767 - acc: 0.8483 - val_loss: 0.8437 - val_acc: 0.8033
+Epoch 93/200
+311/311 - 13s - loss: 0.5670 - acc: 0.8496 - val_loss: 0.8964 - val_acc: 0.8019
+Epoch 94/200
+311/311 - 13s - loss: 0.5589 - acc: 0.8472 - val_loss: 0.8517 - val_acc: 0.7995
+Epoch 95/200
+311/311 - 13s - loss: 0.5801 - acc: 0.8395 - val_loss: 1.1005 - val_acc: 0.7821
+Epoch 96/200
+311/311 - 13s - loss: 0.5437 - acc: 0.8501 - val_loss: 0.9627 - val_acc: 0.8005
+Epoch 97/200
+311/311 - 13s - loss: 0.5349 - acc: 0.8507 - val_loss: 0.8012 - val_acc: 0.8165
+Epoch 98/200
+311/311 - 13s - loss: 0.5209 - acc: 0.8560 - val_loss: 0.7718 - val_acc: 0.8189
+Epoch 99/200
+311/311 - 13s - loss: 0.5160 - acc: 0.8562 - val_loss: 0.7432 - val_acc: 0.8247
+Epoch 100/200
+311/311 - 13s - loss: 0.5098 - acc: 0.8569 - val_loss: 0.6887 - val_acc: 0.8270
+Epoch 101/200
+311/311 - 13s - loss: 0.5010 - acc: 0.8583 - val_loss: 0.8070 - val_acc: 0.8112
+Epoch 102/200
+311/311 - 13s - loss: 0.4931 - acc: 0.8600 - val_loss: 0.7512 - val_acc: 0.8191
+Epoch 103/200
+311/311 - 13s - loss: 0.4987 - acc: 0.8573 - val_loss: 0.7893 - val_acc: 0.8105
+Epoch 104/200
+311/311 - 13s - loss: 0.4953 - acc: 0.8596 - val_loss: 0.7261 - val_acc: 0.8235
+Epoch 105/200
+311/311 - 13s - loss: 0.4903 - acc: 0.8612 - val_loss: 0.8376 - val_acc: 0.8101
+Epoch 106/200
+311/311 - 13s - loss: 0.5038 - acc: 0.8588 - val_loss: 0.7294 - val_acc: 0.8221
+Epoch 107/200
+311/311 - 13s - loss: 0.4916 - acc: 0.8621 - val_loss: 0.6660 - val_acc: 0.8326
+Epoch 108/200
+311/311 - 13s - loss: 0.4820 - acc: 0.8639 - val_loss: 0.7167 - val_acc: 0.8228
+Epoch 109/200
+311/311 - 13s - loss: 0.4820 - acc: 0.8642 - val_loss: 0.6727 - val_acc: 0.8260
+Epoch 110/200
+311/311 - 13s - loss: 0.4792 - acc: 0.8652 - val_loss: 0.6398 - val_acc: 0.8311
+Epoch 111/200
+311/311 - 13s - loss: 0.4769 - acc: 0.8655 - val_loss: 0.6753 - val_acc: 0.8286
+Epoch 112/200
+311/311 - 13s - loss: 0.4909 - acc: 0.8641 - val_loss: 0.8580 - val_acc: 0.8057
+Epoch 113/200
+311/311 - 13s - loss: 0.4935 - acc: 0.8627 - val_loss: 0.7394 - val_acc: 0.8220
+Epoch 114/200
+311/311 - 13s - loss: 0.4856 - acc: 0.8658 - val_loss: 0.6288 - val_acc: 0.8349
+Epoch 115/200
+311/311 - 13s - loss: 0.4926 - acc: 0.8611 - val_loss: 0.6926 - val_acc: 0.8199
+Epoch 116/200
+311/311 - 13s - loss: 0.4757 - acc: 0.8669 - val_loss: 0.6714 - val_acc: 0.8256
+Epoch 117/200
+311/311 - 13s - loss: 0.4741 - acc: 0.8673 - val_loss: 0.6284 - val_acc: 0.8358
+Epoch 118/200
+311/311 - 13s - loss: 0.4714 - acc: 0.8702 - val_loss: 0.6784 - val_acc: 0.8297
+Epoch 119/200
+311/311 - 13s - loss: 0.4697 - acc: 0.8704 - val_loss: 0.6698 - val_acc: 0.8340
+Epoch 120/200
+311/311 - 13s - loss: 0.4694 - acc: 0.8701 - val_loss: 0.9862 - val_acc: 0.7820
+Epoch 121/200
+311/311 - 13s - loss: 0.5439 - acc: 0.8495 - val_loss: 0.7252 - val_acc: 0.8171
+Epoch 122/200
+311/311 - 13s - loss: 0.5088 - acc: 0.8583 - val_loss: 0.6092 - val_acc: 0.8393
+Epoch 123/200
+311/311 - 13s - loss: 0.4891 - acc: 0.8631 - val_loss: 0.6221 - val_acc: 0.8422
+Epoch 124/200
+311/311 - 13s - loss: 0.4813 - acc: 0.8650 - val_loss: 0.6165 - val_acc: 0.8431
+Epoch 125/200
+311/311 - 13s - loss: 0.5818 - acc: 0.8316 - val_loss: 0.7332 - val_acc: 0.8128
+Epoch 126/200
+311/311 - 13s - loss: 0.5495 - acc: 0.8513 - val_loss: 0.6800 - val_acc: 0.8263
+Epoch 127/200
+311/311 - 13s - loss: 0.5261 - acc: 0.8571 - val_loss: 0.6813 - val_acc: 0.8212
+Epoch 128/200
+311/311 - 13s - loss: 0.5031 - acc: 0.8620 - val_loss: 0.6364 - val_acc: 0.8325
+Epoch 129/200
+311/311 - 13s - loss: 0.4926 - acc: 0.8647 - val_loss: 0.6168 - val_acc: 0.8367
+Epoch 130/200
+311/311 - 13s - loss: 0.4830 - acc: 0.8674 - val_loss: 0.6515 - val_acc: 0.8346
+Epoch 131/200
+311/311 - 13s - loss: 0.4756 - acc: 0.8690 - val_loss: 0.6579 - val_acc: 0.8337
+Epoch 132/200
+311/311 - 13s - loss: 0.4765 - acc: 0.8686 - val_loss: 0.6519 - val_acc: 0.8363
+Epoch 133/200
+311/311 - 13s - loss: 0.4768 - acc: 0.8693 - val_loss: 0.6467 - val_acc: 0.8309
+Epoch 134/200
+311/311 - 13s - loss: 0.4750 - acc: 0.8704 - val_loss: 0.6413 - val_acc: 0.8356
+Epoch 135/200
+311/311 - 13s - loss: 0.4703 - acc: 0.8718 - val_loss: 0.6568 - val_acc: 0.8334
+Epoch 136/200
+311/311 - 13s - loss: 0.4684 - acc: 0.8715 - val_loss: 0.6456 - val_acc: 0.8369
+Epoch 137/200
+311/311 - 13s - loss: 0.4666 - acc: 0.8725 - val_loss: 0.6465 - val_acc: 0.8358
+Epoch 138/200
+311/311 - 13s - loss: 0.4605 - acc: 0.8737 - val_loss: 0.6518 - val_acc: 0.8346
+Epoch 139/200
+311/311 - 13s - loss: 0.4688 - acc: 0.8721 - val_loss: 0.6074 - val_acc: 0.8337
+Epoch 140/200
+311/311 - 13s - loss: 0.4632 - acc: 0.8741 - val_loss: 0.6432 - val_acc: 0.8259
+Epoch 141/200
+311/311 - 13s - loss: 0.4588 - acc: 0.8751 - val_loss: 0.6333 - val_acc: 0.8317
+Epoch 142/200
+311/311 - 13s - loss: 0.4667 - acc: 0.8715 - val_loss: 0.6587 - val_acc: 0.8288
+Epoch 143/200
+311/311 - 13s - loss: 0.4679 - acc: 0.8715 - val_loss: 0.6211 - val_acc: 0.8374
+Epoch 144/200
+311/311 - 13s - loss: 0.4606 - acc: 0.8734 - val_loss: 0.7027 - val_acc: 0.8161
+Epoch 145/200
+311/311 - 13s - loss: 0.4658 - acc: 0.8711 - val_loss: 0.5935 - val_acc: 0.8418
+Epoch 146/200
+311/311 - 13s - loss: 0.4568 - acc: 0.8740 - val_loss: 0.6429 - val_acc: 0.8343
+Epoch 147/200
+311/311 - 13s - loss: 0.4543 - acc: 0.8753 - val_loss: 0.6028 - val_acc: 0.8432
+Epoch 148/200
+311/311 - 13s - loss: 0.4479 - acc: 0.8757 - val_loss: 0.6176 - val_acc: 0.8358
+Epoch 149/200
+311/311 - 13s - loss: 0.4480 - acc: 0.8761 - val_loss: 0.5962 - val_acc: 0.8425
+Epoch 150/200
+311/311 - 13s - loss: 0.4450 - acc: 0.8772 - val_loss: 0.6064 - val_acc: 0.8395
+Epoch 151/200
+311/311 - 13s - loss: 0.4469 - acc: 0.8774 - val_loss: 0.6121 - val_acc: 0.8399
+Epoch 152/200
+311/311 - 13s - loss: 0.4443 - acc: 0.8773 - val_loss: 0.5822 - val_acc: 0.8444
+Epoch 153/200
+311/311 - 13s - loss: 0.4526 - acc: 0.8746 - val_loss: 0.6161 - val_acc: 0.8387
+Epoch 154/200
+311/311 - 13s - loss: 0.4583 - acc: 0.8723 - val_loss: 0.6097 - val_acc: 0.8407
+Epoch 155/200
+311/311 - 13s - loss: 0.4545 - acc: 0.8756 - val_loss: 0.5847 - val_acc: 0.8445
+Epoch 156/200
+311/311 - 13s - loss: 0.4493 - acc: 0.8767 - val_loss: 0.6198 - val_acc: 0.8368
+Epoch 157/200
+311/311 - 13s - loss: 0.4526 - acc: 0.8755 - val_loss: 0.6385 - val_acc: 0.8355
+Epoch 158/200
+311/311 - 13s - loss: 0.4494 - acc: 0.8754 - val_loss: 0.5882 - val_acc: 0.8440
+Epoch 159/200
+311/311 - 13s - loss: 0.4412 - acc: 0.8774 - val_loss: 0.6646 - val_acc: 0.8264
+Epoch 160/200
+311/311 - 13s - loss: 0.4554 - acc: 0.8740 - val_loss: 0.6860 - val_acc: 0.8258
+Epoch 161/200
+311/311 - 13s - loss: 0.4566 - acc: 0.8748 - val_loss: 0.6377 - val_acc: 0.8430
+Epoch 162/200
+311/311 - 13s - loss: 0.4531 - acc: 0.8756 - val_loss: 0.6450 - val_acc: 0.8426
+Epoch 163/200
+311/311 - 13s - loss: 0.4462 - acc: 0.8769 - val_loss: 0.6131 - val_acc: 0.8412
+Epoch 164/200
+311/311 - 13s - loss: 0.4469 - acc: 0.8771 - val_loss: 0.5680 - val_acc: 0.8529
+Epoch 165/200
+311/311 - 13s - loss: 0.4562 - acc: 0.8738 - val_loss: 0.6238 - val_acc: 0.8353
+Epoch 166/200
+311/311 - 13s - loss: 0.4794 - acc: 0.8673 - val_loss: 0.6201 - val_acc: 0.8444
+Epoch 167/200
+311/311 - 13s - loss: 0.4799 - acc: 0.8717 - val_loss: 0.5592 - val_acc: 0.8549
+Epoch 168/200
+311/311 - 13s - loss: 0.4685 - acc: 0.8759 - val_loss: 0.5631 - val_acc: 0.8526
+Epoch 169/200
+311/311 - 13s - loss: 0.4561 - acc: 0.8771 - val_loss: 0.5547 - val_acc: 0.8532
+Epoch 170/200
+311/311 - 13s - loss: 0.4492 - acc: 0.8782 - val_loss: 0.5891 - val_acc: 0.8505
+Epoch 171/200
+311/311 - 13s - loss: 0.4429 - acc: 0.8796 - val_loss: 0.6048 - val_acc: 0.8504
+Epoch 172/200
+311/311 - 13s - loss: 0.4334 - acc: 0.8805 - val_loss: 0.6021 - val_acc: 0.8464
+Epoch 173/200
+311/311 - 13s - loss: 0.4397 - acc: 0.8779 - val_loss: 0.5914 - val_acc: 0.8493
+Epoch 174/200
+311/311 - 13s - loss: 0.4312 - acc: 0.8807 - val_loss: 0.5914 - val_acc: 0.8487
+Epoch 175/200
+311/311 - 13s - loss: 0.4385 - acc: 0.8782 - val_loss: 0.6326 - val_acc: 0.8400
+Epoch 176/200
+311/311 - 13s - loss: 0.4335 - acc: 0.8798 - val_loss: 0.6023 - val_acc: 0.8448
+Epoch 177/200
+311/311 - 13s - loss: 0.4340 - acc: 0.8796 - val_loss: 0.6097 - val_acc: 0.8441
+Epoch 178/200
+311/311 - 13s - loss: 0.4269 - acc: 0.8811 - val_loss: 0.5805 - val_acc: 0.8519
+Epoch 179/200
+311/311 - 13s - loss: 0.4262 - acc: 0.8812 - val_loss: 0.6031 - val_acc: 0.8478
+Epoch 180/200
+311/311 - 13s - loss: 0.4261 - acc: 0.8814 - val_loss: 0.5973 - val_acc: 0.8492
+Epoch 181/200
+311/311 - 13s - loss: 0.4308 - acc: 0.8805 - val_loss: 0.5866 - val_acc: 0.8522
+Epoch 182/200
+311/311 - 13s - loss: 0.4298 - acc: 0.8819 - val_loss: 0.6086 - val_acc: 0.8474
+Epoch 183/200
+311/311 - 13s - loss: 0.4473 - acc: 0.8778 - val_loss: 0.6306 - val_acc: 0.8408
+Epoch 184/200
+311/311 - 13s - loss: 0.4424 - acc: 0.8800 - val_loss: 0.6264 - val_acc: 0.8437
+Epoch 185/200
+311/311 - 13s - loss: 0.4468 - acc: 0.8779 - val_loss: 0.6087 - val_acc: 0.8442
+Epoch 186/200
+311/311 - 13s - loss: 0.4362 - acc: 0.8805 - val_loss: 0.6075 - val_acc: 0.8406
+Epoch 187/200
+311/311 - 13s - loss: 0.4350 - acc: 0.8804 - val_loss: 0.6185 - val_acc: 0.8427
+Epoch 188/200
+311/311 - 13s - loss: 0.4258 - acc: 0.8822 - val_loss: 0.6118 - val_acc: 0.8453
+Epoch 189/200
+311/311 - 13s - loss: 0.4252 - acc: 0.8822 - val_loss: 0.5970 - val_acc: 0.8488
+Epoch 190/200
+311/311 - 13s - loss: 0.4196 - acc: 0.8834 - val_loss: 0.5904 - val_acc: 0.8502
+Epoch 191/200
+311/311 - 13s - loss: 0.4224 - acc: 0.8830 - val_loss: 0.6148 - val_acc: 0.8452
+Epoch 192/200
+311/311 - 13s - loss: 0.4232 - acc: 0.8828 - val_loss: 0.6186 - val_acc: 0.8470
+Epoch 193/200
+311/311 - 13s - loss: 0.4305 - acc: 0.8823 - val_loss: 0.6012 - val_acc: 0.8488
+Epoch 194/200
+311/311 - 13s - loss: 0.4409 - acc: 0.8815 - val_loss: 0.6891 - val_acc: 0.8316
+Epoch 195/200
+311/311 - 13s - loss: 0.4457 - acc: 0.8809 - val_loss: 0.6593 - val_acc: 0.8297
+Epoch 196/200
+311/311 - 13s - loss: 0.4343 - acc: 0.8816 - val_loss: 0.6583 - val_acc: 0.8279
+Epoch 197/200
+311/311 - 13s - loss: 0.4270 - acc: 0.8827 - val_loss: 0.6246 - val_acc: 0.8398
+Epoch 198/200
+311/311 - 13s - loss: 0.4291 - acc: 0.8819 - val_loss: 0.6066 - val_acc: 0.8468
+Epoch 199/200
+311/311 - 13s - loss: 0.4320 - acc: 0.8809 - val_loss: 0.5772 - val_acc: 0.8504
+Epoch 200/200
+311/311 - 13s - loss: 0.4258 - acc: 0.8825 - val_loss: 0.5979 - val_acc: 0.8448
+
+
+Elapsed time for Keras training (s):  2670.132252
+
+
+
+End of UNET training
+
+
+##################################################################################
+Step2b: MAKING PREDICTIONS
+##################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Ones.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+UNET MODEL =  2
+
+
+validation data (X) (Y) shapes: (56, 224, 224, 3) (56, 224, 224, 12)
+testing    data (X) (Y) shapes (101, 224, 224, 3) (101, 224, 224, 12)
+
+
+
+now computing IoU over testing data set:
+class ( 0)          Sky: #TP= 449570, #FP=  30555, #FN=   6403, IoU=0.924
+class ( 1)         Wall: #TP=1151671, #FP= 270121, #FN= 152275, IoU=0.732
+class ( 2)         Pole: #TP=      0, #FP=      0, #FN=  36420, IoU=0.000
+class ( 3)         Road: #TP=1415825, #FP=  41718, #FN=  59194, IoU=0.933
+class ( 4)     Sidewalk: #TP= 409991, #FP= 101109, #FN=  38442, IoU=0.746
+class ( 5)   Vegetation: #TP= 768831, #FP= 130963, #FN=  57714, IoU=0.803
+class ( 6)         Sign: #TP=      0, #FP=      0, #FN=  53392, IoU=0.000
+class ( 7)        Fence: #TP=      0, #FP=      0, #FN= 156403, IoU=0.000
+class ( 8)      vehicle: #TP=  73755, #FP=  38162, #FN=  20305, IoU=0.558
+class ( 9)   Pedestrian: #TP=      0, #FP=      0, #FN=  36865, IoU=0.000
+class (10)    Bicyclist: #TP=      0, #FP=      0, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  36716, #FP= 148789, #FN=  33032, IoU=0.168
+_________________
+Mean IoU: 0.405
+
+now computing IoU over validation data set:
+class ( 0)          Sky: #TP= 409438, #FP=  33845, #FN=  13603, IoU=0.896
+class ( 1)         Wall: #TP= 650954, #FP= 110899, #FN=  83347, IoU=0.770
+class ( 2)         Pole: #TP=      0, #FP=      0, #FN=  31111, IoU=0.000
+class ( 3)         Road: #TP= 878311, #FP=  26383, #FN=  34407, IoU=0.935
+class ( 4)     Sidewalk: #TP=  84496, #FP=  47234, #FN=  27637, IoU=0.530
+class ( 5)   Vegetation: #TP= 182874, #FP= 123218, #FN=  28480, IoU=0.547
+class ( 6)         Sign: #TP=      0, #FP=      0, #FN=  44882, IoU=0.000
+class ( 7)        Fence: #TP=      0, #FP=      0, #FN=  33170, IoU=0.000
+class ( 8)      vehicle: #TP= 126156, #FP=  21988, #FN=  51306, IoU=0.633
+class ( 9)   Pedestrian: #TP=      0, #FP=      0, #FN=  18629, IoU=0.000
+class (10)    Bicyclist: #TP=      0, #FP=      0, #FN=  15218, IoU=0.000
+class (11)  miscellanea: #TP=  41555, #FP=  72505, #FN=  54282, IoU=0.247
+_________________
+Mean IoU: 0.380
+
+#######################################################################################
+Step3: KERAS to TENSORFLOW GRAPH CONVERSION
+#######################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Ones.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From Keras2TF.py:96: The name tf.keras.backend.get_session is deprecated. Please use tf.compat.v1.keras.backend.get_session instead.
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+model name =  unet2
+
+ TF input node name:
+[<tf.Tensor 'input_1:0' shape=(?, 224, 224, 3) dtype=float32>]
+
+ TF output node name:
+[<tf.Tensor 'conv2d_22/Relu:0' shape=(?, 224, 224, 12) dtype=float32>]
+
+FINISHED CREATING TF FILES
+
+
+##############################################################################
+Step4a: FREEZE TF GRAPHS
+##############################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+W0608 17:28:55.096882 140099721340736 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+2022-06-08 17:28:55.101274: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2022-06-08 17:28:55.154656: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2022-06-08 17:28:55.154894: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 17:28:55.156051: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2022-06-08 17:28:55.157306: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2022-06-08 17:28:55.157633: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2022-06-08 17:28:55.159096: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2022-06-08 17:28:55.160036: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2022-06-08 17:28:55.162924: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2022-06-08 17:28:55.164289: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2022-06-08 17:28:55.164606: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2022-06-08 17:28:55.186585: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2499950000 Hz
+2022-06-08 17:28:55.188799: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x561bedfdba50 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2022-06-08 17:28:55.188830: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2022-06-08 17:28:55.270883: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x561bee5625f0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2022-06-08 17:28:55.270928: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Quadro P6000, Compute Capability 6.1
+2022-06-08 17:28:55.273378: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2022-06-08 17:28:55.273457: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 17:28:55.273480: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2022-06-08 17:28:55.273499: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2022-06-08 17:28:55.273519: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2022-06-08 17:28:55.273538: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2022-06-08 17:28:55.273557: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2022-06-08 17:28:55.273577: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2022-06-08 17:28:55.277667: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2022-06-08 17:28:55.277737: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2022-06-08 17:28:55.280945: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+2022-06-08 17:28:55.280967: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      0
+2022-06-08 17:28:55.280978: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 0:   N
+2022-06-08 17:28:55.285223: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22621 MB memory) -> physical GPU (device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1)
+INFO:tensorflow:Restoring parameters from ./build/tf_chkpts/unet2/float_model.ckpt
+I0608 17:28:55.630954 140099721340736 saver.py:1284] Restoring parameters from ./build/tf_chkpts/unet2/float_model.ckpt
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+W0608 17:28:56.813863 140099721340736 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+W0608 17:28:56.814302 140099721340736 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+INFO:tensorflow:Froze 118 variables.
+I0608 17:28:56.981668 140099721340736 graph_util_impl.py:334] Froze 118 variables.
+INFO:tensorflow:Converted 118 variables to const ops.
+I0608 17:28:57.155245 140099721340736 graph_util_impl.py:394] Converted 118 variables to const ops.
+Loaded meta graph file './build/tf_chkpts/unet2/float_model.ckpt.meta
+
+##############################################################################
+Step4a: INSPECT FROZEN GRAPH
+##############################################################################
+
+Op types used: 138 Const, 127 Identity, 23 BiasAdd, 23 Conv2D, 23 Relu, 18 FusedBatchNormV3, 4 ConcatV2, 4 MaxPool, 4 Mul, 4 ResizeBilinear, 4 Shape, 4 StridedSlice, 1 Placeholder
+
+Found 1 possible inputs: (name=input_1, type=float(1), shape=[?,224,224,3])
+Found 1 possible outputs: (name=conv2d_22/Relu, op=Relu)
+
+##############################################################################
+Step4b: EVALUATING THE ORIGINAL GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 449570, #FP=  30555, #FN=   6403, IoU=0.924
+class ( 1)         Wall: #TP=1151671, #FP= 270120, #FN= 152275, IoU=0.732
+class ( 2)         Pole: #TP=      0, #FP=      0, #FN=  36420, IoU=0.000
+class ( 3)         Road: #TP=1415825, #FP=  41717, #FN=  59194, IoU=0.933
+class ( 4)     Sidewalk: #TP= 409992, #FP= 101109, #FN=  38441, IoU=0.746
+class ( 5)   Vegetation: #TP= 768831, #FP= 130964, #FN=  57714, IoU=0.803
+class ( 6)         Sign: #TP=      0, #FP=      0, #FN=  53392, IoU=0.000
+class ( 7)        Fence: #TP=      0, #FP=      0, #FN= 156403, IoU=0.000
+class ( 8)      vehicle: #TP=  73755, #FP=  38162, #FN=  20305, IoU=0.558
+class ( 9)   Pedestrian: #TP=      0, #FP=      0, #FN=  36865, IoU=0.000
+class (10)    Bicyclist: #TP=      0, #FP=      0, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  36716, #FP= 148789, #FN=  33032, IoU=0.168
+_________________
+Mean IoU: 0.405
+FINISHED!
+
+##########################################################################
+Step5a: QUANTIZATION
+##########################################################################
+
+  0% (0 of 10) |                         | Elapsed Time: 0:00:00 ETA:  --:--:--
+ 10% (1 of 10) |##                       | Elapsed Time: 0:00:03 ETA:   0:00:31
+ 20% (2 of 10) |#####                    | Elapsed Time: 0:00:06 ETA:   0:00:27
+ 30% (3 of 10) |#######                  | Elapsed Time: 0:00:10 ETA:   0:00:24
+ 40% (4 of 10) |##########               | Elapsed Time: 0:00:13 ETA:   0:00:20
+ 50% (5 of 10) |############             | Elapsed Time: 0:00:17 ETA:   0:00:17
+ 60% (6 of 10) |###############          | Elapsed Time: 0:00:20 ETA:   0:00:13
+ 70% (7 of 10) |#################        | Elapsed Time: 0:00:24 ETA:   0:00:10
+ 80% (8 of 10) |####################     | Elapsed Time: 0:00:27 ETA:   0:00:06
+ 90% (9 of 10) |######################   | Elapsed Time: 0:00:31 ETA:   0:00:03
+100% (10 of 10) |########################| Elapsed Time: 0:00:34 Time:  0:00:34
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+script running on folder  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+CALIB DIR  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code/../build/dataset1/img_calib
+INFO: Checking Float Graph...
+INFO: Float Graph Check Done.
+INFO: Calibrating for 10 iterations...
+INFO: Calibration Done.
+********************* Quantization Summary *********************
+INFO: Output:
+  quantize_eval_model: .././build/quantize_results/unet2/ quantize_eval_model.pb
+
+##############################################################################
+Step5b: EVALUATE QUANTIZED GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 449295, #FP=  30172, #FN=   6678, IoU=0.924
+class ( 1)         Wall: #TP=1146505, #FP= 288991, #FN= 157441, IoU=0.720
+class ( 2)         Pole: #TP=      0, #FP=      0, #FN=  36420, IoU=0.000
+class ( 3)         Road: #TP=1414632, #FP=  44957, #FN=  60387, IoU=0.931
+class ( 4)     Sidewalk: #TP= 407878, #FP= 106432, #FN=  40555, IoU=0.735
+class ( 5)   Vegetation: #TP= 768306, #FP= 138866, #FN=  58239, IoU=0.796
+class ( 6)         Sign: #TP=      0, #FP=      0, #FN=  53392, IoU=0.000
+class ( 7)        Fence: #TP=      0, #FP=      0, #FN= 156403, IoU=0.000
+class ( 8)      vehicle: #TP=  72348, #FP=  32693, #FN=  21712, IoU=0.571
+class ( 9)   Pedestrian: #TP=      0, #FP=      0, #FN=  36865, IoU=0.000
+class (10)    Bicyclist: #TP=      0, #FP=      0, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  33062, #FP= 133639, #FN=  36686, IoU=0.163
+_________________
+Mean IoU: 0.403
+FINISHED!
+
+##########################################################################
+COMPILE UNET XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/unet2/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/unet2_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/unet2/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/107 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 107/107 [00:00<00:00, 19545.77it/s]             
+[INFO] infer shape (NHWC)  :  0%|          | 0/173 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 46%|████▌     | 79/173 [00:00<00:00, 784.16it/s]                [INFO] in  : 91%|█████████▏| 158/173 [00:00<00:00, 663.56it/s]               [INFO] infer shape (NHWC) ██| 173/173 [00:00<00:00, 533.55it/s]               
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 345.83it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 380.77it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/99 [00:00<?, ?it/s][INFO] generate xmodel     : 39%|███▉      | 39/99 [00:00<00:00, 336.97it/s]                 [INFO] ge : 74%|███████▎  | 73/99 [00:00<00:00, 176.85it/s]                 [INFO] generate xmodel    | 99/99 [00:00<00:00, 255.29it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/unet2_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA2_C32B3
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 191
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/unet2.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is a10f4b9ea6782b1de9adbe3195f39c2e, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE UNET XMODEL FILE WITH Vitis AI for ZCU102 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/unet2/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/unet2_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/unet2/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/107 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 107/107 [00:00<00:00, 19239.10it/s]             
+[INFO] infer shape (NHWC)  :  0%|          | 0/173 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 45%|████▌     | 78/173 [00:00<00:00, 779.73it/s]                [INFO] in  : 90%|█████████ | 156/173 [00:00<00:00, 681.51it/s]               [INFO] infer shape (NHWC) ██| 173/173 [00:00<00:00, 530.95it/s]               
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 339.24it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 389.40it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/99 [00:00<?, ?it/s][INFO] generate xmodel     : 42%|████▏     | 42/99 [00:00<00:00, 175.33it/s]                 [INFO] ge : 61%|██████    | 60/99 [00:00<00:00, 89.59it/s]                  [INFO] generate xmodel   | 99/99 [00:00<00:00, 159.89it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/unet2_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA0_B4096_MAX_BG2
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 191
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/unet2.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 33ea044d8c55bda87c4d27e935806c79, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+mv: cannot move './build/compile/unet2/unet2.xmodel' to './build/../target_zcu102/unet/v2/model/': No such file or directory
+cp: cannot create regular file './build/../target_zcu102/unet/v2/model/': No such file or directory
+
+##########################################################################
+COMPILE UNET XMODEL FILE WITH Vitis AI for ZCU104 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/unet2/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/unet2_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/build/quantize_results/unet2/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/107 [00:00<?, ?it/s][INFO] parse raw model     :100%|██████████| 107/107 [00:00<00:00, 19377.83it/s]             
+[INFO] infer shape (NHWC)  :  0%|          | 0/173 [00:00<?, ?it/s][INFO] infer shape (NHWC)  : 46%|████▌     | 79/173 [00:00<00:00, 781.89it/s]                [INFO] in  : 91%|█████████▏| 158/173 [00:00<00:00, 654.44it/s]               [INFO] infer shape (NHWC) ██| 173/173 [00:00<00:00, 529.70it/s]               
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s][INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 351.61it/s]                   
+[INFO] perform level-1 opt :  0%|          | 0/6 [00:00<?, ?it/s][INFO] perform level-1 opt :100%|██████████| 6/6 [00:00<00:00, 387.08it/s]                   
+[INFO] generate xmodel     :  0%|          | 0/99 [00:00<?, ?it/s][INFO] generate xmodel     : 42%|████▏     | 42/99 [00:00<00:00, 170.66it/s]                 [INFO] ge : 92%|█████████▏| 91/99 [00:00<00:00, 287.45it/s]                 [INFO] generate xmodel    | 99/99 [00:00<00:00, 284.09it/s]                 
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/unet2_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: function
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA0_B4096_MAX_BG2
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 191
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/unet2.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is d2ba59023adc41959307e344b448a69f, and has been saved to "/workspace/tutorials/VAI-KERAS-FCN8-SEMSEG/files/./build/compile/unet2/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+#####################################
+MAIN UNET FLOW COMPLETED
+#####################################

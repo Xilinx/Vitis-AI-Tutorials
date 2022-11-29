@@ -1,0 +1,609 @@
++ tar -xvf test.tar.gz
++ mv ./build/dataset1/ .
+mv: cannot move './build/dataset1/' to './dataset1': Directory not empty
++ rm -rf build
++ cd code
++ bash -x ./build_app.sh
+++ dirname ./build_app.sh
++ cd .
++ CXX=g++
+++ lsb_release -a
+++ grep 'Distributor ID'
+++ sed 's/^.*:\s*//'
++ os=petalinux
+++ lsb_release -a
+++ grep Release
+++ sed 's/^.*:\s*//'
++ os_version=2021.1
+++ uname -p
++ arch=aarch64
++ target_info=petalinux.2021.1.aarch64
++ install_prefix_default=/home/root/.local/petalinux.2021.1.aarch64
++ g++ --version
+g++ (GCC) 10.2.0
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ result=0
++ pkg-config --list-all
++ grep opencv4
+opencv4                             OpenCV - Open Source Computer Vision Library
++ result=1
++ '[' 1 -eq 1 ']'
+++ pkg-config --cflags --libs-only-L opencv4
++ OPENCV_FLAGS=-I/usr/include/opencv4
+++ basename /home/root/tutorials/fcn8/target_zcu102/code
++ name=code
++ [[ g++ == *\s\y\s\r\o\o\t* ]]
++ g++ -O2 -fno-inline -I. -I/home/root/.local/petalinux.2021.1.aarch64.Debug/include -I/home/root/.local/petalinux.2021.1.aarch64.Release/include -L/home/root/.local/petalinux.2021.1.aarch64.Debug/lib -L/home/root/.local/petalinux.2021.1.aarch64.Release/lib -Wl,-rpath=/home/root/.local/petalinux.2021.1.aarch64.Debug/lib -Wl,-rpath=/home/root/.local/petalinux.2021.1.aarch64.Release/lib -I/home/root/tutorials/fcn8/target_zcu102/code/common -o code -std=c++17 /home/root/tutorials/fcn8/target_zcu102/code/src/main_mt_int8.cc /home/root/tutorials/fcn8/target_zcu102/code/common/common.cpp -Wl,-rpath=/home/root/tutorials/fcn8/target_zcu102/code/lib -lvart-runner -I/usr/include/opencv4 -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -lglog -lxir -lunilog -lpthread
+/home/root/tutorials/fcn8/target_zcu102/code/src/main_mt_int8.cc: In function 'void runCNN(vart::Runner*, int8_t*, int8_t*)':
+/home/root/tutorials/fcn8/target_zcu102/code/src/main_mt_int8.cc:112:46: warning: 'virtual const std::vector<int> xir::Tensor::get_dims() const' is deprecated: Tensor::get_dims() will be removed in the future version. Please use the Tensor::get_shape() instead. [-Wdeprecated-declarations]
+  112 |   auto out_dims = outputTensors[0]->get_dims();
+      |                                              ^
+In file included from /usr/include/vart/mm/host_flat_tensor_buffer.hpp:21,
+                 from /home/root/tutorials/fcn8/target_zcu102/code/common/common.h:30,
+                 from /home/root/tutorials/fcn8/target_zcu102/code/src/main_mt_int8.cc:40:
+/usr/include/xir/tensor/tensor.hpp:135:7: note: declared here
+  135 |       get_dims() const = 0;
+      |       ^~~~~~~~
+/home/root/tutorials/fcn8/target_zcu102/code/src/main_mt_int8.cc:113:44: warning: 'virtual const std::vector<int> xir::Tensor::get_dims() const' is deprecated: Tensor::get_dims() will be removed in the future version. Please use the Tensor::get_shape() instead. [-Wdeprecated-declarations]
+  113 |   auto in_dims = inputTensors[0]->get_dims();
+      |                                            ^
+In file included from /usr/include/vart/mm/host_flat_tensor_buffer.hpp:21,
+                 from /home/root/tutorials/fcn8/target_zcu102/code/common/common.h:30,
+                 from /home/root/tutorials/fcn8/target_zcu102/code/src/main_mt_int8.cc:40:
+/usr/include/xir/tensor/tensor.hpp:135:7: note: declared here
+  135 |       get_dims() const = 0;
+      |       ^~~~~~~~
++ mv code ../run_cnn
++ bash -x ./build_get_dpu_fps.sh
+++ dirname ./build_get_dpu_fps.sh
++ cd .
++ CXX=g++
+++ lsb_release -a
+++ grep 'Distributor ID'
+++ sed 's/^.*:\s*//'
++ os=petalinux
+++ lsb_release -a
+++ grep Release
+++ sed 's/^.*:\s*//'
++ os_version=2021.1
+++ uname -p
++ arch=aarch64
++ target_info=petalinux.2021.1.aarch64
++ install_prefix_default=/home/root/.local/petalinux.2021.1.aarch64
++ g++ --version
+g++ (GCC) 10.2.0
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ result=0
++ pkg-config --list-all
++ grep opencv4
+opencv4                             OpenCV - Open Source Computer Vision Library
++ result=1
++ '[' 1 -eq 1 ']'
+++ pkg-config --cflags --libs-only-L opencv4
++ OPENCV_FLAGS=-I/usr/include/opencv4
+++ basename /home/root/tutorials/fcn8/target_zcu102/code
++ name=code
++ [[ g++ == *\s\y\s\r\o\o\t* ]]
++ g++ -O2 -fno-inline -I. -I/home/root/.local/petalinux.2021.1.aarch64.Debug/include -I/home/root/.local/petalinux.2021.1.aarch64.Release/include -L/home/root/.local/petalinux.2021.1.aarch64.Debug/lib -L/home/root/.local/petalinux.2021.1.aarch64.Release/lib -Wl,-rpath=/home/root/.local/petalinux.2021.1.aarch64.Debug/lib -Wl,-rpath=/home/root/.local/petalinux.2021.1.aarch64.Release/lib -I/home/root/tutorials/fcn8/target_zcu102/code/common -o code -std=c++17 /home/root/tutorials/fcn8/target_zcu102/code/src/get_dpu_fps.cc /home/root/tutorials/fcn8/target_zcu102/code/common/common.cpp -Wl,-rpath=/home/root/tutorials/fcn8/target_zcu102/code/lib -lvart-runner -I/usr/include/opencv4 -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -lglog -lxir -lunilog -lpthread
+/home/root/tutorials/fcn8/target_zcu102/code/src/get_dpu_fps.cc: In function 'void runDPU(vart::Runner*, int8_t*, int8_t*)':
+/home/root/tutorials/fcn8/target_zcu102/code/src/get_dpu_fps.cc:56:46: warning: 'virtual const std::vector<int> xir::Tensor::get_dims() const' is deprecated: Tensor::get_dims() will be removed in the future version. Please use the Tensor::get_shape() instead. [-Wdeprecated-declarations]
+   56 |   auto out_dims = outputTensors[0]->get_dims();
+      |                                              ^
+In file included from /usr/include/vart/mm/host_flat_tensor_buffer.hpp:21,
+                 from /home/root/tutorials/fcn8/target_zcu102/code/common/common.h:30,
+                 from /home/root/tutorials/fcn8/target_zcu102/code/src/get_dpu_fps.cc:40:
+/usr/include/xir/tensor/tensor.hpp:135:7: note: declared here
+  135 |       get_dims() const = 0;
+      |       ^~~~~~~~
+/home/root/tutorials/fcn8/target_zcu102/code/src/get_dpu_fps.cc:57:44: warning: 'virtual const std::vector<int> xir::Tensor::get_dims() const' is deprecated: Tensor::get_dims() will be removed in the future version. Please use the Tensor::get_shape() instead. [-Wdeprecated-declarations]
+   57 |   auto in_dims = inputTensors[0]->get_dims();
+      |                                            ^
+In file included from /usr/include/vart/mm/host_flat_tensor_buffer.hpp:21,
+                 from /home/root/tutorials/fcn8/target_zcu102/code/common/common.h:30,
+                 from /home/root/tutorials/fcn8/target_zcu102/code/src/get_dpu_fps.cc:40:
+/usr/include/xir/tensor/tensor.hpp:135:7: note: declared here
+  135 |       get_dims() const = 0;
+      |       ^~~~~~~~
++ mv code ../get_dpu_fps
++ cd ..
++ ./run_cnn ./fcn8/model/fcn8.xmodel ./dataset1/img_test/ 1 1
++ tee ./rpt/logfile_cpp_fcn8.txt
+./run_cnn ./fcn8/model/fcn8.xmodel ./dataset1/img_test/ 1 1 
+outSize  602112
+inSize   150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 1
+in_fixpos     6
+in_fix_scale  64
+inputt_scale  64
+out fix scale 4
+output_scale 0.25
+[average calibration high resolution clock] 0.0819us
+
+
+
+ max num of images to read 101
+
+ number of images per thread: 101
+
+
+[PREPROC  Time ] 1.38826e+06us
+
+
+
+
+[DPU tot Time ] 3.58409e+06us
+[DPU avg FPS  ] 28.1801
+
+
+
+ DOING POST PROCESSING
+
+
+
+[POSTPROC Time ] 1.2823e+06us
+
+
+[average FPS with pre- & post-processing ] 16.148us
+deleting imageInputs memory
+deleting FCResult    memory
+deleting imagesList  memory
++ mv out_000.png out_001.png out_002.png out_003.png ./png_fcn8/
++ ./run_cnn ./fcn8ups/model/fcn8ups.xmodel ./dataset1/img_test/ 1 1
++ tee ./rpt/logfile_cpp_fcn8ups.txt
+./run_cnn ./fcn8ups/model/fcn8ups.xmodel ./dataset1/img_test/ 1 1 
+outSize  602112
+inSize   150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 1
+in_fixpos     6
+in_fix_scale  64
+inputt_scale  64
+out fix scale 4
+output_scale 0.25
+[average calibration high resolution clock] 0.0816us
+
+
+
+ max num of images to read 101
+
+ number of images per thread: 101
+
+
+[PREPROC  Time ] 1.38453e+06us
+
+
+
+
+[DPU tot Time ] 3.27121e+06us
+[DPU avg FPS  ] 30.8754
+
+
+
+ DOING POST PROCESSING
+
+
+
+[POSTPROC Time ] 1.27897e+06us
+
+
+[average FPS with pre- & post-processing ] 17.0185us
+deleting imageInputs memory
+deleting FCResult    memory
+deleting imagesList  memory
++ mv out_000.png out_001.png out_002.png out_003.png ./png_fcn8ups/
++ ./run_cnn ./unet/v2/model/unet2.xmodel ./dataset1/img_test/ 1 1
++ tee ./rpt/logfile_cpp_unet2.txt
+./run_cnn ./unet/v2/model/unet2.xmodel ./dataset1/img_test/ 1 1 
+outSize  602112
+inSize   150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 1
+in_fixpos     6
+in_fix_scale  64
+inputt_scale  64
+out fix scale 2
+output_scale 0.5
+[average calibration high resolution clock] 0.0812us
+
+
+
+ max num of images to read 101
+
+ number of images per thread: 101
+
+
+[PREPROC  Time ] 1.3843e+06us
+
+
+
+
+[DPU tot Time ] 8.51574e+06us
+[DPU avg FPS  ] 11.8604
+
+
+
+ DOING POST PROCESSING
+
+
+
+[POSTPROC Time ] 1.27776e+06us
+
+
+[average FPS with pre- & post-processing ] 9.03577us
+deleting imageInputs memory
+deleting FCResult    memory
+deleting imagesList  memory
++ mv out_000.png out_001.png out_002.png out_003.png ./png_unet/
++ bash -x ./code/run_cnn_fps.sh
++ tee ./rpt/logfile_fps.txt
+ 
+ FCN8 fps
+ 
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 1 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.08165us
+
+
+
+ number of dummy images per thread: 1000
+
+ allocated 150528000 bytes for  input buffer 
+
+ allocated 602112000 bytes for output buffer 
+
+
+[DPU tot Time ] 3.5494e+07us
+[DPU avg Time ] 3.5494e+10us
+[DPU avg FPS  ] 28.1737
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 2 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.0802us
+
+
+
+ number of dummy images per thread: 500
+
+ allocated 150528000 bytes for  input buffer 
+
+ allocated 602112000 bytes for output buffer 
+
+
+[DPU tot Time ] 1.8642e+07us
+[DPU avg Time ] 1.8642e+10us
+[DPU avg FPS  ] 53.6422
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 3 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.0822us
+
+
+
+ number of dummy images per thread: 333
+
+ allocated 150377472 bytes for  input buffer 
+
+ allocated 601509888 bytes for output buffer 
+
+
+[DPU tot Time ] 1.53421e+07us
+[DPU avg Time ] 1.53575e+10us
+[DPU avg FPS  ] 65.1149
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 4 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.0804us
+
+
+
+ number of dummy images per thread: 250
+
+ allocated 150528000 bytes for  input buffer 
+
+ allocated 602112000 bytes for output buffer 
+
+
+[DPU tot Time ] 1.7369e+07us
+[DPU avg Time ] 1.7369e+10us
+[DPU avg FPS  ] 57.574
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 5 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.0804us
+
+
+
+ number of dummy images per thread: 200
+
+ allocated 150528000 bytes for  input buffer 
+
+ allocated 602112000 bytes for output buffer 
+
+
+[DPU tot Time ] 1.45487e+07us
+[DPU avg Time ] 1.45487e+10us
+[DPU avg FPS  ] 68.7345
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 6 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.08035us
+
+
+
+ number of dummy images per thread: 166
+
+ allocated 149925888 bytes for  input buffer 
+
+ allocated 599703552 bytes for output buffer 
+
+
+[DPU tot Time ] 1.49616e+07us
+[DPU avg Time ] 1.50217e+10us
+[DPU avg FPS  ] 66.5704
+
+
+deleting memory buffer
+ 
+ FCN8ups fps
+ 
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 1 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.0822us
+
+
+
+ number of dummy images per thread: 1000
+
+ allocated 150528000 bytes for  input buffer 
+
+ allocated 602112000 bytes for output buffer 
+
+
+[DPU tot Time ] 3.23694e+07us
+[DPU avg Time ] 3.23694e+10us
+[DPU avg FPS  ] 30.8934
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 2 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.08025us
+
+
+
+ number of dummy images per thread: 500
+
+ allocated 150528000 bytes for  input buffer 
+
+ allocated 602112000 bytes for output buffer 
+
+
+[DPU tot Time ] 1.64968e+07us
+[DPU avg Time ] 1.64968e+10us
+[DPU avg FPS  ] 60.618
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 3 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.08015us
+
+
+
+ number of dummy images per thread: 333
+
+ allocated 150377472 bytes for  input buffer 
+
+ allocated 601509888 bytes for output buffer 
+
+
+[DPU tot Time ] 1.21673e+07us
+[DPU avg Time ] 1.21795e+10us
+[DPU avg FPS  ] 82.1052
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 4 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.0829us
+
+
+
+ number of dummy images per thread: 250
+
+ allocated 150528000 bytes for  input buffer 
+
+ allocated 602112000 bytes for output buffer 
+
+
+[DPU tot Time ] 1.5759e+07us
+[DPU avg Time ] 1.5759e+10us
+[DPU avg FPS  ] 63.456
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 5 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.0804us
+
+
+
+ number of dummy images per thread: 200
+
+ allocated 150528000 bytes for  input buffer 
+
+ allocated 602112000 bytes for output buffer 
+
+
+[DPU tot Time ] 1.27968e+07us
+[DPU avg Time ] 1.27968e+10us
+[DPU avg FPS  ] 78.1448
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 6 1000 
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 1
+[average calibration high resolution clock] 0.10795us
+
+
+
+ number of dummy images per thread: 166
+
+ allocated 149925888 bytes for  input buffer 
+
+ allocated 599703552 bytes for output buffer 
+
+
+[DPU tot Time ] 1.17889e+07us
+[DPU avg Time ] 1.18362e+10us
+[DPU avg FPS  ] 84.4865
+
+
+deleting memory buffer
+ 
+ UNET  fps
+ 
+./get_dpu_fps ./unet/v2/model/unet.xmodel 1 1000 
+./get_dpu_fps ./unet/v2/model/unet.xmodel 2 1000 
+./get_dpu_fps ./unet/v2/model/unet.xmodel 3 1000 
+./get_dpu_fps ./unet/v2/model/unet.xmodel 4 1000 
+./get_dpu_fps ./unet/v2/model/unet.xmodel 5 1000 
+./get_dpu_fps ./unet/v2/model/unet.xmodel 6 1000 
++ rm -rf dataset1

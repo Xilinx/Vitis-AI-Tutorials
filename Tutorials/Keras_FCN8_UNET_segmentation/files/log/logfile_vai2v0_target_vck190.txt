@@ -1,0 +1,835 @@
+/**
+
+* © Copyright (C) 2016-2020 Xilinx, Inc
+*
+* Licensed under the Apache License, Version 2.0 (the "License"). You may
+* not use this file except in compliance with the License. A copy of the
+* License is located at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations
+* under the License.
+*/
+
+++ dirname ./build_app.sh
++ cd .
++ CXX=g++
+++ lsb_release -a
+++ sed 's/^.*:\s*//'
+++ grep 'Distributor ID'
++ os=petalinux
+++ lsb_release -a
+++ sed 's/^.*:\s*//'
+++ grep Release
++ os_version=2021.2
+++ uname -p
++ arch=aarch64
++ target_info=petalinux.2021.2.aarch64
++ install_prefix_default=/home/root/.local/petalinux.2021.2.aarch64
++ g++ --version
+g++ (GCC) 10.2.0
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ result=0
++ pkg-config --list-all
++ grep opencv4
+opencv4                             OpenCV - Open Source Computer Vision Library
++ result=1
++ '[' 1 -eq 1 ']'
+++ pkg-config --cflags --libs-only-L opencv4
++ OPENCV_FLAGS=-I/usr/include/opencv4
+++ basename /home/root/fcn8semseg/target_vck190/code
++ name=code
++ [[ g++ == *\s\y\s\r\o\o\t* ]]
++ g++ -O2 -fno-inline -I. -I/home/root/.local/petalinux.2021.2.aarch64.Debug/include -I/home/root/.local/petalinux.2021.2.aarch64.Release/include -L/home/root/.local/petalinux.2021.2.aarch64.Debug/lib -L/home/root/.local/petalinux.2021.2.aarch64.Release/lib -Wl,-rpath=/home/root/.local/petalinux.2021.2.aarch64.Debug/lib -Wl,-rpath=/home/root/.local/petalinux.2021.2.aarch64.Release/lib -I/home/root/fcn8semseg/target_vck190/code/common -o code -std=c++17 /home/root/fcn8semseg/target_vck190/code/src/main_mt_int8.cc /home/root/fcn8semseg/target_vck190/code/common/common.cpp -Wl,-rpath=/home/root/fcn8semseg/target_vck190/code/lib -lvart-runner -I/usr/include/opencv4 -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -lglog -lxir -lunilog -lpthread
+/home/root/fcn8semseg/target_vck190/code/src/main_mt_int8.cc: In function 'void runCNN(vart::Runner*, int8_t*, int8_t*)':
+/home/root/fcn8semseg/target_vck190/code/src/main_mt_int8.cc:112:46: warning: 'virtual const std::vector<int> xir::Tensor::get_dims() const' is deprecated: Tensor::get_dims() will be removed in the future version. Please use the Tensor::get_shape() instead. [-Wdeprecated-declarations]
+  112 |   auto out_dims = outputTensors[0]->get_dims();
+      |                                              ^
+In file included from /usr/include/vart/mm/host_flat_tensor_buffer.hpp:21,
+                 from /home/root/fcn8semseg/target_vck190/code/common/common.h:30,
+                 from /home/root/fcn8semseg/target_vck190/code/src/main_mt_int8.cc:40:
+/usr/include/xir/tensor/tensor.hpp:136:7: note: declared here
+  136 |       get_dims() const = 0;
+      |       ^~~~~~~~
+/home/root/fcn8semseg/target_vck190/code/src/main_mt_int8.cc:113:44: warning: 'virtual const std::vector<int> xir::Tensor::get_dims() const' is deprecated: Tensor::get_dims() will be removed in the future version. Please use the Tensor::get_shape() instead. [-Wdeprecated-declarations]
+  113 |   auto in_dims = inputTensors[0]->get_dims();
+      |                                            ^
+In file included from /usr/include/vart/mm/host_flat_tensor_buffer.hpp:21,
+                 from /home/root/fcn8semseg/target_vck190/code/common/common.h:30,
+                 from /home/root/fcn8semseg/target_vck190/code/src/main_mt_int8.cc:40:
+/usr/include/xir/tensor/tensor.hpp:136:7: note: declared here
+  136 |       get_dims() const = 0;
+      |       ^~~~~~~~
+++ dirname ./build_get_dpu_fps.sh
++ cd .
++ CXX=g++
+++ lsb_release -a
+++ sed 's/^.*:\s*//'
+++ grep 'Distributor ID'
++ os=petalinux
+++ lsb_release -a
+++ sed 's/^.*:\s*//'
+++ grep Release
++ os_version=2021.2
+++ uname -p
++ arch=aarch64
++ target_info=petalinux.2021.2.aarch64
++ install_prefix_default=/home/root/.local/petalinux.2021.2.aarch64
++ g++ --version
+g++ (GCC) 10.2.0
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ result=0
++ pkg-config --list-all
++ grep opencv4
+opencv4                             OpenCV - Open Source Computer Vision Library
++ result=1
++ '[' 1 -eq 1 ']'
+++ pkg-config --cflags --libs-only-L opencv4
++ OPENCV_FLAGS=-I/usr/include/opencv4
+++ basename /home/root/fcn8semseg/target_vck190/code
++ name=code
++ [[ g++ == *\s\y\s\r\o\o\t* ]]
++ g++ -O2 -fno-inline -I. -I/home/root/.local/petalinux.2021.2.aarch64.Debug/include -I/home/root/.local/petalinux.2021.2.aarch64.Release/include -L/home/root/.local/petalinux.2021.2.aarch64.Debug/lib -L/home/root/.local/petalinux.2021.2.aarch64.Release/lib -Wl,-rpath=/home/root/.local/petalinux.2021.2.aarch64.Debug/lib -Wl,-rpath=/home/root/.local/petalinux.2021.2.aarch64.Release/lib -I/home/root/fcn8semseg/target_vck190/code/common -o code -std=c++17 /home/root/fcn8semseg/target_vck190/code/src/get_dpu_fps.cc /home/root/fcn8semseg/target_vck190/code/common/common.cpp -Wl,-rpath=/home/root/fcn8semseg/target_vck190/code/lib -lvart-runner -I/usr/include/opencv4 -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -lglog -lxir -lunilog -lpthread
+/home/root/fcn8semseg/target_vck190/code/src/get_dpu_fps.cc: In function 'void runDPU(vart::Runner*, int8_t*, int8_t*)':
+/home/root/fcn8semseg/target_vck190/code/src/get_dpu_fps.cc:56:46: warning: 'virtual const std::vector<int> xir::Tensor::get_dims() const' is deprecated: Tensor::get_dims() will be removed in the future version. Please use the Tensor::get_shape() instead. [-Wdeprecated-declarations]
+   56 |   auto out_dims = outputTensors[0]->get_dims();
+      |                                              ^
+In file included from /usr/include/vart/mm/host_flat_tensor_buffer.hpp:21,
+                 from /home/root/fcn8semseg/target_vck190/code/common/common.h:30,
+                 from /home/root/fcn8semseg/target_vck190/code/src/get_dpu_fps.cc:40:
+/usr/include/xir/tensor/tensor.hpp:136:7: note: declared here
+  136 |       get_dims() const = 0;
+      |       ^~~~~~~~
+/home/root/fcn8semseg/target_vck190/code/src/get_dpu_fps.cc:57:44: warning: 'virtual const std::vector<int> xir::Tensor::get_dims() const' is deprecated: Tensor::get_dims() will be removed in the future version. Please use the Tensor::get_shape() instead. [-Wdeprecated-declarations]
+   57 |   auto in_dims = inputTensors[0]->get_dims();
+      |                                            ^
+In file included from /usr/include/vart/mm/host_flat_tensor_buffer.hpp:21,
+                 from /home/root/fcn8semseg/target_vck190/code/common/common.h:30,
+                 from /home/root/fcn8semseg/target_vck190/code/src/get_dpu_fps.cc:40:
+/usr/include/xir/tensor/tensor.hpp:136:7: note: declared here
+  136 |       get_dims() const = 0;
+      |       ^~~~~~~~
+./run_cnn ./fcn8/model/fcn8.xmodel ./dataset1/img_test/ 1 1 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize  602112
+inSize   150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 3
+in_fixpos     6
+in_fix_scale  64
+inputt_scale  64
+out fix scale 4
+output_scale 0.25
+[average calibration high resolution clock] 0.13355us
+
+
+
+ max num of images to read 101
+
+ number of images per thread: 99
+
+
+[PREPROC  Time ] 534583us
+
+
+inside RUN CNN 
+
+
+[DPU tot Time ] 280702us
+[DPU avg FPS  ] 352.687
+
+
+
+ DOING POST PROCESSING
+
+
+
+[POSTPROC Time ] 603991us
+
+
+[average FPS with pre- & post-processing ] 69.7539us
+deleting imageInputs memory
+deleting FCResult    memory
+deleting imagesList  memory
+mv: target './png_fcn8/' is not a directory
+./run_cnn ./fcn8ups/model/fcn8ups.xmodel ./dataset1/img_test/ 1 1 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize  602112
+inSize   150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 3
+in_fixpos     6
+in_fix_scale  64
+inputt_scale  64
+out fix scale 4
+output_scale 0.25
+[average calibration high resolution clock] 0.09us
+
+
+
+ max num of images to read 101
+
+ number of images per thread: 99
+
+
+[PREPROC  Time ] 533123us
+
+
+inside RUN CNN 
+
+
+[DPU tot Time ] 270982us
+[DPU avg FPS  ] 365.338
+
+
+
+ DOING POST PROCESSING
+
+
+
+[POSTPROC Time ] 587478us
+
+
+[average FPS with pre- & post-processing ] 71.142us
+deleting imageInputs memory
+deleting FCResult    memory
+deleting imagesList  memory
+mv: target './png_fcn8ups/' is not a directory
+./run_cnn ./unet/v2/model/unet2.xmodel ./dataset1/img_test/ 1 1 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize  602112
+inSize   150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 3
+in_fixpos     6
+in_fix_scale  64
+inputt_scale  64
+out fix scale 2
+output_scale 0.5
+[average calibration high resolution clock] 0.0844us
+
+
+
+ max num of images to read 101
+
+ number of images per thread: 99
+
+
+[PREPROC  Time ] 510413us
+
+
+inside RUN CNN 
+
+
+[DPU tot Time ] 616702us
+[DPU avg FPS  ] 160.531
+
+
+
+ DOING POST PROCESSING
+
+
+
+[POSTPROC Time ] 603711us
+
+
+[average FPS with pre- & post-processing ] 57.1981us
+deleting imageInputs memory
+deleting FCResult    memory
+deleting imagesList  memory
+mv: target './png_unet/' is not a directory
+ 
+ FCN8 fps
+ 
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 1 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.09125us
+
+
+
+ number of dummy images per thread: 999
+
+ allocated 150377472 bytes for  input buffer 
+
+ allocated 601509888 bytes for output buffer 
+
+
+[DPU tot Time ] 2.82218e+06us
+[DPU avg Time ] 2.82501e+09us
+[DPU avg FPS  ] 353.981
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 2 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.2155us
+
+
+
+ number of dummy images per thread: 498
+
+ allocated 149925888 bytes for  input buffer 
+
+ allocated 599703552 bytes for output buffer 
+
+
+[DPU tot Time ] 2.19261e+06us
+[DPU avg Time ] 2.20141e+09us
+[DPU avg FPS  ] 454.253
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 3 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.16115us
+
+
+
+ number of dummy images per thread: 333
+
+ allocated 150377472 bytes for  input buffer 
+
+ allocated 601509888 bytes for output buffer 
+
+
+[DPU tot Time ] 2.19869e+06us
+[DPU avg Time ] 2.20089e+09us
+[DPU avg FPS  ] 454.362
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 4 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.0803us
+
+
+
+ number of dummy images per thread: 249
+
+ allocated 149925888 bytes for  input buffer 
+
+ allocated 599703552 bytes for output buffer 
+
+
+[DPU tot Time ] 2.19058e+06us
+[DPU avg Time ] 2.19938e+09us
+[DPU avg FPS  ] 454.674
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 5 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.1387us
+
+
+
+ number of dummy images per thread: 198
+
+ allocated 149022720 bytes for  input buffer 
+
+ allocated 596090880 bytes for output buffer 
+
+
+[DPU tot Time ] 2.17938e+06us
+[DPU avg Time ] 2.2014e+09us
+[DPU avg FPS  ] 454.257
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 6 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.18475us
+
+
+
+ number of dummy images per thread: 165
+
+ allocated 149022720 bytes for  input buffer 
+
+ allocated 596090880 bytes for output buffer 
+
+
+[DPU tot Time ] 2.1796e+06us
+[DPU avg Time ] 2.20162e+09us
+[DPU avg FPS  ] 454.212
+
+
+deleting memory buffer
+ 
+ FCN8ups fps
+ 
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 1 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.21655us
+
+
+
+ number of dummy images per thread: 999
+
+ allocated 150377472 bytes for  input buffer 
+
+ allocated 601509888 bytes for output buffer 
+
+
+[DPU tot Time ] 2.69242e+06us
+[DPU avg Time ] 2.69511e+09us
+[DPU avg FPS  ] 371.042
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 2 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.14495us
+
+
+
+ number of dummy images per thread: 498
+
+ allocated 149925888 bytes for  input buffer 
+
+ allocated 599703552 bytes for output buffer 
+
+
+[DPU tot Time ] 2.0637e+06us
+[DPU avg Time ] 2.07199e+09us
+[DPU avg FPS  ] 482.627
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 3 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.0955us
+
+
+
+ number of dummy images per thread: 333
+
+ allocated 150377472 bytes for  input buffer 
+
+ allocated 601509888 bytes for output buffer 
+
+
+[DPU tot Time ] 2.06915e+06us
+[DPU avg Time ] 2.07122e+09us
+[DPU avg FPS  ] 482.807
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 4 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.08025us
+
+
+
+ number of dummy images per thread: 249
+
+ allocated 149925888 bytes for  input buffer 
+
+ allocated 599703552 bytes for output buffer 
+
+
+[DPU tot Time ] 2.06291e+06us
+[DPU avg Time ] 2.07119e+09us
+[DPU avg FPS  ] 482.813
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 5 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.08995us
+
+
+
+ number of dummy images per thread: 198
+
+ allocated 149022720 bytes for  input buffer 
+
+ allocated 596090880 bytes for output buffer 
+
+
+[DPU tot Time ] 2.05156e+06us
+[DPU avg Time ] 2.07228e+09us
+[DPU avg FPS  ] 482.56
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 6 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.09575us
+
+
+
+ number of dummy images per thread: 165
+
+ allocated 149022720 bytes for  input buffer 
+
+ allocated 596090880 bytes for output buffer 
+
+
+[DPU tot Time ] 2.05098e+06us
+[DPU avg Time ] 2.07169e+09us
+[DPU avg FPS  ] 482.697
+
+
+deleting memory buffer
+ 
+ UNET  fps
+ 
+./get_dpu_fps ./unet/v2/model/unet2.xmodel 1 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.5
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.10435us
+
+
+
+ number of dummy images per thread: 999
+
+ allocated 150377472 bytes for  input buffer 
+
+ allocated 601509888 bytes for output buffer 
+
+
+[DPU tot Time ] 6.2396e+06us
+[DPU avg Time ] 6.24585e+09us
+[DPU avg FPS  ] 160.106
+
+
+deleting memory buffer
+./get_dpu_fps ./unet/v2/model/unet2.xmodel 2 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.5
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.1926us
+
+
+
+ number of dummy images per thread: 498
+
+ allocated 149925888 bytes for  input buffer 
+
+ allocated 599703552 bytes for output buffer 
+
+
+[DPU tot Time ] 5.57292e+06us
+[DPU avg Time ] 5.59531e+09us
+[DPU avg FPS  ] 178.721
+
+
+deleting memory buffer
+./get_dpu_fps ./unet/v2/model/unet2.xmodel 3 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.5
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.0802us
+
+
+
+ number of dummy images per thread: 333
+
+ allocated 150377472 bytes for  input buffer 
+
+ allocated 601509888 bytes for output buffer 
+
+
+[DPU tot Time ] 5.58886e+06us
+[DPU avg Time ] 5.59446e+09us
+[DPU avg FPS  ] 178.748
+
+
+deleting memory buffer
+./get_dpu_fps ./unet/v2/model/unet2.xmodel 4 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.5
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.1121us
+
+
+
+ number of dummy images per thread: 249
+
+ allocated 149925888 bytes for  input buffer 
+
+ allocated 599703552 bytes for output buffer 
+
+
+[DPU tot Time ] 5.57327e+06us
+[DPU avg Time ] 5.59566e+09us
+[DPU avg FPS  ] 178.71
+
+
+deleting memory buffer
+./get_dpu_fps ./unet/v2/model/unet2.xmodel 5 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.5
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.0901us
+
+
+
+ number of dummy images per thread: 198
+
+ allocated 149022720 bytes for  input buffer 
+
+ allocated 596090880 bytes for output buffer 
+
+
+[DPU tot Time ] 5.54143e+06us
+[DPU avg Time ] 5.5974e+09us
+[DPU avg FPS  ] 178.654
+
+
+deleting memory buffer
+./get_dpu_fps ./unet/v2/model/unet2.xmodel 6 1000 
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.5
+# classes 12
+batchSize 3
+[average calibration high resolution clock] 0.1822us
+
+
+
+ number of dummy images per thread: 165
+
+ allocated 149022720 bytes for  input buffer 
+
+ allocated 596090880 bytes for output buffer 
+
+
+[DPU tot Time ] 5.54039e+06us
+[DPU avg Time ] 5.59635e+09us
+[DPU avg FPS  ] 178.688
+
+
+deleting memory buffer

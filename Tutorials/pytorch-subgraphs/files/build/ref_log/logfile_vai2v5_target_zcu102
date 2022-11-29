@@ -1,0 +1,95 @@
+'''
+ Copyright 2021 Xilinx Inc.
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+     http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+'''
+
+RUNNING IN DEBUG MODE
+
+Command line options:
+ --images_dir :  ../test_images
+ --model      :  CNN_int_zcu102.xmodel
+
+
+Found 2000 images - processing 2000 of them
+dpu_subgraph0 = subgraph_CNN__input_0
+dpu_subgraph1 = subgraph_CNN__CNN_Conv2d_conv1__201
+dpu_subgraph3 = subgraph_CNN__CNN_Conv2d_conv2__235
+dpu_subgraph5 = subgraph_CNN__CNN_Linear_fc1__255(TransferMatMulToConv2d)
+dpu_subgraph7 = subgraph_CNN__CNN_Linear_fc2__257(TransferMatMulToConv2d)
+Start DPU DEBUG with 1 input image
+ inputTensor1
+ [<xir.Tensor named 'CNN__input_0_fix'>]
+outputTensor1
+ [<xir.Tensor named 'CNN__CNN_Conv2d_conv1__201_fix'>]
+ inputTensor3
+ [<xir.Tensor named 'CNN__CNN_Tanh_act1__202_fix'>]
+outputTensor3
+ [<xir.Tensor named 'CNN__CNN_Conv2d_conv2__235_fix'>]
+ inputTensor5
+ [<xir.Tensor named 'CNN__CNN_Sigmoid_act2__236_fix'>]
+outputTensor5
+ [<xir.Tensor named 'CNN__CNN_Linear_fc1__255_fix'>]
+ inputTensor7
+ [<xir.Tensor named 'CNN__CNN_Sigmoid_act3__input_fix_reshaped_inserted_fix_3'>]
+outputTensor7
+ [<xir.Tensor named 'CNN__CNN_Linear_fc2__257_fix'>]
+ input_1_ndim:  (1, 32, 32, 3)
+output_1_ndim:  (1, 32, 32, 16)
+ input_3_ndim:  (1, 32, 32, 16)
+output_3_ndim:  (1, 16, 16, 8)
+ input_5_ndim:  (1, 16, 16, 8)
+output_5_ndim:  (1, 32)
+ input_7_ndim:  (1, 4, 4, 2)
+output_7_ndim:  (1, 2)
+ inputTensor1={name: 'CNN__input_0_fix', shape: [1, 32, 32, 3], type: 'xint8', attrs: {'location': 1, 'ddr_addr': 112, 'round_mode': 'DPU_ROUND', 'bit_width': 8, 'reg_id': 2, 'fix_point': 6, 'if_signed': True}}
+
+outputTensor1={name: 'CNN__CNN_Conv2d_conv1__201_fix', shape: [1, 32, 32, 16], type: 'xint8', attrs: {'location': 1, 'ddr_addr': 0, 'if_signed': True, 'reg_id': 3, 'fix_point': 4, 'bit_width': 8, 'round_mode': 'DPU_ROUND'}}
+
+ inputTensor3={name: 'CNN__CNN_Tanh_act1__202_fix', shape: [1, 32, 32, 16], type: 'xint8', attrs: {'location': 1, 'ddr_addr': 0, 'reg_id': 2, 'fix_point': 7, 'round_mode': 'DPU_ROUND', 'bit_width': 8, 'if_signed': True}}
+
+outputTensor3={name: 'CNN__CNN_Conv2d_conv2__235_fix', shape: [1, 16, 16, 8], type: 'xint8', attrs: {'location': 1, 'ddr_addr': 0, 'if_signed': True, 'reg_id': 3, 'fix_point': 4, 'round_mode': 'DPU_ROUND', 'bit_width': 8}}
+
+ inputTensor5={name: 'CNN__CNN_Sigmoid_act2__236_fix', shape: [1, 16, 16, 8], type: 'xint8', attrs: {'location': 1, 'ddr_addr': 0, 'reg_id': 2, 'fix_point': 7, 'if_signed': True, 'round_mode': 'DPU_ROUND', 'bit_width': 8}}
+
+outputTensor5={name: 'CNN__CNN_Linear_fc1__255_fix', shape: [1, 32], type: 'xint8', attrs: {'location': 1, 'ddr_addr': 0, 'reg_id': 3, 'fix_point': 6, 'if_signed': True, 'round_mode': 'DPU_ROUND', 'bit_width': 8}}
+
+ inputTensor7={name: 'CNN__CNN_Sigmoid_act3__input_fix_reshaped_inserted_fix_3', shape: [1, 4, 4, 2], type: 'xint8', attrs: {'location': 1, 'ddr_addr': 0, 'bit_width': 8, 'round_mode': 'DPU_ROUND', 'if_signed': True, 'reg_id': 2, 'fix_point': 7}}
+
+outputTensor7={name: 'CNN__CNN_Linear_fc2__257_fix', shape: [1, 2], type: 'xint8', attrs: {'location': 1, 'ddr_addr': 0, 'reg_id': 3, 'fix_point': 5, 'if_signed': True, 'round_mode': 'DPU_ROUND', 'bit_width': 8}}
+
+TANH inp shape  (1, 32, 32, 16)
+out2 shape  (1, 32, 32, 16)
+SIGM1 inp shape  (1, 16, 16, 8)
+out4 shape  (1, 16, 16, 8)
+SIGM2 inp shape  (1, 32)
+out6 shape  (1, 32)
+cnn_out shape  (1, 2)
+DEBUG DONE
+
+
+
+RUNNING IN NORMAL MODE
+
+
+
+Command line options:
+ --images_dir :  ../test_images
+ --model      :  CNN_int_zcu102.xmodel
+
+
+Found 2000 images - processing 2000 of them
+Pre-processing  2000  images
+run DPU
+
+FPS=177.03, total frames = 2000 , time=11.2976 seconds
+
+Post-processing
+Correct:  1544  Wrong:  456  Accuracy:  0.772
