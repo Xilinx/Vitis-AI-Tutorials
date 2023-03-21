@@ -18,8 +18,7 @@ limitations under the License.
 """
 
 """
-Author:    Daniele Bagni & Jon Cory
-date:      20 June 2022
+date:      20 Mar 2023
 """
 
 from ctypes import *
@@ -115,33 +114,6 @@ def Linear(xx):
     if DEBUG:
         np.save('cnn_out.bin', y)
     return y
-
-"""
-# yet to be checked
-def LeakyReLU(K, x):
-    data = np.asarray( x, dtype="float32" )
-    print("LKRE inp shape ", data.shape)
-    size  = data[0].size
-    shape = data[0].shape
-    d = data[0].reshape([1, size])
-    print("LKRE inp: ", d)
-    pos_index = (d >= 0);
-    neg_index = (d <  0); Linear(out6)
-    coef = np.float32(K)
-    y_n = d[np.ix_(neg_index)]*coef
-    y_p = d[np.ix_(pos_index)]
-    y = [y_n, y_p]
-    print("LKRE out: ", y)
-    x[0] = y.reshape([shape])
-    return x
-"""
-
-def fix2float(fix_point, value):
-    return value.astype(np.float32) * np.exp2(fix_point, dtype=np.float32)
-
-
-def float2fix(fix_point, value):
-    return value.astype(np.float32) / np.exp2(fix_point, dtype=np.float32)
 
 
 def execute_async(dpu, tensor_buffers_dict):
