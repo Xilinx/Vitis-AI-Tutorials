@@ -27,15 +27,11 @@ Author: Daniele Bagni, Xilinx Inc
 </table>
 </div>
 
-### Current status
 
-1. Tested with PyTorch 1.7.1 within [Vitis AI 2.0](https://github.com/Xilinx/Vitis-AI/tree/v2.0) on an Ubuntu 18.04.5 Desktop PC and tested in hardware on VCK190 Production board (``xilinx-vck190-dpu-v2021.2-v2.2.0.img.gz``) and ZCU102 board (``xilinx-zcu102-dpu-v2021.2-v2.0.0.img.gz``) both from the Vitis AI 2.0.
+- Version:      Vitis AI 2.5
+- Support:      ZCU102
+- Last update:  21 Mar. 2023
 
-1. Tested with PyTorch 1.7.1 within [Vitis AI 2.5](https://github.com/Xilinx/Vitis-AI) on an Ubuntu 18.04.5 Desktop PC and tested in hardware on VCK190 Production board (``xilinx-vck190-dpu-v2022.1-v2.5.0.img.gz``) and ZCU102 board (``xilinx-zcu102-dpu-v2022.1-v2.5.0.img.gz``) both from the Vitis AI 2.5.
-
-
-
-#### Date: 20 June 2022
 
 
 
