@@ -1,48 +1,61 @@
-﻿<!--
-Copyright 2021 Xilinx Inc.
+<!--
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+SPDX-License-Identifier: MIT
 
 Author: Daniele Bagni, Xilinx Inc
+date:  28 Apr. 2023
+
 -->
 
 
-
-<div style="page-break-after: always;"></div>
-<table style="width:100%">
-  <tr>
-    <th width="100%" colspan="6"><img src="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/xilinx-logo.png" width="30%"/><h1> Partitioning Vitis AI SubGraphs on CPU/DPU </h1>
-</th>
-  </tr>
+<table class="sphinxhide" width="100%">
+ <tr width="100%">
+    <td align="center"><img src="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/xilinx-logo.png" width="30%"/><h1>Vitis™ AI Tutorials</h1>
+    </td>
+ </tr>
 </table>
-</div>
+
+# Partitioning Vitis AI SubGraphs on CPU/DPU </h1>
 
 
-- Version:      Vitis AI 2.5
-- Support:      ZCU102
-- Last update:  21 Mar. 2023
+- Version:      Vitis AI 3.0 with Pytorch 1.12.1
+- Support:      ZCU102, ZCU104, VCK190, VEK280 boards
+- Last update:  28 Apr. 2023
+
+
+## Table of Contents
+
+[1 Introduction](#1-introduction)
+
+[2 Prerequisites](#2-prerequisites)
+
+[3 The Docker Tools Image](#3-the-docker-tools-image)
+
+[4 DPU and CPU SubGraphs of the CNN](#4-dpu-and-cpu-subgraphs-of-the-cnn)
+
+[5 Target Application](#5-target-application)
+
+[6 Functional Debug](#6-functional-debug)
+
+[7 Run Predictions](#7-run-predictions)
+
+[Appendix](#appendix)
+
+[License](#license)
 
 
 
 
-# 1 Introduction
+
+## 1 Introduction
 
 In this Deep Learning (DL) tutorial, you will learn how to deploy a CNN on
 either the [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html) or [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html) Xilinx&reg; board using Vitis&trade; AI, which is a set of
 optimized IP, tools libraries, models and example designs valid for AI inference on both Xilinx edge devices
-and [Alveo](https://www.xilinx.com/products/boards-and-kits/alveo.html) cards.
+and [Alveo&trade;](https://www.xilinx.com/products/boards-and-kits/alveo.html) cards.
 
-The Vitis AI deployment process requires to quantize the floating point CNN model into INT8 (8-bit) fixed point and then compile the application and run it on the
+The Vitis AI deployment process requires to quantize the floating point CNN model into INT8 (signed 8-bit) fixed point and then compile the application and run it on the
 embedded system composed by the Deep Processor Unit (DPU) and the ARM CPU of the target board.
 In particular the VCK190 board applies the DPUCVDX8G IP soft core.
 
@@ -60,28 +73,26 @@ This repository is organized in the following folders:
 
 
 
-# 2 Prerequisites
+## 2 Prerequisites
 
-- Ubuntu 18.04.5 host PC and PyTorch 1.7.1 within either [Vitis AI 2.0](https://github.com/Xilinx/Vitis-AI/tree/v2.0) or [Vitis AI 2.5](https://github.com/Xilinx/Vitis-AI).
+- Ubuntu 18.04.5 host PC and PyTorch 1.12.1 within [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI).
 
-- The entire repository of either [Vitis AI 2.0](https://github.com/Xilinx/Vitis-AI/tree/v2.0) or [Vitis AI 2.5](https://github.com/Xilinx/Vitis-AI) stack from [www.github.com/Xilinx](https://www.github.com/Xilinx).
+- The entire GitHub repository of [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI) stack from [www.github.com/Xilinx](https://www.github.com/Xilinx).
 
--  Accurate reading of [Vitis AI User Guide](https://docs.xilinx.com/v/u/en-US/ug1431-vitis-ai-documentation). In particular, pay attention to:
+-  Accurate reading of [Vitis AI User Guide](https://docs.xilinx.com/v/u/en-US/ug1431-vitis-ai-documentation). In particular, pay attention to the procedures about:
 
-    1. DPU naming and guidelines to download the tools container available from [docker hub](https://hub.docker.com/r/xilinx/vitis-ai/tags) and the Runtime Package for edge (MPSoC) devices.
+  1. [Installing and Setting up the Host and the  Target](https://docs.xilinx.com/r/en-US/ug1414-vitis-ai/Installation-and-Setup);
 
-    2. Installation and Setup instructions for both host and target, it is recommended you build a GPU-based docker image.
+  2. deploying (first quantization and then compilaition) the CNN model;
 
-    3. Quantizing and compiling the CNN model.
+  3. programming the ARM CPU with VART APIs.
 
-    4. Programming with VART APIs.
-
-    5. Setting Up the Target boards as described either in [Step2: Setup the Target (Vitis AI 2.0)](https://github.com/Xilinx/Vitis-AI/tree/v2.0/setup/mpsoc/VART#step2-setup-the-target) or [Step2: Setup the Target (Vitis AI 2.5)](https://github.com/Xilinx/Vitis-AI/tree/master/setup/mpsoc#step2-setup-the-target).  
 
 - A Vitis AI target board such as either:
     - [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html), or
-    - [ZCU104](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu104-g.html), or
-    - [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html).
+    - [VCK190](https://www.xilinx.com/products/boards-and-kits/vck190.html), or
+    - [ZCU104](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu104-g.html).
+
 
 - [GNU Octave](https://www.gnu.org/software/octave/index) just to launch the only ``*.m`` script in this repository (alternatively to it [MATLAB](https://uk.mathworks.com/products/matlab.html)).
 
@@ -90,7 +101,7 @@ This repository is organized in the following folders:
 - Familiarity with Deep Learning principles.
 
 
-### Dos-to-Unix Conversion
+### 2.1 Dos-to-Unix Conversion
 
 In case you might get some strange errors during the execution of the scripts, you have to pre-process -just once- all the``*.sh`` shell and the python ``*.py`` scripts with the [dos2unix](http://archive.ubuntu.com/ubuntu/pool/universe/d/dos2unix/dos2unix_6.0.4.orig.tar.gz) utility.
 In that case run the following commands from your Ubuntu host PC (out of the Vitis AI docker images):
@@ -102,45 +113,23 @@ for file in $(find . -name "*.sh"); do
 done
 ```
 
-### Working Directory
+### 2.2 Working Directory
 
 In the following of this document it is assumed you have installed Vitis AI somewhere in your file system and this will be your working directory ``<WRK_DIR>``, for example in my case ``<WRK_DIR>`` is set to
-``~/ML/VAI2.0``.  You have also created a folder named ``tutorials`` under such ``<WRK_DIR>`` and you have copied this tutorial there and renamed it ``VAI-SUBGRAPHS``:
+``/media/danieleb/DATA/VAI3.0``.  You have also created a folder named ``tutorials`` under such ``<WRK_DIR>`` and you have copied this tutorial there and renamed it ``VAI-SUBGRAPHS``:
 
 ```text
-VAI2.0  # your WRK_DIR
-   ├── data
-   ├── demo
-   ├── docs
-   ├── dsa
-   ├── examples
-   ├── external
-   ├── models
-   ├── setup
-   ├── tools
-   └── tutorials      # created by you
-       ├── VAI-KERAS-CUSTOM-GOOGLENET-RESNET
-       ├── VAI-KERAS-FCN8-SEMSEG
-       ├── VAI-SUBGRAPHS # this repo
-           ├── files
-               ├── application
-               ├── build
-                   ├── ref_log
-               ├── doc
-```  
-
-In case of Vitis-AI 2.5:
-
-```text
- VAI2.5
-  ├── docker
-  ├── docs
-  ├── examples
-  ├── model_zoo
-  ├── reference_design
-  ├── setup
-  ├── src
-  ├── third_party
+VAI3.0  # your WRK_DIR
+ ├── board_setup
+ ├── demos
+ ├── docker
+ ├── docs
+ ├── docsrc
+ ├── dpu
+ ├── examples
+ ├── model_zoo
+ ├── src
+ ├── third_party
   └── tutorials # created by you
       ├── VAI-KERAS-CUSTOM-GOOGLENET-RESNET
       ├── VAI-KERAS-FCN8-SEMSEG
@@ -154,53 +143,11 @@ In case of Vitis-AI 2.5:
 
 Note that for your comfort the reference log files for each step of the flow are placed in the [ref_log](files/build/ref_log) folder.  
 
-## 2.1 From Vitis-AI 2.0 to 2.5
-
-There are only two differences when running this tutorial on either Vitis AI 2.0 or 2.5:
-
-  1. you have to replace the following lines in the application [main_subgraphs.py](files/application/main_subgraphs.py):
-  ```
-  execute_async(
-      dpu_1, {
-          "CNN__input_0_fix": img_org,
-          #"CNN__CNN_Conv2d_conv1__213_fix": out1 # Vitis_AI 2.0
-          "CNN__CNN_Conv2d_conv1__201_fix": out1 # Vitis_AI 2.5
-      })
-      ...
-  # run DPU
-  execute_async(
-      dpu_3, {
-          #"CNN__CNN_Tanh_act1__214_fix": out2,   # Vitis_AI 2.0
-          "CNN__CNN_Tanh_act1__202_fix": out2,    # Vitis_AI 2.5
-          #"CNN__CNN_Conv2d_conv2__247_fix": out3 # Vitis_AI 2.0
-          "CNN__CNN_Conv2d_conv2__235_fix": out3  # Vitis_AI 2.5
-      })
-  ...
-  # run DPU
-  execute_async(
-      dpu_5, {
-          #"CNN__CNN_Sigmoid_act2__248_fix": out4, # Vitis_AI 2.0
-          "CNN__CNN_Sigmoid_act2__236_fix": out4,  # Vitis_AI 2.5
-          #"CNN__CNN_Linear_fc1__270_fix":   out5  # Vitis_AI 2.0
-          "CNN__CNN_Linear_fc1__255_fix":   out5   # Vitis_AI 2.0      
-      })
-  ...
-  #cnn_out = Linear(out6)
-  execute_async(
-      dpu_7, {
-          "CNN__CNN_Sigmoid_act3__input_fix_reshaped_inserted_fix_3": out6,
-           #"CNN__CNN_Linear_fc2__275_fix":   out7 # Vitis_AI 2.0
-          "CNN__CNN_Linear_fc2__257_fix":   out7   # Vitis_AI 2.5
-      })
-  ```
-  2. release 2.5 does not need any patch to be applied as the release 2.0 (see [run_all.sh](files/run_all.sh)).
-
-
-# 3 The Docker Tools Image
+## 3 The Docker Tools Image
 
 You have to know few things about [Docker](https://docs.docker.com/) in order to run the Vitis AI smoothly on your host environment.
 
-## 3.1 Installing Docker Client/Server
+### 3.1 Installing Docker Client/Server
 
 To [install docker client/server](https://docs.docker.com/engine/install/ubuntu/)  for Ubuntu, execute the following commands:
 
@@ -248,7 +195,7 @@ Server: Docker Engine - Community
   GitCommit:        de40ad0
 ```
 
-## 3.2 Build the Docker GPU Image
+### 3.2 Build the Docker GPU Image
 
 Download the [Vitis AI](https://github.com/Xilinx/Vitis-AI) and execute the [docker_build_gpu.sh](https://github.com/Xilinx/Vitis-AI/tree/master/setup/docker/docker_build_gpu.sh) script.
 
@@ -267,7 +214,7 @@ Note that docker does not have an automatic garbage collection system as of now.
 docker rmi -f $(docker images -f "dangling=true" -q)
 ```
 
-## 3.3 Launch the Docker Image
+### 3.3 Launch the Docker Image
 
 To launch the docker container with Vitis AI tools, execute the following commands from the ``<WRK_DIR>`` folder:
 
@@ -286,7 +233,7 @@ The docker container does not have any graphic editor, so it is recommended that
 
 
 
-## 3.4 Install Packages  on the Vitis AI Tools Container  
+### 3.4 Install Packages  on the Vitis AI Tools Container  
 
 This tutorial requires also some packages that were not included in the original Vitis AI tools container.
 Following the previous commands, here are the further commands to include such packages:
@@ -299,7 +246,7 @@ exit # to exit from root
 conda activate vitis-ai-pytorch # as normal user, enter into Vitis AI TF (anaconda-based) virtual environment
 ```
 
-## 3.5 Save Permanently The Changes Done on the Docker Image   
+### 3.5 Save Permanently The Changes Done on the Docker Image   
 
 Note that if you exit from the current Docker Vitis AI tools image you will lose all the installed packages, so to save all changes in a new docker image open a new terminal and run the following commands:
 
@@ -320,7 +267,7 @@ sudo docker commit -m"comment" 7c9927375b06 xilinx/vitis-ai-gpu:latest
 
 
 
-# 4 DPU and CPU SubGraphs of the CNN
+## 4 DPU and CPU SubGraphs of the CNN
 
 The CNN model pytorch description is placed in the file [common.py](files/common.py), there are nine layers:
 
@@ -402,7 +349,7 @@ The same information more or less can be found also in the text file [cnn_int8_s
 *Figure 1: CNN block diagram with nine subgraphs (Vitis-AI 2.0).*
 
 
-# 5 Target Application
+## 5 Target Application
 
 The python application running on the target board is in the [main_subgraphs.py](files/application/main_subgraphs.py) file, such application mirrors what illustrated in the  [cnn_int8_xmodel.png](files/doc/images/cnn_int8_xmodel.png) block diagram of the DPU/CPU subgraphs (or alternatively in [cnn_int8_subgraph_tree.txt](files/doc/images/cnn_int8_subgraph_tree.txt)),
 in particular for what concerns the names of input and output tensors.
@@ -469,45 +416,8 @@ The  subgraphs running on the ARM CPU are: ``Tanh()``, ``Sigmoid1()`` and ``Sigm
 
 **The output of each DPU subgraph is copied as input tensor to the next CPU subgraph. Be very careful with the names of the tensors, there must be no mismatches at all.**
 
-Note that the size of the output buffers was set accordingly to [cnn_int8_subgraph_tree.txt](files/doc/images/cnn_int8_subgraph_tree.txt) as illustrated in the following code fragment:
 
-```python
-...
-outputTensor_1 = dpu_1.get_output_tensors()
-...
-output_1_ndim = tuple(outputTensor_1[0].dims)
-...
-out1 = np.zeros(output_1_ndim, dtype='float32')
-...
-```
-
-If you set the output format for ``float32``, you do not need to convert from ``int8`` to ``float32``, because ``VART`` APIs will do it automatically. But if you write:
-
-```python
-out1 = np.zeros(output_1_ndim, dtype=‘int8’)
-```
-as opposed to:
-
-```python
-out1 = np.zeros(output_1_ndim, dtype='float32')
-```
-then you would need to manually convert the data from ``int8`` to ``float32`` with code similar to this one:
-
-```python
-fix_points = [ -1 * t.get_attr('fix_point') for t in dpu_1.get_output_tensors() ]
-print("fix_points dpu1={}".format(fix_points))
-scales = np.exp2(fix_points, dtype=np.float32)
-print("scales dpu1={}".format(scales))
-print("\n".join([t.name for t in dpu_1.get_input_tensors()]))
-print("\n".join([t.name for t in dpu_1.get_output_tensors()]))
-o1_cvrt = fix2float(fix_points[0], out1)
-print("output1 tensor={}".format(outputTensor_1[0]))
-print("output1 converted: \n")
-print(o1_cvrt)
-```
-
-
-# 6 Functional Debug
+## 6 Functional Debug
 
 To check the correct functional behavior of the CPU/DPU subgraphs partitioning at run-time on the board, you have to save the tensors passed between the CPU and DPU (at runtime) and compare them numerically with what simulated on the host environment (offline). All those tensors are saved and then compared in 32-bit floating point accuracy, for ease of use.
 
@@ -657,7 +567,7 @@ Note that in the [main_subgraphs.py](files/build/target/application/main_subgrap
 
 
 
-## 6.1 Inspect Tensors with XIR APIs
+### 6.1 Inspect Tensors with XIR APIs
 
 Running the following fragment of python application code (from [main_subgraphs.py](files/build/target/application/main_subgraphs.py) file) on the target:
 ```python
@@ -710,7 +620,7 @@ attrs: {'location': 1, 'ddr_addr': 0, 'bit_width': 8, 'round_mode': 'DPU_ROUND',
 ```
 
 
-## 6.2 Check Numerical Results
+### 6.2 Check Numerical Results
 
 Figures 3 to 15 illustrate the small numerical differences between the results computed by the CNN model running on the host PC in floating point (files named ``ref_*.csv``) and the results computed by the DPU/CPU  partitioning on the target board (same ``*.csv`` file names without the prefix ``ref_``).  Since this last one computation is a mix of floating point (ARM CPU) and fixed point (DPU), the difference is really small and as expected.
 
@@ -770,10 +680,10 @@ Note that although the [run_debug.m](files/application/run_debug.m) script check
 *Figure 14:  tensor output from second Sigmoid layer, float32 (black) int8 (green) and their difference (red)*
 
 
-# 7 Run Predictions
+## 7 Run Predictions
 
 
-## 7.1 ZCU102
+### 7.1 ZCU102
 
 To run predictions on the target board, you have to set in the python code the following variable:
 
@@ -804,7 +714,7 @@ Post-processing
 Correct:  1512  Wrong:  488  Accuracy:  0.756
 ```
 
-## 7.2 ZCU104
+### 7.2 ZCU104
 
 Similarly to the ZCU102 case, you have to execute the following command lines on ZCU104 board:
 
@@ -832,7 +742,7 @@ Correct:  1552  Wrong:  448  Accuracy:  0.776
 ```
 
 
-## 7.3 VCK190 Production
+### 7.3 VCK190 Production
 
 Similarly to the ZCU102 case, you have to execute the following command lines on VCK190 board:
 
@@ -862,9 +772,9 @@ Correct:  1552  Wrong:  448  Accuracy:  0.776
 
 
 
-# Appendix
+## Appendix
 
-## A1 SHH Debug with Visual Studio Code
+### A1 SHH Debug with Visual Studio Code
 
 Download ``code_1.55.2-1618307277_amd64.deb`` package from [Visual Studio Code](https://code.visualstudio.com/download) website. Once done that, install it with the command:
 
@@ -902,9 +812,30 @@ You can then open the folder ``/home/root/target/application`` as shown in Figur
 
 <div style="page-break-after: always;"></div>
 
-# AMD-Xilinx Disclaimer and Attribution
+
+# License
+
+The MIT License (MIT)
+
+Copyright (c) 2021-2023 Advanced Micro Devices, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 
-The information contained herein is for informational purposes only and is subject to change without notice. While every precaution has been taken in the preparation of this document, it may contain technical inaccuracies, omissions and typographical errors, and AMD is under no obligation to update or otherwise correct this information. Advanced Micro Devices, Inc. makes no representations or warranties with respect to the accuracy or completeness of the contents of this document, and assumes no liability of any kind, including the implied warranties of non infringement, merchantability or fitness for particular purposes, with respect to the operation or use of AMD hardware, software or other products described herein. No license, including implied or arising by estoppel, to any intellectual property rights is granted by this document. Terms and limitations applicable to the purchase or use of AMD’s products are as set forth in a signed agreement between the parties or in AMD's Standard Terms and Conditions of Sale. GD-18
-
-© Copyright 2021 Advanced Micro Devices, Inc.  All rights reserved.  Xilinx, the Xilinx logo, AMD, the AMD Arrow logo, Alveo, Artix, Kintex, Kria, Spartan, Versal, Vitis, Virtex, Vivado, Zynq, and other designated brands included herein are trademarks of Advanced Micro Devices, Inc.  Other product names used in this publication are for identification purposes only and may be trademarks of their respective companies.  
+<p align="center"><sup>XD106 | © Copyright 2021-2023 Xilinx, Inc.</sup></p>

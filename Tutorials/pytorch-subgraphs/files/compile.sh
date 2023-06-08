@@ -1,46 +1,41 @@
 #!/bin/bash
 
-# Copyright 2021 Xilinx Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
 
-# Author: Mark Harvey, Xilinx Inc
-# modified by Daniele Bagni
+# Author: Daniele Bagni, Xilinx Inc
+# date:  28 Apr. 2023
 
 
 if [ $1 = zcu102 ]; then
       ARCH=/opt/vitis_ai/compiler/arch/DPUCZDX8G/ZCU102/arch.json
       TARGET=zcu102
       echo "-----------------------------------------"
-      echo "COMPILING MODEL FOR ZCU102.."
+      echo "COMPILING MODEL FOR ZCU102..."
       echo "-----------------------------------------"
 elif [ $1 = zcu104 ]; then
       ARCH=/opt/vitis_ai/compiler/arch/DPUCZDX8G/ZCU104/arch.json
       TARGET=zcu104
       echo "-----------------------------------------"
-      echo "COMPILING MODEL FOR ZCU104.."
+      echo "COMPILING MODEL FOR ZCU104..."
       echo "-----------------------------------------"
-
 elif [ $1 = vck190 ]; then
       ARCH=/opt/vitis_ai/compiler/arch/DPUCVDX8G/VCK190/arch.json
       TARGET=vck190
       echo "-----------------------------------------"
-      echo "COMPILING MODEL FOR VCK190.."
+      echo "COMPILING MODEL FOR VCK190..."
+      echo "-----------------------------------------"
+elif [ $1 = vek280 ]; then
+      ARCH=/opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json
+      TARGET=vek280
+      echo "-----------------------------------------"
+      echo "COMPILING MODEL FOR VEK280..."
       echo "-----------------------------------------"
 else
-      echo  "Target not found. Valid choices are: zcu104, zcu102, vck190...exiting"
+      echo  "Target not found. Valid choices are: zcu104, zcu102, vck190, vek280 ... exiting"
       exit 1
 fi
+
 
 compile() {
   vai_c_xir \
@@ -50,7 +45,7 @@ compile() {
   --output_dir  ./build/compiled_model
 }
 
-compile    2>&1 | tee ./build/compile_${TARGET}.log
+compile    2>&1 | tee ./build/log/compile_${TARGET}.log
 
 echo "-----------------------------------------"
 echo "MODEL COMPILED"

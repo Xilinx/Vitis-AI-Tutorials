@@ -1,22 +1,10 @@
 #!/bin/bash
-#-xv
 
-## © Copyright (C) 2016-2020 Xilinx, Inc
-##
-## Licensed under the Apache License, Version 2.0 (the "License"). You may
-## not use this file except in compliance with the License. A copy of the
-## License is located at
-##
-##     http://www.apache.org/licenses/LICENSE-2.0
-##
-## Unless required by applicable law or agreed to in writing, software
-## distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-## WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-## License for the specific language governing permissions and limitations
-## under the License.
+#Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+#SPDX-License-Identifier: MIT
 
-# author daniele.bagni@xilinx.com
-# date: 13 June 2022
+# date 28 Apr 2023
+
 
 
 CNN_INP_NODE="conv2d_1_input"
@@ -352,6 +340,63 @@ dos2unix_conversion() {
 }
 
 
+5_fmnist_vai_compile_vek280() {
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILE WITH Vitis  on VEK280: LeNet on FMNIST"
+    echo "##########################################################################"
+    vai_c_tensorflow \
+        --frozen_pb=./build/quantized_results/fmnist/LeNet/quantize_eval_model.pb \
+        --arch /opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json \
+          --output_dir=./build/compile/fmnist/LeNet \
+        --net_name=LeNet \
+        --options    "{'mode':'normal'}"
+        #2>&1 | tee rpt/fmnist/5_vai_compile_LeNet.log
+    mv  ./build/compile/fmnist/LeNet/*.xmodel ./target_vek280/fmnist/LeNet/
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILE WITH Vitis AI on VEK280: miniVggNet  on FMNIST"
+    echo "##########################################################################"
+    vai_c_tensorflow \
+        --frozen_pb=./build/quantized_results/fmnist/miniVggNet/quantize_eval_model.pb \
+        --arch /opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json \
+          --output_dir=./build/compile/fmnist/miniVggNet \
+        --net_name=miniVggNet \
+        --options    "{'mode':'normal'}"
+        #2>&1 | tee rpt/fmnist/5_vai_compile_miniVggNet.log
+    mv  ./build/compile/fmnist/miniVggNet/*.xmodel ./target_vek280/fmnist/miniVggNet/
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILE WITH Vitis AI on VEK280: miniGoogleNet  on FMNIST"
+    echo "##########################################################################"
+    vai_c_tensorflow \
+        --frozen_pb=./build/quantized_results/fmnist/miniGoogleNet/quantize_eval_model.pb \
+        --arch /opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json \
+          --output_dir=./build/compile/fmnist/miniGoogleNet \
+        --net_name=miniGoogleNet \
+        --options    "{'mode':'normal'}"
+        #2>&1 | tee rpt/fmnist/5_vai_compile_miniGoogleNet.log
+    mv  ./build/compile/fmnist/miniGoogleNet/*.xmodel ./target_vek280/fmnist/miniGoogleNet/
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILE WITH Vitis AI on VEK280: miniResNet  on FMNIST"
+    echo "##########################################################################"
+    vai_c_tensorflow \
+        --frozen_pb=./build/quantized_results/fmnist/miniResNet/quantize_eval_model.pb \
+        --arch /opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json \
+          --output_dir=./build/compile/fmnist/miniResNet \
+        --net_name=miniResNet \
+        --options    "{'mode':'normal'}"
+        #2>&1 | tee rpt/fmnist/5_vai_compile_miniResNet.log
+    mv  ./build/compile/fmnist/miniResNet/*.xmodel ./target_vek280/fmnist/miniResNet/
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILATION COMPLETED  on FMNIST on VEK280"
+    echo "##########################################################################"
+    echo " "
+}
+
+
 5_fmnist_vai_compile_zcu104() {
 echo " "
 echo "##########################################################################"
@@ -493,7 +538,7 @@ main() {
 '
 
   # training from scratch with FMNIST
-  1_fmnist_train
+  #1_fmnist_train
 
   # convert Keras model into TF  --arch ./arch_vck190_dw.json \ inference graph
   2_fmnist_Keras2TF
@@ -514,11 +559,16 @@ main() {
   ## compile xmodel file for VCK190 target board
   5_fmnist_vai_compile_vck190
 
+  ## compile xmodel file for VEK280 target board
+  5_fmnist_vai_compile_vek280
+
+: '
   # compile xmodel file for ZCU102 target board
   5_fmnist_vai_compile_zcu102
 
   # compile xmodel file for ZCU104 target board
   5_fmnist_vai_compile_zcu104
+'
 
   ## copy test images into target board
   cd build/dataset/fmnist
@@ -526,9 +576,10 @@ main() {
   tar -cvf fmnist_test.tar ./fmnist_test  &> /dev/null
   rm -rf ./fmnist_test
   cd ../../../
-  cp ./build/dataset/fmnist/fmnist_test.tar ./target_zcu102/
   cp ./build/dataset/fmnist/fmnist_test.tar ./target_vck190/
-  mv ./build/dataset/fmnist/fmnist_test.tar ./target_zcu104/
+  cp ./build/dataset/fmnist/fmnist_test.tar ./target_vek280/
+  #cp ./build/dataset/fmnist/fmnist_test.tar ./target_zcu102/
+  #mv ./build/dataset/fmnist/fmnist_test.tar ./target_zcu104/
 
 }
 

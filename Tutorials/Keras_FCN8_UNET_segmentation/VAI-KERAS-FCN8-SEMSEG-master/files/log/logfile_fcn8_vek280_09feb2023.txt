@@ -1,0 +1,574 @@
+
+# Copyright (C) 2023, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+
++ main
++ clean
++ rm -rf ./build ./rpt ./png_fcn8 ./png_fcn8ups ./png_unet
++ rm -f ./run_cnn get_dpu_fps '*.png'
++ mkdir ./png_fcn8
++ mkdir ./png_fcn8ups
++ mkdir ./png_unet
++ mkdir ./rpt
++ rm -rf dataset1
++ dataset
++ tar -xvf test.tar.gz
++ mv ./build/dataset1/ .
++ compile
++ cd code
++ bash -x ./build_app.sh
+++ dirname ./build_app.sh
++ cd .
++ CXX=g++
+++ lsb_release -a
+++ sed 's/^.*:\s*//'
+++ grep 'Distributor ID'
++ os=petalinux
+++ lsb_release -a
+++ sed 's/^.*:\s*//'
+++ grep Release
++ os_version=2022.2_release_S10071807
+++ uname -p
++ arch=aarch64
++ target_info=petalinux.2022.2_release_S10071807.aarch64
++ install_prefix_default=/home/root/.local/petalinux.2022.2_release_S10071807.aarch64
++ g++ --version
+g++ (GCC) 11.2.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ result=0
++ pkg-config --list-all
++ grep opencv4
+opencv4                             OpenCV - Open Source Computer Vision Library
++ result=1
++ '[' 1 -eq 1 ']'
+++ pkg-config --cflags --libs-only-L opencv4
++ OPENCV_FLAGS=-I/usr/include/opencv4
+++ basename /home/root/tutorials/fcn8/target_vek280/code
++ name=code
++ [[ g++ == *\s\y\s\r\o\o\t* ]]
++ g++ -O2 -fno-inline -I. -I/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Debug/include -I/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Release/include -L/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Debug/lib -L/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Release/lib -Wl,-rpath=/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Debug/lib -Wl,-rpath=/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Release/lib -I/home/root/tutorials/fcn8/target_vek280/code/common -o code -std=c++17 /home/root/tutorials/fcn8/target_vek280/code/src/main_mt_int8.cc /home/root/tutorials/fcn8/target_vek280/code/common/common.cpp -Wl,-rpath=/home/root/tutorials/fcn8/target_vek280/code/lib -lvart-runner -I/usr/include/opencv4 -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -lglog -lxir -lunilog -lpthread
++ mv code ../run_cnn
++ bash -x ./build_get_dpu_fps.sh
+++ dirname ./build_get_dpu_fps.sh
++ cd .
++ CXX=g++
+++ lsb_release -a
+++ sed 's/^.*:\s*//'
+++ grep 'Distributor ID'
++ os=petalinux
+++ lsb_release -a
+++ sed 's/^.*:\s*//'
+++ grep Release
++ os_version=2022.2_release_S10071807
+++ uname -p
++ arch=aarch64
++ target_info=petalinux.2022.2_release_S10071807.aarch64
++ install_prefix_default=/home/root/.local/petalinux.2022.2_release_S10071807.aarch64
++ g++ --version
+g++ (GCC) 11.2.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
++ result=0
++ pkg-config --list-all
++ grep opencv4
+opencv4                             OpenCV - Open Source Computer Vision Library
++ result=1
++ '[' 1 -eq 1 ']'
+++ pkg-config --cflags --libs-only-L opencv4
++ OPENCV_FLAGS=-I/usr/include/opencv4
+++ basename /home/root/tutorials/fcn8/target_vek280/code
++ name=code
++ [[ g++ == *\s\y\s\r\o\o\t* ]]
++ g++ -O2 -fno-inline -I. -I/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Debug/include -I/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Release/include -L/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Debug/lib -L/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Release/lib -Wl,-rpath=/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Debug/lib -Wl,-rpath=/home/root/.local/petalinux.2022.2_release_S10071807.aarch64.Release/lib -I/home/root/tutorials/fcn8/target_vek280/code/common -o code -std=c++17 /home/root/tutorials/fcn8/target_vek280/code/src/get_dpu_fps.cc /home/root/tutorials/fcn8/target_vek280/code/common/common.cpp -Wl,-rpath=/home/root/tutorials/fcn8/target_vek280/code/lib -lvart-runner -I/usr/include/opencv4 -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -lglog -lxir -lunilog -lpthread
++ mv code ../get_dpu_fps
++ cd ..
++ run_models
++ ./run_cnn ./fcn8/model/fcn8.xmodel ./dataset1/img_test/ 1 1
++ tee ./rpt/logfile_cpp_fcn8.txt
+./run_cnn ./fcn8/model/fcn8.xmodel ./dataset1/img_test/ 1 1
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize  602112
+inSize   150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 13
+in_fixpos     6
+in_fix_scale  64
+inputt_scale  64
+out fix scale 4
+output_scale 0.25
+[average calibration high resolution clock] 0.08045us
+
+
+
+ max num of images to read 101
+
+ number of images per thread: 91
+
+
+[PREPROC  Time ] 636400us
+
+
+inside RUN CNN
+
+
+[DPU tot Time ] 293163us
+[DPU avg FPS  ] 310.407
+
+
+
+ DOING POST PROCESSING
+
+
+
+[POSTPROC Time ] 746006us
+
+
+[average FPS with pre- & post-processing ] 54.3099us
+deleting imageInputs memory
+deleting FCResult    memory
+deleting imagesList  memory
++ mv out_000.png out_001.png out_002.png out_003.png ./png_fcn8/
++ ./run_cnn ./fcn8ups/model/fcn8ups.xmodel ./dataset1/img_test/ 1 1
++ tee ./rpt/logfile_cpp_fcn8ups.txt
+./run_cnn ./fcn8ups/model/fcn8ups.xmodel ./dataset1/img_test/ 1 1
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize  602112
+inSize   150528
+outW     224
+outH     224
+inpW     224
+inpH     224
+# class  12
+batchSize 13
+in_fixpos     6
+in_fix_scale  64
+inputt_scale  64
+out fix scale 4
+output_scale 0.25
+[average calibration high resolution clock] 0.08025us
+
+
+
+ max num of images to read 101
+
+ number of images per thread: 91
+
+
+[PREPROC  Time ] 626638us
+
+
+inside RUN CNN
+
+
+[DPU tot Time ] 281185us
+[DPU avg FPS  ] 323.631
+
+
+
+ DOING POST PROCESSING
+
+
+
+[POSTPROC Time ] 715255us
+
+
+[average FPS with pre- & post-processing ] 56.0663us
+deleting imageInputs memory
+deleting FCResult    memory
+deleting imagesList  memory
++ mv out_000.png out_001.png out_002.png out_003.png ./png_fcn8ups/
++ run_fps
++ bash -x ./code/run_cnn_fps.sh
++ tee ./rpt/logfile_fps.txt
+
+ FCN8 fps
+
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 1 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.07955us
+
+
+
+ number of dummy images per thread: 988
+
+ allocated 148721664 bytes for  input buffer
+
+ allocated 594886656 bytes for output buffer
+
+
+[DPU tot Time ] 3.19805e+06us
+[DPU avg Time ] 3.23689e+09us
+[DPU avg FPS  ] 308.939
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 2 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.079us
+
+
+
+ number of dummy images per thread: 494
+
+ allocated 148721664 bytes for  input buffer
+
+ allocated 594886656 bytes for output buffer
+
+
+[DPU tot Time ] 1.82536e+06us
+[DPU avg Time ] 1.84753e+09us
+[DPU avg FPS  ] 541.264
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 3 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.1016us
+
+
+
+ number of dummy images per thread: 325
+
+ allocated 146764800 bytes for  input buffer
+
+ allocated 587059200 bytes for output buffer
+
+
+[DPU tot Time ] 1.59985e+06us
+[DPU avg Time ] 1.64087e+09us
+[DPU avg FPS  ] 609.431
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 4 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.0811us
+
+
+
+ number of dummy images per thread: 247
+
+ allocated 148721664 bytes for  input buffer
+
+ allocated 594886656 bytes for output buffer
+
+
+[DPU tot Time ] 1.41182e+06us
+[DPU avg Time ] 1.42897e+09us
+[DPU avg FPS  ] 699.804
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 5 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.0801us
+
+
+
+ number of dummy images per thread: 195
+
+ allocated 146764800 bytes for  input buffer
+
+ allocated 587059200 bytes for output buffer
+
+
+[DPU tot Time ] 1.35349e+06us
+[DPU avg Time ] 1.3882e+09us
+[DPU avg FPS  ] 720.357
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8/model/fcn8.xmodel 6 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.081us
+
+
+
+ number of dummy images per thread: 156
+
+ allocated 140894208 bytes for  input buffer
+
+ allocated 563576832 bytes for output buffer
+
+
+[DPU tot Time ] 1.26638e+06us
+[DPU avg Time ] 1.35297e+09us
+[DPU avg FPS  ] 739.114
+
+
+deleting memory buffer
+
+ FCN8ups fps
+
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 1 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.10205us
+
+
+
+ number of dummy images per thread: 988
+
+ allocated 148721664 bytes for  input buffer
+
+ allocated 594886656 bytes for output buffer
+
+
+[DPU tot Time ] 3.0789e+06us
+[DPU avg Time ] 3.11629e+09us
+[DPU avg FPS  ] 320.894
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 2 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.0805us
+
+
+
+ number of dummy images per thread: 494
+
+ allocated 148721664 bytes for  input buffer
+
+ allocated 594886656 bytes for output buffer
+
+
+[DPU tot Time ] 1.77556e+06us
+[DPU avg Time ] 1.79713e+09us
+[DPU avg FPS  ] 556.443
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 3 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.07955us
+
+
+
+ number of dummy images per thread: 325
+
+ allocated 146764800 bytes for  input buffer
+
+ allocated 587059200 bytes for output buffer
+
+
+[DPU tot Time ] 1.60058e+06us
+[DPU avg Time ] 1.64162e+09us
+[DPU avg FPS  ] 609.153
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 4 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.0798us
+
+
+
+ number of dummy images per thread: 247
+
+ allocated 148721664 bytes for  input buffer
+
+ allocated 594886656 bytes for output buffer
+
+
+[DPU tot Time ] 1.39171e+06us
+[DPU avg Time ] 1.40861e+09us
+[DPU avg FPS  ] 709.919
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 5 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.07955us
+
+
+
+ number of dummy images per thread: 195
+
+ allocated 146764800 bytes for  input buffer
+
+ allocated 587059200 bytes for output buffer
+
+
+[DPU tot Time ] 1.29811e+06us
+[DPU avg Time ] 1.3314e+09us
+[DPU avg FPS  ] 751.09
+
+
+deleting memory buffer
+./get_dpu_fps ./fcn8ups/model/fcn8ups.xmodel 6 1000
+XAIEFAL: INFO: Resource group Avail is created.
+XAIEFAL: INFO: Resource group Static is created.
+XAIEFAL: INFO: Resource group Generic is created.
+outSize   602112
+inSize    150528
+outW      224
+outH      224
+inpW      224
+inpH      224
+inp scale 64
+out scale 0.25
+# classes 12
+batchSize 13
+[average calibration high resolution clock] 0.0787us
+
+
+
+ number of dummy images per thread: 156
+
+ allocated 140894208 bytes for  input buffer
+
+ allocated 563576832 bytes for output buffer
+
+
+[DPU tot Time ] 1.20206e+06us
+[DPU avg Time ] 1.28425e+09us
+[DPU avg FPS  ] 778.665
+
+
+deleting memory buffer

@@ -2,22 +2,11 @@
 # -*- coding: utf-8 -*-
 
 '''
-## © Copyright (C) 2016-2020 Xilinx, Inc
-##
-## Licensed under the Apache License, Version 2.0 (the "License"). You may
-## not use this file except in compliance with the License. A copy of the
-## License is located at
-##
-##     http://www.apache.org/licenses/LICENSE-2.0
-##
-## Unless required by applicable law or agreed to in writing, software
-## distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-## WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-## License for the specific language governing permissions and limitations
-## under the License.
+Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+SPDX-License-Identifier: MIT
 '''
-# Author: Daniele Bagni, Xilinx Inc
-# date 6 May 2021
+
+# date 28 Apr 2023
 
 ##################################################################
 # Evaluation of frozen/quantized graph
@@ -41,7 +30,9 @@ import tensorflow as tf
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 
 
-import tensorflow.contrib.decent_q
+#import tensorflow.contrib.decent_q
+import vai_q_tensorflow
+
 from tensorflow.python.platform import gfile
 
 from config import fashion_mnist_config as cfg #DB

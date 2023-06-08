@@ -1,0 +1,316 @@
+Collecting seaborn
+  Downloading seaborn-0.11.2-py3-none-any.whl (292 kB)
+Requirement already satisfied: matplotlib>=2.2 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (3.3.4)
+Requirement already satisfied: numpy>=1.15 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.19.5)
+Requirement already satisfied: scipy>=1.0 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.5.1)
+Requirement already satisfied: pandas>=0.23 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.1.3)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.3 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (3.0.9)
+Requirement already satisfied: pillow>=6.2.0 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (8.4.0)
+Requirement already satisfied: python-dateutil>=2.1 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (2.8.2)
+Requirement already satisfied: kiwisolver>=1.0.1 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (1.3.1)
+Requirement already satisfied: cycler>=0.10 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (0.11.0)
+Requirement already satisfied: pytz>=2017.2 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from pandas>=0.23->seaborn) (2022.7.1)
+Requirement already satisfied: six>=1.5 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from python-dateutil>=2.1->matplotlib>=2.2->seaborn) (1.16.0)
+Installing collected packages: seaborn
+Successfully installed seaborn-0.11.2
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vck190/code/common/common.h
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vek280/code/common/common.h
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/common/common.h
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/fcn8/float_model.ckpt.data-00000-of-00001
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/fcn8/float_model.ckpt.index
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/fcn8/float_model.ckpt.meta
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/fcn8ups/float_model.ckpt.data-00000-of-00001
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/fcn8ups/float_model.ckpt.index
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/fcn8ups/float_model.ckpt.meta
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/unet2/float_model.ckpt.data-00000-of-00001
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/unet2/float_model.ckpt.index
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/tf_chkpts/unet2/float_model.ckpt.meta
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/code/config/__pycache__/fcn8_cnn.cpython-36.pyc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/code/config/__pycache__/fcn_config.cpython-36.pyc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/code/config/__pycache__/unet.cpython-36.pyc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/code/config/__pycache__/__init__.cpython-36.pyc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/code/__pycache__/graph_input_fn.cpython-36.pyc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vck190/code/common/common.cpp
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vck190/code/src/get_dpu_fps.cc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vck190/code/src/main_mt_int8.cc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vek280/code/common/common.cpp
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vek280/code/src/get_dpu_fps.cc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vek280/code/src/main_mt_int8.cc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/common/common.cpp
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/src/get_dpu_fps.cc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/src/main_mt_int8.cc
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/open_pb_graph_in_tensorBoard.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/run_all.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/run_fcn8.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/run_fcn8ups.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/run_unet.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vck190/code/build_app.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vck190/code/build_get_dpu_fps.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vck190/code/run_cnn_fps.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vck190/run_all_target.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vek280/code/build_app.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vek280/code/build_get_dpu_fps.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vek280/code/run_cnn_fps.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_vek280/run_all_target.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/build_app.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/build_get_dpu_fps.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/run_cnn_fps.sh
+/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/target_zcu102/run_all_target.sh
+rm: cannot remove 'target_zcu102/fcn8/model/*.xmodel': No such file or directory
+rm: cannot remove 'target_zcu102/fcn8/model/*.json': No such file or directory
+rm: cannot remove 'target_zcu102/fcn8ups/model/*.xmodel': No such file or directory
+rm: cannot remove 'target_zcu102/fcn8ups/model/*.json': No such file or directory
+rm: cannot remove 'target_zcu102/unet/v2/model/*.xmodel': No such file or directory
+rm: cannot remove 'target_zcu102/unet/v2/model/*.json': No such file or directory
+rm: cannot remove 'target_zcu102/rpt/*': No such file or directory
+rm: cannot remove 'target_zcu104': No such file or directory
+mkdir: cannot create directory ‘target_zcu102/fcn8’: File exists
+mkdir: cannot create directory ‘target_zcu102/fcn8/model’: File exists
+mkdir: cannot create directory ‘target_zcu102/fcn8ups’: File exists
+mkdir: cannot create directory ‘target_zcu102/fcn8ups/model’: File exists
+mkdir: cannot create directory ‘target_zcu102/unet/’: File exists
+mkdir: cannot create directory ‘target_zcu102/unet/v2’: File exists
+mkdir: cannot create directory ‘target_zcu102/unet/v2/model’: File exists
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8_DPUCVDX8G_ISA3_C32B6_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/100 [00:00<?, ?it/s]                          [INFO] parse raw model     :100%|██████████| 100/100 [00:00<00:00, 9307.85it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/182 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 63%|██████▎   | 115/182 [00:00<00:00, 1146.65it/s]              [INFO] infer shape (NHWC)  :100%|██████████| 182/182 [00:00<00:00, 1589.48it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 295.86it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 305.45it/s]
+[INFO] generate xmodel     :  0%|          | 0/73 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 73%|███████▎  | 53/73 [00:00<00:00, 529.56it/s]                 [INFO] generate xmodel     :100%|██████████| 73/73 [00:00<00:00, 229.17it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8_DPUCVDX8G_ISA3_C32B6_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA3_C32B6
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 147
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/fcn8.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is ca298bfc656d36c1dac6aa2d32adb698, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for VEK280 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/100 [00:00<?, ?it/s]                          [INFO] parse raw model     :100%|██████████| 100/100 [00:00<00:00, 9953.26it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/182 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 60%|██████    | 110/182 [00:00<00:00, 1097.74it/s]              [INFO] infer shape (NHWC)  :100%|██████████| 182/182 [00:00<00:00, 1547.32it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 295.07it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 307.37it/s]
+[INFO] generate xmodel     :  0%|          | 0/73 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 70%|██████▉   | 51/73 [00:00<00:00, 462.30it/s]                 [INFO] generate xmodel     :100%|██████████| 73/73 [00:00<00:00, 217.83it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCV2DX8G_ISA0_C16M4B13
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 147
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/fcn8.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is bacdb3e316dc2c615d2bba21b81a2b3b, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for ZCU102
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8_DPUCZDX8G_ISA1_B4096_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/100 [00:00<?, ?it/s]                          [INFO] parse raw model     :100%|██████████| 100/100 [00:00<00:00, 10084.89it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/182 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 62%|██████▏   | 113/182 [00:00<00:00, 1117.85it/s]              [INFO] infer shape (NHWC)  :100%|██████████| 182/182 [00:00<00:00, 1564.38it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 290.85it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 303.19it/s]
+[INFO] generate xmodel     :  0%|          | 0/73 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 70%|██████▉   | 51/73 [00:00<00:00, 487.69it/s]                 [INFO] generate xmodel     :100%|██████████| 73/73 [00:00<00:00, 222.53it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8_DPUCZDX8G_ISA1_B4096_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA1_B4096
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 147
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/fcn8.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is d8b61f74eaacb7cd558d5959e7b3f13a, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+#####################################
+MAIN FCN8 FLOW COMPLETED
+#####################################
+
+##########################################################################
+COMPILE FCN8UPS XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8ups/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8ups_DPUCVDX8G_ISA3_C32B6_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8ups/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/91 [00:00<?, ?it/s]                           [INFO] parse raw model     :100%|██████████| 91/91 [00:00<00:00, 10904.26it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/151 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 72%|███████▏  | 108/151 [00:00<00:00, 1079.93it/s]              [INFO] infer shape (NHWC)  :100%|██████████| 151/151 [00:00<00:00, 1431.83it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 258.45it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 292.32it/s]
+[INFO] generate xmodel     :  0%|          | 0/78 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 76%|███████▌  | 59/78 [00:00<00:00, 506.44it/s]                 [INFO] generate xmodel     :100%|██████████| 78/78 [00:00<00:00, 625.98it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8ups_DPUCVDX8G_ISA3_C32B6_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA3_C32B6
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 152
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/fcn8ups.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is b1f4421a29ece1b580db6d36a034d3a8, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for VEK280 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8ups/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8ups_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8ups/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/91 [00:00<?, ?it/s]                           [INFO] parse raw model     :100%|██████████| 91/91 [00:00<00:00, 10663.88it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/151 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 71%|███████   | 107/151 [00:00<00:00, 1069.78it/s]              [INFO] infer shape (NHWC)  :100%|██████████| 151/151 [00:00<00:00, 1431.78it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 274.30it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 292.54it/s]
+[INFO] generate xmodel     :  0%|          | 0/78 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 76%|███████▌  | 59/78 [00:00<00:00, 531.70it/s]                 [INFO] generate xmodel     :100%|██████████| 78/78 [00:00<00:00, 654.94it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8ups_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCV2DX8G_ISA0_C16M4B13
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 152
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/fcn8ups.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is c3e252355e6c85e3210d8e42316c2ce9, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8UPS XMODEL FILE WITH Vitis AI for ZCU102
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8ups/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8ups_DPUCZDX8G_ISA1_B4096_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8ups/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/91 [00:00<?, ?it/s]                           [INFO] parse raw model     :100%|██████████| 91/91 [00:00<00:00, 11015.98it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/151 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 99%|█████████▉| 150/151 [00:00<00:00, 1478.70it/s]              [INFO] infer shape (NHWC)  :100%|██████████| 151/151 [00:00<00:00, 1484.87it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 280.11it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 295.50it/s]
+[INFO] generate xmodel     :  0%|          | 0/78 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 68%|██████▊   | 53/78 [00:00<00:00, 502.26it/s]                 [INFO] generate xmodel     :100%|██████████| 78/78 [00:00<00:00, 591.02it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8ups_DPUCZDX8G_ISA1_B4096_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA1_B4096
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 152
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/fcn8ups.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is ffdcce56ec5754fbcd4cc17745055035, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+#####################################
+MAIN FCN8UPS FLOW COMPLETED
+#####################################
+
+##########################################################################
+COMPILE UNET XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/unet2/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/unet2_DPUCVDX8G_ISA3_C32B6_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/unet2/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/107 [00:00<?, ?it/s]                          [INFO] parse raw model     :100%|██████████| 107/107 [00:00<00:00, 11429.79it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/173 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 52%|█████▏    | 90/173 [00:00<00:00, 876.17it/s]                [INFO] infer shape (NHWC)  :100%|██████████| 173/173 [00:00<00:00, 604.71it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 219.37it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 238.91it/s]
+[INFO] generate xmodel     :  0%|          | 0/99 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 39%|███▉      | 39/99 [00:00<00:00, 372.20it/s]                 [INFO] generate xmodel     : 78%|███████▊  | 77/99 [00:00<00:00, 183.66it/s]                 [INFO] generate xmodel     :100%|██████████| 99/99 [00:00<00:00, 247.99it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/unet2_DPUCVDX8G_ISA3_C32B6_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA3_C32B6
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 191
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/unet2.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 460be8a0ce5b88734e3c2a7b02fa5a09, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE UNET XMODEL FILE WITH Vitis AI for VEK280 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/unet2/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/unet2_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/unet2/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/107 [00:00<?, ?it/s]                          [INFO] parse raw model     :100%|██████████| 107/107 [00:00<00:00, 11485.07it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/173 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 51%|█████     | 88/173 [00:00<00:00, 878.39it/s]                [INFO] infer shape (NHWC)  :100%|██████████| 173/173 [00:00<00:00, 603.34it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 215.12it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 235.35it/s]
+[INFO] generate xmodel     :  0%|          | 0/99 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 39%|███▉      | 39/99 [00:00<00:00, 365.95it/s]                 [INFO] generate xmodel     : 77%|███████▋  | 76/99 [00:00<00:00, 182.41it/s]                 [INFO] generate xmodel     :100%|██████████| 99/99 [00:00<00:00, 249.32it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/unet2_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCV2DX8G_ISA0_C16M4B13
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 191
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/unet2.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 3b816dc8d4e4e8a68a73ad72f6dc4696, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE UNET XMODEL FILE WITH Vitis AI for ZCU102 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/unet2/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/unet2_DPUCZDX8G_ISA1_B4096_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/unet2/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/107 [00:00<?, ?it/s]                          [INFO] parse raw model     :100%|██████████| 107/107 [00:00<00:00, 11428.04it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/173 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 52%|█████▏    | 90/173 [00:00<00:00, 879.38it/s]                [INFO] infer shape (NHWC)  :100%|██████████| 173/173 [00:00<00:00, 610.07it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 212.94it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 236.15it/s]
+[INFO] generate xmodel     :  0%|          | 0/99 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 39%|███▉      | 39/99 [00:00<00:00, 360.24it/s]                 [INFO] generate xmodel     : 77%|███████▋  | 76/99 [00:00<00:00, 179.82it/s]                 [INFO] generate xmodel     :100%|██████████| 99/99 [00:00<00:00, 245.92it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/unet2_DPUCZDX8G_ISA1_B4096_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCZDX8G_ISA1_B4096
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 191
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/unet2.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is b734fcdf84215dc8b4c96e28f13732f1, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+#####################################
+MAIN UNET FLOW COMPLETED
+#####################################
