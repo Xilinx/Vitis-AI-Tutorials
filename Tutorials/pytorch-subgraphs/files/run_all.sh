@@ -1,24 +1,15 @@
 #!/bin/bash
 
-# Copyright 2021 Xilinx Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
 
 # Author: Daniele Bagni, Xilinx Inc
-# date: 16 June 2021
+# date:  28 Apr. 2023
 
 
-TARG=zcu102
+
+TARG=vek280
+#zcu102
 #vck190
 #zcu104
 
@@ -35,27 +26,36 @@ for file in $(find $PWD -name "*.py"); do
     sed -i 's/\r//g' ${file}
     echo  ${file}
 done
+for file in $(find $PWD -name "*.c*"); do
+    sed -i 's/\r//g' ${file}
+    echo  ${file}
+done
+for file in $(find $PWD -name "*.h*"); do
+    sed -i 's/\r//g' ${file}
+    echo  ${file}
+done
+for file in $(find $PWD -name "*.m"); do
+    sed -i 's/\r//g' ${file}
+    echo  ${file}
+done
+for file in $(find $PWD -name "*.txt"); do
+    sed -i 's/\r//g' ${file}
+    echo  ${file}
+done
 
 
 # -------------------------------------------------------------------------------
 # setup
 # -------------------------------------------------------------------------------
 
-conda activate vitis-ai-pytorch
-
+#conda activate vitis-ai-pytorch
 # clean folders
 bash ./clean_all.sh
 
-# install missing package in teh docker image
-pip install torchsummary
+## install missing package in the docker image
+#pip install torchsummary
 
 : '
-# install patch for VAI 2.0 Xcompiler frontend
-cd patch_for_vai2.0
-bash -x ./install_patch.sh
-cd ..
-'
-
 # -------------------------------------------------------------------------------
 # run training
 # -------------------------------------------------------------------------------
@@ -63,8 +63,8 @@ echo " "
 echo "-----------------------------------------"
 echo "RUN TRAINING."
 echo "-----------------------------------------"
-python -u train.py --epochs 300  2>&1 | tee ./build/train.log
-
+python -u train.py --epochs 300  2>&1 | tee ./build/log/train.log
+'
 
 # -------------------------------------------------------------------------------
 # quantize & export quantized model
@@ -73,8 +73,8 @@ echo " "
 echo "-----------------------------------------"
 echo "RUN QUANTIZATION."
 echo "-----------------------------------------"
-python -u quantize.py --quant_mode calib 2>&1 | tee ./build/quant_calib.log
-python -u quantize.py --quant_mode test  2>&1 | tee ./build/quant_test.log
+python -u quantize.py --quant_mode calib 2>&1 | tee ./build/log/quant_calib.log
+python -u quantize.py --quant_mode test  2>&1 | tee ./build/log/quant_test.log
 
 
 # -------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ mv ./tmp.txt ./doc/image/cnn_int8_subgraph_tree.txt
 # -------------------------------------------------------------------------------
 # make target and run functional debug on host
 # -------------------------------------------------------------------------------
-bash ./prepare_target.sh
+bash ./prepare_target.sh $TARG
 
 
 # -------------------------------------------------------------------------------
@@ -115,3 +115,8 @@ echo "-----------------------------------------"
 echo "ANALYZE SUBGRAPHS."
 echo "-----------------------------------------"
 bash ./analyze_subgraphs.sh $TARG &> /dev/null
+
+# -------------------------------------------------------------------------------
+# save log files
+# -------------------------------------------------------------------------------
+tar -cvf logfiles_${TARGET}.tar ./build/log/

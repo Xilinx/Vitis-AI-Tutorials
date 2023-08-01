@@ -1,21 +1,10 @@
 /*
- * Copyright 2019 Xilinx Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
-// Author: Daniele Bagni, Xilinx Inc.
-// date: 24 June 2021
+Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+SPDX-License-Identifier: MIT
+
+date 28 Apr 2023
+*/
 
 
 #include <assert.h>
@@ -155,10 +144,10 @@ int main(int argc, char* argv[])
   //int in_fixpos = (inputTensors[0])->template get_attr<int>("fix_point");
   //auto in_fix_scale = std::exp2f(1.0f * (float)in_fixpos);
   //cout << "inP      " << in_fixpos << endl;
-  //cout << "inS      " << in_fix_scale << endl;  
+  //cout << "inS      " << in_fix_scale << endl;
   auto input_scale = get_input_scale(inputTensors[0]);
   auto output_scale = get_output_scale(outputTensors[0]);
-  
+
   // debug messages
   cout << "outSize   " << outSize << endl;
   cout << "inSize    " << inSize << endl;
@@ -167,7 +156,7 @@ int main(int argc, char* argv[])
   cout << "inpW      " << inWidth << endl;
   cout << "inpH      " << inHeight << endl;
   cout << "inp scale " << input_scale << endl;
-  cout << "out scale " << output_scale << endl;    
+  cout << "out scale " << output_scale << endl;
   cout << "# classes " << num_of_classes << endl;
   cout << "batchSize " << batchSize << endl;
 

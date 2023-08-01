@@ -1,3 +1,12 @@
+<!--
+
+Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+SPDX-License-Identifier: MIT
+
+
+Author: Daniele Bagni, Xilinx Inc
+-->
+
 ```
 From: Adrian at PyImageSearch [mailto:a.rosebrock@pyimagesearch.com]
 Sent: Thursday, February 20, 2020 12:47 PM
