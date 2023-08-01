@@ -43,7 +43,7 @@
   </tr>
  <tr>
   <td>
-   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.0/Tutorials/18-mpsocdpu-pre-post-pl-acc/README.md">Pre- and Post-processing Accelerators for Semantic Segmentation with Unet CNN on MPSoC DPU</a>
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.0/Tutorials/18-mpsocdpu-pre-post-pl-acc/">Pre- and Post-processing Accelerators for Semantic Segmentation with Unet CNN on MPSoC DPU</a>
  </td>
  <td align="center">3.0</td>
  <td>A complete example of how using the <a href="https://github.com/Xilinx/Vitis-AI/tree/3.0/demo/Whole-App-Acceleration">WAA</a> flow targeting the MPSoC ZCU102 board.
