@@ -1,0 +1,24 @@
+# Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+[clock]
+
+freqHz=300000000:DPUCZDX8G_1.aclk
+freqHz=600000000:DPUCZDX8G_1.ap_clk_2
+
+[connectivity]
+
+sp=DPUCZDX8G_1.M_AXI_GP0:HPC0
+sp=DPUCZDX8G_1.M_AXI_HP0:HP0
+sp=DPUCZDX8G_1.M_AXI_HP2:HP1
+
+
+[advanced]
+misc=:solution_name=link
+
+#param=compiler.addOutputTypes=sd_card
+#param=compiler.skipTimingCheckAndFrequencyScaling=1
+
+[vivado]
+prop=run.impl_1.strategy=Performance_Explore
+#param=place.runPartPlacer=0

@@ -1,0 +1,351 @@
+# Copyright (C) 2023, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+# *************************************************************************************
+# This logfile was created by running Vitis AI 3.0 Tensorflow2 GPU docker image
+# ************************************************************************************* 
+
+----------------------------------------------------------------------------------
+[DB INFO STEP3A] CIFAR10 TRAINING (way 1)
+----------------------------------------------------------------------------------
+
+2023-04-06 07:48:28.318063: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1616] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 23394 MB memory:  -> device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1
+/workspace/tutorials/RESNET18/files
+batch_size : 256
+epochs : 50
+gpus : 0
+init_lr : 0.01
+weights : build/float
+/workspace/tutorials/RESNET18/files
+
+[DB INFO] Creating lists of images ...
+
+[DB INFO] x_train: done...
+[DB INFO] x_valid: done...
+[DB INFO] x_test: done...
+
+[DB INFO] Preprocessing images ...
+
+
+[DB INFO] Data Generators ...
+
+
+[DB INFO] CallBack Functions ...
+
+
+[DB INFO] Get ResNet18 pretrained model...
+
+
+[DB INFO] Training the Model...
+
+Epoch 1/50
+2023-04-06 07:48:34.797844: I tensorflow/stream_executor/cuda/cuda_dnn.cc:384] Loaded cuDNN version 8200
+2023-04-06 07:48:36.781098: I tensorflow/core/platform/default/subprocess.cc:304] Start cannot spawn child process: No such file or directory
+2023-04-06 07:48:36.782453: I tensorflow/core/platform/default/subprocess.cc:304] Start cannot spawn child process: No such file or directory
+2023-04-06 07:48:36.782504: W tensorflow/stream_executor/gpu/asm_compiler.cc:80] Couldn't get ptxas version string: INTERNAL: Couldn't invoke ptxas --version
+2023-04-06 07:48:36.783677: I tensorflow/core/platform/default/subprocess.cc:304] Start cannot spawn child process: No such file or directory
+2023-04-06 07:48:36.783806: W tensorflow/stream_executor/gpu/redzone_allocator.cc:314] INTERNAL: Failed to launch ptxas
+Relying on driver to perform ptx compilation. 
+Modify $PATH to customize ptxas location.
+This message will be only logged once.
+
+Epoch 1: val_accuracy improved from -inf to 0.09910, saving model to build/float/train1_best_chkpt.h5
+195/195 - 48s - loss: 1.0421 - accuracy: 0.6432 - val_loss: 3.2137 - val_accuracy: 0.0991 - lr: 0.0100 - 48s/epoch - 245ms/step
+Epoch 2/50
+
+Epoch 2: val_accuracy improved from 0.09910 to 0.10403, saving model to build/float/train1_best_chkpt.h5
+195/195 - 41s - loss: 0.6704 - accuracy: 0.7671 - val_loss: 3.7981 - val_accuracy: 0.1040 - lr: 0.0098 - 41s/epoch - 208ms/step
+Epoch 3/50
+
+Epoch 3: val_accuracy improved from 0.10403 to 0.27097, saving model to build/float/train1_best_chkpt.h5
+195/195 - 39s - loss: 0.5713 - accuracy: 0.8016 - val_loss: 3.1973 - val_accuracy: 0.2710 - lr: 0.0096 - 39s/epoch - 201ms/step
+Epoch 4/50
+
+Epoch 4: val_accuracy improved from 0.27097 to 0.63610, saving model to build/float/train1_best_chkpt.h5
+195/195 - 42s - loss: 0.5142 - accuracy: 0.8205 - val_loss: 1.1191 - val_accuracy: 0.6361 - lr: 0.0094 - 42s/epoch - 213ms/step
+Epoch 5/50
+
+Epoch 5: val_accuracy improved from 0.63610 to 0.80777, saving model to build/float/train1_best_chkpt.h5
+195/195 - 43s - loss: 0.4676 - accuracy: 0.8347 - val_loss: 0.5773 - val_accuracy: 0.8078 - lr: 0.0092 - 43s/epoch - 219ms/step
+Epoch 6/50
+
+Epoch 6: val_accuracy improved from 0.80777 to 0.81641, saving model to build/float/train1_best_chkpt.h5
+195/195 - 44s - loss: 0.4292 - accuracy: 0.8499 - val_loss: 0.5315 - val_accuracy: 0.8164 - lr: 0.0090 - 44s/epoch - 228ms/step
+Epoch 7/50
+
+Epoch 7: val_accuracy improved from 0.81641 to 0.81805, saving model to build/float/train1_best_chkpt.h5
+195/195 - 43s - loss: 0.3979 - accuracy: 0.8600 - val_loss: 0.5419 - val_accuracy: 0.8181 - lr: 0.0088 - 43s/epoch - 223ms/step
+Epoch 8/50
+
+Epoch 8: val_accuracy improved from 0.81805 to 0.83265, saving model to build/float/train1_best_chkpt.h5
+195/195 - 47s - loss: 0.3728 - accuracy: 0.8690 - val_loss: 0.5145 - val_accuracy: 0.8326 - lr: 0.0086 - 47s/epoch - 243ms/step
+Epoch 9/50
+
+Epoch 9: val_accuracy improved from 0.83265 to 0.83306, saving model to build/float/train1_best_chkpt.h5
+195/195 - 46s - loss: 0.3524 - accuracy: 0.8755 - val_loss: 0.4928 - val_accuracy: 0.8331 - lr: 0.0084 - 46s/epoch - 237ms/step
+Epoch 10/50
+
+Epoch 10: val_accuracy did not improve from 0.83306
+195/195 - 44s - loss: 0.3300 - accuracy: 0.8827 - val_loss: 0.5039 - val_accuracy: 0.8326 - lr: 0.0082 - 44s/epoch - 227ms/step
+Epoch 11/50
+
+Epoch 11: val_accuracy improved from 0.83306 to 0.83368, saving model to build/float/train1_best_chkpt.h5
+195/195 - 46s - loss: 0.3035 - accuracy: 0.8919 - val_loss: 0.5181 - val_accuracy: 0.8337 - lr: 0.0080 - 46s/epoch - 233ms/step
+Epoch 12/50
+
+Epoch 12: val_accuracy improved from 0.83368 to 0.83820, saving model to build/float/train1_best_chkpt.h5
+195/195 - 45s - loss: 0.2903 - accuracy: 0.8969 - val_loss: 0.5106 - val_accuracy: 0.8382 - lr: 0.0078 - 45s/epoch - 229ms/step
+Epoch 13/50
+
+Epoch 13: val_accuracy did not improve from 0.83820
+195/195 - 41s - loss: 0.2718 - accuracy: 0.9039 - val_loss: 0.5433 - val_accuracy: 0.8273 - lr: 0.0076 - 41s/epoch - 209ms/step
+Epoch 14/50
+
+Epoch 14: val_accuracy did not improve from 0.83820
+195/195 - 41s - loss: 0.2608 - accuracy: 0.9078 - val_loss: 0.6056 - val_accuracy: 0.8123 - lr: 0.0074 - 41s/epoch - 211ms/step
+Epoch 15/50
+
+Epoch 15: val_accuracy improved from 0.83820 to 0.84067, saving model to build/float/train1_best_chkpt.h5
+195/195 - 42s - loss: 0.2430 - accuracy: 0.9127 - val_loss: 0.4924 - val_accuracy: 0.8407 - lr: 0.0072 - 42s/epoch - 213ms/step
+Epoch 16/50
+
+Epoch 16: val_accuracy improved from 0.84067 to 0.84190, saving model to build/float/train1_best_chkpt.h5
+195/195 - 43s - loss: 0.2244 - accuracy: 0.9201 - val_loss: 0.5201 - val_accuracy: 0.8419 - lr: 0.0070 - 43s/epoch - 220ms/step
+Epoch 17/50
+
+Epoch 17: val_accuracy improved from 0.84190 to 0.84498, saving model to build/float/train1_best_chkpt.h5
+195/195 - 43s - loss: 0.2111 - accuracy: 0.9258 - val_loss: 0.5164 - val_accuracy: 0.8450 - lr: 0.0068 - 43s/epoch - 221ms/step
+Epoch 18/50
+
+Epoch 18: val_accuracy did not improve from 0.84498
+195/195 - 42s - loss: 0.1991 - accuracy: 0.9290 - val_loss: 0.5162 - val_accuracy: 0.8415 - lr: 0.0066 - 42s/epoch - 214ms/step
+Epoch 19/50
+
+Epoch 19: val_accuracy improved from 0.84498 to 0.84992, saving model to build/float/train1_best_chkpt.h5
+195/195 - 44s - loss: 0.1890 - accuracy: 0.9335 - val_loss: 0.5181 - val_accuracy: 0.8499 - lr: 0.0064 - 44s/epoch - 228ms/step
+Epoch 20/50
+
+Epoch 20: val_accuracy did not improve from 0.84992
+195/195 - 42s - loss: 0.1832 - accuracy: 0.9346 - val_loss: 0.5615 - val_accuracy: 0.8413 - lr: 0.0062 - 42s/epoch - 216ms/step
+Epoch 21/50
+
+Epoch 21: val_accuracy did not improve from 0.84992
+195/195 - 41s - loss: 0.1715 - accuracy: 0.9385 - val_loss: 0.5511 - val_accuracy: 0.8493 - lr: 0.0060 - 41s/epoch - 211ms/step
+Epoch 22/50
+
+Epoch 22: val_accuracy did not improve from 0.84992
+195/195 - 41s - loss: 0.1588 - accuracy: 0.9444 - val_loss: 0.5286 - val_accuracy: 0.8487 - lr: 0.0058 - 41s/epoch - 208ms/step
+Epoch 23/50
+
+Epoch 23: val_accuracy did not improve from 0.84992
+195/195 - 41s - loss: 0.1518 - accuracy: 0.9462 - val_loss: 0.5607 - val_accuracy: 0.8446 - lr: 0.0056 - 41s/epoch - 208ms/step
+Epoch 24/50
+
+Epoch 24: val_accuracy did not improve from 0.84992
+195/195 - 39s - loss: 0.1412 - accuracy: 0.9498 - val_loss: 0.5592 - val_accuracy: 0.8462 - lr: 0.0054 - 39s/epoch - 198ms/step
+Epoch 25/50
+
+Epoch 25: val_accuracy did not improve from 0.84992
+195/195 - 41s - loss: 0.1349 - accuracy: 0.9533 - val_loss: 0.5935 - val_accuracy: 0.8427 - lr: 0.0052 - 41s/epoch - 209ms/step
+Epoch 26/50
+
+Epoch 26: val_accuracy improved from 0.84992 to 0.85074, saving model to build/float/train1_best_chkpt.h5
+195/195 - 42s - loss: 0.1272 - accuracy: 0.9545 - val_loss: 0.5645 - val_accuracy: 0.8507 - lr: 0.0050 - 42s/epoch - 218ms/step
+Epoch 27/50
+
+Epoch 27: val_accuracy did not improve from 0.85074
+195/195 - 42s - loss: 0.1195 - accuracy: 0.9580 - val_loss: 0.6217 - val_accuracy: 0.8446 - lr: 0.0048 - 42s/epoch - 214ms/step
+Epoch 28/50
+
+Epoch 28: val_accuracy did not improve from 0.85074
+195/195 - 39s - loss: 0.1126 - accuracy: 0.9607 - val_loss: 0.6136 - val_accuracy: 0.8407 - lr: 0.0046 - 39s/epoch - 202ms/step
+Epoch 29/50
+
+Epoch 29: val_accuracy did not improve from 0.85074
+195/195 - 41s - loss: 0.1106 - accuracy: 0.9612 - val_loss: 0.5947 - val_accuracy: 0.8487 - lr: 0.0044 - 41s/epoch - 209ms/step
+Epoch 30/50
+
+Epoch 30: val_accuracy did not improve from 0.85074
+195/195 - 42s - loss: 0.1030 - accuracy: 0.9642 - val_loss: 0.5817 - val_accuracy: 0.8479 - lr: 0.0042 - 42s/epoch - 213ms/step
+Epoch 31/50
+
+Epoch 31: val_accuracy did not improve from 0.85074
+195/195 - 41s - loss: 0.0941 - accuracy: 0.9674 - val_loss: 0.6134 - val_accuracy: 0.8468 - lr: 0.0040 - 41s/epoch - 213ms/step
+Epoch 32/50
+
+Epoch 32: val_accuracy did not improve from 0.85074
+195/195 - 42s - loss: 0.0911 - accuracy: 0.9682 - val_loss: 0.6422 - val_accuracy: 0.8481 - lr: 0.0038 - 42s/epoch - 216ms/step
+Epoch 33/50
+
+Epoch 33: val_accuracy did not improve from 0.85074
+195/195 - 41s - loss: 0.0832 - accuracy: 0.9702 - val_loss: 0.6578 - val_accuracy: 0.8429 - lr: 0.0036 - 41s/epoch - 210ms/step
+Epoch 34/50
+
+Epoch 34: val_accuracy improved from 0.85074 to 0.85567, saving model to build/float/train1_best_chkpt.h5
+195/195 - 43s - loss: 0.0830 - accuracy: 0.9715 - val_loss: 0.6034 - val_accuracy: 0.8557 - lr: 0.0034 - 43s/epoch - 223ms/step
+Epoch 35/50
+
+Epoch 35: val_accuracy did not improve from 0.85567
+195/195 - 41s - loss: 0.0768 - accuracy: 0.9726 - val_loss: 0.6355 - val_accuracy: 0.8466 - lr: 0.0032 - 41s/epoch - 210ms/step
+Epoch 36/50
+
+Epoch 36: val_accuracy did not improve from 0.85567
+195/195 - 42s - loss: 0.0730 - accuracy: 0.9748 - val_loss: 0.6503 - val_accuracy: 0.8497 - lr: 0.0030 - 42s/epoch - 213ms/step
+Epoch 37/50
+
+Epoch 37: val_accuracy improved from 0.85567 to 0.85794, saving model to build/float/train1_best_chkpt.h5
+195/195 - 44s - loss: 0.0677 - accuracy: 0.9770 - val_loss: 0.5950 - val_accuracy: 0.8579 - lr: 0.0028 - 44s/epoch - 223ms/step
+Epoch 38/50
+
+Epoch 38: val_accuracy improved from 0.85794 to 0.86081, saving model to build/float/train1_best_chkpt.h5
+195/195 - 44s - loss: 0.0634 - accuracy: 0.9783 - val_loss: 0.5941 - val_accuracy: 0.8608 - lr: 0.0026 - 44s/epoch - 223ms/step
+Epoch 39/50
+
+Epoch 39: val_accuracy did not improve from 0.86081
+195/195 - 42s - loss: 0.0613 - accuracy: 0.9790 - val_loss: 0.6418 - val_accuracy: 0.8546 - lr: 0.0024 - 42s/epoch - 214ms/step
+Epoch 40/50
+
+Epoch 40: val_accuracy improved from 0.86081 to 0.86184, saving model to build/float/train1_best_chkpt.h5
+195/195 - 41s - loss: 0.0600 - accuracy: 0.9801 - val_loss: 0.6032 - val_accuracy: 0.8618 - lr: 0.0022 - 41s/epoch - 211ms/step
+Epoch 41/50
+
+Epoch 41: val_accuracy did not improve from 0.86184
+195/195 - 39s - loss: 0.0553 - accuracy: 0.9808 - val_loss: 0.6242 - val_accuracy: 0.8565 - lr: 0.0020 - 39s/epoch - 201ms/step
+Epoch 42/50
+
+Epoch 42: val_accuracy did not improve from 0.86184
+195/195 - 43s - loss: 0.0539 - accuracy: 0.9813 - val_loss: 0.6259 - val_accuracy: 0.8577 - lr: 0.0018 - 43s/epoch - 218ms/step
+Epoch 43/50
+
+Epoch 43: val_accuracy improved from 0.86184 to 0.86431, saving model to build/float/train1_best_chkpt.h5
+195/195 - 46s - loss: 0.0497 - accuracy: 0.9826 - val_loss: 0.6001 - val_accuracy: 0.8643 - lr: 0.0016 - 46s/epoch - 234ms/step
+Epoch 44/50
+
+Epoch 44: val_accuracy did not improve from 0.86431
+195/195 - 44s - loss: 0.0466 - accuracy: 0.9839 - val_loss: 0.6315 - val_accuracy: 0.8579 - lr: 0.0014 - 44s/epoch - 224ms/step
+Epoch 45/50
+
+Epoch 45: val_accuracy improved from 0.86431 to 0.86719, saving model to build/float/train1_best_chkpt.h5
+195/195 - 44s - loss: 0.0469 - accuracy: 0.9841 - val_loss: 0.6133 - val_accuracy: 0.8672 - lr: 0.0012 - 44s/epoch - 227ms/step
+Epoch 46/50
+
+Epoch 46: val_accuracy did not improve from 0.86719
+195/195 - 42s - loss: 0.0430 - accuracy: 0.9856 - val_loss: 0.6143 - val_accuracy: 0.8655 - lr: 0.0010 - 42s/epoch - 216ms/step
+Epoch 47/50
+
+Epoch 47: val_accuracy did not improve from 0.86719
+195/195 - 43s - loss: 0.0418 - accuracy: 0.9865 - val_loss: 0.6251 - val_accuracy: 0.8608 - lr: 8.0000e-04 - 43s/epoch - 219ms/step
+Epoch 48/50
+
+Epoch 48: val_accuracy did not improve from 0.86719
+195/195 - 42s - loss: 0.0408 - accuracy: 0.9864 - val_loss: 0.6156 - val_accuracy: 0.8653 - lr: 6.0000e-04 - 42s/epoch - 216ms/step
+Epoch 49/50
+
+Epoch 49: val_accuracy did not improve from 0.86719
+195/195 - 42s - loss: 0.0387 - accuracy: 0.9873 - val_loss: 0.6285 - val_accuracy: 0.8606 - lr: 4.0000e-04 - 42s/epoch - 216ms/step
+Epoch 50/50
+
+Epoch 50: val_accuracy did not improve from 0.86719
+195/195 - 39s - loss: 0.0390 - accuracy: 0.9870 - val_loss: 0.6261 - val_accuracy: 0.8610 - lr: 2.0000e-04 - 39s/epoch - 200ms/step
+
+
+Elapsed time for Keras training (s):  2118.696477
+
+
+
+[DB INFO] plot model...
+
+
+[DB INFO] evaluating network on Test and Validation datasets...
+
+
+              precision    recall  f1-score   support
+
+    airplane       0.89      0.88      0.88       500
+  automobile       0.88      0.94      0.91       500
+        bird       0.82      0.81      0.82       500
+         cat       0.76      0.68      0.72       500
+        deer       0.86      0.83      0.85       500
+         dog       0.80      0.76      0.78       500
+        frog       0.81      0.95      0.88       500
+       horse       0.89      0.89      0.89       500
+        ship       0.95      0.89      0.92       500
+       truck       0.88      0.90      0.89       500
+
+    accuracy                           0.85      5000
+   macro avg       0.85      0.85      0.85      5000
+weighted avg       0.85      0.85      0.85      5000
+
+
+[DB INFO] End of ResNet18 Training1 on CIFAR10...
+
+ 
+----------------------------------------------------------------------------------
+[DB INFO STEP3B] CIFAR10 TRAINING (way 2)
+----------------------------------------------------------------------------------
+2023-04-06 08:24:02.506336: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1616] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 23184 MB memory:  -> device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1
+/workspace/tutorials/RESNET18/files
+batch_size : 256
+epochs : 50
+gpus : 0
+weights : build/float
+/workspace/tutorials/RESNET18/files
+
+[DB INFO] Loading Data for Training and Test...
+
+
+[DB INFO] Get ResNet18 pretrained model...
+
+
+[DB INFO] CallBack Functions ...
+
+
+[DB INFO] Training the Model...
+
+Epoch 1/50
+2023-04-06 08:24:08.658667: I tensorflow/stream_executor/cuda/cuda_dnn.cc:384] Loaded cuDNN version 8200
+2023-04-06 08:24:09.089479: I tensorflow/core/platform/default/subprocess.cc:304] Start cannot spawn child process: No such file or directory
+2023-04-06 08:24:09.090599: I tensorflow/core/platform/default/subprocess.cc:304] Start cannot spawn child process: No such file or directory
+2023-04-06 08:24:09.090614: W tensorflow/stream_executor/gpu/asm_compiler.cc:80] Couldn't get ptxas version string: INTERNAL: Couldn't invoke ptxas --version
+2023-04-06 08:24:09.091524: I tensorflow/core/platform/default/subprocess.cc:304] Start cannot spawn child process: No such file or directory
+2023-04-06 08:24:09.091576: W tensorflow/stream_executor/gpu/redzone_allocator.cc:314] INTERNAL: Failed to launch ptxas
+Relying on driver to perform ptx compilation. 
+Modify $PATH to customize ptxas location.
+This message will be only logged once.
+
+
+Elapsed time for Keras training (s):  1380.458324
+
+
+
+[DB INFO] saving HDF5 model...
+
+
+[DB INFO] plot model...
+
+
+[DB INFO] Make Predictions with Float Model on CIFAR10...
+
+
+              precision    recall  f1-score   support
+
+    airplane       0.88      0.85      0.86      1000
+  automobile       0.89      0.92      0.91      1000
+        bird       0.83      0.79      0.81      1000
+         cat       0.70      0.66      0.68      1000
+        deer       0.82      0.83      0.83      1000
+         dog       0.75      0.78      0.76      1000
+        frog       0.86      0.91      0.88      1000
+       horse       0.91      0.86      0.88      1000
+        ship       0.90      0.91      0.90      1000
+       truck       0.86      0.90      0.88      1000
+
+    accuracy                           0.84     10000
+   macro avg       0.84      0.84      0.84     10000
+weighted avg       0.84      0.84      0.84     10000
+
+
+[DB INFO] Generate Training Curves File...
+
+[DB INFO] End of ResNet18 Training2 on CIFAR10...
+

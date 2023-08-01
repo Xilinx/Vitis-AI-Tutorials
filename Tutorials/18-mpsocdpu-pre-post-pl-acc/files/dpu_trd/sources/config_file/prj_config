@@ -1,0 +1,36 @@
+# Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+[clock]
+
+freqHz=300000000:DPUCZDX8G_1.aclk
+freqHz=600000000:DPUCZDX8G_1.ap_clk_2
+freqHz=300000000:DPUCZDX8G_2.aclk
+freqHz=600000000:DPUCZDX8G_2.ap_clk_2
+id=1:hls_dpupreproc_m_axi
+id=1:hls_dpupostproc_m_axi
+
+[connectivity]
+
+sp=DPUCZDX8G_1.M_AXI_GP0:HPC0
+sp=DPUCZDX8G_1.M_AXI_HP0:HP0
+sp=DPUCZDX8G_1.M_AXI_HP2:HP1
+sp=DPUCZDX8G_2.M_AXI_GP0:HPC0
+sp=DPUCZDX8G_2.M_AXI_HP0:HP2
+sp=DPUCZDX8G_2.M_AXI_HP2:HP3
+
+
+nk=DPUCZDX8G:2
+#nk=vadd:1:vadd
+nk=hls_dpupreproc_m_axi:1:hls_dpupreproc_m_axi
+nk=hls_dpupostproc_m_axi:1:hls_dpupostproc_m_axi
+
+[advanced]
+misc=:solution_name=link
+
+#param=compiler.addOutputTypes=sd_card
+#param=compiler.skipTimingCheckAndFrequencyScaling=1
+
+[vivado]
+prop=run.impl_1.strategy=Performance_Explore
+#param=place.runPartPlacer=0

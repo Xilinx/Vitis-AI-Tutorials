@@ -1,22 +1,10 @@
 #!/bin/bash
-#-xv
 
-## © Copyright (C) 2016-2020 Xilinx, Inc
-##
-## Licensed under the Apache License, Version 2.0 (the "License"). You may
-## not use this file except in compliance with the License. A copy of the
-## License is located at
-##
-##     http://www.apache.org/licenses/LICENSE-2.0
-##
-## Unless required by applicable law or agreed to in writing, software
-## distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-## WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-## License for the specific language governing permissions and limitations
-## under the License.
+#Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
+#SPDX-License-Identifier: MIT
 
-# author daniele.bagni@xilinx.com
-# date: 13 June 2022
+# date 28 Apr 2023
+
 
 
 CNN_INP_NODE="conv2d_1_input"
@@ -25,7 +13,7 @@ VGG_OUT_NODE="activation_5/Softmax"
 GOOGLE_OUT_NODE="activation_19/Softmax"
 RESNET_OUT_NODE="activation_82/Softmax"
 
-
+: '
 dos2unix_conversion() {
   #dos2unix conversion
   for file in $(find $PWD -name "*.sh"); do
@@ -33,7 +21,7 @@ dos2unix_conversion() {
       echo  ${file}
   done
 }
-
+'
 
 1_cifar10_train() {
     echo " "
@@ -356,6 +344,67 @@ dos2unix_conversion() {
     echo " "
 }
 
+5_cifar10_vai_compile_vek280() {
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILE WITH Vitis AI on VEK280: LeNet on CIFAR10"
+    echo "##########################################################################"
+    vai_c_tensorflow \
+        --frozen_pb=./build/quantized_results/cifar10/LeNet/quantize_eval_model.pb \
+        --arch /opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json \
+        --output_dir=./build/compile/cifar10/LeNet \
+        --net_name=LeNet \
+        --options    "{'mode':'normal'}" \
+        #2>&1 | tee rpt/cifar10/5_vai_compile_LeNet.log
+    mv  ./build/compile/cifar10/LeNet/*.xmodel ./target_vek280/cifar10/LeNet/
+
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILE WITH Vitis AI on VEK280: miniVggNet  on CIFAR10"
+    echo "##########################################################################"
+    vai_c_tensorflow \
+        --frozen_pb=./build/quantized_results/cifar10/miniVggNet/quantize_eval_model.pb \
+        --arch /opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json \
+        --output_dir=./build/compile/cifar10/miniVggNet \
+        --net_name=miniVggNet \
+        --options    "{'mode':'normal'}" \
+        #2>&1 | tee rpt/cifar10/5_vai_compile_miniVggNet.log
+    mv  ./build/compile/cifar10/miniVggNet/*.xmodel ./target_vek280/cifar10/miniVggNet/
+
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILE WITH Vitis AI on VEK280: miniGoogleNet  on CIFAR10"
+    echo "##########################################################################"
+    vai_c_tensorflow \
+        --frozen_pb=./build/quantized_results/cifar10/miniGoogleNet/quantize_eval_model.pb \
+        --arch /opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json \
+        --output_dir=./build/compile/cifar10/miniGoogleNet \
+        --net_name=miniGoogleNet \
+        --options    "{'mode':'normal'}" \
+        #2>&1 | tee rpt/cifar10/5_vai_compile_miniGoogleNet.log
+    mv  ./build/compile/cifar10/miniGoogleNet/*.xmodel ./target_vek280/cifar10/miniGoogleNet/
+
+    #This CNN is not yet supprted on XVDPU because of a missing layer
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILE WITH Vitis AI on VEK280: miniResNet  on CIFAR10"
+    echo "##########################################################################"
+    vai_c_tensorflow \
+        --frozen_pb=./build/quantized_results/cifar10/miniResNet/quantize_eval_model.pb \
+        --arch /opt/vitis_ai/compiler/arch/DPUCV2DX8G/VEK280/arch.json \
+        --output_dir=./build/compile/cifar10/miniResNet \
+        --net_name=miniResNet \
+        --options    "{'mode':'normal'}" \
+        #2>&1 | tee rpt/cifar10/5_vai_compile_miniResNet.log
+    mv  ./build/compile/cifar10/miniResNet/*.xmodel ./target_vek280/cifar10/miniResNet/
+
+    echo " "
+    echo "##########################################################################"
+    echo "COMPILATION COMPLETED  on CIFAR10 on VEK280"
+    echo "##########################################################################"
+    echo " "
+}
+
 5_cifar10_vai_compile_zcu102() {
 echo " "
 echo "##########################################################################"
@@ -489,13 +538,13 @@ echo " "
 
 main() {
 
-  ##copy target_zcu102 files into the new target_zcu104 folder if you have also the ZCU104 board
-  cp -r target_zcu102 target_zcu104
   ##copy target_zcu102 files into the new target_vck190 folder if you have also the VCK190 board
+  #cp -r target_zcu102 target_zcu104
   cp -r target_zcu102 target_vck190
+  cp -r target_zcu102 target_vek280
 
   # training from scratch with CIFAR10
-  1_cifar10_train
+  # 1_cifar10_train
 
   # convert Keras model into TF inference graph
   2_cifar10_Keras2TF
@@ -512,14 +561,19 @@ main() {
   # make predictions with quantized frozen graph
   4b_cifar10_evaluate_quantized_graph
 
+: '
   # compile xmodel file for ZCU102 target board
   5_cifar10_vai_compile_zcu102
 
   ## compile xmodel file for ZCU104 target board
   5_cifar10_vai_compile_zcu104
+'
 
   # compile xmodel file for VCK190 target board
   5_cifar10_vai_compile_vck190
+
+  # compile xmodel file for VEK280 target board
+  5_cifar10_vai_compile_vek280
 
   ## copy test images into target board
   cd build/dataset/cifar10
@@ -528,8 +582,10 @@ main() {
   rm -rf cifar10_test
   cd ../../../
   cp ./build/dataset/cifar10/cifar10_test.tar ./target_zcu102/
+  cp ./build/dataset/cifar10/cifar10_test.tar ./target_vek280/
   cp ./build/dataset/cifar10/cifar10_test.tar ./target_vck190/
-  mv ./build/dataset/cifar10/cifar10_test.tar ./target_zcu104/
+  #  cp ./build/dataset/cifar10/cifar10_test.tar ./target_zcu102/
+  #  mv ./build/dataset/cifar10/cifar10_test.tar ./target_zcu104/
 
 
 }

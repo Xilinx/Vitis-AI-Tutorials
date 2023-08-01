@@ -1,0 +1,765 @@
+
+# Copyright (C) 2023, Advanced Micro Devices, Inc. All rights reserved.
+# SPDX-License-Identifier: MIT
+
+
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/open_pb_graph_in_tensorBoard.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/run_all.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/run_fcn8.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/run_fcn8ups.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/run_unet.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vck190/code/build_app.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vck190/code/build_get_dpu_fps.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vck190/code/run_cnn_fps.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vck190/run_all_target.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vek280/code/build_app.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vek280/code/build_get_dpu_fps.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vek280/code/run_cnn_fps.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vek280/run_all_target.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vek280/target_zcu102/code/build_app.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vek280/target_zcu102/code/build_get_dpu_fps.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vek280/target_zcu102/code/run_cnn_fps.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_vek280/target_zcu102/run_all_target.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/build_app.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/build_get_dpu_fps.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_zcu102/code/run_cnn_fps.sh
+/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/target_zcu102/run_all_target.sh
+rm: cannot remove 'target_zcu102/fcn8/model/*.xmodel': No such file or directory
+rm: cannot remove 'target_zcu102/fcn8/model/*.json': No such file or directory
+rm: cannot remove 'target_zcu102/fcn8ups/model/*.xmodel': No such file or directory
+rm: cannot remove 'target_zcu102/fcn8ups/model/*.json': No such file or directory
+rm: cannot remove 'target_zcu102/unet/v2/model/*.xmodel': No such file or directory
+rm: cannot remove 'target_zcu102/unet/v2/model/*.json': No such file or directory
+rm: cannot remove 'target_zcu102/rpt/*': No such file or directory
+rm: cannot remove 'target_zcu104': No such file or directory
+mkdir: cannot create directory ‘target_zcu102/fcn8’: File exists
+mkdir: cannot create directory ‘target_zcu102/fcn8/model’: File exists
+mkdir: cannot create directory ‘target_zcu102/fcn8ups’: File exists
+mkdir: cannot create directory ‘target_zcu102/fcn8ups/model’: File exists
+mkdir: cannot create directory ‘target_zcu102/unet/’: File exists
+mkdir: cannot create directory ‘target_zcu102/unet/v2’: File exists
+mkdir: cannot create directory ‘target_zcu102/unet/v2/model’: File exists
+Requirement already satisfied: seaborn in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (0.11.2)
+Requirement already satisfied: numpy>=1.15 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.19.5)
+Requirement already satisfied: pandas>=0.23 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.1.3)
+Requirement already satisfied: scipy>=1.0 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.5.1)
+Requirement already satisfied: matplotlib>=2.2 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (3.3.4)
+Requirement already satisfied: cycler>=0.10 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (0.11.0)
+Requirement already satisfied: python-dateutil>=2.1 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (2.8.2)
+Requirement already satisfied: kiwisolver>=1.0.1 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (1.3.1)
+Requirement already satisfied: pillow>=6.2.0 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (8.4.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.3 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (3.0.9)
+Requirement already satisfied: pytz>=2017.2 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from pandas>=0.23->seaborn) (2022.7.1)
+Requirement already satisfied: six>=1.5 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from python-dateutil>=2.1->matplotlib>=2.2->seaborn) (1.16.0)
+
+#######################################################################################
+Step3: FCN8 KERAS to TENSORFLOW GRAPH CONVERSION
+#######################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling GlorotUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From Keras2TF.py:83: The name tf.keras.backend.get_session is deprecated. Please use tf.compat.v1.keras.backend.get_session instead.
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+model name =  fcn8
+
+ TF input node name:
+[<tf.Tensor 'input_1:0' shape=(?, 224, 224, 3) dtype=float32>]
+
+ TF output node name:
+[<tf.Tensor 'activation/truediv:0' shape=(?, 224, 224, 12) dtype=float32>]
+
+FINISHED CREATING TF FILES
+
+
+##############################################################################
+Step4a: FCN8 FREEZE TF GRAPHS
+##############################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+W0207 06:25:47.921573 140569199281984 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+2023-02-07 06:25:47.925089: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2023-02-07 06:25:47.965999: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2023-02-07 06:25:47.966181: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:25:47.967299: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2023-02-07 06:25:47.968386: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2023-02-07 06:25:47.968632: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2023-02-07 06:25:47.970006: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2023-02-07 06:25:47.971047: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2023-02-07 06:25:47.974165: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2023-02-07 06:25:47.975832: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2023-02-07 06:25:47.976154: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2023-02-07 06:25:47.991727: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2499950000 Hz
+2023-02-07 06:25:47.994059: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56273d0d0c00 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2023-02-07 06:25:47.994085: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2023-02-07 06:25:48.067106: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56273d5fdc50 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2023-02-07 06:25:48.067150: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Quadro P6000, Compute Capability 6.1
+2023-02-07 06:25:48.069651: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2023-02-07 06:25:48.069729: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:25:48.069753: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2023-02-07 06:25:48.069774: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2023-02-07 06:25:48.069794: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2023-02-07 06:25:48.069815: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2023-02-07 06:25:48.069835: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2023-02-07 06:25:48.069856: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2023-02-07 06:25:48.074081: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2023-02-07 06:25:48.074157: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:25:48.076604: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+2023-02-07 06:25:48.076630: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      0
+2023-02-07 06:25:48.076641: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 0:   N
+2023-02-07 06:25:48.080144: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22424 MB memory) -> physical GPU (device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1)
+INFO:tensorflow:Restoring parameters from ./build/tf_chkpts/fcn8/float_model.ckpt
+I0207 06:25:48.273663 140569199281984 saver.py:1284] Restoring parameters from ./build/tf_chkpts/fcn8/float_model.ckpt
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+W0207 06:25:48.982806 140569199281984 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+W0207 06:25:48.983237 140569199281984 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+INFO:tensorflow:Froze 37 variables.
+I0207 06:25:49.063774 140569199281984 graph_util_impl.py:334] Froze 37 variables.
+INFO:tensorflow:Converted 37 variables to const ops.
+I0207 06:25:49.418193 140569199281984 graph_util_impl.py:394] Converted 37 variables to const ops.
+Loaded meta graph file './build/tf_chkpts/fcn8/float_model.ckpt.meta
+
+##############################################################################
+Step4a: FCN8 INSPECT FROZEN GRAPH
+##############################################################################
+
+Op types used: 81 Const, 37 Identity, 17 BiasAdd, 17 Conv2D, 17 Relu, 9 StridedSlice, 8 AddV2, 6 Mul, 5 MaxPool, 3 Pack, 3 Shape, 3 Conv2DBackpropInput, 1 Max, 1 Placeholder, 1 RealDiv, 1 Exp, 1 Sub, 1 Sum
+
+Found 1 possible inputs: (name=input_1, type=float(1), shape=[?,224,224,3])
+Found 1 possible outputs: (name=activation/truediv, op=RealDiv)
+
+##############################################################################
+Step4b: FCN8 EVALUATING THE ORIGINAL GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 432494, #FP=  31026, #FN=  23479, IoU=0.888
+class ( 1)         Wall: #TP=1141567, #FP= 133190, #FN= 162379, IoU=0.794
+class ( 2)         Pole: #TP=      6, #FP=    302, #FN=  36414, IoU=0.000
+class ( 3)         Road: #TP=1414596, #FP=  76857, #FN=  60423, IoU=0.912
+class ( 4)     Sidewalk: #TP= 388901, #FP=  83748, #FN=  59532, IoU=0.731
+class ( 5)   Vegetation: #TP= 777910, #FP=  83226, #FN=  48635, IoU=0.855
+class ( 6)         Sign: #TP=     12, #FP=    629, #FN=  53380, IoU=0.000
+class ( 7)        Fence: #TP=  20929, #FP=  11649, #FN= 135474, IoU=0.125
+class ( 8)      vehicle: #TP=  75515, #FP= 131189, #FN=  18545, IoU=0.335
+class ( 9)   Pedestrian: #TP=    768, #FP=   2743, #FN=  36097, IoU=0.019
+class (10)    Bicyclist: #TP=   3572, #FP=   1575, #FN= 107400, IoU=0.032
+class (11)  miscellanea: #TP=  39926, #FP= 215446, #FN=  29822, IoU=0.140
+_________________
+Mean IoU: 0.403
+FINISHED!
+
+##########################################################################
+Step5a: FCN8 QUANTIZATION
+##########################################################################
+
+
+Vai_q_tensorflow 3.0.0-dev-gpu build for Tensorflow 1.15.2 git version d2e041a
+
+  0% |                                                                        | 10% |#######                                                                 | 20% |##############                                                          | 30% |#####################                                                   | 40% |############################                                            | 50% |####################################                                    | 60% |###########################################                             | 70% |##################################################                      | 80% |#########################################################               | 90% |################################################################        |100% |########################################################################|
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+script running on folder  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+CALIB DIR  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code/../build/dataset1/img_calib
+INFO: Checking Float Graph...
+INFO: Float Graph Check Done.
+INFO: Calibrating for 10 iterations...
+INFO: Calibration Done.
+********************* Quantization Summary *********************
+INFO: Output:
+  quantize_eval_model: .././build/quantize_results/fcn8/quantize_eval_model.pb
+
+##############################################################################
+Step5b: FCN8 EVALUATE QUANTIZED GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 430581, #FP=  29640, #FN=  25392, IoU=0.887
+class ( 1)         Wall: #TP=1135934, #FP= 129733, #FN= 168012, IoU=0.792
+class ( 2)         Pole: #TP=      7, #FP=    344, #FN=  36413, IoU=0.000
+class ( 3)         Road: #TP=1420745, #FP=  87739, #FN=  54274, IoU=0.909
+class ( 4)     Sidewalk: #TP= 381281, #FP=  81346, #FN=  67152, IoU=0.720
+class ( 5)   Vegetation: #TP= 777382, #FP=  86192, #FN=  49163, IoU=0.852
+class ( 6)         Sign: #TP=     10, #FP=    628, #FN=  53382, IoU=0.000
+class ( 7)        Fence: #TP=  19089, #FP=  10830, #FN= 137314, IoU=0.114
+class ( 8)      vehicle: #TP=  75342, #FP= 132412, #FN=  18718, IoU=0.333
+class ( 9)   Pedestrian: #TP=    763, #FP=   2376, #FN=  36102, IoU=0.019
+class (10)    Bicyclist: #TP=   3182, #FP=   1332, #FN= 107790, IoU=0.028
+class (11)  miscellanea: #TP=  40444, #FP= 220444, #FN=  29304, IoU=0.139
+_________________
+Mean IoU: 0.399
+FINISHED!
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8_DPUCVDX8G_ISA3_C32B6_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/100 [00:00<?, ?it/s]                          [INFO] parse raw model     :100%|██████████| 100/100 [00:00<00:00, 14024.96it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/182 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 67%|██████▋   | 122/182 [00:00<00:00, 1217.88it/s]              [INFO] infer shape (NHWC)  :100%|██████████| 182/182 [00:00<00:00, 1697.41it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 443.75it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 467.87it/s]
+[INFO] generate xmodel     :  0%|          | 0/73 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 78%|███████▊  | 57/73 [00:00<00:00, 564.75it/s]                 [INFO] generate xmodel     :100%|██████████| 73/73 [00:00<00:00, 237.26it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8_DPUCVDX8G_ISA3_C32B6_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA3_C32B6
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 147
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/fcn8.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 7b79f35aa339c1d0c603b35641c9d02e, and has been saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for VEK280 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/100 [00:00<?, ?it/s]                          [INFO] parse raw model     :100%|██████████| 100/100 [00:00<00:00, 14550.92it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/182 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  : 68%|██████▊   | 123/182 [00:00<00:00, 1224.79it/s]              [INFO] infer shape (NHWC)  :100%|██████████| 182/182 [00:00<00:00, 1702.97it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 445.57it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 466.48it/s]
+[INFO] generate xmodel     :  0%|          | 0/73 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 85%|████████▍ | 62/73 [00:00<00:00, 202.42it/s]                 [INFO] generate xmodel     :100%|██████████| 73/73 [00:00<00:00, 235.17it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCV2DX8G_ISA0_C16M4B13
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 147
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/fcn8.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 53c8418d9ad27a1dcc2c3a28e03a5cdf, and has been saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+#####################################
+MAIN FCN8 FLOW COMPLETED
+#####################################
+bash: ::: command not found
+
+#######################################################################################
+Step3: FCN8UPS KERAS to TENSORFLOW GRAPH CONVERSION
+#######################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling GlorotUniform.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From Keras2TF.py:83: The name tf.keras.backend.get_session is deprecated. Please use tf.compat.v1.keras.backend.get_session instead.
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+model name =  fcn8ups
+
+ TF input node name:
+[<tf.Tensor 'input_1:0' shape=(?, 224, 224, 3) dtype=float32>]
+
+ TF output node name:
+[<tf.Tensor 'activation/truediv:0' shape=(?, 224, 224, 12) dtype=float32>]
+
+FINISHED CREATING TF FILES
+
+
+##############################################################################
+Step4a: FCN8UPS FREEZE TF GRAPHS
+##############################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+W0207 06:26:58.565906 139782381414208 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+2023-02-07 06:26:58.569551: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2023-02-07 06:26:58.604573: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2023-02-07 06:26:58.604779: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:26:58.606057: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2023-02-07 06:26:58.607271: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2023-02-07 06:26:58.607553: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2023-02-07 06:26:58.609217: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2023-02-07 06:26:58.610502: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2023-02-07 06:26:58.614161: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2023-02-07 06:26:58.615527: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2023-02-07 06:26:58.615864: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2023-02-07 06:26:58.635115: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2499950000 Hz
+2023-02-07 06:26:58.637138: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5600c503d610 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2023-02-07 06:26:58.637162: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2023-02-07 06:26:58.715584: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5600c554b8d0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2023-02-07 06:26:58.715628: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Quadro P6000, Compute Capability 6.1
+2023-02-07 06:26:58.718094: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2023-02-07 06:26:58.718175: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:26:58.718201: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2023-02-07 06:26:58.718223: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2023-02-07 06:26:58.718245: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2023-02-07 06:26:58.718267: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2023-02-07 06:26:58.718288: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2023-02-07 06:26:58.718310: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2023-02-07 06:26:58.722517: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2023-02-07 06:26:58.722593: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:26:58.724985: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+2023-02-07 06:26:58.725010: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      0
+2023-02-07 06:26:58.725022: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 0:   N
+2023-02-07 06:26:58.729525: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22427 MB memory) -> physical GPU (device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1)
+INFO:tensorflow:Restoring parameters from ./build/tf_chkpts/fcn8ups/float_model.ckpt
+I0207 06:26:58.933372 139782381414208 saver.py:1284] Restoring parameters from ./build/tf_chkpts/fcn8ups/float_model.ckpt
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+W0207 06:26:59.630490 139782381414208 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+W0207 06:26:59.630928 139782381414208 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+INFO:tensorflow:Froze 37 variables.
+I0207 06:26:59.711799 139782381414208 graph_util_impl.py:334] Froze 37 variables.
+INFO:tensorflow:Converted 37 variables to const ops.
+I0207 06:26:59.814309 139782381414208 graph_util_impl.py:394] Converted 37 variables to const ops.
+Loaded meta graph file './build/tf_chkpts/fcn8ups/float_model.ckpt.meta
+
+##############################################################################
+Step4a: FCN8UPS INSPECT FROZEN GRAPH
+##############################################################################
+
+Op types used: 61 Const, 37 Identity, 18 BiasAdd, 18 Conv2D, 18 Relu, 5 StridedSlice, 5 MaxPool, 4 Mul, 4 AddV2, 3 Shape, 2 ResizeNearestNeighbor, 1 Max, 1 Pack, 1 Placeholder, 1 RealDiv, 1 Exp, 1 Conv2DBackpropInput, 1 Sub, 1 Sum
+
+Found 1 possible inputs: (name=input_1, type=float(1), shape=[?,224,224,3])
+Found 1 possible outputs: (name=activation/truediv, op=RealDiv)
+
+##############################################################################
+Step4b: FCN8UPS EVALUATING THE ORIGINAL GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 414703, #FP=  55417, #FN=  41270, IoU=0.811
+class ( 1)         Wall: #TP=1073168, #FP= 100943, #FN= 230778, IoU=0.764
+class ( 2)         Pole: #TP=      2, #FP=    333, #FN=  36418, IoU=0.000
+class ( 3)         Road: #TP=1403819, #FP= 118681, #FN=  71200, IoU=0.881
+class ( 4)     Sidewalk: #TP= 370507, #FP= 133658, #FN=  77926, IoU=0.637
+class ( 5)   Vegetation: #TP= 767764, #FP=  96815, #FN=  58781, IoU=0.831
+class ( 6)         Sign: #TP=      0, #FP=     32, #FN=  53392, IoU=0.000
+class ( 7)        Fence: #TP=  67184, #FP=  57873, #FN=  89219, IoU=0.314
+class ( 8)      vehicle: #TP=  72014, #FP= 181988, #FN=  22046, IoU=0.261
+class ( 9)   Pedestrian: #TP=     22, #FP=    126, #FN=  36843, IoU=0.001
+class (10)    Bicyclist: #TP=      0, #FP=      4, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  23880, #FP= 128843, #FN=  45868, IoU=0.120
+_________________
+Mean IoU: 0.385
+FINISHED!
+
+##########################################################################
+Step5a: FCN8UPS QUANTIZATION
+##########################################################################
+
+
+Vai_q_tensorflow 3.0.0-dev-gpu build for Tensorflow 1.15.2 git version d2e041a
+
+  0% |                                                                        | 10% |#######                                                                 | 20% |##############                                                          | 30% |#####################                                                   | 40% |############################                                            | 50% |####################################                                    | 60% |###########################################                             | 70% |##################################################                      | 80% |#########################################################               | 90% |################################################################        |100% |########################################################################|
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+script running on folder  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+CALIB DIR  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code/../build/dataset1/img_calib
+INFO: Checking Float Graph...
+INFO: Float Graph Check Done.
+INFO: Calibrating for 10 iterations...
+INFO: Calibration Done.
+********************* Quantization Summary *********************
+INFO: Output:
+  quantize_eval_model: .././build/quantize_results/fcn8ups/quantize_eval_model.pb
+
+##############################################################################
+Step5b: FCN8UPS EVALUATE QUANTIZED GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 412130, #FP=  53122, #FN=  43843, IoU=0.810
+class ( 1)         Wall: #TP=1074965, #FP= 105806, #FN= 228981, IoU=0.763
+class ( 2)         Pole: #TP=      3, #FP=    234, #FN=  36417, IoU=0.000
+class ( 3)         Road: #TP=1413075, #FP= 138260, #FN=  61944, IoU=0.876
+class ( 4)     Sidewalk: #TP= 358689, #FP= 123233, #FN=  89744, IoU=0.627
+class ( 5)   Vegetation: #TP= 770202, #FP= 104721, #FN=  56343, IoU=0.827
+class ( 6)         Sign: #TP=      8, #FP=     28, #FN=  53384, IoU=0.000
+class ( 7)        Fence: #TP=  53303, #FP=  46457, #FN= 103100, IoU=0.263
+class ( 8)      vehicle: #TP=  69368, #FP= 160173, #FN=  24692, IoU=0.273
+class ( 9)   Pedestrian: #TP=     21, #FP=    159, #FN=  36844, IoU=0.001
+class (10)    Bicyclist: #TP=      6, #FP=      6, #FN= 110966, IoU=0.000
+class (11)  miscellanea: #TP=  27948, #FP= 155859, #FN=  41800, IoU=0.124
+_________________
+Mean IoU: 0.380
+FINISHED!
+
+##########################################################################
+COMPILE FCN8UPS XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8ups/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8ups_DPUCVDX8G_ISA3_C32B6_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8ups/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/91 [00:00<?, ?it/s]                           [INFO] parse raw model     :100%|██████████| 91/91 [00:00<00:00, 15138.89it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/151 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  :100%|██████████| 151/151 [00:00<00:00, 1588.94it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 425.90it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 414.52it/s]
+[INFO] generate xmodel     :  0%|          | 0/78 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 68%|██████▊   | 53/78 [00:00<00:00, 524.21it/s]                 [INFO] generate xmodel     :100%|██████████| 78/78 [00:00<00:00, 623.84it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8ups_DPUCVDX8G_ISA3_C32B6_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA3_C32B6
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 152
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/fcn8ups.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is bdb216cf06c071a8ab2e32c458a79cf7, and has been saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for VEK280 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/fcn8ups/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/fcn8ups_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/build/quantize_results/fcn8ups/quantize_eval_model.pb
+[INFO] parse raw model     :  0%|          | 0/91 [00:00<?, ?it/s]                           [INFO] parse raw model     :100%|██████████| 91/91 [00:00<00:00, 16153.79it/s]
+[INFO] infer shape (NHWC)  :  0%|          | 0/151 [00:00<?, ?it/s]                          [INFO] infer shape (NHWC)  :100%|██████████| 151/151 [00:00<00:00, 1610.66it/s]
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]                            [INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 430.69it/s]
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]                            [INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 450.47it/s]
+[INFO] generate xmodel     :  0%|          | 0/78 [00:00<?, ?it/s]                           [INFO] generate xmodel     : 53%|█████▎    | 41/78 [00:00<00:00, 312.53it/s]                 [INFO] generate xmodel     : 94%|█████████▎| 73/78 [00:00<00:00, 265.13it/s]                 [INFO] generate xmodel     :100%|██████████| 78/78 [00:00<00:00, 289.31it/s]
+[INFO] dump xmodel ...[INFO] dump xmodel: /tmp/fcn8ups_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCV2DX8G_ISA0_C16M4B13
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 152
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/fcn8ups.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 169a16676aa295b8bb8b034412a6da41, and has been saved to "/workspace/tutorials/Keras_FCN8_UNET_segmentation/files/./build/compile/fcn8ups/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+#####################################
+MAIN FCN8UPS FLOW COMPLETED
+#####################################
+Requirement already satisfied: seaborn in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (0.11.2)
+Requirement already satisfied: matplotlib>=2.2 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (3.3.4)
+Requirement already satisfied: numpy>=1.15 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.19.5)
+Requirement already satisfied: pandas>=0.23 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.1.3)
+Requirement already satisfied: scipy>=1.0 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from seaborn) (1.5.1)
+Requirement already satisfied: cycler>=0.10 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (0.11.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.3 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (3.0.9)
+Requirement already satisfied: python-dateutil>=2.1 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (2.8.2)
+Requirement already satisfied: pillow>=6.2.0 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (8.4.0)
+Requirement already satisfied: kiwisolver>=1.0.1 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from matplotlib>=2.2->seaborn) (1.3.1)
+Requirement already satisfied: pytz>=2017.2 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from pandas>=0.23->seaborn) (2022.7.1)
+Requirement already satisfied: six>=1.5 in /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages (from python-dateutil>=2.1->matplotlib>=2.2->seaborn) (1.16.0)
+
+#######################################################################################
+Step3: KERAS to TENSORFLOW GRAPH CONVERSION
+#######################################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Zeros.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/init_ops.py:97: calling Ones.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/ops/math_grad.py:1424: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From Keras2TF.py:83: The name tf.keras.backend.get_session is deprecated. Please use tf.compat.v1.keras.backend.get_session instead.
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+model name =  unet2
+
+ TF input node name:
+[<tf.Tensor 'input_1:0' shape=(?, 224, 224, 3) dtype=float32>]
+
+ TF output node name:
+[<tf.Tensor 'conv2d_22/Relu:0' shape=(?, 224, 224, 12) dtype=float32>]
+
+FINISHED CREATING TF FILES
+
+
+##############################################################################
+Step4a: FREEZE TF GRAPHS
+##############################################################################
+
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+W0207 06:28:04.753921 139968225531712 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:127: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+2023-02-07 06:28:04.757891: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2023-02-07 06:28:04.796658: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2023-02-07 06:28:04.796832: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:28:04.797792: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2023-02-07 06:28:04.798799: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2023-02-07 06:28:04.799033: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2023-02-07 06:28:04.800435: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2023-02-07 06:28:04.801464: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2023-02-07 06:28:04.804618: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2023-02-07 06:28:04.806068: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2023-02-07 06:28:04.806382: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 AVX512F FMA
+2023-02-07 06:28:04.821779: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2499950000 Hz
+2023-02-07 06:28:04.824360: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56311d21ab80 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2023-02-07 06:28:04.824394: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2023-02-07 06:28:04.895860: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x56311d71bb50 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2023-02-07 06:28:04.895919: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Quadro P6000, Compute Capability 6.1
+2023-02-07 06:28:04.898618: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Found device 0 with properties:
+name: Quadro P6000 major: 6 minor: 1 memoryClockRate(GHz): 1.645
+pciBusID: 0000:65:00.0
+2023-02-07 06:28:04.898688: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:28:04.898710: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10.0
+2023-02-07 06:28:04.898730: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10.0
+2023-02-07 06:28:04.898750: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10.0
+2023-02-07 06:28:04.898770: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10.0
+2023-02-07 06:28:04.898790: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10.0
+2023-02-07 06:28:04.898811: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2023-02-07 06:28:04.903235: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1767] Adding visible gpu devices: 0
+2023-02-07 06:28:04.903307: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.0
+2023-02-07 06:28:04.905737: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1180] Device interconnect StreamExecutor with strength 1 edge matrix:
+2023-02-07 06:28:04.905761: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1186]      0
+2023-02-07 06:28:04.905772: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1199] 0:   N
+2023-02-07 06:28:04.909564: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1325] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 22430 MB memory) -> physical GPU (device: 0, name: Quadro P6000, pci bus id: 0000:65:00.0, compute capability: 6.1)
+INFO:tensorflow:Restoring parameters from ./build/tf_chkpts/unet2/float_model.ckpt
+I0207 06:28:05.263860 139968225531712 saver.py:1284] Restoring parameters from ./build/tf_chkpts/unet2/float_model.ckpt
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+W0207 06:28:06.075447 139968225531712 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/tools/freeze_graph.py:226: convert_variables_to_constants (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.convert_variables_to_constants`
+WARNING:tensorflow:From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+W0207 06:28:06.075870 139968225531712 deprecation.py:323] From /opt/vitis_ai/conda/envs/vitis-ai-tensorflow/lib/python3.6/site-packages/tensorflow_core/python/framework/graph_util_impl.py:277: extract_sub_graph (from tensorflow.python.framework.graph_util_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.compat.v1.graph_util.extract_sub_graph`
+INFO:tensorflow:Froze 118 variables.
+I0207 06:28:06.234862 139968225531712 graph_util_impl.py:334] Froze 118 variables.
+INFO:tensorflow:Converted 118 variables to const ops.
+I0207 06:28:06.552634 139968225531712 graph_util_impl.py:394] Converted 118 variables to const ops.
+Loaded meta graph file './build/tf_chkpts/unet2/float_model.ckpt.meta
+
+##############################################################################
+Step4a: INSPECT FROZEN GRAPH
+##############################################################################
+
+Op types used: 138 Const, 127 Identity, 23 BiasAdd, 23 Conv2D, 23 Relu, 18 FusedBatchNormV3, 4 ConcatV2, 4 MaxPool, 4 Mul, 4 ResizeBilinear, 4 Shape, 4 StridedSlice, 1 Placeholder
+
+Found 1 possible inputs: (name=input_1, type=float(1), shape=[?,224,224,3])
+Found 1 possible outputs: (name=conv2d_22/Relu, op=Relu)
+
+##############################################################################
+Step4b: EVALUATING THE ORIGINAL GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 445355, #FP=  22706, #FN=  10618, IoU=0.930
+class ( 1)         Wall: #TP=1120334, #FP= 221043, #FN= 183612, IoU=0.735
+class ( 2)         Pole: #TP=      0, #FP=      0, #FN=  36420, IoU=0.000
+class ( 3)         Road: #TP=1407553, #FP=  44054, #FN=  67466, IoU=0.927
+class ( 4)     Sidewalk: #TP= 406638, #FP=  87044, #FN=  41795, IoU=0.759
+class ( 5)   Vegetation: #TP= 768791, #FP= 144470, #FN=  57754, IoU=0.792
+class ( 6)         Sign: #TP=      0, #FP=      0, #FN=  53392, IoU=0.000
+class ( 7)        Fence: #TP=      0, #FP=      0, #FN= 156403, IoU=0.000
+class ( 8)      vehicle: #TP=  76031, #FP=  30442, #FN=  18029, IoU=0.611
+class ( 9)   Pedestrian: #TP=      0, #FP=      0, #FN=  36865, IoU=0.000
+class (10)    Bicyclist: #TP=      0, #FP=      0, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  38365, #FP= 254950, #FN=  31383, IoU=0.118
+_________________
+Mean IoU: 0.406
+FINISHED!
+
+##########################################################################
+Step5a: QUANTIZATION
+##########################################################################
+
+  0% |                                                                        | 10% |#######                                                                 | 20% |##############                                                          | 30% |#####################                                                   | 40% |############################                                            | 50% |####################################                                    | 60% |###########################################                             | 70% |##################################################                      | 80% |#########################################################               | 90% |################################################################        |100% |########################################################################|
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+script running on folder  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+CALIB DIR  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code/../build/dataset1/img_calib
+INFO: Checking Float Graph...
+INFO: Float Graph Check Done.
+INFO: Calibrating for 10 iterations...
+INFO: Calibration Done.
+********************* Quantization Summary *********************
+INFO: Output:
+  quantize_eval_model: .././build/quantize_results/unet2/quantize_eval_model.pb
+
+##############################################################################
+Step5b: EVALUATE QUANTIZED GRAPH
+##############################################################################
+
+fcn_config.py runs from  /workspace/tutorials/Keras_FCN8_UNET_segmentation/files/code
+X tensor shape:  (101, 224, 224, 3)  Y tensor shape:  (101, 224, 224, 12)
+(101, 224, 224) (101, 224, 224)
+class ( 0)          Sky: #TP= 445310, #FP=  22989, #FN=  10663, IoU=0.930
+class ( 1)         Wall: #TP=1111946, #FP= 202557, #FN= 192000, IoU=0.738
+class ( 2)         Pole: #TP=      0, #FP=      0, #FN=  36420, IoU=0.000
+class ( 3)         Road: #TP=1405779, #FP=  43571, #FN=  69240, IoU=0.926
+class ( 4)     Sidewalk: #TP= 406163, #FP=  87414, #FN=  42270, IoU=0.758
+class ( 5)   Vegetation: #TP= 775861, #FP= 161007, #FN=  50684, IoU=0.786
+class ( 6)         Sign: #TP=      0, #FP=      0, #FN=  53392, IoU=0.000
+class ( 7)        Fence: #TP=      0, #FP=      0, #FN= 156403, IoU=0.000
+class ( 8)      vehicle: #TP=  75707, #FP=  26526, #FN=  18353, IoU=0.628
+class ( 9)   Pedestrian: #TP=      0, #FP=      0, #FN=  36865, IoU=0.000
+class (10)    Bicyclist: #TP=      0, #FP=      0, #FN= 110972, IoU=0.000
+class (11)  miscellanea: #TP=  40355, #FP= 262591, #FN=  29393, IoU=0.121
+_________________
+Mean IoU: 0.407
+FINISHED!
+
+
+##########################################################################
+COMPILE UNET XMODEL FILE WITH Vitis AI for VCK190 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/unet2/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/unet2_DPUCVDX8G_ISA3_C32B6_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/unet2/quantize_eval_model.pb
+
+[INFO] parse raw model     :  0%|          | 0/107 [00:00<?, ?it/s]
+[INFO] parse raw model     :100%|██████████| 107/107 [00:00<00:00, 4047.53it/s]
+
+[INFO] infer shape (NHWC)  :  0%|          | 0/173 [00:00<?, ?it/s]
+[INFO] infer shape (NHWC)  : 47%|████▋     | 82/173 [00:00<00:00, 787.33it/s]
+[INFO] infer shape (NHWC)  : 93%|█████████▎| 161/173 [00:00<00:00, 606.08it/s]
+[INFO] infer shape (NHWC)  :100%|██████████| 173/173 [00:00<00:00, 564.49it/s]
+
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]
+[INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 117.87it/s]
+
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]
+[INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 238.50it/s]
+
+[INFO] generate xmodel     :  0%|          | 0/99 [00:00<?, ?it/s]
+[INFO] generate xmodel     : 39%|███▉      | 39/99 [00:00<00:00, 328.10it/s]
+[INFO] generate xmodel     : 73%|███████▎  | 72/99 [00:00<00:00, 157.18it/s]
+[INFO] generate xmodel     :100%|██████████| 99/99 [00:00<00:00, 228.12it/s]
+[INFO] dump xmodel ...
+[INFO] dump xmodel: /tmp/unet2_DPUCVDX8G_ISA3_C32B6_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCVDX8G_ISA3_C32B6
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 191
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/unet2.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 1dc5be45fe6a343f67663651d8fceba3, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+
+##########################################################################
+COMPILE FCN8 XMODEL FILE WITH Vitis AI for VEK280 TARGET
+##########################################################################
+
+[INFO] Namespace(batchsize=1, inputs_shape=None, layout='NHWC', model_files=['./build/quantize_results/unet2/quantize_eval_model.pb'], model_type='tensorflow', named_inputs_shape=None, out_filename='/tmp/unet2_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel', proto=None)
+[INFO] tensorflow model: /workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/build/quantize_results/unet2/quantize_eval_model.pb
+
+[INFO] parse raw model     :  0%|          | 0/107 [00:00<?, ?it/s]
+[INFO] parse raw model     :100%|██████████| 107/107 [00:00<00:00, 10880.30it/s]
+
+[INFO] infer shape (NHWC)  :  0%|          | 0/173 [00:00<?, ?it/s]
+[INFO] infer shape (NHWC)  : 51%|█████▏    | 89/173 [00:00<00:00, 878.73it/s]
+[INFO] infer shape (NHWC)  :100%|██████████| 173/173 [00:00<00:00, 592.67it/s]
+
+[INFO] perform level-0 opt :  0%|          | 0/3 [00:00<?, ?it/s]
+[INFO] perform level-0 opt :100%|██████████| 3/3 [00:00<00:00, 219.75it/s]
+
+[INFO] perform level-1 opt :  0%|          | 0/8 [00:00<?, ?it/s]
+[INFO] perform level-1 opt :100%|██████████| 8/8 [00:00<00:00, 255.60it/s]
+
+[INFO] generate xmodel     :  0%|          | 0/99 [00:00<?, ?it/s]
+[INFO] generate xmodel     : 39%|███▉      | 39/99 [00:00<00:00, 372.03it/s]
+[INFO] generate xmodel     : 78%|███████▊  | 77/99 [00:00<00:00, 179.11it/s]
+[INFO] generate xmodel     :100%|██████████| 99/99 [00:00<00:00, 242.46it/s]
+[INFO] dump xmodel ...
+[INFO] dump xmodel: /tmp/unet2_DPUCV2DX8G_ISA0_C16M4B13_org.xmodel
+[UNILOG][INFO] Compile mode: dpu
+[UNILOG][INFO] Debug mode: null
+[UNILOG][INFO] Target architecture: DPUCV2DX8G_ISA0_C16M4B13
+[UNILOG][INFO] Graph name: quantize_eval_model, with op num: 191
+[UNILOG][INFO] Begin to compile...
+[UNILOG][INFO] Total device subgraph number 3, DPU subgraph number 1
+[UNILOG][INFO] Compile done.
+[UNILOG][INFO] The meta json is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/meta.json"
+[UNILOG][INFO] The compiled xmodel is saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/unet2.xmodel"
+[UNILOG][INFO] The compiled xmodel's md5sum is 468f2fac45e152c8c6af77dfda0f056d, and has been saved to "/workspace/tutorials/whole/Keras_FCN8_UNET_segmentation/files/./build/compile/unet2/md5sum.txt"
+**************************************************
+* VITIS_AI Compilation - Xilinx Inc.
+**************************************************
+#####################################
+MAIN UNET FLOW COMPLETED
+#####################################
