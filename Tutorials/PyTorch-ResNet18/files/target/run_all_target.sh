@@ -4,4 +4,4 @@
 # SPDX-License-Identifier: MIT
 
 
-source ./vcor/run_all_vcor_target.sh   main v70
+source ./vcor/run_all_vcor_target.sh   main $1
