@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 # Author: Daniele Bagni, Xilinx Inc
-# date:  28 Apr. 2023
+# date:  10 Aug. 2023
 */
 
 // based on  Vitis AI 3.0 VART "resnet50.cc" demo code
@@ -255,7 +255,7 @@ void runResnet(vart::Runner* runner, int is_resnet50) {
       */
       /*image pre-process*/
       Mat image2; // = cv::Mat(inHeight, inWidth, CV_32FC3);
-      resize(image, image2, Size(inHeight, inWidth),  INTER_BICUBIC);
+      resize(image, image2, Size(inHeight, inWidth),  cv::INTER_CUBIC);
       for (int h = 0; h < inHeight; h++) {
         for (int w = 0; w < inWidth; w++) {
           for (int c = 0; c < 3; c++)

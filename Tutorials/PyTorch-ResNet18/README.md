@@ -20,7 +20,7 @@ Author: Daniele Bagni, Xilinx Inc
 
 - Support:      ZCU102, ZCU102, VCK190, VEK280, V70
 
-- Last update:  05 July 2023
+- Last update:  10 Aug 2023
 
 
 ## Table of Contents
@@ -43,66 +43,47 @@ Author: Daniele Bagni, Xilinx Inc
 
 ### 1.1 Rationale
 
-In this Deep Learning (DL) tutorial you will take the **ResNet18** CNN, from the [Vitis AI 3.0 Library](https://docs.xilinx.com/r/en-US/ug1354-xilinx-ai-sdk),   and use it to classify the different colors of the "car object" inside images by running the inference application on FPGA devices.
+In this Deep Learning (DL) tutorial you will take a public domain Convolutional Neural Network (CNN) like [ResNet18](https://github.com/songrise/CNN_Keras/blob/main/src/ResNet-18.py) and pass it through the [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI/tree/3.0) stack to run DL inference on FPGA devices; the application is classifying the different colors of the "car object" inside images.
 
-Although ResNEt18 was already trained on the [ImageNet](https://www.image-net.org/) dataset in the **PyTorch** framework, you will re-train it using the
+Although ResNet18 was already trained on the [ImageNet](https://www.image-net.org/) dataset in the **PyTorch** framework, you will re-train it using the
 **Kaggle' Vehicle Color Recognition** dataset, shortened as  [VCoR](https://www.kaggle.com/datasets/landrykezebou/vcor-vehicle-color-recognition-dataset). 	
 
 
 ### 1.2 The Vitis AI Flow
 
-The [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI) deployment process requires to quantize the floating point CNN model into INT8 (signed 8-bit) fixed point and then compile the application and run it on the embedded system composed by the Deep Processor Unit (DPU) and the ARM CPU of the target board.
-Different target boards (for example VCK190 and ZCU102) apply different architectures (respectively DPUCVDX8G and .... for this example) for the DPU IP soft core.
+Assuming you have already trained your CNN and you own its original model, typically a [HDF5](https://www.hdfgroup.org/solutions/hdf5/) file with extension ``.h5``, you will deploy such CNN on the FPGA target boards by following these steps:
 
-Assuming you have already trained your CNN and you own its original pytorch model, typically a [PTH](https://fileinfo.com/extension/pth) file with extension ``.pt``, you will deploy such CNN on the FPGA target boards by following these steps:
+  1. (optional) Run the [Model Inspector](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-development.html?highlight=inspector#model-inspector) to check if the original model is compatible with the AMD [Deep Processor Unit (DPU)](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-system-integration.html)  architecture available on the target board (if not, you have to modify your CNN and retrain it).
 
-  1. (optional) Run the **Vitis AI Inspector** to check if the original model is compatible with the AMD/Xilinx **Deep Processor Unit (DPU)** architecture available on the target board (if not you have to modify your CNN and retrain it).
+  2. Run the [Model Quantization](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-development.html?highlight=quantizer#model-quantization) process to generate a 8-bit fixed point (shortly "int8") model from the original 32-bit floating point CNN. If you apply the so called *Post-Training Quantization* (PTQ), this will be a single step, otherwise you would need to re-train - or more properly said "fine-tune" - the CNN with the *Quantization-Aware-Training* (QAT).
 
-  2. Run the **Vitis AI Quantizer** to generate a 8-bit (named **Int8**) fixed point model of the CNN from the original 32-bit floating point model. If you apply the so called *Post-Training Quantization* (PTQ), this will be a single step, otherwise you would need to re-train - or more properly said "fine-tune" - the CNN with the *Quantization-Aware-Training* (QAT),
+  3. (optional) Run inference with the int8 model on the Vitis AI environment (running on the host desktop) to check the prediction accuracy: if the difference is not negligible (for example it is larger than 5%, you can re-do the quantization by replacing PTQ with QAT).  
 
-  3. (optional) Run inference with the quantized INT8 model on the Vitis AI environment (running on the host desktop) to check the prediction accuracy: if the difference is not negligible (for example it is larger than 5%, you have to re-do the quantization by replacing PTQ with QAT).  
+  4. Run the [Model Compilation](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-development.html?highlight=quantizer#model-compilation) process  on the int8 model to generate the ``.xmodel`` microcode for the DPU IP soft-core of your target board.
 
-  4. Run the **Vitis AI Compiler**  on the INT8 model to generate the ``.xmodel`` microcode for the DPU IP soft-core on your target board.
+  5. Compile the application running on the ARM CPU - tightly coupled with the DPU - of the target board, by using either C++ or Python code with the [Vitis AI RunTime (VART)](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-deployment.html#vitis-ai-runtime) APIs.  
 
-  5. Compile the application running on the ARM CPU - tightly coupled with the DPU - of the target board by using either C++ or Python code with the **Vitis AI RunTime** (VART) APIs.  
-
-Based on the above mentioned process, you will be able to measure the inference performance both in terms of average prediction accuracy and frames-per-second (fps) throughput on your target board.
+Based on that you will be able to measure the inference performance both in terms of average prediction accuracy and frames-per-second (fps) throughput on your target board.
 
 All the commands reported in this document are also collected into the [run_all.sh](files/run_all.sh) script.
-
-
-### 1.3 Starting from the Model Zoo
-
-From the [Model Zoo list](https://github.com/Xilinx/Vitis-AI/tree/3.0/model_zoo/model-list) select  the [pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0](https://github.com/Xilinx/Vitis-AI/tree/3.0/model_zoo/model-list/pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0) hyperlink and get the related [model.yaml](https://github.com/Xilinx/Vitis-AI/tree/3.0/model_zoo/model-list/pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0/model.yaml) file which shows from where you can download the floating point pre-trained CNN model and its pre-quantized  versions, as well as pre-compiled models for different target boards:
-
-```shell
-# get the floating point model
-wget  https://www.xilinx.com/bin/public/openDownload?filename=pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0.zip
-
-# get the quantized model for ZCU102
-wget https://www.xilinx.com/bin/public/openDownload?filename=chen_color_resnet18_pt-zcu102_zcu104_kv260-r3.0.0.tar.gz
-
-# get the quantized model for VCK190
-wget https://www.xilinx.com/bin/public/openDownload?filename=chen_color_resnet18_pt-vck190-r3.0.0.tar.gz
-```
-
-
 
 
 
 ## 2 Prerequisites
 
+-Here is what you need to have and do before starting with the real content of this tutorial.
+
+- Familiarity with DL principles.
+
 - Accurate reading of this [README.md](README.md) file from the top to the bottom, before running any script.
 
 - Host PC with Ubuntu >= 18.04.5 (and possibly with GPU support to run the CNN training).
 
-- The entire repository of [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI) stack from [www.github.com/Xilinx](https://www.github.com/Xilinx) web site.
+- Clone the entire repository of [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI/tree/3.0) stack from [www.github.com/Xilinx](https://www.github.com/Xilinx) web site.
 
--  Accurate reading of [Vitis AI Stack User Guide 1414](https://docs.xilinx.com/r/en-US/ug1414-vitis-ai/Vitis-AI-Overview) (shortly UG1414).
+-  Accurate reading of [Vitis AI 3.0 User Guide 1414](https://docs.xilinx.com/r/en-US/ug1414-vitis-ai) (shortly UG1414).
 
--  Accurate reading of [Vitis AI Library User Guide 1354](https://docs.xilinx.com/r/en-US/ug1354-xilinx-ai-sdk) (shortly UG1354).
-
-- Accurate reading of [online Vitis AI](https://xilinx.github.io/Vitis-AI) documentation from [xilinx.github.io](https://xilinx.github.io) web site. In particular, pay attention to the installation and setup instructions for both host PC and target board, it is recommended you build a GPU-based docker image with PyTorch.
+- Accurate reading of [Vitis AI 3.0 Online Documentation](https://xilinx.github.io/Vitis-AI/3.0/html/index.html). In particular, pay attention to the installation and setup instructions for both host PC and target board, it is recommended you build a GPU-based docker image with TF2.
 
 - A Vitis AI target board such as either:
     - [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html), or
@@ -111,17 +92,20 @@ wget https://www.xilinx.com/bin/public/openDownload?filename=chen_color_resnet18
     - the newest Versal EDGE AI board **VEK280**, available only on [Versal AI Early Access Lounge](https://www.xilinx.com/member/vitis-ai-vek280.html) (you need to register to it first);
     - the newest **Alveo V70** card, available only on [Versal AI Early Access Lounge](https://www.xilinx.com/member/vitis-ai-vek280.html) (you need to register to it first).
 
+- The ``archive.zip`` file with the [Kaggle](www.kaggle.com) dataset of images, as explained in Section [4 The VCoR Dataset](#4-the-vcor-dataset).
 
-- Familiarity with Deep Learning principles.
+- The [Model Zoo](https://github.com/Xilinx/Vitis-AI/tree/3.0/model_zoo) ``pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0.zip`` archive, as explained in Section [5.1  Get ResNet18 from Vitis AI Model Zoo](#51-get-resnet18 -from-vitis-ai-model-zoo).
+
 
 
 ### 2.1 Working Directory
 
-In the following of this document it is assumed you have installed Vitis AI somewhere in your file system and this will be your working directory ``<WRK_DIR>``, for example in my case ``<WRK_DIR>`` is set to
-``/media/danieleb/DATA/VAI3.0``.  You have also created a folder named ``tutorials`` under such ``<WRK_DIR>`` and you have copied this tutorial there and renamed it ``PyTorch-ResNet18``:
+In the following of this document it is assumed you have installed Vitis AI 3.0 (shortly ``VAI3.0``) somewhere in your file system and this will be your working directory ``${WRK_DIR}``, for example ``export WRK_DIR=/media/danieleb/DATA/VAI3.0``.  You have also created a folder named ``tutorials`` under such ``${WRK_DIR}`` and you have copied this tutorial there and renamed it ``PyTorch-ResNet18``. Using the command ``tree -d -L 2`` you should see the following directories:
+
 
 ```text
-VAI3.0  # your WRK_DIR
+${WRK_DIR} # your Vitis AI 3.0 working directory
+.
 ├── board_setup
 ├── demos
 ├── docker
@@ -160,7 +144,7 @@ In that case run the following commands from your Ubuntu host PC (out of the Vit
 
 ```text
 sudo apt-get install dos2unix
-cd <WRK_DIR>/tutorials/RESNET18 #your repo directory
+cd ${WRK_DIR}/tutorials/RESNET18 #your repo directory
 for file in $(find . -name "*.sh"); do
   dos2unix ${file}
 done
@@ -187,7 +171,7 @@ You have to know few things about [Docker](https://docs.docker.com/) in order to
 From the Vitis AI 3.0 repository, run the following commands:
 
 ```text
-cd <WRK_DIR>
+cd ${WRK_DIR}
 cd docker
 ./docker_build.sh -t gpu -f pytoch
 ```
@@ -200,20 +184,19 @@ xilinx/vitis-ai-pytorch-gpu   3.0.0.001   1b99612d429a   27 hours ago    21.4GB
 ```
 
 
-Note that docker does not have an automatic garbage collection system as of now. You can use this command to do a manual garbage collection:
-```
-docker rmi -f $(docker images -f "dangling=true" -q)
-```
-
 ### 3.2 Launch the Docker Image
 
-To launch the docker container with Vitis AI tools, execute the following commands from the ``<WRK_DIR>`` folder:
+To launch the docker container with Vitis AI tools, execute the following commands from the ``${WRK_DIR}`` folder:
 
 ```text
-cd <WRK_DIR> # you are now in Vitis_AI subfolder
+cd ${WRK_DIR} # you are now in Vitis_AI subfolder
+
 ./docker_run.sh xilinx/vitis-ai-pytorch-gpu:latest
+
 conda activate vitis-ai-pytorch
+
 cd /workspace/tutorials/
+
 cd PyTorch-ResNet18 # your current directory
 ```
 
@@ -250,6 +233,30 @@ $ sudo docker commit -m"pyt new_package" 8626279e926e   xilinx/vitis-ai-pytorch-
 ```
 
 
+### 3.3 Things to Know
+
+1. In case you "[Cannot connect to the Docker daemon at unix:/var/d9f942cdf7de   xilinx/vitis-ai-tensorflow2-gpu:3.5.0.001-b56bcce50 run/docker.sock. Is the docker daemon running?](https://stackoverflow.com/questions/44678725/cannot-connect-to-the-docker-daemon-at-unix-var-run-docker-sock-is-the-docker)" just launch the following command:
+
+  ```
+  sudo systemctl restart docker
+  ```
+
+2. Note that docker does not have an automatic garbage collection system as of now. You can use this command to do a manual garbage collection:
+
+  ```
+  docker rmi -f $(docker images -f "dangling=true" -q)
+  ```
+
+3. In order to clean the (usually huge amount of) space consumed by Docker have a look at this post: [Docker Overlay2 Cleanup](https://bobcares.com/blog/docker-overlay2-cleanup/). The next commands are of great effect (especially the last one):
+
+  ```
+  docker system df
+  docker image prune --all
+  docker system prune --all
+  ```
+
+
+
 ## 4 The VCoR Dataset
 
 The dataset adopted in this tutorial is the **Kaggle' Vehicle Color Recognition**, shortened as  [VCoR](https://www.kaggle.com/datasets/landrykezebou/vcor-vehicle-color-recognition-dataset). 	
@@ -266,7 +273,7 @@ While being out of the docker container, download the ~602MB ``archive.zip`` fil
 (as also shown in the [run_all.sh](files/run_all.sh) script):
 
 ```shell
-cd <WRK_DIR>/tutorials/PyTorch-ResNet18/files
+cd ${WRK_DIR}/tutorials/PyTorch-ResNet18/files
 # you must have already downloaded the zip archive
 unzip ./archive.zip -d ./build/dataset/vcor/
 ```
@@ -275,11 +282,34 @@ unzip ./archive.zip -d ./build/dataset/vcor/
 
 ## 5 Vehicle Color Classification with ResNet18
 
+All the commands shown in the next subsections are available [run_all.sh](files/run_all.sh) script, normally called with the command:
+
+```
+source ./run_all main_vocr
+```
+
+
+### 5.1  Get ResNet18 from Vitis AI Model Zoo
+
+From the [Model Zoo list](https://github.com/Xilinx/Vitis-AI/tree/3.0/model_zoo/model-list) select  the [pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0](https://github.com/Xilinx/Vitis-AI/tree/3.0/model_zoo/model-list/pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0) hyperlink and get the related [model.yaml](https://github.com/Xilinx/Vitis-AI/tree/3.0/model_zoo/model-list/pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0/model.yaml) file which shows from where you can download the floating point pre-trained CNN model and its pre-quantized  versions, as well as pre-compiled models for different target boards:
+
+```shell
+# get the floating point model
+wget  https://www.xilinx.com/bin/public/openDownload?filename=pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0.zip
+
+# get the quantized model for ZCU102
+wget https://www.xilinx.com/bin/public/openDownload?filename=chen_color_resnet18_pt-zcu102_zcu104_kv260-r3.0.0.tar.gz
+
+# get the quantized model for VCK190
+wget https://www.xilinx.com/bin/public/openDownload?filename=chen_color_resnet18_pt-vck190-r3.0.0.tar.gz
+```
+
+
 From the docker image, unzip the archive ``pt_vehicle-color-classification_VCoR_224_224_3.64G_3.0.zip`` in the ``files`` folder
 and clean some files/folders, doing the following actions (as also shown in the [run_all.sh](files/run_all.sh) script):
 
 ```shell
-cd <WRK_DIR> # you are now in Vitis_AI subfolder
+cd ${WRK_DIR} # you are now in Vitis_AI subfolder
 # enter in the docker image
 ./docker_run.sh xilinx/vitis-ai-pytorch-gpu:latest
 # activate the environment
@@ -316,17 +346,15 @@ This vehicle color model falls under the [Vitis AI Library “classification” 
 
 - The DPU output will be a [data structure of classification results](https://docs.xilinx.com/r/en-US/ug1354-xilinx-ai-sdk/vitis-ai-Classification) with 15 classes. Such output tensor will then be used by the ARM CPU to compute the functions ``SoftMax`` and related ``Top-5`` prediction accuracy.
 
-- The prototxt file that comes with the [compiled model download](https://www.xilinx.com/bin/public/openDownload?filename=chen_color_resnet18_pt-zcu102_zcu104_kv260-r3.0.0.tar.gz) specifies the number of classification results returned by the Vitis AI Library.  In this case it is set to return the top-5 prediction accuracy results.
 
 
 
-
-### 5.1 Training
+### 5.2 Training
 
 If you want to train the ResNet18 CNN on the VCoR dataset from scratch, just launch the script [run_train.sh](files/scripts/run_train.sh) (which is already done from the [run_all.sh](files/scripts/run_all.sh) script):
 
 ```shell
-cd <WRK_DIR> # you are now in Vitis_AI subfolder
+cd ${WRK_DIR} # you are now in Vitis_AI subfolder
 # enter in the docker image
 ./docker_run.sh xilinx/vitis-ai-pytorch-gpu:latest
 # activate the environment
@@ -358,7 +386,7 @@ Note that when you use ``ToTensor()`` class in the [train.py](files/code/train.p
 The images are supposed to be in RGB format and not in BGR (usually adopted by OpenCV library)
 
 
-### 5.2 Quantization
+### 5.3 Quantization
 
 If you want to quantize the floating point ResNet18 CNN from scratch, just launch the script [run_quant.sh](files/scripts/run_quant.sh) (which is already done from the [run_all.sh](files/scripts/run_all.sh) script).
 
@@ -381,7 +409,7 @@ Test set: Average loss: 0.4234, Accuracy: 1376/1550 (88.774%)
 ```
 
 
-### 5.3 Compile the Target DPU  
+### 5.4 Compile the Target DPU  
 
 The quantized CNN has then to be compiled for the DPU architecture of your target board, with the script [run_compile.sh](files/scripts/run_compile.sh) (which is already done from the [run_all.sh](files/scripts/run_all.sh) script).
 
@@ -406,7 +434,16 @@ COMPILING MODEL FOR VCK190..
 
 
 
-### 5.4 Embedded C++ Application with VART APIs
+### 5.5 Run on the Target Board
+
+The throughput measured in fps is shown only for the VCK190 board, just as a reference. For the other boards the results can be pretty different depending on the different DPU architectures and related batch size (BS).
+
+All the commands illustrated in the following subsections are inside the script [run_all_vcor_target.sh](files/target/vcor/run_all_vcor_target.sh), they are applied directly in the target board ``xxxyyy``
+(i.e. zcu102, vck190, etc) by launching the command ``run_all_target.sh xxxyyy``, which involves  the [run_all_target.sh](files/target/run_all_target.sh) higher level script.
+
+
+
+#### 5.5.1 Embedded C++ Application with VART APIs
 
 The C++ application running on the embedded ARM CPU of your target board is written in the [main_int8.cc](files/target/vcor/code/src/main_int8.cc) file. Note that the input images are pre-processed - before entering into the DPU - exactly in the same way they were pre-processed during the training, that is:
 
@@ -435,10 +472,46 @@ for (int h = 0; h < inHeight; h++)
 }
 ```
 
-Once you launch it into the target board, you should see something like this:
+
+Note that the DPU API apply [OpenCV](https://opencv.org/) functions to read an image file (either ``png`` or ``jpg`` or whatever format) therefore the images are seen as BGR and not as native RGB. All the training and inference steps done in this tutorial treat images as RGB, which is true also for the above C++ normalization routine.
+
+
+#### 5.5.2 Run-Time Execution
+
+It is possible and straight-forward to compile the application directly on the target (besides compiling it into the host computer environment).
+In fact this is what the script [run_all_vcor_target.sh](files/target/vcor/run_all_vcor_target.sh)  does, when launched on the target.  
+
+Turn on your target board and establish a serial communication with a ``putty`` terminal from Ubuntu or with a ``TeraTerm`` terminal from your Windows host PC.
+
+Ensure that you have an Ethernet point-to-point cable connection with the correct IP addresses to enable ``ssh`` communication in order to quickly transfer files to the target board with ``scp`` from Ubuntu or ``pscp.exe`` from Windows host PC. For example, you can set the IP addresses of the target board to be ``192.168.1.217`` while the host PC is  ``192.168.1.140``.
+
+Once a ``tar`` file of the ``build/target_vck190`` (or ``build/target_zcu102``, etc) folder has been created, copy it from the host PC to the target board. For example, in case of an Ubuntu PC, use the following command:
+```
+scp target_vck190.tar root@192.168.1.217:~/
+```
+
+From the target board terminal, run the following commands (in case of VCK190):
+```
+tar -xvf target_vck190.tar
+cd target_vck190
+bash -x ./run_all_target.sh vck190
+```
+
+
+The application based on VART C++ APIs is built with the [build_app.sh](files/target/vcor/code/build_app.sh) script and finally launched for each CNN, the effective top-5 classification accuracy is checked by a python script [check_runtime_top5_vcor.py](files/target/code/src/check_runtime_top5_vcor.py) which is launched from within
+the [vcor_performance.sh](files/target/vcor/vcor_performance.sh) script.
+
+Note that the test images were properly prepared with the [generate_target_test_images.py](files/code/generate_target_test_images.py) script
+in order to append the class name to the image file name, thus enabling the usage of [check_runtime_top5_vcor.py](files/target/vcor/code/src/check_runtime_top5_vcor.py)
+to check the prediction accuracy.
+
+
+
+#### 5.5.3 DPU Performance
+
+Once you launch it into the VCK190 target board, you should see something like this:
 
 ```text
-
 ...
 
 number of total images predicted  1499
@@ -466,11 +539,6 @@ As you can see the average prediction accuracy of the CNN running on the DPU is 
 and the throughput in frames-per-second (fps) is from 4141 fps (1 thread only) to 6654 (3 threads).
 
 
-Note that the test images were properly prepared with the [generate_target_test_images.py](files/code/generate_target_test_images.py) script
-in order to append the class name to the image file name, thus enabling the usage of [check_runtime_top5_vcor.py](files/target/vcor/code/src/check_runtime_top5_vcor.py)
-to check the prediction accuracy.
-
-
 
 
 
@@ -478,29 +546,7 @@ to check the prediction accuracy.
 <div style="page-break-after: always;"></div>
 
 
-## License
 
-The MIT License (MIT)
+<p class="sphinxhide" align="center"><sub>Copyright © 2020–2023 Advanced Micro Devices, Inc</sub></p>
 
-Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
-<p align="center"><sup>XD106 | © Copyright 2022 Xilinx, Inc.</sup></p>
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

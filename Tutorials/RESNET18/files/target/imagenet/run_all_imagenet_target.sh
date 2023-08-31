@@ -12,6 +12,9 @@ TARGET=$2
 
 #clean
 clean_imagenet(){
+echo " "
+echo "clean imagenet"
+echo " "
 cd imagenet
 rm -rf val_dataset
 rm -f  get_dpu_fps
@@ -26,6 +29,9 @@ cp ./cifar10/get_dpu_fps ./imagenet
 
 # compile CNN application
 compile_resnet(){
+echo " "
+echo "compile imagenet"
+echo " "
 cd ./imagenet/code_resnet50
 echo "PWD1 = " $PWD
 bash -x ./build_resnet50.sh
@@ -38,6 +44,9 @@ echo "PWD2 = " $PWD
 
 # build imagenet test images
 build_images_imagenet(){
+echo " "
+echo "build imagenet test images"
+echo " "
 cd imagenet
 unzip val_dataset.zip > /dev/null
 cd ..
@@ -47,6 +56,9 @@ echo "PWD3 = " $PWD
 
 # now run the resnet50 classification using VART C++ APIs
 run_cnn_resnet50(){
+echo " "
+echo "run resnet50 CNN"
+echo " "
 cd imagenet
 ./resnet_imagenet ./${TARGET}_resnet50_imagenet.xmodel ./val_dataset/ ./words.txt 1 2>&1 | tee ./rpt/predictions_resnet50_imagenet.log
 # check DPU prediction accuracy
@@ -57,6 +69,9 @@ cd ..
 
 # now run the resnet18 classification using VART C++ APIs
 run_cnn_resnet18(){
+echo " "
+echo "run resnet18 CNN"
+echo " "
 cd imagenet
 ./resnet_imagenet ./${TARGET}_resnet18_imagenet.xmodel ./val_dataset/ ./words.txt 0 2>&1 | tee ./rpt/predictions_resnet18_imagenet.log
 # check DPU prediction accuracy
@@ -76,8 +91,11 @@ profile_resnet18(){
 
 #remove images
 end_imagenet(){
-    cd imagenet
-    rm -rf val_dataset
+echo " "
+echo "end of imagenet"
+echo " "
+cd imagenet
+rm -rf val_dataset
 cd ../
 echo "PWD5 = " $PWD
 #tar -cvf target.tar ./target_*
@@ -91,8 +109,8 @@ main()
     build_images_imagenet
     run_cnn_resnet50
     run_cnn_resnet18
-    profile_resnet18
-    #end_imagenet
+    #profile_resnet18
+    end_imagenet
 }
 
 

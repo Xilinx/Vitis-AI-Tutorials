@@ -22,7 +22,7 @@ Author: Daniele Bagni, Xilinx Inc
 
 - Support:      ZCU102, ZCU102, VCK190, VEK280, Alveo V70
 
-- Last update:  07 June 2023
+- Last update:  10 Aug 2023
 
 ## Table of Contents
 
@@ -44,39 +44,45 @@ Author: Daniele Bagni, Xilinx Inc
 ## 1 Introduction
 
 In this Deep Learning (DL) tutorial you will take a public domain CNN like [ResNet18](https://github.com/songrise/CNN_Keras/blob/main/src/ResNet-18.py), already trained
-on the [ImageNet](https://www.image-net.org/) dataset, and run it through the [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI) stack to run ML inference on FPGA devices; you will use Keras on Tensorflow 2.x
+on the [ImageNet](https://www.image-net.org/) dataset, and run it through the [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI/tree/3.0) stack to run ML inference on FPGA devices; you will use Keras on Tensor Flow 2.
 
 Assuming you have already trained your CNN and you own its original model, typically a [HDF5](https://www.hdfgroup.org/solutions/hdf5/) file with extension ``.h5``, you will deploy such CNN on the FPGA target boards by following these steps:
 
-  1. (optional) Run the **Vitis AI Inspector** to check if the original model is compatible with the AMD/Xilinx **Deep Processor Unit (DPU)** architecture available on the target board (if not you have to modify your CNN and retrain it).
 
-  2. Run the **Vitis AI Quantizer** to generate a 8-bit (named **Int8**) fixed point model of the CNN from the original 32-bit floating point model. If you apply the so called *Post-Training Quantization* (PTQ), this will be a single step, otherwise you would need to re-train - or more properly said "fine-tune" - the CNN with the *Quantization-Aware-Training* (QAT),
+  1. (optional) Run the [Model Inspector](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-development.html?highlight=inspector#model-inspector) to check if the original model is compatible with the AMD [Deep Processor Unit (DPU)](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-system-integration.html)  architecture available on the target board (if not, you have to modify your CNN and retrain it).
 
-  3. (optional) Run inference with the quantized Int8 model on the Vitis AI environment (running on the host desktop) to check the prediction accuracy: if the difference is not negligible (for example it is larger than 5%, you have to re-do the quantization by replacing PTQ with QAT).  
+  2. Run the [Model Quantization](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-development.html?highlight=quantizer#model-quantization) process to generate a 8-bit fixed point (shortly "int8") model from the original 32-bit floating point CNN. If you apply the so called *Post-Training Quantization* (PTQ), this will be a single step, otherwise you would need to re-train - or more properly said "fine-tune" - the CNN with the *Quantization-Aware-Training* (QAT).
 
-  4. Run the **Vitis AI Compiler**  on the Int8 model to generate the ``.xmodel`` microcode for the DPU IP soft-core on your target board.
+  3. (optional) Run inference with the int8 model on the Vitis AI environment (running on the host desktop) to check the prediction accuracy: if the difference is not negligible (for example it is larger than 5%, you can re-do the quantization by replacing PTQ with QAT).  
 
-  5. Compile the application running on the ARM CPU - tightly coupled with the DPU - of the target board by using either C++ or Python code with the **Vitis AI RunTime** (VART) APIs.  
+  4. Run the [Model Compilation](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-development.html?highlight=quantizer#model-compilation) process  on the int8 model to generate the ``.xmodel`` microcode for the DPU IP soft-core of your target board.
+
+  5. Compile the application running on the ARM CPU - tightly coupled with the DPU - of the target board, by using either C++ or Python code with the [Vitis AI RunTime (VART)](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-deployment.html#vitis-ai-runtime) APIs.  
 
 Based on that you will be able to measure the inference performance both in terms of average prediction accuracy and frames-per-second (fps) throughput on your target board.
 
 
+
 As a first example, in section [CIFAR10 Dataset](#4-cifar10-dataset) you will re-train the ResNet18 CNN with the [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset, which contains small RGB images (32x32x3 size) with only 10 classes.
 
-As a second example, in section [ImageNet Dataset](#5-imagenet-dataset)  you will use the ResNet18 CNN as it is, in order to classify the objects from the ImageNet dataset with its own 1000 classes; you will also compare its prediction accuracy vs. its parent ResNet50 CNN taken from **Vitis AI Modelzoo**.
+As a second example, in section [ImageNet Dataset](#5-imagenet-dataset)  you will use the ResNet18 CNN as it is, in order to classify the objects from the ImageNet dataset with its own 1000 classes; you will also compare its prediction accuracy vs. its parent ResNet50 CNN taken from the [Vitis AI Model Zoo](https://xilinx.github.io/Vitis-AI/3.0/html/docs/workflow-model-zoo.html).
 
 
 ## 2 Prerequisites
 
+Here is what you need to have and do before starting with the real content of this tutorial.
+
+- Familiarity with DL principles.
+
 - Accurate reading of this [README.md](README.md) file from the top to the bottom, before running any script.
 
-- Host PC with Ubuntu >= 18.04.5 (and possibly with GPU support to run the CNN training).
+- Host computer with Ubuntu >= 18.04.5 (and possibly with GPU support to run the CNN training).
 
-- The entire repository of [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI) stack from [www.github.com/Xilinx](https://www.github.com/Xilinx) web site.
+- Clone the entire repository of [Vitis AI 3.0](https://github.com/Xilinx/Vitis-AI/tree/3.0) stack from [www.github.com/Xilinx](https://www.github.com/Xilinx) web site.
 
--  Accurate reading of [Vitis AI User Guide 1414](https://docs.xilinx.com/r/en-US/ug1414-vitis-ai/Vitis-AI-Overview) (shortly UG1414).
+-  Accurate reading of [Vitis AI 3.0 User Guide 1414](https://docs.xilinx.com/r/en-US/ug1414-vitis-ai) (shortly UG1414).
 
-- Accurate reading of [online Vitis AI](https://xilinx.github.io/Vitis-AI) documentation. In particular, pay attention to the installation and setup instructions for both host PC and target board, it is recommended you build a GPU-based docker image with TensorFlow 2.x.
+- Accurate reading of [Vitis AI 3.0 Online Documentation](https://xilinx.github.io/Vitis-AI/3.5/html/index.html). In particular, pay attention to the installation and setup instructions for both host PC and target board, it is recommended you build a GPU-based docker image with TF2.
 
 - A Vitis AI target board such as either:
     - [ZCU102](https://www.xilinx.com/products/boards-and-kits/ek-u1-zcu102-g.html), or
@@ -85,18 +91,17 @@ As a second example, in section [ImageNet Dataset](#5-imagenet-dataset)  you wil
     - the newest Versal EDGE AI board VEK280, available only on [Versal AI Early Access Lounge](https://www.xilinx.com/member/vitis-ai-vek280.html) (you need to register to it first);
     - the newest Alveo V70 card, available only on [Versal AI Early Access Lounge](https://www.xilinx.com/member/vitis-ai-vek280.html) (you need to register to it first).
 
+- The validation dataset archive with 50000 images named ``ILSVRC2012_img_val.tar`` as explained in Section [5 ImageNet Dataset](#5-imagenet-dataset).
 
-
-- Familiarity with Deep Learning principles.
+- The [Model Zoo](https://github.com/Xilinx/Vitis-AI/tree/3.0/model_zoo) ``tf2_resnet50_imagenet_224_224_7.76G.zip`` archive. as explained in Section [5.2.1  Get ResNet50 from Vitis AI Model Zoo](#521-get-resnet50-from-vitis-ai-model-zoo).
 
 
 ### 2.1 Working Directory
 
-In the following of this document it is assumed you have installed Vitis AI somewhere in your file system and this will be your working directory ``<WRK_DIR>``, for example in my case ``<WRK_DIR>`` is set to
-``/media/danieleb/DATA/VAI3.0``.  You have also created a folder named ``tutorials`` under such ``<WRK_DIR>`` and you have copied this tutorial there and renamed it ``RESNET18``:
+In the following of this document it is assumed you have installed Vitis AI 3.0 (shortly ``VAI3.0``) somewhere in your file system and this will be your working directory ``${WRK_DIR}``, for example ``export WRK_DIR=/media/danieleb/DATA/VAI3.0``.  You have also created a folder named ``tutorials`` under such ``${WRK_DIR}`` and you have copied this tutorial there and renamed it ``RESNET18``. Using the command ``tree -d -L 2`` you should see the following directories:
 
 ```text
-VAI3.0  # your WRK_DIR
+${WRK_DIR} # your Vitis AI 3.0 working directory
 ├── board_setup
 ├── demos
 ├── docker
@@ -143,7 +148,7 @@ In that case run the following commands from your Ubuntu host PC (out of the Vit
 
 ```text
 sudo apt-get install dos2unix
-cd <WRK_DIR>/tutorials/RESNET18 #your repo directory
+cd ${WRK_DIR}/tutorials/RESNET18 #your repo directory
 for file in $(find . -name "*.sh"); do
   dos2unix ${file}
 done
@@ -158,7 +163,9 @@ for file in $(find . -name "*.h*"); do
 done
 ```
 
-These operations are already included in the script [clean_all.sh](files/scripts/clean_all.sh).
+These operations are already included in the script [clean_all.sh](files/scripts/clean_all.sh), launched by the [run_all.sh](files/run_all.sh) script, which collects all the commands shown in the rest of this document.
+
+It is strongly recommended that you familiarize with the [run_all.sh](files/run_all.sh) script in order to understand all what it does, ultimately the entire Vitis AI flow on the host computer.
 
 
 ## 3 The Docker Tools Image
@@ -170,7 +177,7 @@ You have to know few things about [Docker](https://docs.docker.com/) in order to
 From the Vitis AI 3.0 repository, run the following commands:
 
 ```text
-cd <WRK_DIR>
+cd ${WRK_DIR}
 cd docker
 ./docker_build.sh -t gpu -f tf2
 ```
@@ -184,13 +191,17 @@ xilinx/vitis-ai-tensorflow2-gpu   3.0.0.001   1b99612d429a   27 hours ago    21.
 
 ### 3.2 Launch the Docker Image
 
-To launch the docker container with Vitis AI tools, execute the following commands from the ``<WRK_DIR>`` folder:
+To launch the docker container with Vitis AI tools, execute the following commands from the ``${WRK_DIR}`` folder:
 
 ```text
-cd <WRK_DIR> # you are now in Vitis_AI subfolder
+cd ${WRK_DIR} # you are now in Vitis_AI subfolder
+
 ./docker_run.sh xilinx/vitis-ai-tensorflow2-gpu:latest
+
 conda activate vitis-ai-tensorflow2
+
 cd /workspace/tutorials/
+
 cd RESNET18 # your current directory
 ```
 
@@ -402,6 +413,12 @@ The first option is maybe more useful for functional debugging with [Visual Stud
 The second option gets higher performance, being compiled, but it maybe less easy to be debugged.
 These are just personal opinions of the author.
 
+The throughput measured in fps is shown only for the VCK190 board, just as a reference. For the other boards the results can be pretty different depending on the different DPU architectures and related batch size (BS).
+
+All the commands illustrated in the following subsections are inside the script [run_all_cifar10_target.sh](files/target/cifar10/code/run_all_cifar10_target.sh), they are applied directly in the target board ``xxxyyy``
+(i.e. zcu102, vck190, etc) by launching the command ``run_all_target.sh xxxyyy``, which involves  the [run_all_target.sh](files/target/run_all_target.sh) higher level script.
+
+
 
 #### 4.3.1 Multithreading C++ Application Code
 
@@ -438,15 +455,15 @@ Turn on your target board and establish a serial communication with a ``putty`` 
 
 Ensure that you have an Ethernet point-to-point cable connection with the correct IP addresses to enable ``ssh`` communication in order to quickly transfer files to the target board with ``scp`` from Ubuntu or ``pscp.exe`` from Windows host PC. For example, you can set the IP addresses of the target board to be ``192.168.1.217`` while the host PC is  ``192.168.1.140``.
 
-Once a ``tar`` file of the ``build/target_zcu102`` (or ``build/target_vck190``) folder has been created, copy it from the host PC to the target board. For example, in case of an Ubuntu PC, use the following command:
+Once a ``tar`` file of the ``build/target_zcu102`` (or ``build/target_vck190``, etc) folder has been created, copy it from the host PC to the target board. For example, in case of an Ubuntu PC, use the following command:
 ```
 scp target_zcu102.tar root@192.168.1.217:~/
 ```
 
-From the target board terminal, run the following commands (in case of ZCU102):
+From the target board terminal, run the following commands (in case of VCK190):
 ```bash
-tar -xvf target_zcu102.tar
-cd target_zcu102
+tar -xvf target_vck190.tar
+cd target_vck190
 bash -x ./cifar10/run_all_cifar10_target.sh
 ```
 
@@ -488,6 +505,9 @@ For your information, an academic torrent can be used to download the whole [Ima
 - https://academictorrents.com/collection/imagenet
 - http://academictorrents.com/details/564a77c1e1119da199ff32622a1609431b9f1c47
 
+The [run_all.sh](files/run_all.sh) script contains all the commands illustrated in the next subsections, with command ``source run_all main_imagenet`` (using the subroutine ``main_imagenet()`` from the same script).
+
+Before running that script you have to generate the ``val_dataset.zip`` archive with 500 images (the last ones of the original 50000 dataset) resized to have one of their dimensions equal to 256, as explained in the following subsection 5.1.
 
 
 ### 5.1 Prepare the Test Images
@@ -495,8 +515,6 @@ For your information, an academic torrent can be used to download the whole [Ima
 #### 5.1.1 Download the ImageNet Validation Data Set
 
 Since you do not need to re-train your CNN and you just want to make predictions (inference) with, you can download only the **ImageNet validation data set**, named ``ILSVRC2012_img_val.tar``, from either [ImageNet 2012](http://academictorrents.com/collection/imagenet-2012) or [Download ImageNet Data](http://www.image-net.org/download.php) web sites.
-
-For example, in this repository we have generated and used the archive named ``val_dataset.zip`` with 500 images (of the original 50000 dataset), resized to have one of their dimensions equal to 256.
 
 The file [imagenet1000_clsidx_to_labels.txt](https://gist.github.com/yrevar/942d3a0ac09ec9e5eb3a) contains the objects that compose the 1000 classes of ImageNet dataset: the index class is the left column (from 0 to 999) and the class name is the right column string:
 
@@ -508,11 +526,11 @@ The file [imagenet1000_clsidx_to_labels.txt](https://gist.github.com/yrevar/942d
 | . . .          | . . . |
 
 
-#### 5.1.2 Download "val.txt"
+#### 5.1.2 The "short val.txt" File
 
-You need the [val.txt](files/ImageNet/val.txt) file to map the validation images into the corresponding classes with a number. Again, for your comfort it is placed already in this repository just for the 500 available images.
+You need the [short val.txt](files/ImageNet/val.txt) file to map the validation images into the corresponding classes with a number. Again, for your comfort it is placed already in this repository just for the 500 images used in the test. Note that the ``original val.txt`` file lists 50000 images with their file name and class index.
 
-Note that for the ImageNet dataset, the name of the object related to the class  of [val.txt](files/modelzoo/ImageNet/val.txt)  can be found in another file named [words.txt](files/modelzoo/ImageNet/words.txt);
+Furthermore, for the ImageNet dataset, the name of the object related to the class  of [short val.txt](files/modelzoo/ImageNet/val.txt)  can be found in another file named [words.txt](files/modelzoo/ImageNet/words.txt);
 in fact those two files can be considered a simplification of the information that can be found in the ``imagenet_class_index.json`` - available in the ``modelzoo/tf2_resnet50_imagenet_224_224_7.76G_3.0`` folder - which is related to the training dataset.
 
 For example the ``goldfish`` class which appears in line 2 of [words.txt](files/modelzoo/ImageNet/words.txt) is coded as ``1`` in the second record  ``"1": ["n01443537", "goldfish"]``   of  ``imagenet_class_index.json`` and it appears at line 85 of [val.txt](files/modelzoo/ImageNet/val.txt) file, regarding the image ``ILSVRC2012_val_00049585.JPEG``.
@@ -543,7 +561,7 @@ Note that [imagenet_config.py](files/code/config/imagenet_config.py) also create
 
 This way to encode the ImageNet classes is applied consistently in this tutorial by all the python scripts that evaluate the top-1 and top-5 average prediction accuracy of the CNN.
 
-If you wish to download the ImageNet original  ``val.txt`` file for all the 50000 images of the validation dataset, you have to execute the following commands (be careful not to overwrite the ``val.txt`` file of this repository):
+If you wish to download the ImageNet ``original val.txt`` file for all the 50000 images of the validation dataset, you have to execute the following commands (be careful not to overwrite the [short val.txt](files/ImageNet/val.txt) file of this repository):
 
 ```bash
 mkdir tmp
@@ -577,24 +595,75 @@ Alternatively, you can find the ``words.txt`` file in the [Resnet50 VART example
 
 
 
+#### 5.1.3 Generate the Test Images Archive
+
+Having both original files, the (~6.7GB) ``ILSVRC2012_img_val.tar`` archive and the [short val.txt](files/ImageNet/val.txt) with the list of the last 500 images (from the 50000) and their class number, you can now create a smaller archive, ``val_dataset.zip``.
+
+Here are the commands that you have to launch from within the docker image (they are already part of the ``prepare_imagenet_test_images()`` subroutine from the [run_all.sh](files/run_all.sh) script), see the self explaining comments:
+
+```
+# enter in the docker image
+#cd ${WRK_DIR} # you are now in Vitis_AI subfolder
+#./docker_run.sh xilinx/vitis-ai-tensorflow2-gpu:3.5.0.001-b56bcce50
+#conda activate vitis-ai-tensorflow2
+#cd /workspace/tutorials/
+
+# starting directory
+cd /workspace/tutorials/RESNET18/files/
+cd modelzoo/ImageNet/ # your current directory
+# the ILSVRC2012_img_val.tar is supposed to be already here, after your download
+
+# make a temporary directory one level below
+mkdir val_dataset
+mv ILSVRC2012_img_val.tar ./val_dataset/
+# expand the archive
+cd val_dataset
+tar -xvf ILSVRC2012_img_val.tar > /dev/null
+# move back the archive one level above
+mv ILSVRC2012_img_val.tar ../
+cd ..
+# check all the 50000 images are in val_dataset folder
+ls -l ./val_dataset | wc
+```
+
+You should see the following text:
+
+```
+$ ls -l ./val_dataset | wc
+  50001  450002 4050014
+```
+
+Now run the [imagenet_val_dataset.py](files/modelzoo/imagenet_val_dataset) script:
+
+```
+python3 imagenet_val_dataset.py
+```
+
+You should see the following text:
+```
+val_dataset.zip archive is ready with  500 images
+```
+
+Now copy that archive to the ``target/imagenet`` folder:
+
+```
+cp -i val_dataset.zip ../../target/imagenet
+```
+
+You are ready to work with both ResNet50 and ResNet18 CNNs.
+If you are not interested into experimenting ResNet50, you can skip Section [5.2 ResNet50](#52-resnet50) and jump directly to the next Section [5.3 ResNet18](#53-resnet18).
+
+
+
 
 ### 5.2 ResNet50
 
 #### 5.2.1  Get ResNet50 from Vitis AI Model Zoo
 
-You have to download the ``tf2_resnet50_imagenet_224_224_7.76G`` ResNet50 model  reported in the second line (starting from the bottom) of the Vitis AI [Model Zoo Details & Performance online table](https://xilinx.github.io/Vitis-AI/docs/reference/ModelZoo_VAI3.0_Github_web.htm), as described in the [Model Download](https://xilinx.github.io/Vitis-AI/docs/workflow-model-zoo#model-download) section.
+You have to download the ``tf2_resnet50_imagenet_224_224_7.76G`` ResNet50 model reported in [model.yaml](https://github.com/Xilinx/Vitis-AI/blob/3.0/model_zoo/model-list/tf2_resnet50_imagenet_224_224_7.76G_3.0/model.yaml) file.
+As the file name says, such CNN has been trained with [ImageNet](http://www.image-net.org/) dataset with RGB images of input size 224x224 and it requires a computation of 7.76 GOPs per image.
 
-As the file name says, such CNN has been trained with [ImageNet](http://www.image-net.org/) dataset with RGB image sizes of 224x224 and it requires a computation of 7.76 GOPs per image.
-
-Here are the files you need to get (with their size in bytes):
-
-```text
- 18297867 /home/danieleb/Downloads/resnet50_tf2-vck190-r3.0.0.tar.gz
- 18456686 /home/danieleb/Downloads/resnet50_tf2-zcu102_zcu104_kv260-r3.0.0.tar.gz
-190474572 /home/danieleb/Downloads/tf2_resnet50_imagenet_224_224_7.76G_3.0.zip
-```
-
-Put them in the [modelzoo](files/modelzoo) folder and unzip there the  archive ``tf2_resnet50_imagenet_224_224_7.76G_3.0.zip`` to generate the new folder
+Put the ``tf2_resnet50_imagenet_224_224_7.76G_3.0.zip`` archive in the [modelzoo](files/modelzoo) folder and unzip there  to generate the new folder
 ``modelzoo/tf2_resnet50_imagenet_224_224_7.76G_3.0``.
 
 Note that the original ResNet50 trained on the ImageNet dataset has the following parameters:
@@ -789,6 +858,11 @@ You can easily verify this by looking at the code differences in the two files  
 
 ### 5.4 Run on the Target Board
 
+The throughput measured in fps is shown only for the VCK190 board, just as a reference. For the other boards the results can be pretty different depending on the different DPU architectures and related batch size (BS).
+
+All the commands illustrated in the following subsections are inside the script [run_all_imagenet_target.sh](files/target/imagenet/code/run_all_imagenet_target.sh), they are applied directly in the target board ``xxxyyy``
+(i.e. zcu102, vck190, v70, vek280, etc) by launching the command ``run_all_target.sh xxxyyy``, which involves  the [run_all_target.sh](files/target/run_all_target.sh) higher level script.
+
 
 #### 5.4.1 Multithreading C++ Application Code
 
@@ -909,14 +983,7 @@ Similarly to the ResNet50 case, alternatively to changing the C++ code, you coul
 
 ## Appendix
 
-### A1 Setting up the Target Board
-
-See the details in:
--  [Setting-Up the ZCU102/ZCU104/KV260/VCK190 Evaluation Board](https://docs.xilinx.com/r/en-US/ug1414-vitis-ai/Setting-Up-the-ZCU102/ZCU104/KV260/VCK190-Evaluation-Board)
-
-- [Installing Vitis-AI Runtime on the Evaluation Board]( https://docs.xilinx.com/r/en-US/ug1414-vitis-ai/Installing-Vitis-AI-Runtime-on-the-Evaluation-Board)
-
-#### UART connectivity (PuTTY, minicom, etc)
+### UART connectivity (PuTTY, minicom, etc)
 
 For more details, see [5 Linux/Unix Commands For Connecting To The Serial Console](https://www.cyberciti.biz/hardware/5-linux-unix-commands-for-connecting-to-the-serial-console/).
 
@@ -948,29 +1015,8 @@ sudo minicom -s
 <div style="page-break-after: always;"></div>
 
 
-## License
-
-The MIT License (MIT)
-
-Copyright © 2023 Advanced Micro Devices, Inc. All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 
 
-<p align="center"><sup>XD106 | © Copyright 2022 Xilinx, Inc.</sup></p>
+<p class="sphinxhide" align="center"><sub>Copyright © 2020–2023 Advanced Micro Devices, Inc</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>

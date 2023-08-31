@@ -9,6 +9,9 @@ TARGET=$2
 
 #clean
 clean_vcor(){
+echo " "
+echo "[TARGET INFO] clean vcor folders"
+echo " "
 cd vcor
 rm -rf test
 rm -f *~
@@ -22,6 +25,9 @@ cd ..
 
 # compile CNN application
 compile_vcor(){
+  echo " "
+  echo "[TARGET INFO] compile vcor app"
+  echo " "
 cd vcor/code
 echo "PWD1 = " $PWD
 bash -x ./build_app.sh
@@ -34,6 +40,10 @@ echo "PWD2 = " $PWD
 
 # build vcor test images
 test_images_vcor(){
+  echo " "
+  echo "[TARGET INFO] build test images"
+  echo " "
+
 cd vcor
 bash ./build_vcor_test.sh
 cd ..
@@ -43,6 +53,10 @@ echo "PWD3 = " $PWD
 
 # now run the vcor classification using VART C++ APIs
 run_cnn_vcor(){
+  echo " "
+  echo "[TARGET INFO] run CNN "
+  echo " "
+
 cd vcor
 ./cnn_resnet18_vcor ./${TARGET}_train_resnet18_vcor.xmodel ./test/ ./vcor_labels.dat | tee ./rpt/predictions_vcor_resnet18.log
 # check DPU prediction accuracy
@@ -53,8 +67,12 @@ cd ..
 
 #remove images
 end_vcor(){
+  echo " "
+  echo "[TARGET INFO] end of vcor"
+  echo " "
+
 cd vcor
-#rm -rf test
+rm -rf test
 cd ../
 echo "PWD5 = " $PWD
 #tar -cvf target.tar ./target_*
@@ -67,7 +85,7 @@ main()
     compile_vcor
     test_images_vcor
     run_cnn_vcor
-    #end_vcor
+    end_vcor
 }
 
 
