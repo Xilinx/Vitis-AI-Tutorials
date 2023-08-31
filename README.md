@@ -17,14 +17,18 @@
 </thead>
 <tbody>
   <tr>
-  <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.0/Tutorials/RESNET18/">Running ResNet18 CNN Through Vitis AI 3.0 Flow for ML</a></td>
+  <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/RESNET18/">Running ResNet18 CNN Through Vitis AI 3.5 Flow for ML</a>
+ </td>
  <td align="center">3.0</td>
- <td>In this Deep Learning (DL) tutorial, you will take a public domain CNN like ResNet18, already trained on the ImageNet dataset, and run it through the Vitis AI 3.0 stack to run ML inference on FPGA devices. You will use Keras on Tensorflow 2.x.</td>
+ <td>In this Deep Learning (DL) tutorial, you will take a public domain CNN like ResNet18, already trained on the ImageNet dataset, and run it through the Vitis AI 3.0 stack to run ML inference on FPGA devices. You will use Keras on Tensorflow 2.x. Supported boards are: ZCU104, ZCU102, VCK190, VEK280 and Alveo V70.
+</td>
  </tr>
   <tr>
-  <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.0/Tutorials/PyTorch-ResNet18/">ResNet18 in PyTorch from Vitis AI Library</a></td>
+  <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/PyTorch-ResNet18/">ResNet18 in PyTorch from Vitis AI Library</a>
+ </td>
  <td align="center">3.0</td>
- <td>In this Deep Learning (DL) tutorial, you will take the ResNet18 CNN, from the Vitis AI 3.0 Library, and use it to classify the different colors of the "car object" inside images by running the inference application on FPGA devices.</td>
+ <td>In this Deep Learning (DL) tutorial, you will take the ResNet18 CNN, from the Vitis AI 3.5 PyTorch Library, and use it to classify the different colors of the "car object" inside images by running the inference application on FPGA devices. Supported boards are: ZCU104, ZCU102, VCK190, VEK280 and Alveo V70.
+</td>
  </tr>
   <tr>
   <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.0/Tutorials/Keras_GoogleNet_ResNet/">Deep Learning with Custom GoogleNet and ResNet in Keras and Xilinx Vitis AI</a></td>
