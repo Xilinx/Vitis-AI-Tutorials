@@ -30,6 +30,13 @@
  <td>In this Deep Learning (DL) tutorial, you will take the ResNet18 CNN, from the Vitis AI 3.5 PyTorch Library, and use it to classify the different colors of the "car object" inside images by running the inference application on FPGA devices. Supported boards are: ZCU104, ZCU102, VCK190, VEK280 and Alveo V70.
 </td>
  </tr>
+ <tr>
+  <td>
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/TF2-Vitis-AI-Optimizer/">TensorFlow2 Vitis AI Optimizer: Getting Started</a>
+ </td>
+ <td align="center">3.5</td>
+ <td>Get started with the <a href="https://docs.xilinx.com/r/en-US/ug1414-vitis-ai/Vitis-AI-Optimizer">Vitis AI Optimizer (release 3.5)</a> in the TensorFlow2 (TF2) environment with Keras.</td>
+ </tr>
   <tr>
   <td><a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.0/Tutorials/Keras_GoogleNet_ResNet/">Deep Learning with Custom GoogleNet and ResNet in Keras and Xilinx Vitis AI</a></td>
  <td align="center">3.0</td>
@@ -200,5 +207,8 @@
 
 
 </hr>
-<p class="sphinxhide" align="center"><sup>Copyright&copy; 2022 Xilinx</sup></p>
 
+
+<p class="sphinxhide" align="center"><sub>Copyright © 2022–2023 Advanced Micro Devices, Inc</sub></p>
+
+<p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
