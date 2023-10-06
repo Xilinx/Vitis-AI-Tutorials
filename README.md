@@ -22,10 +22,10 @@
 
   <tr>
   <td>
-   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/RESNET18/">Running ResNet18 CNN Through Vitis AI 3.0 Flow for ML</a>
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/RESNET18/">Running ResNet18 CNN Through Vitis AI 3.5 Flow for ML</a>
  </td>
  <td align="center">3.5</td>
- <td>In this Deep Learning (DL) tutorial, you will take a public domain CNN like ResNet18, already trained on the ImageNet dataset, and run it through the Vitis AI 3.0 stack to run ML inference on FPGA devices. You will use Keras on Tensorflow 2.x. Supported boards are: ZCU104, ZCU102, VCK190, VEK280 and Alveo V70.
+ <td>In this Deep Learning (DL) tutorial, you will take a public domain CNN like ResNet18, already trained on the ImageNet dataset, and run it through the Vitis AI 3.5 stack to run ML inference on FPGA devices. You will use Keras on Tensorflow 2.x. Supported boards are: ZCU104, ZCU102, VCK190, VEK280 and Alveo V70.
 </td>
  </tr>
   <tr>
@@ -36,9 +36,15 @@
  <td>In this Deep Learning (DL) tutorial, you will take the ResNet18 CNN, from the Vitis AI 3.0 PyTorch Library, and use it to classify the different colors of the "car object" inside images by running the inference application on FPGA devices. Supported boards are: ZCU104, ZCU102, VCK190, VEK280 and Alveo V70.
 </td>
  </tr>
+ <tr>
+  <td>
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/TF2-Vitis-AI-Optimizer/">TensorFlow2 Vitis AI Optimizer: Getting Started</a>
+ </td>
+ <td align="center">3.5</td>
+ <td>Get started with the <a href="https://docs.xilinx.com/r/en-US/ug1414-vitis-ai/Vitis-AI-Optimizer">Vitis AI Optimizer (release 3.5)</a> in the TensorFlow2 (TF2) environment with Keras.</td>
+ </tr>
 </tbody>
 </table>
-
 
 <p class="sphinxhide" align="center"><sub>Copyright © 2020–2023 Advanced Micro Devices, Inc</sub></p>
 
