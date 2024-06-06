@@ -444,7 +444,7 @@ The second option gets higher performance, being compiled, but it maybe less eas
 
 The throughput measured in fps is shown only for the VEK280 board, just as a reference. For the other boards the results can be pretty different depending on the different DPU architectures and related batch size (BS).
 
-All the commands illustrated in the following subsections are inside the script [run_all_cifar10_target.sh](files/target/cifar10/code/run_all_cifar10_target.sh), they are applied directly in the target board ``xxxyyy``
+All the commands illustrated in the following subsections are inside the script [run_all_cifar10_target.sh](files/target/cifar10/run_all_cifar10_target.sh), they are applied directly in the target board ``xxxyyy``
 (i.e. zcu102, vck190, v70, vek280, etc) by launching the command ``run_all_target.sh xxxyyy``, which involves  the [run_all_target.sh](files/target/run_all_target.sh) higher level script.
 
 
@@ -497,7 +497,7 @@ bash -x ./cifar10/run_all_cifar10_target.sh vek280
 
 With this command, the ``cifar10_test.tar`` archive with the 5000 test images will be uncompressed.
 
-The application based on VART C++ APIs is built with the [build_app.sh](files/target_cifar10/code/build_app.sh) script and finally launched for each CNN, the effective top-5 classification accuracy is checked by a python script [check_runtime_top5_cifar10.py](files/target_cifar10/code/src/check_runtime_top5_cifar10.py) which is launched from within
+The application based on VART C++ APIs is built with the [build_app.sh](files/target/cifar10/code/build_app.sh) script and finally launched for each CNN, the effective top-5 classification accuracy is checked by a python script [check_runtime_top5_cifar10.py](files/target/cifar10/code/src/check_runtime_top5_cifar10.py) which is launched from within
 the [cifar10_performance.sh](files/target/cifar10/cifar10_performance.sh) script.
 
 
@@ -555,9 +555,9 @@ The file [imagenet1000_clsidx_to_labels.txt](https://gist.github.com/yrevar/942d
 
 #### 5.1.2 The "short val.txt" File
 
-You need the [short val.txt](files/ImageNet/val.txt) file to map the validation images into the corresponding classes with a number. Again, for your comfort it is placed already in this repository just for the 500 images used in the test. Note that the ``original val.txt`` file lists 50000 images with their file name and class index.
+You need the [short val.txt](files/modelzoo/ImageNet/val.txt) file to map the validation images into the corresponding classes with a number. Again, for your comfort it is placed already in this repository just for the 500 images used in the test. Note that the ``original val.txt`` file lists 50000 images with their file name and class index.
 
-Furthermore, for the ImageNet dataset, the name of the object related to the class  of [short val.txt](files/modelzoo/ImageNet/val.txt)  can be found in another file named [words.txt](files/modelzoo/ImageNet/words.txt);
+Furthermore, for the ImageNet dataset, the name of the object related to the class of [short val.txt](files/modelzoo/ImageNet/val.txt) can be found in another file named [words.txt](files/modelzoo/ImageNet/words.txt);
 in fact those two files can be considered a simplification of the information that can be found in the ``imagenet_class_index.json`` - available in the ``modelzoo/tf2_resnet50_3.5`` folder - which is related to the training dataset.
 
 For example the ``goldfish`` class which appears in line 2 of [words.txt](files/modelzoo/ImageNet/words.txt) is coded as ``1`` in the second record  ``"1": ["n01443537", "goldfish"]``   of  ``imagenet_class_index.json`` and it appears at line 85 of [short val.txt](files/modelzoo/ImageNet/val.txt) file, regarding the image ``ILSVRC2012_val_00049585.JPEG``.
@@ -588,7 +588,7 @@ Note that [imagenet_config.py](files/code/config/imagenet_config.py) also create
 
 This way to encode the ImageNet classes is applied consistently in this tutorial by all the python scripts that evaluate the top-1 and top-5 average prediction accuracy of the CNN.
 
-If you wish to download the ImageNet ``original val.txt`` file for all the 50000 images of the validation dataset, you have to execute the following commands (be careful not to overwrite the [short val.txt](files/ImageNet/val.txt) file of this repository):
+If you wish to download the ImageNet ``original val.txt`` file for all the 50000 images of the validation dataset, you have to execute the following commands (be careful not to overwrite the [short val.txt](files/modelzoo/ImageNet/val.txt) file of this repository):
 
 ```
 mkdir tmp
@@ -659,7 +659,7 @@ $ ls -l ./val_dataset | wc
   50001  450002 4050014
 ```
 
-Now run the [imagenet_val_dataset.py](files/modelzoo/imagenet_val_dataset) script:
+Now run the [imagenet_val_dataset.py](files/modelzoo/ImageNet/imagenet_val_dataset.py) script:
 
 ```
 python3 imagenet_val_dataset.py
@@ -885,7 +885,7 @@ You can easily verify this by looking at the code differences in the two files  
 
 The throughput measured in fps is shown only for the VEK280 board, just as a reference. For the other boards the results can be pretty different depending on the different DPU architectures and related batch size (BS).
 
-All the commands illustrated in the following subsections are inside the script [run_all_imagenet_target.sh](files/target/imagenet/code/run_all_imagenet_target.sh), they are applied directly in the target board ``xxxyyy``
+All the commands illustrated in the following subsections are inside the script [run_all_imagenet_target.sh](files/target/imagenet/run_all_imagenet_target.sh), they are applied directly in the target board ``xxxyyy``
 (i.e. zcu102, vck190, v70, vek280, etc) by launching the command ``run_all_target.sh xxxyyy``, which involves  the [run_all_target.sh](files/target/run_all_target.sh) higher level script.
 
 
@@ -952,7 +952,7 @@ bash -x ./imagenet/run_all_imagenet_target.sh zcu102
 
 With this command, the ``val_dataset.zip`` archive with the 500 test images will be uncompressed.
 
-The application based on VART C++ APIs is built with the [build_resnet50.sh](files/target/imagenet/code_resnet50/build_resnet50.sh) script and finally launched for each CNN, the effective top-5 classification accuracy is checked by a python script [check_runtime_top1_imagenet.py](files/target/code/src/check_runtime_top1_imagenet.py) which is launched from within
+The application based on VART C++ APIs is built with the [build_resnet50.sh](files/target/imagenet/code_resnet50/build_resnet50.sh) script and finally launched for each CNN, the effective top-5 classification accuracy is checked by a python script [check_runtime_top1_imagenet.py](files/target/imagenet/code_resnet50/src/check_runtime_top1_imagenet.py) which is launched from within
 the [imagenet_performance.sh](files/target/imagenet/imagenet_performance.sh) script.
 
 
