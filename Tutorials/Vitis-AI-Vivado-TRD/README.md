@@ -45,7 +45,7 @@ Download the TRD files from the Vitis AI GitHub repo located [here](https://gith
     ```bash
     git clone https://github.com/Xilinx/Vitis-AI
     cd Vitis-AI
-    cd checkout v2.0
+    git checkout 2.0
     ```
 
 ## Building the Vivado TRD
