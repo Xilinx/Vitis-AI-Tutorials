@@ -119,25 +119,21 @@ For more details, refer to the latest version of the *Vitis AI User Guide* ([UG1
      ==========================================
 
      Docker Image Version:  latest
-     Build Date: 2021-08-04
+     Build Date: 2022-06-12
      VAI_ROOT: /opt/vitis_ai
-
+     
      For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-tensorflow
-     For Caffe Workflows do:
-          conda activate vitis-ai-caffe
-     For Neptune Workflows do:
-          conda activate vitis-ai-neptune
+          conda activate vitis-ai-tensorflow 
      For PyTorch Workflows do:
-          conda activate vitis-ai-pytorch
-     For TensorFlow 2.3 Workflows do:
-          conda activate vitis-ai-tensorflow2
-     For Darknet Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_darknet
-     For TensorFlow 1.15 Optimizer Workflows do:
-          conda activate vitis-ai-optimizer_caffe
-     For TensorFlow 1.15 Workflows do:
-          conda activate vitis-ai-optimizer_tensorflow
+          conda activate vitis-ai-pytorch 
+     For TensorFlow 2.8 Workflows do:
+          conda activate vitis-ai-tensorflow2 
+     For WeGo Tensorflow 1.15 Workflows do:
+          conda activate vitis-ai-wego-tf1 
+     For WeGo Tensorflow 2.8 Workflows do:
+          conda activate vitis-ai-wego-tf2 
+     For WeGo Torch Workflows do:
+          conda activate vitis-ai-wego-torch     
      Vitis-AI /workspace >
      ```
 
