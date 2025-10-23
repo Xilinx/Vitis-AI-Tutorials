@@ -17,9 +17,6 @@ MIT License
 
 # Deploying a Custom ResNet18 on Vitis AI NPU
 
-
-#### FOR WWW PUBLICATION
-
 #### Current Status
 
 - Release:      `Vitis AI 5.1`
