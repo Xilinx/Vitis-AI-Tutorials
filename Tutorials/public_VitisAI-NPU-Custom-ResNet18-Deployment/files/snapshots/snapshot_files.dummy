@@ -1,0 +1,8 @@
+# Copyright © 2025 Advanced Micro Devices, Inc. All rights reserved.
+# MIT License
+
+Dummy file, place holder for the snapshot archives you have to create:
+
+- snapshot.py.vcor_resnet18.bs19.zip
+- snapshot.py.vcor_resnet18.bs1.zip 
+- snapshot.py.vcor_resnet18.bs8.zip

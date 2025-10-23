@@ -1,0 +1,48 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+
+        {
+            "name": "Debug C++",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/tutorials/VitisAI-NPU-Benchmark-Tool/files/vart_ml/zebra_embedded/demo/test_vcor_resnet18", // Adjust according to the build output path
+            "args": [
+                "--snapshot"  , "/run/media/mmcblk0p1/snapshot.VE2802_NPU_IP_betaG_O0_A304_M3.resnet50.TF" ,
+                "--imgPath"   , "/home/root/imagenet/ILSVRC2012_img_val" ,
+                "--goldFile"  , "/home/root/imagenet/ILSVRC_2012_val_GroundTruth_10p.txt" ,
+                //"--labels"    , "/home/root/Vitis-AI/examples/python_examples/batcher/datasets/imagenet/ILSVRC_2012_val_GroundTruth_10p.txt" ,
+                "--labels"    , "${workspaceFolder}/tutorials/VitisAI-NPU-Benchmark-Tool/files/vart_ml/zebra_embedded/demo/imagenet_labels.txt", 
+                "--nbImages"  , "38" , 
+                "--batchSize" , "19" 
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                { 
+                    "name": "VAISW_INSTALL_DIR",
+                    "value": "/etc/vai"
+                },
+                { 
+                    "name": "PYTHONPATH",
+                    "value": "/etc/vai/lib/python"   //"$VAISW_INSTALL_DIR/lib/python"
+                }               
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            //"preLaunchTask": "build" // Reference to the build task
+            "miDebuggerPath": "/usr/bin/gdb", // path to gdb
+            //"miDebuggerArgs": "",
+            "stopAtConnect": true
+            //"remote": true, 
+        }
+    ]
+}
