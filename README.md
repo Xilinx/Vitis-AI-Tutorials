@@ -9,15 +9,7 @@
 
 <table>
 <thead>
- <tr>
-    <th width="35%" align="center"><h3><b>Tutorial Name</b></hr></th>
-    <th width="15%" align="center"><h3><b>Highest Version</b></hr></th>
-    <th width="50%" align="center"><h3><b>Description</b></hr></th>
-  </tr>
-</thead>
-<tbody>
-
-   <tr>
+  <tr>
     <th width="35%" align="center"><h3><b>Tutorial Name</b></hr></th>
     <th width="15%" align="center"><h3><b>Latest Supported Vitis AI Version</b></hr></th>
     <th width="50%" align="center"><h3><b>Description</b></hr></th>
@@ -228,5 +220,6 @@
 <p class="sphinxhide" align="center"><sub>Copyright © 2022–2023 Advanced Micro Devices, Inc</sub></p>
 
 <p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
+
 
 
