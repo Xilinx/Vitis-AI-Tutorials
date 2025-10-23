@@ -26,7 +26,7 @@ MIT License
 - Host OS:      Ubuntu 22.04.5 LTS (Jammy JellyFish)
 - Target Board: VEK280 revB3
 
-- Last update:  02 Oct. 2025
+- Last update:  23 Oct. 2025
 
 
 ## Table of Contents
