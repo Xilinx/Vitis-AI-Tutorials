@@ -94,7 +94,7 @@ The C++ applications do not perform any sophisticated checks on the input parame
 
 ## 2 Getting Started with Vitis AI
 
-The following document assumes you have installed Vitis AI 2025.1 using the `vitis-ai-5.1.tar` archive somewhere in your file system, one level below a designated working directory `{WRK_DIR}` on the Ubuntu host PC. For example, this document uses a structure like this:
+The following document assumes you have installed Vitis AI 5.1 using the `vitis-ai-5.1.tar` archive somewhere in your file system, one level below a designated working directory `{WRK_DIR}` on the Ubuntu host PC. For example, this document uses a structure like this:
 
 ```bash
 # your working directory
@@ -262,7 +262,7 @@ Before launching any application on the target VEK280 board, execute the followi
     export PYTHONPATH=$VAISW_INSTALL_DIR/lib/python
     export HOME=/home/root
 
-    # enable Zebra statistics
+    # enable statistics
     #export VAISW_RUNSESSION_SUMMARY=all
 
     # this is the currently available snapshot
@@ -325,7 +325,7 @@ Before launching any application on the target VEK280 board, execute the followi
     VART: Effective aligned config area in DDR: 	Addr = [ 0x880000000, 0x50000000000, 0x60000000000 ] 	Size = [ 0xd5d000, 0x9a1000, 0xd5d000]
     VART: Allocated snapshot   tmp area in DDR: 	Addr = [ 0x880d5e000, 0x500009a2000, 0x60000d5e000 ] 	Size = [ 0x159001, 0x127c01, 0x127c01]
     VART: Effective aligned    tmp area in DDR: 	Addr = [ 0x880d5e000, 0x500009a2000, 0x60000d5e000 ] 	Size = [ 0x158c01, 0x127801, 0x127801]
-    Found snapshot for IP VE2802_NPU_IP_O00_A304_M3_INT8 matching running device
+    Found snapshot for IP VE2802_NPU_IP_O00_A304_M3 matching running device
     [========================= 100% =========================]
     Inference took 29 ms
     Inference took 25 ms
@@ -427,9 +427,9 @@ for (int h = 0; h < inHeight; h++)
 ```
 
 For this reason, code related to `ColorFormat`—which can be either `RGB` or `BGR`—has been added, as shown in the following fragments from 
-[common.h](files/cpp_code/zebra_embedded/demo/common.h) 
+[common.h](files/cpp_code/vart_ml/demo/common.h) 
 and 
-[common.cpp](files/cpp_code/zebra_embedded/demo/common.cpp):
+[common.cpp](files/cpp_code/vart_ml/demo/common.cpp):
 
 
 ```cpp
@@ -515,7 +515,7 @@ Here are the steps to cross-compile the `vart_ml_demo` application. Execute thes
 source $WRK_DIR/tutorials/VitisAI-NPU-Custom-ResNet18-Deployment/files/scripts/setup_sdk.sh
 
 # go to source dir
-cd $WRK_DIR/tutorials/VitisAI-NPU-Custom-ResNet18-Deployment/files/vart_ml/zebra_embedded
+cd $WRK_DIR/tutorials/VitisAI-NPU-Custom-ResNet18-Deployment/files/vart_ml
 
 # build process
 make clean
@@ -535,7 +535,7 @@ Now you need to copy also the executable files on the board:
 ```shell
 
 # copy the executables from host to target (I copy the whole folder, being quicker)
-scp -r ./demo/* root@192.168.1.217:/home/root/Vitis-AI/src/vart_ml/zebra_embedded/demo/
+scp -r ./demo/* root@192.168.1.217:/home/root/Vitis-AI/src/vart_ml/demo/
 
 # connect to target board
 ssh -X root@192.168.1.217
@@ -559,7 +559,7 @@ To check the new `vart_ml_demo` that you have just compiled on the target board,
 source ~/target_setup_vai.sh
 
 # change dir
-cd Vitis-AI/src/vart_ml/zebra_embedded/demo
+cd Vitis-AI/src/vart_ml/demo
 
 # launch just compiled new executable
 vart_ml_demo --snapshot ${RESNET50_SNAPSHOT} \
@@ -610,7 +610,7 @@ From the terminal just ``ssh`` connected to the target board, execute the follow
 source /home/root/target_setup_vai.sh
 
 # change dir
-cd ~/Vitis-AI/src/vart_ml/zebra_embedded/demo
+cd ~/Vitis-AI/src/vart_ml/demo
 
 # run inference with ResNet50 on ImageNet
 vart_ml_demo --batchSize 19 \
@@ -657,7 +657,7 @@ Accuracy Summary:
 On your target board, run the ``vart_ml_demo`` with the following parameters:
 
 ```shell
-cd /home/root/Vitis-AI/src/vart_ml/zebra_embedded/demo
+cd /home/root/Vitis-AI/src/vart_ml/demo
 
 # BGR
 ./vart_ml_demo  --snapshot ~/snapshots/snapshot.py.resnet18.bs19 --imgPath ~/imagenet/ILSVRC2012_img_val \
@@ -721,7 +721,7 @@ This difference in the results might be because of several reasons:
 On your target board, run the ``vart_ml_demo`` with the following parameters:
 
 ```shell
-cd ~/Vitis-AI/src/vart_ml/zebra_embedded/demo/
+cd ~/Vitis-AI/src/vart_ml/demo/
 
 # RGB
 ./vart_ml_demo  --snapshot ~/snapshots/snapshot.py.resnet50.bs19  --imgPath ~/datasets/imagenet/ILSVRC2012_img_val --labels /etc/vai/labels/labels --batchSize 19 --nbImages 1349 --goldFile ~/datasets/imagenet/ILSVRC_2012_val_GroundTruth_10p.txt --colorFmt 1
@@ -975,7 +975,7 @@ Now launch these commands to generate the snapshots:
 ```shell
 # set the NPU env to generate snapshots
 cd /workspace/Vitis-AI
-source npu_ip/settings.sh VE2802_NPU_IP_O00_A304_M3_INT8   --nofallback
+source npu_ip/settings.sh VE2802_NPU_IP_O00_A304_M3   --nofallback
 
 # go to ResNet18 directory
 cd /workspace/tutorials/VitisAI-NPU-Custom-ResNet18-Deployment/files/resnet18
@@ -1004,9 +1004,9 @@ Test set: Average loss: 0.4558, Accuracy: 1363/1556 (87.596%)
 
 ### 5.4 Cpp Application for the Target
 
-The [test_vcor_resnet18.cpp](files/cpp_code/vart_ml/demo/test_vcor_resnet18.cpp) file is derived from the original [vart_ml_demo.cpp](files/cpp_code/zebra_embedded/demo/vart_ml_demo.cpp) file. It differs in the postprocessing section, as the adopted dataset is VCoR (with 15 classes) instead of ImageNet (with 1,000 classes).
+The [test_vcor_resnet18.cpp](files/cpp_code/vart_ml/demo/test_vcor_resnet18.cpp) file is derived from the original [vart_ml_demo.cpp](files/cpp_code/vart_ml/demo/vart_ml_demo.cpp) file. It differs in the postprocessing section, as the adopted dataset is VCoR (with 15 classes) instead of ImageNet (with 1,000 classes).
 
-This file is not present in the original content of the `Vitis AI/src/vart_ml/zebra_embedded/demo` folder, as it is new. Therefore, the `demo/Makefiles` file also needs to be updated by adding `test_vcor_resnet18` to the `TARGETS`, as shown here:
+This file is not present in the original content of the `Vitis AI/src/vart_ml/demo` folder, as it is new. Therefore, the `demo/Makefiles` file also needs to be updated by adding `test_vcor_resnet18` to the `TARGETS`, as shown here:
 
 ```
 TARGETS:= connect simple_demo simple_cpp_api_demo pipelining_demo threads_demo multi_models_demo vart_ml_demo test_vcor_resnet18
@@ -1016,7 +1016,7 @@ TARGETS:= connect simple_demo simple_cpp_api_demo pipelining_demo threads_demo m
 ```
 6bdb5f9cbd.jpg purple
 ```
-This is important during the post-processing phase (routine ``compare_gold()`` from [common.cpp](files/cpp_code/zebra_embedded/demo/common.cpp) file)
+This is important during the post-processing phase (routine ``compare_gold()`` from [common.cpp](files/cpp_code/demo/common.cpp) file)
 to compute the average prediction accuracy.
 
 
@@ -1025,11 +1025,11 @@ to compute the average prediction accuracy.
 If you launch these commands in the host PC you can see the modified ``*.cpp`` and ``*.h`` files (by searching for the ``//DB`` string):
 
 ```shell
-cd vart_ml/zebra_embedded
+cd vart_ml
 grep -rn "//DB" *
 ```
 
-Basically they are [common.cpp](files/cpp_code/zebra_embedded/demo/common.cpp) and [vart_ml_demo.cpp](files/cpp_code/zebra_embedded/demo/vart_ml_demo.cpp), 
+Basically they are [common.cpp](files/cpp_code/vart_ml/demo/common.cpp) and [vart_ml_demo.cpp](files/cpp_code/vart_ml/demo/vart_ml_demo.cpp), 
 besides the new [test_vcor_resnet18.cpp](files/cpp_code/vart_ml/demo/test_vcor_resnet18.cpp).
 
 The first file was changed due to the preprocessing, as explained in section
@@ -1056,19 +1056,19 @@ for (size_t i = 0; i < outputCnt[m]; i++)
 
 #### 5.4.2 Steps to Run the Application
 
-Copy the [test_vcor_resnet18.cpp](files/cpp_code/vart_ml/demo/test_vcor_resnet18.cpp) into  the ``files/vart_ml/zebra_embedded/demo`` local folder.
+Copy the [test_vcor_resnet18.cpp](files/cpp_code/vart_ml/demo/test_vcor_resnet18.cpp) into  the ``files/vart_ml/demo`` local folder.
 
 
 ##### Step-1
 
-Compile the code application in the ``vart_ml/zebra_embedded/demo`` subfolder following what described in section [3.3 Cross Compile the Demo Applications](#33-cross-compile-the-demo-applications).
+Compile the code application in the ``vart_ml/demo`` subfolder following what described in section [3.3 Cross Compile the Demo Applications](#33-cross-compile-the-demo-applications).
 
 Then copy the compiled executables from the ``demo`` folder of the host to the target board:
 
 ```shell
-cd VitisAI-NPU-Custom-ResNet18-Deployment/files/resnet18/vart_ml/zebra_embedded
+cd VitisAI-NPU-Custom-ResNet18-Deployment/files/resnet18/vart_ml
 # copy the executables from host to target:
-scp -r ./demo/* root@192.168.1.111:/home/root/Vitis-AI/src/vart_ml/zebra_embedded/demo/
+scp -r ./demo/* root@192.168.1.111:/home/root/Vitis-AI/src/vart_ml/demo/
 ```
 
 ##### Step-2
@@ -1116,7 +1116,7 @@ After connecting to the target boar, run the following commands:
 cd
 source ~/target_setup_vai.sh
 
-cd Vitis-AI/src/vart_ml/zebra_embedded/demo
+cd Vitis-AI/src/vart_ml/demo
 
 # inference in BGR
 ./test_vcor_resnet18 --snapshot ~/RESNET18/snapshots/snapshot.py.vcor_resnet18.bs19 --imgPath ~/datasets/vcor/test --labels ~/datasets/vcor/vcor_labels.txt --batchSize 19 --nbImages 1539 --goldFile ~/datasets/vcor/vcor_test_GroundTruth.txt  --colorFmt 0 > logfile_vcor_resnet18_bgr_vek280.txt 2>&1
@@ -1165,7 +1165,7 @@ The performance for the Pytorch ResNet50 can be measured by running these comman
 ```shell
 export VAISW_RUNSESSION_SUMMARY=all
 source ~/target_setup.sh
-cd ~/Vitis-AI/src/vart_ml/zebra_embedded/demo
+cd ~/Vitis-AI/src/vart_ml/demo
 
 # Batch Size = 1
 ./vart_ml_demo --batchSize 1   --goldFile ~/datasets/imagenet/ILSVRC_2012_val_GroundTruth_10p.txt \
@@ -1260,7 +1260,7 @@ Executing the following commands  on the target board:
 source /etc/vai.sh
 source ~/scripts/target_setup_vai.sh
 export VAISW_RUNSESSION_SUMMARY=all
-cd Vitis-AI/src/vart_ml/zebra_embedded/demo
+cd Vitis-AI/src/vart_ml/demo
 
 # inference with BS=1
 ./test_vcor_resnet18  --batchSize 1   --goldFile ~/datasets/vcor/vcor_test_GroundTruth.txt 
@@ -1454,7 +1454,6 @@ val_dataset = datasets.ImageFolder('imagenet/val',transform=transform)
 
 
 
-
 # References
 
 - [Vitis AI Early Access Release Secure Site](https://account.amd.com/en/member/vitis-ai-ea-release.html)
@@ -1463,43 +1462,6 @@ val_dataset = datasets.ImageFolder('imagenet/val',transform=transform)
 
 - [ResNet50 V1.5](https://pytorch.org/hub/nvidia_deeplearningexamples_resnet50/)
 
-
-<div style="page-break-after: always;"></div>
-
-
-## Additional Resources and Legal Notices
-
-### Support Resources
-
-For support resources such as Answers, Documentation, Downloads, and Forums, see [Support](https://adaptivesupport.amd.com/).
-
-### Revision History
-
-<table><thead>
-  <tr>
-    <th style="text-align: center;">Section</th>
-    <th style="text-align: center;">Revision Summary</th>
-  </tr>
-    <tr>
-    <th colspan="2" style="text-align: center;">08/08/2025 Version Early Access Draft</th>
-  </tr></thead>
-<tbody>
-  <tr>
-    <td>AMD Confidential Draft. Approved for external release under NDA only.</td>
-    <td>N/A</td>
-  </tr>
-</tbody>
-</table>
-
-### Please Read: Important Legal Notices
-
-The information presented in this document is for informational purposes only and may contain technical inaccuracies, omissions, and typographical errors. The information contained herein is subject to change and may be rendered inaccurate for many reasons, including but not limited to product and roadmap changes, component and motherboard version changes, new model and/or product releases, product differences between differing manufacturers, software changes, BIOS flashes, firmware upgrades, or the like. Any computer system has risks of security vulnerabilities that cannot be completely prevented or mitigated. AMD assumes no obligation to update or otherwise correct or revise this information. However, AMD reserves the right to revise this information and to make changes from time to time to the content hereof without obligation of AMD to notify any person of such revisions or changes. THIS INFORMATION IS PROVIDED "AS IS." AMD MAKES NO REPRESENTATIONS OR WARRANTIES WITH RESPECT TO THE CONTENTS HEREOF AND ASSUMES NO RESPONSIBILITY FOR ANY INACCURACIES, ERRORS, OR OMISSIONS THAT MAY APPEAR IN THIS INFORMATION. AMD SPECIFICALLY DISCLAIMS ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR ANY PARTICULAR PURPOSE. IN NO EVENT WILL AMD BE LIABLE TO ANY PERSON FOR ANY RELIANCE, DIRECT, INDIRECT, SPECIAL, OR OTHER CONSEQUENTIAL DAMAGES ARISING FROM THE USE OF ANY INFORMATION CONTAINED HEREIN, EVEN IF AMD IS EXPRESSLY ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
-
-This document contains preliminary information and is subject to change without notice. Information provided herein relates to products and/or services not yet available for sale, and provided solely for information purposes and are not intended, or to be construed, as an offer for sale or an attempted commercialization of the products and/or services referred to herein.
-
-#### AUTOMOTIVE APPLICATIONS DISCLAIMER
-
-AUTOMOTIVE PRODUCTS (IDENTIFIED AS "XA" IN THE PART NUMBER) ARE NOT WARRANTED FOR USE IN THE DEPLOYMENT OF AIRBAGS OR FOR USE IN APPLICATIONS THAT AFFECT CONTROL OF A VEHICLE ("SAFETY APPLICATION") UNLESS THERE IS A SAFETY CONCEPT OR REDUNDANCY FEATURE CONSISTENT WITH THE ISO 26262 AUTOMOTIVE SAFETY STANDARD ("SAFETY DESIGN"). CUSTOMER SHALL, PRIOR TO USING OR DISTRIBUTING ANY SYSTEMS THAT INCORPORATE PRODUCTS, THOROUGHLY TEST SUCH SYSTEMS FOR SAFETY PURPOSES. USE OF PRODUCTS IN A SAFETY APPLICATION WITHOUT A SAFETY DESIGN IS FULLY AT THE RISK OF CUSTOMER, SUBJECT ONLY TO APPLICABLE LAWS AND REGULATIONS GOVERNING LIMITATIONS ON PRODUCT LIABILITY.
 
 #### Copyright
 
