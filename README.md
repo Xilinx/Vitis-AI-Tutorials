@@ -1,6 +1,6 @@
 ﻿<table class="sphinxhide">
  <tr width="100%">
-    <td align="center"><img src="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/xilinx-logo.png" width="30%"/><h1>Vitis-AI™ 3.5</h1>
+    <td align="center"><img src="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/xilinx-logo.png" width="30%"/><h1>Vitis-AI™ 5.1</h1>
     <a href="https://www.xilinx.com/products/design-tools/vitis.html">See Vitis™ Development Environment on xilinx.com</br></a>
     <a href="https://www.xilinx.com/products/design-tools/vitis/vitis-ai.html">See Vitis-AI™ Development Environment on xilinx.com</a>
     </td>
@@ -22,17 +22,17 @@
 
   <tr>
   <td>
-   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/RESNET18/">Running ResNet18 CNN Through Vitis AI 3.5 Flow for ML</a>
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/RESNET18/">Deploying a Custom ResNet18 on Vitis AI NPU</a>
  </td>
- <td align="center">3.5</td>
- <td>In this Deep Learning (DL) tutorial, you will take a public domain CNN like ResNet18, already trained on the ImageNet dataset, and run it through the Vitis AI 3.5 stack to run ML inference on FPGA devices. You will use Keras on Tensorflow 2.x. Supported boards are: ZCU104, ZCU102, VCK190, VEK280 and Alveo V70.
+ <td align="center">5.1</td>
+ <td>This tutorial shows you how to deploy a Convolutional Neural Network (CNN) model for **Image Classification** with the **Vitis AI 5.1** development flow, from the host PC to the Versal VEK280, which contains the NPU (**Neural Processing Unit**).
 </td>
  </tr>
   <tr>
   <td>
    <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/PyTorch-ResNet18/">ResNet18 in PyTorch from Vitis AI Library</a>
  </td>
- <td align="center">3.5</td>
+ <td align="center">5.1</td>
  <td>In this Deep Learning (DL) tutorial, you will take the ResNet18 CNN, from the Vitis AI 3.0 PyTorch Library, and use it to classify the different colors of the "car object" inside images by running the inference application on FPGA devices. Supported boards are: ZCU104, ZCU102, VCK190, VEK280 and Alveo V70.
 </td>
  </tr>
@@ -49,3 +49,4 @@
 <p class="sphinxhide" align="center"><sub>Copyright © 2020–2023 Advanced Micro Devices, Inc</sub></p>
 
 <p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
+
