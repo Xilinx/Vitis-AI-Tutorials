@@ -1,0 +1,12 @@
+names:
+  - Ambulance
+  - Bus
+  - Car
+  - Motorcycle
+  - Truck
+
+nc: 5
+
+path:  /workspace/datasets/vehicles_open_image
+train: /workspace/datasets/vehicles_open_image/train
+val:   /workspace/datasets/vehicles_open_image/valid
