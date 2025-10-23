@@ -21,7 +21,7 @@
 <tbody>
   <tr>
   <td>
-   <a href="https://github.com/raholbharadwaj/Vitis-AI-Tutorials/tree/5.1/Tutorials/public_VitisAI-NPU-Custom-ResNet18-Deployment/">Deploying a Custom ResNet18 on Vitis AI NPU</a>
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/5.1/Tutorials/public_VitisAI-NPU-Custom-ResNet18-Deployment/">Deploying a Custom ResNet18 on Vitis AI NPU</a>
  </td>
  <td align="center">5.1</td>
  <td>This tutorial shows you how to deploy a Convolutional Neural Network (CNN) model for Image Classification with the Vitis AI 5.1 development flow, from the host PC to the Versal VEK280, which contains the NPU (Neural Processing Unit).
@@ -29,7 +29,7 @@
  </tr>
    <tr>
   <td>
-   <a href="https://github.com/raholbharadwaj/Vitis-AI-Tutorials/tree/5.1/Tutorials/public-VitisAI-NPU-Custom-YOLOv5s-Deployment">Deploying a Custom YOLOv5s on Vitis AI NPU</a>
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/5.1/Tutorials/public-VitisAI-NPU-Custom-YOLOv5s-Deployment">Deploying a Custom YOLOv5s on Vitis AI NPU</a>
  </td>
  <td align="center">5.1</td>
  <td>This tutorial shows you how to deploy a Convolutional Neural Network (NN) model for Object Detection with the Vitis AI 5.1 development flow, from the host PC to the Versal VEK280 which contains the NPU (Neural Processing Unit).
@@ -41,6 +41,7 @@
 <p class="sphinxhide" align="center"><sub>Copyright © 2020–2025 Advanced Micro Devices, Inc</sub></p>
 
 <p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
+
 
 
 
