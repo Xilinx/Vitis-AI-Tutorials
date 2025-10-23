@@ -15,10 +15,6 @@ MIT License
   </tr>
 </table>
 
-**Early Access Draft <October 02, 2025>**
-
-> **NOTICE:** This pre-release document contains confidential and proprietary information of Xilinx, Inc. and is being disclosed to you as a participant in an early access program, under obligation of confidentiality. You may print one (1) copy of this document for evaluation purposes. You may not modify, distribute, or disclose this material to anyone, including your employees, coworkers, or contractors (these individuals must apply for separate access to the program). This document contains preliminary information and is subject to change without notice.Information provided herein relates to products and/or services not yet available for sale, and provided solely for information purposes and are not intended, or to be construed, as an offer for sale or an attempted commercialization of the products and/or services referred to herein.
-
 # Deploying a Custom ResNet18 on Vitis AI NPU
 
 
