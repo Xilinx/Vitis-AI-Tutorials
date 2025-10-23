@@ -25,7 +25,7 @@
    <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/3.5/Tutorials/RESNET18/">Deploying a Custom ResNet18 on Vitis AI NPU</a>
  </td>
  <td align="center">5.1</td>
- <td>This tutorial shows you how to deploy a Convolutional Neural Network (CNN) model for **Image Classification** with the **Vitis AI 5.1** development flow, from the host PC to the Versal VEK280, which contains the NPU (**Neural Processing Unit**).
+ <td>This tutorial shows you how to deploy a Convolutional Neural Network (CNN) model for Image Classification with the Vitis AI 5.1 development flow, from the host PC to the Versal VEK280, which contains the NPU (Neural Processing Unit).
 </td>
  </tr>
   <tr>
@@ -49,4 +49,5 @@
 <p class="sphinxhide" align="center"><sub>Copyright © 2020–2023 Advanced Micro Devices, Inc</sub></p>
 
 <p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
+
 
