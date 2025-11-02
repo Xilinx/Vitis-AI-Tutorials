@@ -8,7 +8,7 @@ In this tutorial, we use Vitis 2020.2 and Vitis AI v1.3 for demonstration. The t
 | Vitis-AI                | v1.3                          |
 | PetaLinux               | 2020.2                        |
 
-he host OS can be a natively installed OS or a virtual machine. Please check [Table 1 in Vitis Release Notes][1] for supported host operating systems. It needs to have at least a 100 GB hard disk to install all the tools, models, and datasets. 16GB DDR memory is preferred for development flow.
+the host OS can be a natively installed OS or a virtual machine. Please check [Table 1 in Vitis Release Notes][1] for supported host operating systems. It needs to have at least a 100 GB hard disk to install all the tools, models, and datasets. 16GB DDR memory is preferred for development flow.
 
 [1]: https://www.xilinx.com/html_docs/xilinx2020_2/vitis_doc/acceleration_installation.html#ariaid-title2
 
