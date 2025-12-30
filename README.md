@@ -18,7 +18,7 @@
 <tbody>
   <tr>
   <td>
-   <a href="https://github.com/raholbharadwaj/Vitis-AI-Tutorials/tree/5.1/Tutorials/vitis-ai-5.1-multi-tenancy-tutorial-vek280-main/vitis-ai-5.1-multi-tenancy-tutorial-vek280-main">Running Multiple Models (ResNet50+ResNet18) with Multi-Tenancy
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/5.1/Tutorials/vitis-ai-5.1-multi-tenancy-tutorial-vek280-main/vitis-ai-5.1-multi-tenancy-tutorial-vek280-main">Running Multiple Models (ResNet50+ResNet18) with Multi-Tenancy
 </a>
  </td>
 <td align="center">5.1</td>
@@ -237,6 +237,7 @@
 <p class="sphinxhide" align="center"><sub>Copyright © 2022–2025 Advanced Micro Devices, Inc</sub></p>
 
 <p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
+
 
 
 
