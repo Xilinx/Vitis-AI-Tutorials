@@ -16,6 +16,15 @@
   </tr>
 </thead>
 <tbody>
+ <tr>
+  <td>
+   <a href="https://github.com/raholbharadwaj/Vitis-AI-Tutorials/tree/5.1/Tutorials/vai-tutorial-mixed-precision-main/vai-tutorial-mixed-precision-main">Vitis AI Tutorial 1: YOLOX Mixed Precision
+</a>
+ </td>
+ <td align="center">5.1</td>
+ <td>This tutorial shows you how to apply mixed precision quantization to a YOLOX model. It guides you through generating and comparing results from an INT8-only snapshot used as a baseline and a mixed precision snapshot that combines INT8 and BF16. Finally, it helps you analyze the accuracy and performance differences between the two runs to understand the trade-offs involved in precision selection.
+</td>
+ </tr>
   <tr>
   <td>
    <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/5.1/Tutorials/vitis-ai-5.1-multi-tenancy-tutorial-vek280-main/vitis-ai-5.1-multi-tenancy-tutorial-vek280-main">Running Multiple Models (ResNet50+ResNet18) with Multi-Tenancy
@@ -237,6 +246,7 @@
 <p class="sphinxhide" align="center"><sub>Copyright © 2022–2025 Advanced Micro Devices, Inc</sub></p>
 
 <p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
+
 
 
 
