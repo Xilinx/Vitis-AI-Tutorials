@@ -9,7 +9,7 @@ MIT License
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/logo-white-text.png">
     <img alt="AMD logo" src="https://raw.githubusercontent.com/Xilinx/Image-Collateral/main/xilinx-logo.png" width="35%">
   </picture>
-  <h1>Vitis AI Tutorial 1: YOLOX Mixed Precision</h1>
+  <h1>YOLOX Mixed Precision</h1>
 </p>
 
 
@@ -17,41 +17,54 @@ MIT License
 
 ## 📘 Table of Contents
 
-1. [Introduction](#1-introduction)  
-   - [Vitis AI Overview](#vitis-ai-overview)  & [Mixed Precision Overview](#mixed-precision-overview)
-2. [Prerequisites](#2-prerequisites)  
-   - [Hardware & Software Requirements](#hardware--software-requirements)
-3. [Environment Setup](#3-environment-setup)  
-   - [Installing Vitis AI Tools](#31-installing-vitis-ai-tools)  
-   - [Initialize Environment](#32-initialize-environment)  
-   - [Host Static IP Setup](#33-host-static-ip-setup)  
-   - [Setting Up Cross Compiler](#34-setting-up-cross-compiler)  
-   - [Configure NPU IP](#35-configure-npu-ip)  
-   - [Launch Docker](#36-launch-docker)
-4. [Model Preparation](#4-model-preparation)  
-   - [Selecting / Training Models](#41-selecting--training-models)  
-   - [Preparing for Quantization](#42-preparing-for-quantization)
-5. [Mixed Precision Quantization Workflow](#5-mixed-precision-quantization-workflow)  
-   - [Precision Configuration](#51-precision-configuration)  
-   - [Mixed Precision Control](#52-mixed-precision-control)  
-   - [Configure Environment Variables](#53-configure-environment-variables)
-6. [Snapshot Generation](#6-snapshot-generation)  
-   - [To set Snapshot Directory](#61-set-snapshot-directory)  
-   - [Generate Snapshot](#62-generate-snapshot)  
-7. [Board / Target Setup](#7-board--target-setup)  
-   - [Setup the Board Hardware](#71-setup-the-board-hardware)  
-   - [Setup the SD Card](#72-setup-the-sd-card)  
-   - [Setup Serial Terminal](#73-setup-serial-terminal)  
-   - [Power On the Board](#74-power-on-the-board)  
-   - [Login to the Board](#75-login-to-the-board)  
-   - [Configure Network (Static IP)](#76-configure-network-static-ip)  
-   - [Verify Connection](#761-verify-connection)
-8. [Deployment](#8-deployment)  
-   - [Initialize Runtime Environment](#81-initialize-vitis-ai-runtime-environment)  
-   - [Copy Model Snapshot to Target](#82-copy-model-snapshot-from-host-to-target)  
-   - [Run Inference](#83-run-inference-on-the-target)  
-   - [Evaluate Performance](#84-evaluate-performance)
-9. [References](#9-references)
+- [📘 Table of Contents](#-table-of-contents)
+- [1. Introduction](#1-introduction)
+  - [Vitis AI Overview](#vitis-ai-overview)
+- [2. Prerequisites](#2-prerequisites)
+  - [Hardware \& Software Requirements](#hardware--software-requirements)
+- [3. Environment Setup](#3-environment-setup)
+  - [3.1 Installing Vitis AI Tools](#31-installing-vitis-ai-tools)
+  - [3.2 Initialize Environment](#32-initialize-environment)
+  - [3.3 Setting up the static IP of the host](#33-setting-up-the-static-ip-of-the-host)
+  - [3.4 Setting Up Cross Compiler](#34-setting-up-cross-compiler)
+  - [3.5 Configure NPU IP](#35-configure-npu-ip)
+  - [3.6 Launch Docker](#36-launch-docker)
+- [4. Model Preparation](#4-model-preparation)
+  - [4.1 Selecting / Training Models](#41-selecting--training-models)
+  - [4.2 Preparing for Quantization](#42-preparing-for-quantization)
+- [5. Mixed Precision Quantization Workflow](#5-mixed-precision-quantization-workflow)
+  - [5.1 Overview](#51-overview)
+- [5.1.1 Precision Configuration](#511-precision-configuration)
+- [5.1.2 Mixed Precision Control](#512-mixed-precision-control)
+  - [5.2 Configure Environment Variables](#52-configure-environment-variables)
+- [6. Snapshot Generation](#6-snapshot-generation)
+  - [6.1 To set Snapshot Directory](#61-to-set-snapshot-directory)
+  - [6.2 Generate Mixed Precision Snapshot](#62-generate-mixed-precision-snapshot)
+  - [6.3 Generate INT8 Snapshot](#63-generate-int8-snapshot)
+  - [6.4 Verify the generated snapshots](#64-verify-the-generated-snapshots)
+  - [7 Setup the Board Hardware \& SD Card](#7-setup-the-board-hardware--sd-card)
+    - [7.1 **Connect the following components:**](#71-connect-the-following-components)
+    - [7.2 Flash the SD Card](#72-flash-the-sd-card)
+    - [7.3 Insert SD Card](#73-insert-sd-card)
+  - [7.4 Setup Serial Terminal](#74-setup-serial-terminal)
+    - [Serial Configuration:](#serial-configuration)
+  - [7.5 Power On the Board](#75-power-on-the-board)
+  - [7.6 Login to the Board](#76-login-to-the-board)
+  - [7.7 Configure Network (Static IP)](#77-configure-network-static-ip)
+    - [7.7.1 Verify Connection](#771-verify-connection)
+- [8. Deployment](#8-deployment)
+  - [8.1 Initialize Vitis AI Runtime Environment](#81-initialize-vitis-ai-runtime-environment)
+  - [8.2 Copy Model Snapshot from Host to Target](#82-copy-model-snapshot-from-host-to-target)
+  - [8.3 Run Inference on the Target](#83-run-inference-on-the-target)
+    - [Explanation:](#explanation)
+  - [8.4 Evaluate Performance](#84-evaluate-performance)
+- [Performance Comparison: INT8 vs Mixed Precision](#performance-comparison-int8-vs-mixed-precision)
+  - [8.5 Comparison Table](#85-comparison-table)
+  - [8.6 Key Insights](#86-key-insights)
+- [9. References](#9-references)
+  - [Please Read: Important Legal Notices](#please-read-important-legal-notices)
+  - [AUTOMOTIVE APPLICATIONS DISCLAIMER](#automotive-applications-disclaimer)
+  - [Copyright](#copyright)
 
 ---
 
@@ -266,7 +279,7 @@ ls
    - **Ethernet cable:** For host-target communication (required for `scp` and remote operations).  
    - **USB cable:** For serial console connection.
 
-<img src="https://gitenterprise.xilinx.com/divyamy/vai-tutorial-skeleton/blob/main/images/header/VEK280%20Evaluation%20Board.png" width="75%">
+![](/images/header/VEK280_Evaluation_Board.png)
 
 
 #### 7.2 Flash the SD Card
@@ -424,14 +437,14 @@ Re-run the inference command to see the performance of snapshot generated with M
 ```bash
 vart_ml_runner.py --snapshot <Mixed_Precision_snapshot_name>/ --in_zero_copy --out_zero_copy
 ```
-<img src="https://gitenterprise.xilinx.com/divyamy/vai-tutorial-mixed-precision/blob/main/images/header/Mixed_Performance.png" width="75%">
+![](/images/header/Mixed_Performance.png)
 
 Re-run the inference command to see the performance of snapshot generated with INT8:
 
 ```bash
 vart_ml_runner.py --snapshot <INT8_snapshot_name> --in_zero_copy
 ```
-<img src="https://gitenterprise.xilinx.com/divyamy/vai-tutorial-mixed-precision/blob/main/images/header/INT8_Performance.png" width="75%">
+![](/images/header/INT8_Performance.png)
 
 ## Performance Comparison: INT8 vs Mixed Precision
 
