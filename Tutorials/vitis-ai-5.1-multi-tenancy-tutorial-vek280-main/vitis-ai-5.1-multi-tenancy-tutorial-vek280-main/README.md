@@ -205,7 +205,7 @@ ifconfig end0 192.168.1.2
 
 With temporal execution, multiple models are run sequentially per batch of images on the same NPU IP. The same hardware resources (AI engines) are shared over time. This approach may be effective when your hardware design is resource constrained to a single NPU IP, but near real-time inference across multiple models is still required. While it doesn’t offer true parallelism, it simplifies deployment by avoiding the need to manage multiple IPs, snapshots, and resource constraints across AIE, PL and DDR memory.
 
-![Figure 1](/images/temporal.png)
+![Figure 1](./images/temporal.png)
 
 ***Figure 1:** Images are fed into the first model, ResNet50, which occupies 10 AIE columns in the NPU IP. Once inference is complete, the AIE resources are freed up for the second model, ResNet18, to receive images and begin inference.*
 
