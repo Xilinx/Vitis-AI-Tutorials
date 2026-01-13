@@ -21,7 +21,7 @@
 <tbody>
  <tr>
   <td>
-   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/5.1/Tutorials/vai-tutorial-mixed-precision-main/vai-tutorial-mixed-precision-main">Vitis AI Tutorial 1: YOLOX Mixed Precision
+   <a href="https://github.com/Xilinx/Vitis-AI-Tutorials/tree/5.1/Tutorials/vai-tutorial-mixed-precision-main/vai-tutorial-mixed-precision-main">YOLOX Mixed Precision
 </a>
  </td>
  <td align="center">5.1</td>
@@ -59,6 +59,7 @@
 <p class="sphinxhide" align="center"><sub>Copyright © 2020–2025 Advanced Micro Devices, Inc</sub></p>
 
 <p class="sphinxhide" align="center"><sup><a href="https://www.amd.com/en/corporate/copyright">Terms and Conditions</a></sup></p>
+
 
 
 
